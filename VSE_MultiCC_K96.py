@@ -22,7 +22,7 @@ else:
    VSE.VISA_Open("127.0.0.1")
    
 VSE.Set_DisplayUpdate("ON")
-#VSE.Set_Group("")
+VSE.Set_Group("Group2")
 VSE.Set_Channel("OFDMVSA")
 VSE.Set_Channel("OFDMVSA","K962")
 VSE.Set_SweepCont(0)
