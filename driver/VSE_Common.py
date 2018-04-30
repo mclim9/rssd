@@ -2,10 +2,12 @@
 ### Rohde & Schwarz Automation for demonstration use.
 ###
 ### Purpose: Vector Signal Explorer Common Functions
-### Author:  Martin C Lim
-### Date:    2018.03.28
+### Author : Martin C Lim
+### Date   : 2018.03.28
+### Descrip: Add VSE functionality to FSW_Common base code
 ### Requird: python -m pip install pyvisa
 ###          yaVISA
+### 
 import FSW_Common
 
 class VSE(FSW_Common.VSA):
@@ -15,17 +17,17 @@ class VSE(FSW_Common.VSA):
    #####################################################################
    ### VSE Display
    #####################################################################
-   def Set_Group(self,Chan):
+   def Set_Group(self,sGroup):
       ##################################################################
       ### SANALYZER, IQ, PNOISE, NOISE, Spur, ADEM, V5GT, LTE, OFDMVSA
       ##################################################################
-      ChList = self.query('INST:LIST?').split(',')
-      #print ChList
-      if ("'" + Chan + "'") in ChList:
+      GroupList = self.query('INST:BLOC:LIST?').split(',')
+      print("Grup:%s"%GroupList)
+      if ("'" + sGroup + "'") in GroupList:
          pass
       else:
-         self.write(":INST:CRE %s,'%s'"%(Chan,sName))
-      self.write(":INST:SEL '%s'"%sName)
+         self.write(":INST:BLOC:CRE '%s'"%(sGroup))
+      self.write("INST:BLOC:USE 1, '%s'"%sGroup)
 
    #####################################################################
    ### VSE Attenuation

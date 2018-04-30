@@ -6,6 +6,7 @@
 ### Date:    2018.02.01
 ### Requird: python -m pip install pyvisa
 ###          yaVISA
+###
 import yaVISA
 
 class VSA(yaVISA.RSVisa):
@@ -22,7 +23,7 @@ class VSA(yaVISA.RSVisa):
       if sName == "":
          sName = Chan
       ChList = self.query('INST:LIST?').split(',')
-      print("Chan:%s in %s"%(Chan,ChList))
+      #print("Chan:%s in %s"%(Chan,ChList))
       if ("'" + sName + "'") in ChList:
          pass
       else:
@@ -141,6 +142,7 @@ class VSA(yaVISA.RSVisa):
       return Power
       
    def Get_EVM(self):
+      #EVM = self.query('FETC:SUMM:EVM:ALL:AVER?')
       EVM = self.query('FETC:SUMM:EVM?')
       return float(EVM)
 
