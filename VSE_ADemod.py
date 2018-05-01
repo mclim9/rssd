@@ -10,11 +10,11 @@
 host = '127.0.0.1'               #Get local machine name
 port = 5025                      #Reserve a port for your service.
 
-import driver.VSE_ADemod
-
 ##########################################################
 ### Code Start
 ##########################################################
+import driver.VSE_ADemod
+
 VSE = driver.VSE_ADemod.VSE()
 if 0:
    VSE.VISA_Open("192.168.1.109")
@@ -27,5 +27,3 @@ VSE.Set_Adem_LPassStat("ON")
 VSE.Set_Adem_LPassRelative("5PCT")
 VSE.Set_InitImm()
 VSE.VISA_ClrErr()
- 
-

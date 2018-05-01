@@ -1,12 +1,13 @@
-Rohde&Schwarz Python Example Code
-------------------------------
+
+Rohde&Schwarz Python Code Examples
+===================================
 This project will provide example code.  Drivers provided for:
-  * FSW
-  * SMW
-  * VSE
++ FSW
++ SMW
++ VSE
 
 ##Getting Started
-d
+
 ### Prerequisites
 
 ```
@@ -17,22 +18,23 @@ python -m pip install pyvisa
 * Install prerequisites
 * Unzip code into directory
 * Run Examples
-* Current Examples:
-**adsfd** 
+* Examples Include:
+   * Socket_Example.py
+   * VSE_ADemod.py
+   * VSE_Debug.py
+   * VSE_MultiCC_K96.py
 
-### How do I get set up?
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+### Running
+* Load one of the above files
+* Change IP address to match instruments.
+* Run
 
-## Versioning
+## _Versioning_
 We use [Bitbucket](http://www.bitbucket.com/) for versioning.
 
 ### Authors
 * Martin C Lim - *Initial work* 
+* Others welcome.  :-D
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
