@@ -2,10 +2,17 @@
 ---
 Example automation code for general purpose R&S equipment.  
 
-### Drivers provided for:
-+ FSW
-+ SMW
-+ VSE
+### Drivers:
+* Structure: pyvisa --> yaVISA --> [instr]_Common --> [instr]_Name_Kxx
+* FSW: Vector Spectrum Analyzer
+    * Base for FSW & VSE drivers
+    * Possible compatibility: VSE; FPS; FSV;
+* SMW: Vector Signal Generator
+    * Possible compatibility: SGS; SGT; SMB; SMBV
+* VSE: Vector Signal Explorer SW
+    * FSW & VSE shares many SCPI commands.
+    * Drivers represent VSE commands not in FSW code.
+    * Possible compatibility: FSW
 
 ##Getting Started
 
