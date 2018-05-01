@@ -1,9 +1,11 @@
 #Rohde&Schwarz Python Code Examples
 ---
-Example automation code for general purpose R&S equipment.  
+Example automation code for general purpose R&S equipment.  Project also
+aims to provide a functional python driver for use in other projects.
+ 
 
 ### Drivers:
-* Structure: pyvisa --> yaVISA --> [instr]_Common --> [instr]_Name_Kxx
+* Structure: pyvisa --> yaVISA.py  --> **instr**\_Common.py --> **instr**\_OptionName\_Kxx.py
 * FSW: Vector Spectrum Analyzer
     * Base for FSW & VSE drivers
     * Possible compatibility: VSE; FPS; FSV;
@@ -11,11 +13,12 @@ Example automation code for general purpose R&S equipment.
     * Possible compatibility: SGS; SGT; SMB; SMBV
 * VSE: Vector Signal Explorer SW
     * FSW & VSE shares many SCPI commands.
-    * Drivers represent VSE commands not in FSW code.
+    * Drivers represent VSE commands not in FSW code
+    * OFDMVSA K96 code resides here as well
     * Possible compatibility: FSW
 
 ##Getting Started
-
+---
 ### Prerequisites
 ```python
 python -m pip install pyvisa
@@ -35,7 +38,8 @@ python -m pip install pyvisa
     * VSE_Debug.py          :VSE Raw SCPI
     * VSE_MultiCC_K96.py    :VSE Multi component carrier EVM w/ K96
 
-## _Versioning_
+## Versioning
+---
 We use [Bitbucket](http://www.bitbucket.com/) for versioning.
 
 ### Authors
