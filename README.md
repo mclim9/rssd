@@ -1,6 +1,5 @@
-
 #Rohde&Schwarz Python Code Examples
-===================================
+---
 Example automation code for general purpose R&S equipment.  
 
 ### Drivers provided for:
@@ -24,10 +23,10 @@ python -m pip install pyvisa
 * Change IP address to match instrument(s)
 * Run
 * Examples Include:
-	* Socket_Example.py		:Socket connection w/o VISA
-	* VSE_ADemod.py			:VSE/FSW Analog FM Demod
-	* VSE_Debug.py          :VSE Raw SCPI
-	* VSE_MultiCC_K96.py    :VSE Multi Component Carrier EVM w/ K96
+    * Socket_Example.py		:Socket connection w/o VISA
+    * VSE_ADemod.py			:VSE/FSW Analog FM Demod
+    * VSE_Debug.py          :VSE Raw SCPI
+    * VSE_MultiCC_K96.py    :VSE Multi component carrier EVM w/ K96
 
 ## _Versioning_
 We use [Bitbucket](http://www.bitbucket.com/) for versioning.
