@@ -201,21 +201,6 @@ class VSA(yaVISA.RSVisa):
    def Set_MkrTime(self,fSec,iNum=1):
       self.write(':CALC1:MARK%d:X %fS'%(iNum,fSec));
 
-   #####################################################################
-   ### FSW V5G
-   #####################################################################
-   def Set_V5G_Allocation(self,sFilename):
-      # \Instr\user\V5GTF\AllocationFiles\UL
-      self.write('MMEM:LOAD:DEM "%s"'%sFilename);
-      
-   def Set_V5G_Direction(self,sDirection):
-      # sDirection = "UL" or "DL"
-      self.write(':CONF:V5G:LDIR %s'%sDirection);
-
-   def Set_V5G_AutoEVM(self):
-      self.write(':SENS:ADJ:EVM;*WAI');
-      #VISA_OPC_Wait(K2, ':SENS:ADJ:EVM;*WAI')
-
 #####################################################################
 ### Run if Main
 #####################################################################

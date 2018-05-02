@@ -10,17 +10,28 @@ import FSW_Common
 class VSA(FSW_Common.VSA):
    def __init__(self):
       pass
+
+   #####################################################################
+   ### FSW V5G
+   #####################################################################
+   def Init_5GNR(self):
+      self.Set_Channel('5GNR')
+
+   def Set_V5G_Allocation(self,sFilename):
+      # \Instr\user\V5GTF\AllocationFiles\UL
+      self.write('MMEM:LOAD:DEM "%s"'%sFilename);
+      
+   def Set_V5G_Direction(self,sDirection):
+      # sDirection = "UL" or "DL"
+      self.write(':CONF:V5G:LDIR %s'%sDirection);
+
+   def Set_V5G_AutoEVM(self):
+      self.write(':SENS:ADJ:EVM;*WAI');
+      #VISA_OPC_Wait(K2, ':SENS:ADJ:EVM;*WAI')
       
    #####################################################################
    ### FSW LTE Settings
    #####################################################################
-   def Set_LTE_BW(self,iBW):
-      self.write(':CONF:LTE:UL:BW BW20_00')
-      
-   def Set_LTE_Dir(self,sDir):
-      # UL or DL
-      self.write(':CONF:LDIR %s'%sDir)
-
    def Set_LTE_Modulation(self,iMod):
       self.write(':CONF:LTE:UL:SUBF0:ALL:MOD QPSK')
 
@@ -52,7 +63,6 @@ class VSA(FSW_Common.VSA):
       EVM     = self.Get_EVM()
       return ("%.2f,%.2f,%6.2f,%.2f"%(MAttn,RefLvl,Power,EVM))
 
-
 #####################################################################
 ### Run if Main
 #####################################################################
@@ -60,5 +70,4 @@ if __name__ == "__main__":
    ### this won't be run when imported
    FSW = VSA()
    FSW.VISA_Open("192.168.1.109")
-   FSW.VISA_IDN()
-   print FSW.Get_MkrXY()
+   FSW.Init_5GNR()
