@@ -5,7 +5,7 @@ aims to provide a functional python driver for use in other projects.
  
 
 ### Drivers:
-* Structure: pyvisa --> yaVISA.py  --> **instr**\_Common.py --> **instr**\_OptionName\_Kxx.py
+* Structure: pyvisa --> yaVISA.py  --> &lt;**instr**&gt;\_Common.py --> &lt;**instr**&gt;\_&lt;OptionName&gt;\_Kxx.py
 * FSW: Vector Spectrum Analyzer
     * Base for FSW & VSE drivers
     * Possible compatibility: VSE; FPS; FSV;
