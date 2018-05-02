@@ -35,7 +35,7 @@ class RSVisa:
             break
          else:
             self.dLastErr = RdStr
-            print("VISA_ClrErr  : %s ERR:%s"%(self.K2,RdStr))
+            print("VISA_ClrErr  : %s ERR:%s"%(self.dataIDN,RdStr))
          
    def VISA_IDN(self):
       self.dataIDN = self.query("*IDN?").strip()
@@ -89,9 +89,15 @@ class RSVisa:
       self.write("*RST;*CLS;*WAI")
 
    def query(self,cmd):
-      return self.K2.query(cmd).strip()
-      
+      read =""
+      try:
+         read = self.K2.query(cmd).strip()
+      except:
+         print("VISA Timeout:%s%s"%(self.dataIDN,cmd))
+      return read
+         
    def write(self,cmd):
+      #print(cmd)
       self.K2.write(cmd)
 
 
@@ -99,7 +105,6 @@ if __name__ == "__main__":
    M2 = RSVisa()
    M2.VISA_Open("192.168.1.109")
    #M2.VISA_Reset()
-   #M2.K2.write(":SOUR1:FREQ:CW 15GHZ")
    M2.VISA_IDN()
    M2.write(":FREQ:CENT 12GHZ")
    M2.write("INIT:CONT OFF")
