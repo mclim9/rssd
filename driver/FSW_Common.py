@@ -4,9 +4,8 @@
 ### Purpose: Vector Signal Analyzer Common Functions
 ### Author:  Martin C Lim
 ### Date:    2018.02.01
-### Requird: python -m pip install pyvisa
-###          yaVISA
-###
+### Strctr : pyvisa-->yavisa-->FSW_Common.py
+#####################################################################
 import yaVISA
 
 class VSA(yaVISA.RSVisa):
@@ -33,9 +32,22 @@ class VSA(yaVISA.RSVisa):
    def Get_Channels(self):
       ChList = self.query('INST:LIST?').split(',')
       return(ChList)
+      
    def Set_DisplayUpdate(self,state):
       self.write('SYST:DISP:UPD %s'%state);     #Display Update State
        
+   #####################################################################
+   ### FSW Input/Output
+   #####################################################################
+   def Set_Input(sType):
+      self.write('INP:SEL %s'%sType);              #RF|AIQ|DIQ|FILE
+   
+   def Set_In_YIG(sState):
+      self.write('INP:FILT:YIG:STATe %s'%sState);  #ON|OFF|0|1
+      
+   def Set_In_HPFilter(sState):                    #Filter for 1-3GHz meas
+      self.write('INP:FILT:HPASs:STATe %s'%sState) #ON|OFF|0|1
+      
    #####################################################################
    ### FSW Attenuation
    #####################################################################
@@ -64,7 +76,7 @@ class VSA(yaVISA.RSVisa):
    ### FSW Frequency
    #####################################################################
    def Set_Freq(self,fFreq):
-      self.write('FREQ:CENT %f'%fFreq);         #RF Freq
+      self.write(':SENS:FREQ:CENT %.0f HZ'%fFreq);         #RF Freq
 
    def Set_FreqStart(self,fFreq):
       self.write(':SENS:FREQ:STAR %f'%fFreq);   #RF Freq
@@ -138,15 +150,15 @@ class VSA(yaVISA.RSVisa):
       return float(EVM)
 
    def Get_ChPwr(self):
-      Power   = float(self.query('FETC:SUMM:POW?'))
-      return Power
+      Power = self.query('FETC:SUMM:POW?')
+      return float(Power)
       
    def Get_EVM(self):
       #EVM = self.query('FETC:SUMM:EVM:ALL:AVER?')
       EVM = self.query('FETC:SUMM:EVM?')
       return float(EVM)
 
-   def Get_EVM_n_Params(self):
+   def Get_EVM_Params(self):
       MAttn   = self.Get_AttnMech()
       RefLvl  = self.Get_RefLevel()
       Power   = self.Get_ChPwr()
