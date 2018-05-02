@@ -17,9 +17,6 @@ class VSE(FSW_Common.VSA):
    ### VSE Display
    #####################################################################
    def Set_Group(self,sGroup):
-      ##################################################################
-      ### SANALYZER, IQ, PNOISE, NOISE, Spur, ADEM, V5GT, LTE, OFDMVSA
-      ##################################################################
       GroupList = self.query('INST:BLOC:LIST?').split(',')
       print("Grup:%s"%GroupList)
       if ("'" + sGroup + "'") in GroupList:
@@ -28,6 +25,14 @@ class VSE(FSW_Common.VSA):
          self.write(":INST:BLOC:CRE '%s'"%(sGroup))
       self.write("INST:BLOC:USE 1, '%s'"%sGroup)
 
+   #####################################################################
+   ### VSE Input
+   #####################################################################
+   def Set_Input(self,sType):
+      self.write('INP:SEL %s'%sType);              #RF|FILE
+
+   def Set_InputFile(self,sFilename):
+      self.write("*IDN?");
    #####################################################################
    ### VSE Attenuation
    #####################################################################
@@ -44,7 +49,6 @@ class VSE(FSW_Common.VSA):
          self.write('INIT:SEQ:MODE CONT');            #Continuous Sweep
       else:
          self.write('INIT:SEQ:MODE SING');           #Single Sweep
-
 
    #####################################################################
    ### VSE IQ Analyzer
