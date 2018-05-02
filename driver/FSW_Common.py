@@ -39,18 +39,21 @@ class VSA(yaVISA.RSVisa):
    #####################################################################
    ### FSW Input/Output
    #####################################################################
-   def Set_Input(sType):
+   def Set_Input(self,sType):
       self.write('INP:SEL %s'%sType);              #RF|AIQ|DIQ|FILE
    
-   def Set_In_YIG(sState):
+   def Set_In_YIG(self,sState):
       self.write('INP:FILT:YIG:STATe %s'%sState);  #ON|OFF|0|1
       
-   def Set_In_HPFilter(sState):                    #Filter for 1-3GHz meas
+   def Set_In_HPFilter(self,sState):               #Filter for 1-3GHz meas
       self.write('INP:FILT:HPASs:STATe %s'%sState) #ON|OFF|0|1
       
    #####################################################################
    ### FSW Attenuation
    #####################################################################
+   def Set_Autolevel(self,sState):
+      self.write('CONF:POW:AUTO %s;*WAI'%sState);  #ON|OFF|1|0
+
    def Get_AttnMech(self):
       MAttn   = self.query('INP:ATT?').strip()
       return float(MAttn)
