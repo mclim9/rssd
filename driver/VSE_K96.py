@@ -5,6 +5,7 @@
 ### Author : Martin C Lim
 ### Date   : 2018.04.27
 import VSE_Common
+import time         #EVM Wait
 
 class VSE(VSE_Common.VSE):
    def __init__(self):
@@ -35,8 +36,12 @@ class VSE(VSE_Common.VSE):
       self.write('INP:SEL %s'%sType);              #RF|AIQ|DIQ|FILE
 
    def Get_EVM(self):
-      EVM = self.query('FETC:SUMM:EVM?;*WAI')
-      return float(EVM.strip())
+      EVM = self.query('FETC:SUMM:EVM?;*WAI',0)
+      try:
+         EVM = float(EVM.strip())
+      except:
+         EVM = -9999
+      return EVM
 
    def Get_EVM_Params(self):
       MAttn   = self.Get_AttnMech()
@@ -50,13 +55,18 @@ class VSE(VSE_Common.VSE):
    #####################################################################
    def EVM_Wait(self):
       EVM = '';                           #init EVM read value
+      t0 = time.time()
       self.write('INIT:IMM');             #Start Measurement
       while (EVM == ''):                  #Loop until EVM present
+         delta = (time.time() - t0)
          try:
-            EVM = self.Get_EVM();
+            EVM = self.Get_EVM()
          except:
             pass
-      asdf = self.Get_EVM();              #Flush buffer of NaN
+         if delta > 10:                   #EVM_Wait Timeout
+            break
+      print("K96_EVM_Wait: %.3f sec"%(delta))
+      asdf = self.Get_EVM()               #Flush buffer of NaN
      
    def EVM_AutoCal(self):
       #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
