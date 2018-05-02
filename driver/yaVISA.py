@@ -5,6 +5,8 @@
 ### Author:  Martin C Lim
 ### Date:    2017.09.01
 ### Requird: python -m pip install pyvisa
+###
+#####################################################################
 import visa
 import time
 
@@ -14,6 +16,7 @@ class RSVisa:
    def __init__(self):
       self.dataIDN = ""
       self.dLastErr = " "
+      self.filenm = ""
       pass
       
    def VISA_Clear(self):
@@ -88,18 +91,20 @@ class RSVisa:
    def VISA_Reset(self):
       self.write("*RST;*CLS;*WAI")
 
-   def query(self,cmd):
+   def query(self,cmd,prnt=1):
       read =""
       try:
          read = self.K2.query(cmd).strip()
       except:
-         print("VISA Timeout:%s%s"%(self.dataIDN,cmd))
+         if prnt==1: print("VISA_ReadError:%s-->%s"%(self.dataIDN,cmd))
       return read
          
-   def write(self,cmd):
-      #print(cmd)
-      self.K2.write(cmd)
-
+   def write(self,cmd,prnt=1):
+      try:
+         self.K2.write(cmd)
+      except:
+         if prnt==1: print("VISA_WriteError:%s-->%s"%(self.dataIDN,cmd))
+         
 
 if __name__ == "__main__":
    M2 = RSVisa()
