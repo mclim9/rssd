@@ -5,9 +5,8 @@
 ### Author : Martin C Lim
 ### Date   : 2018.03.28
 ### Descrip: Add VSE functionality to FSW_Common base code
-### Requird: python -m pip install pyvisa
-###          yaVISA
-### 
+### Strctr : pyvisa-->yavisa-->FSW_Common-->VSE_Common.py
+#####################################################################
 import FSW_Common
 
 class VSE(FSW_Common.VSA):
@@ -40,7 +39,6 @@ class VSE(FSW_Common.VSA):
    #####################################################################
    ### VSE Time/Sweep
    #####################################################################
-
    def Set_SweepCont(self,iON):
       if iON > 0:
          self.write('INIT:SEQ:MODE CONT');            #Continuous Sweep
