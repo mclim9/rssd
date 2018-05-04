@@ -16,11 +16,13 @@ SMW_IP = '192.168.1.114'
 FSW_IP = '192.168.1.109'
 VSE_IP = '127.0.0.1'                #Get local machine name
 Freq = 29e9                         #Center Frequency
+Pwr = 0                             #SMW RMS Power
 CC_Size = 100e6                     #Component Carrier Size
 Fs = 115.2e6                        #Sampling Rate
 
 BaseDir = "C:\\Users\\LIM_M\\ownCloud\\ATE\\00_Code\\RS_ATE_Python2\\"
-IQFile  = BaseDir + "file2.iqw"
+OutFile = BaseDir + "data\\MultiCC_K96"
+IQFile  = BaseDir + "file.iqw"
 OFDMCfg = BaseDir + "misc\\BBAnalog_1CC_100RB_64QAM_IQ-17symC.xml"
 ##########################################################
 ### Code Overhead
@@ -31,7 +33,7 @@ import driver.VSE_K96
 import utils.FileIO
 
 f = utils.FileIO.FileIO()
-DataFile = f.Init("Datalog")
+DataFile = f.Init(OutFile)
 SMW = driver.SMW_Common.VSG()       #Create SMW Object
 SMW.VISA_Open(SMW_IP,DataFile)      #Connect to SMW
 FSW = driver.FSW_Common.VSA()       #Create FSW Object
@@ -44,7 +46,7 @@ VSE.VISA_Open(VSE_IP,DataFile)      #Connect to VSE
 ##########################################################
 VSE.Set_Init_K96()                  #Change Channel
 VSE.Set_DisplayUpdate("ON")         #Display On
-VSE.Set_SweepCont(0)
+VSE.Set_SweepCont(0)                #Set Single Sweep
 VSE.Set_IQ_SamplingRate(Fs)         #Sampling Rate
 VSE.Set_File_InputIQW(Fs,IQFile)
 VSE.Set_File_K96Config(OFDMCfg)
@@ -70,9 +72,21 @@ for i in range(0,0):
 SMW.Set_Freq(Freq)
 FSW.Set_Freq(Freq)
 
-FSW.Get_IQ_Data()                   #Take single sweep
-VSE.Set_InitImm()
+### Set Power
+SMW.Set_RFPwr(Pwr)
+FSW.Set_Autolevel()
+
+FSW.Get_IQ_Data(IQFile)             #Save IQ Data to file
+VSE.Set_Freq(50e6)
+VSE.Set_InitImm()                   #Update VSE
 EVM_Meas = VSE.Get_EVM_Params()     #Attn; RefLvl; Pwr; EVM
-print(EVM_Meas)                 
+f.write(EVM_Meas)                 
 VSE.VISA_ClrErr()                   #Clear Errors
+
+##########################################################
+### Cleanup Automation
+##########################################################
+SMW.VISA_Close()
+FSW.VISA_Close()
+VSE.VISA_Close()
 
