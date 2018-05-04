@@ -16,47 +16,32 @@ class VSE(VSE_Common.VSE):
    #####################################################################
    def Set_Init_K96(self):
       self.Set_Channel('OFDMVSA')
-      self.write("SENSe:DEMod:FSYNc DATA")     # Pilot and Data Aided
-      self.write("SENSe:TRACking:TIME ON")     # Timing tracking ON
-      self.write("SENSe:TRACking:LEVel ON")    # Leveltracking ON
-      
-   def Set_Autolevel(self,sState):
-      self.write('CONF:POW:AUTO %s;*WAI'%sState);  #ON|OFF|1|0
+      self.write("SENSe:DEMod:FSYNc DATA")         # Pilot and Data Aided
+      self.write("SENSe:TRACking:TIME ON")         # Timing tracking ON
+      self.write("SENSe:TRACking:LEVel ON")        # Leveltracking ON
 
-   def Set_BurstSearch(self,sState):
+   def Set_K96_BurstSearch(self,sState):
       self.write('DEM:FORM:BURS %s;*WAI'%sState);  #ON|OFF|1|0
       
-   def Set_File_K96Config(self,sFile):
+   def Set_K96_File_Config(self,sFile):
       self.write("MMEM:LOAD:CFGF '%s';*WAI"%sFile);
     
-   def Set_FilterAdjustable(self,sState):
+   def Set_K96_FilterAdjustable(self,sState):
       self.write('INP:FILT:CHAN:STAT %s'%sState);  #ON|OFF|1|0
+      
+   def Set_K96_Frames(self,iNum):
+      self.write('SENS:DEM:FORM:MAXF %d'%iNum);    #Number of frames to analyze
 
-   def Set_FSWIPAdd(self,sIP):                     #For FS-K96
+   def Set_K96_FSWIPAdd(self,sIP):                 #For FS-K96
       self.write('CONF:ADDR "TCPIP::%s"'%sIP);     #FSW IP Address
- 
-   def Set_Input(self,sType):
-      self.write('INP:SEL %s'%sType);              #RF|AIQ|DIQ|FILE
 
-   def Get_EVM(self):
-      EVM = self.query('FETC:SUMM:EVM?;*WAI',0)
-      try:
-         EVM = float(EVM.strip())
-      except:
-         EVM = -9999
-      return EVM
-
-   def Get_EVM_Params(self):
-      MAttn   = self.Get_AttnMech()
-      RefLvl  = self.Get_RefLevel()
-      Power   = self.Get_ChPwr()
-      EVM     = self.Get_EVM()
-      return ("%.2f,%.2f,%6.2f,%.2f"%(MAttn,RefLvl,Power,EVM))
+   def Set_K96_OFDMSymbols(self,iNum):
+      self.write('SENS:DEM:FORM:NOFS %d'%iNum);    #FSW IP Address
       
    #####################################################################
    ### Helper Functions
    #####################################################################
-   def EVM_Wait(self):
+   def K96_EVM_Wait(self):
       EVM = '';                           #init EVM read value
       t0 = time.time()
       self.write('INIT:IMM');             #Start Measurement
@@ -71,7 +56,7 @@ class VSE(VSE_Common.VSE):
       print("K96_EVM_Wait: %.3f sec"%(delta))
       asdf = self.Get_EVM()               #Flush buffer of NaN
      
-   def EVM_AutoCal(self):
+   def K96_EVM_AutoCal(self):
       #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       #%%%% Code Settings
       #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -134,12 +119,12 @@ class VSE(VSE_Common.VSE):
             print "EVM NAN"
             break
 
-         Diff = EVM_Prev - EVM_Curr;   #Positive = improvedEVM
+         Diff = EVM_Prev - EVM_Curr;      #Positive = improvedEVM
          if (Diff > EVM_Wind):
             EVM_Prev = EVM_Curr;
             i = i + 1;
          else:
-            i = i - 1;                 #Previous value
+            i = i - 1;                    #Previous value
             self.Set_RefLevel(RefLvl - i)
             break
       self.EVM_Wait()
