@@ -63,8 +63,8 @@ class VSA(yaVISA.RSVisa):
       self.query('ADJ:LEV;*OPC?');
 
    def Set_Autolevel_Proto(self,sState):
-   ### Used by WLAN for legacy reasons.  Please use ADJ:LEV;
-      self.write('CONF:POW:AUTO %s;*WAI'%sState);  #ON|OFF|1|0
+   ### Used by WLAN; K96.  Please use ADJ:LEV;
+      self.write('CONF:POW:AUTO %s;*WAI'%sState);     #ON|OFF|1|0
 
    def Get_RefLevel(self):
       RefLvl = self.query('DISP:TRAC:Y:RLEV?');
@@ -74,15 +74,74 @@ class VSA(yaVISA.RSVisa):
       self.write('DISP:TRAC:Y:RLEV %f'%fReflevel);
       
    def Set_Preamp(self,sState):
-      self.write('INP:GAIN:STAT %s;*WAI'%sState);
+      self.write('INP:GAIN:STAT %s;*WAI'%sState);     #ON|OFF|1|0
 
    def Get_Ovld_Stat(self):
+      self.Set_InitImm()
       Read = int(self.query('STAT:QUES:POW:COND?').strip());
       RF_Ovld = Read & 1
       RF_Udld = Read & 2
       IF_Ovld = Read & 4
-      return RF_Ovld | IF_Ovld
+      return Read
       
+   def Set_Autolevel_IFOvld(self):
+      ####################################################################
+      """ Algorithm designed by Darren Tipton, RSUK"""
+      """ Optimise level for Mixer Input => Optimal EVM """
+      """ Optimises for signals using IF gain as well as 1dB steps """    
+      ####################################################################
+      optmix = 10                     # Optimal mixer level
+      self.Set_SweepCont(0)
+      self.Set_Autolevel()
+      level = self.Get_Mkr_TimeDomain()
+      
+      """ Switch Pre-Amp """                                                             
+      if level >= -20:
+         self.query("INP:GAIN:STAT OFF; *OPC?")
+         gain = 0
+         maxmix = 0
+      else:
+         self.query("INP:GAIN:STAT ON; *OPC?")     
+         gain = 20
+         maxmix = -30
+      
+      rfatt = level + gain - optmix    #Calc RfAttn for optimal mixer level
+      if rfatt < 0: rfatt = 0          #If calculated RF atten < 0, set 0
+      self.Set_AttnMech(rfatt)         #Set Attenuation
+       
+      reflev = maxmix + rfatt
+      self.Set_RefLevel(reflev)        #Set RefLevel
+
+      ifovl = self.Get_Ovld_Stat()     #Check Overload
+      print ("Inital: Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
+
+      """ Optimising for attenuation """
+      while ifovl != 0:
+         print ("ATloop: Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
+         rfatt = rfatt + 1
+         self.Set_AttnMech(rfatt)
+
+         reflev = maxmix + rfatt
+         self.Set_RefLevel(reflev)
+
+         """ Check if there is IF Overload """
+         ifovl = self.Get_Ovld_Stat()
+
+      """ Optimising for reference level """
+      while reflev > (-20 - gain) and ifovl == 0:
+         print ("RefLop: Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
+         reflev = reflev - 1
+         self.Set_RefLevel(reflev)
+
+         """ Check if there is IF Overload """        
+         ifovl = self.Get_Ovld_Stat()
+       
+      """ Final check for IF Overload """
+      print ("Final : Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
+      if ifovl != 0:
+         reflev = reflev + 1
+         self.Set_RefLevel(reflev)
+
    #####################################################################
    ### FSW Frequency
    #####################################################################
@@ -197,7 +256,6 @@ class VSA(yaVISA.RSVisa):
    
    def Get_IQ_RecLength(self):
       RLEN = self.query('TRAC:IQ:RLEN?')	         #Sweep Points
-      print(RLEN)
       return int(RLEN)
       
    def Get_IQ_Data_Ascii(self,MLEN=1e3):
@@ -262,8 +320,12 @@ class VSA(yaVISA.RSVisa):
       
    def Get_EVM(self):
       #EVM = self.query('FETC:SUMM:EVM:ALL:AVER?')
-      EVM = self.query('FETC:SUMM:EVM?')
-      return float(EVM)
+      EVM = self.query('FETC:SUMM:EVM?;*WAI',0)
+      try:
+         EVM = float(EVM.strip())
+      except:
+         EVM = -9999
+      return EVM
 
    def Get_EVM_Params(self):
       MAttn   = self.Get_AttnMech()
@@ -294,10 +356,11 @@ class VSA(yaVISA.RSVisa):
       return float(MkrFreq)
       
    def Get_Mkr_TimeDomain(self,iNum=1):
-      MkrFreq = self.query(':CALC1:MARK%d:X?'%(iNum)).strip();
+     # self.write(':CALC:MARK%d:FUNC:SUMM:STAT ON'%iNum)
+      MkrFreq = self.query(':CALC:MARK%d:X?'%(iNum)).strip();
       MkrPwr = self.query(':CALC:MARK%d:FUNC:SUMM:RMS:RES?'%(iNum)).strip();
-      return [float(MkrFreq), MkrPwr]
-      
+      return float(MkrPwr)
+            
    def Set_Mkr_Freq(self,fFreq,iNum=1):
       self.write(':CALC1:MARK%d:X %fHz'%(iNum,fFreq));
 
@@ -317,6 +380,8 @@ if __name__ == "__main__":
    ### this won't be run when imported
    FSW = VSA()
    FSW.VISA_Open("192.168.1.109")
-   FSW.Get_IQ_Data()
+   FSW.Set_Autolevel_IFOvld()
+   FSW.VISA_ClrErr()
+   
 
 
