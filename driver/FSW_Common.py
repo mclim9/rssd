@@ -51,9 +51,6 @@ class VSA(yaVISA.RSVisa):
    #####################################################################
    ### FSW Attenuation
    #####################################################################
-   def Set_Autolevel(self,sState):
-      self.write('CONF:POW:AUTO %s;*WAI'%sState);  #ON|OFF|1|0
-
    def Get_AttnMech(self):
       MAttn   = self.query('INP:ATT?').strip()
       return float(MAttn)
@@ -64,6 +61,10 @@ class VSA(yaVISA.RSVisa):
       
    def Set_Autolevel(self):
       self.query('ADJ:LEV;*OPC?');
+
+   def Set_Autolevel_Proto(self,sState):
+   ### Used by WLAN for legacy reasons.  Please use ADJ:LEV;
+      self.write('CONF:POW:AUTO %s;*WAI'%sState);  #ON|OFF|1|0
 
    def Get_RefLevel(self):
       RefLvl = self.query('DISP:TRAC:Y:RLEV?');
@@ -212,7 +213,7 @@ class VSA(yaVISA.RSVisa):
       print("Memory Done Reading %d"%len(CSVd.split(',')))
       return CSVd
 
-   def Get_IQ_Data(self):
+   def Get_IQ_Data(self,sFilename="file.iqw"):
     ####################################################################
     """ Get the IQ data and store to IQW file to process in VSE """
     ####################################################################
@@ -240,7 +241,7 @@ class VSA(yaVISA.RSVisa):
         i += 1
     """
         
-    iqfile = open ('file.iqw', "wb")
+    iqfile = open (sFilename, "wb")
     iqfile.write(data[2 + int(digits):])
     iqfile.close()
       
@@ -253,7 +254,11 @@ class VSA(yaVISA.RSVisa):
 
    def Get_ChPwr(self):
       Power = self.query('FETC:SUMM:POW?')
-      return float(Power)
+      try:
+         out = float(Power)
+      except:
+         out = -9999
+      return out 
       
    def Get_EVM(self):
       #EVM = self.query('FETC:SUMM:EVM:ALL:AVER?')
