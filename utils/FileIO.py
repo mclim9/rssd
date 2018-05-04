@@ -19,17 +19,17 @@ class FileIO():
       self.Outfile = open(self.sFName, 'a')           #Open File
       return self.Outfile
       
-   def Write(self,inStr):
-      if self.debug: print(inStr)
-      self.Outfile = open(self.sFName, 'a')           #Open File
-      self.Outfile.write(inStr+'\n')
-      self.Outfile.close()
-
-   def WriteDate(self,inStr):
-      if self.debug: print(inStr)
-      sDate = time.strftime("%y%m%d,%H%M%S")       #Date String
+   def write(self,inStr):
+      if self.debug: print("FileOut     : %s"%inStr)
+      sDate = time.strftime("%y%m%d,%H%M%S")          #Date String
       self.Outfile = open(self.sFName, 'a')           #Open File
       self.Outfile.write('%s,%s\n'%(sDate,inStr))
+      self.Outfile.close()
+
+   def write_raw(self,inStr):
+      if self.debug: print("FileOut     : %s"%inStr)
+      self.Outfile = open(self.sFName, 'a')           #Open File
+      self.Outfile.write('%s\n'%(inStr))
       self.Outfile.close()
       
 #####################################################################
@@ -39,5 +39,5 @@ if __name__ == "__main__":
    ### this won't be run when imported
    FileIO = FileIO()
    FileIO.Init("Test.py")
-   FileIO.Write("Hello World")
-   FileIO.WriteDate("Hello Worldd")
+   FileIO.write("Hello World")
+   FileIO.write_raw("Hello Worldd")

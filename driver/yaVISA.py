@@ -42,7 +42,7 @@ class RSVisa():
             break
          else:
             self.dLastErr = RdStr
-            print("VISA_ClrErr  : %s ERR:%s"%(self.Model,RdStr))
+            print("VISA_ClrErr : %s-->%s"%(self.Model,RdStr))
          
    def VISA_IDN(self):
       self.dataIDN = self.query("*IDN?").strip()
@@ -84,7 +84,7 @@ class RSVisa():
       rmList = rm.list_resources()     #List VISA Resources
       try:
          self.K2 = rm.open_resource('TCPIP::'+IPAddr+'::inst0::INSTR')   #Create Visa Obj
-         self.K2.timeout = 10000                  #Timeout, millisec
+         self.K2.timeout = 5000                  #Timeout, millisec
          self.VISA_IDN()
          print (self.dataIDN)
          try:
@@ -109,14 +109,14 @@ class RSVisa():
       try:
          read = self.K2.query(cmd).strip()
       except:
-         if prnt==1: print("VISA_ReadError:%s-->%s"%(self.Model,cmd))
+         if prnt==1: print("VISA_RdErr  : %s-->%s"%(self.Model,cmd))
       return read
          
    def write(self,cmd,prnt=1):
       try:
          self.K2.write(cmd)
       except:
-         if prnt==1: print("VISA_WriteError:%s-->%s"%(self.Model,cmd))
+         if prnt==1: print("VISA_WrtErr : %s-->%s"%(self.Model,cmd))
          
 
 if __name__ == "__main__":
