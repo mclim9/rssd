@@ -31,8 +31,17 @@ class VSE(FSW_Common.VSA):
    def Set_Input(self,sType):
       self.write('INP:SEL %s'%sType);              #RF|FILE
 
-   def Set_InputFile(self,sFilename):
-      self.write("*IDN?");
+   def Set_File_InputIQT(self,sFilename):
+      ABW = '10MHz'
+      IQCh = '2'
+      self.write("INST:BLOC:CHAN:FILE:IQT '%s',%s,%s"%(sFilename,ABW,IQCh));
+      
+   def Set_File_InputIQW(self,Fs,sFileName='\\file.iqw'):
+      abw = 0.8*float(Fs)
+      val = "'%s',%d,%d,IQIQ"%(sFileName,abw,Fs)
+      print(val)
+      self.write("INST:BLOC:CHAN:FILE:IQW " + val)
+      
    #####################################################################
    ### VSE Attenuation
    #####################################################################
@@ -46,9 +55,9 @@ class VSE(FSW_Common.VSA):
    #####################################################################
    def Set_SweepCont(self,iON):
       if iON > 0:
-         self.write('INIT:SEQ:MODE CONT');            #Continuous Sweep
+         self.write('INIT:SEQ:MODE CONT');         #Continuous Sweep
       else:
-         self.write('INIT:SEQ:MODE SING');           #Single Sweep
+         self.write('INIT:SEQ:MODE SING');         #Single Sweep
 
    #####################################################################
    ### VSE IQ Analyzer
@@ -69,4 +78,5 @@ if __name__ == "__main__":
    ### this won't be run when imported
    VSE = VSE()
    VSE.VISA_Open("127.0.0.1")       #Prints IDN String
-   print(VSE.Get_Channels())
+   VSE.Set_File_InputIQW(115.3e6,'file.iqw')
+   VSE.VISA_ClrErr()
