@@ -10,13 +10,17 @@
 import visa
 import time
 
-class RSVisa:    
+class RSVisa():    
    ### Rohde & Schwarz VISA Class
    ### Instrument Common functions. 
    def __init__(self):
       self.dataIDN = ""
-      self.dLastErr = " "
+      self.dLastErr = ""
       self.filenm = ""
+      self.Make   = ""
+      self.Model  = ""
+      self.Device = ""
+      self.Version= ""
       pass
       
    def VISA_Clear(self):
@@ -38,10 +42,15 @@ class RSVisa:
             break
          else:
             self.dLastErr = RdStr
-            print("VISA_ClrErr  : %s ERR:%s"%(self.dataIDN,RdStr))
+            print("VISA_ClrErr  : %s ERR:%s"%(self.Model,RdStr))
          
    def VISA_IDN(self):
       self.dataIDN = self.query("*IDN?").strip()
+      IDNStr = self.dataIDN.split(',')
+      self.Make    = IDNStr[0]
+      self.Model   = IDNStr[1]
+      self.Device  = IDNStr[2]
+      self.Version = IDNStr[3]
       return self.dataIDN
             
    def VISA_OPC_Wait(self, InCMD):
@@ -63,7 +72,7 @@ class RSVisa:
             break
       print('VISA_OPC_Wait: %0.2fsec'%(delta))
       
-   def VISA_Open(self, IPAddr, file='none.txt'):
+   def VISA_Open(self, IPAddr, fily='none.txt'):
       #*****************************************************************
       #*** Open VISA Connection
       #*****************************************************************
@@ -79,7 +88,7 @@ class RSVisa:
          self.VISA_IDN()
          print (self.dataIDN)
          try:
-            file.write(self.dataIDN + "\n")
+            fily.write(self.dataIDN + "\n")
          except:
             pass
          self.VISA_ClrErr()
@@ -91,30 +100,29 @@ class RSVisa:
    def VISA_Reset(self):
       self.write("*RST;*CLS;*WAI")
 
+
+   def read_raw(self):
+      return self.K2.read_raw()
+
    def query(self,cmd,prnt=1):
       read =""
       try:
          read = self.K2.query(cmd).strip()
       except:
-         if prnt==1: print("VISA_ReadError:%s-->%s"%(self.dataIDN,cmd))
+         if prnt==1: print("VISA_ReadError:%s-->%s"%(self.Model,cmd))
       return read
          
    def write(self,cmd,prnt=1):
       try:
          self.K2.write(cmd)
       except:
-         if prnt==1: print("VISA_WriteError:%s-->%s"%(self.dataIDN,cmd))
+         if prnt==1: print("VISA_WriteError:%s-->%s"%(self.Model,cmd))
          
 
 if __name__ == "__main__":
    M2 = RSVisa()
    M2.VISA_Open("192.168.1.109")
-   #M2.VISA_Reset()
    M2.VISA_IDN()
-   M2.write(":FREQ:CENT 12GHZ")
-   M2.write("INIT:CONT OFF")
-   print(M2.query("Freq:CENT?"))
-   M2.VISA_OPC_Wait("INIT:IMM")
-   M2.VISA_Close()
-   print(M2.dLastErr)
+   print M2.Device
+
 
