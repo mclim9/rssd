@@ -16,6 +16,9 @@ class VSE(VSE_Common.VSE):
    #####################################################################
    def Set_Init_K96(self):
       self.Set_Channel('OFDMVSA')
+      self.write("SENSe:DEMod:FSYNc DATA")     # Pilot and Data Aided
+      self.write("SENSe:TRACking:TIME ON")     # Timing tracking ON
+      self.write("SENSe:TRACking:LEVel ON")    # Leveltracking ON
       
    def Set_Autolevel(self,sState):
       self.write('CONF:POW:AUTO %s;*WAI'%sState);  #ON|OFF|1|0
@@ -23,9 +26,9 @@ class VSE(VSE_Common.VSE):
    def Set_BurstSearch(self,sState):
       self.write('DEM:FORM:BURS %s;*WAI'%sState);  #ON|OFF|1|0
       
-   def Set_ConfigFile(self,sFile):
-      self.write('MMEM:LOAD:CFGF "%s";*WAI'%sFile);
-   
+   def Set_File_K96Config(self,sFile):
+      self.write("MMEM:LOAD:CFGF '%s';*WAI"%sFile);
+    
    def Set_FilterAdjustable(self,sState):
       self.write('INP:FILT:CHAN:STAT %s'%sState);  #ON|OFF|1|0
 
