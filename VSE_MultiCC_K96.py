@@ -12,18 +12,20 @@
 ##########################################################
 ### User Entry
 ##########################################################
-SMW_IP = '192.168.1.114'
-FSW_IP = '192.168.1.109'
-VSE_IP = '127.0.0.1'                #Get local machine name
-Freq = 29e9                         #Center Frequency
-Pwr = 0                             #SMW RMS Power
+SMW_IP  = '192.168.1.114'
+FSW_IP  = '192.168.1.109'
+VSE_IP  = '127.0.0.1'               #Get local machine name
+Freq    = 29e9                      #Center Frequency
+Pwr     = 0                         #SMW RMS Power
 CC_Size = 100e6                     #Component Carrier Size
-Fs = 115.2e6                        #Sampling Rate
+Fs      = 115.2e6                   #Sampling Rate
+MeasTim = 500e-6
 
 BaseDir = "C:\\Users\\LIM_M\\ownCloud\\ATE\\00_Code\\RS_ATE_Python2\\"
 OutFile = BaseDir + "data\\MultiCC_K96"
 IQFile  = BaseDir + "file.iqw"
 OFDMCfg = BaseDir + "misc\\BBAnalog_1CC_100RB_64QAM_IQ-17symC.xml"
+
 ##########################################################
 ### Code Overhead
 ##########################################################
@@ -48,21 +50,14 @@ VSE.Set_Init_K96()                  #Change Channel
 VSE.Set_DisplayUpdate("ON")         #Display On
 VSE.Set_SweepCont(0)                #Set Single Sweep
 VSE.Set_IQ_SamplingRate(Fs)         #Sampling Rate
-VSE.Set_File_InputIQW(Fs,IQFile)
-VSE.Set_File_K96Config(OFDMCfg)
+VSE.Set_File_InputIQW(Fs,IQFile)    #VSE Input File
+VSE.Set_K96_File_Config(OFDMCfg)    #K96 Demod File
+VSE.Set_K96_BurstSearch("OFF")
+VSE.Set_K96_OFDMSymbols(14)
+
 FSW.Init_IQ()
 FSW.Set_IQ_SamplingRate(Fs)
-
-'''
-for i in range(0,0):
-   #VSE.Set_Group("Group2")         #Create Group
-   #VSE.Set_Channel("OFDMVSA","K96")#Create Channel 
-   VSE.Set_Input("File")            #FILE|RF
-   VSE.Set_InputFile(IQFile)
-   VSE.Set_Freq(Freq+i*CC_Size)
-   VSE.Set_File_K96Config(OFDMCfg)
-   VSE.Set_SweepCont(0)             #Single Sweep
-'''
+FSW.Set_SweepTime(MeasTim)
 
 ##########################################################
 ### Make Measurement
@@ -74,10 +69,9 @@ FSW.Set_Freq(Freq)
 
 ### Set Power
 SMW.Set_RFPwr(Pwr)
-FSW.Set_Autolevel()
-
+FSW.Set_Autolevel_IFOvld()          #Maximize Dynamic Range
 FSW.Get_IQ_Data(IQFile)             #Save IQ Data to file
-VSE.Set_Freq(50e6)
+VSE.Set_Freq(0)
 VSE.Set_InitImm()                   #Update VSE
 EVM_Meas = VSE.Get_EVM_Params()     #Attn; RefLvl; Pwr; EVM
 f.write(EVM_Meas)                 
