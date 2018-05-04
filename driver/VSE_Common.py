@@ -39,7 +39,7 @@ class VSE(FSW_Common.VSA):
    def Set_File_InputIQW(self,Fs,sFileName='\\file.iqw'):
       abw = 0.8*float(Fs)
       val = "'%s',%d,%d,IQIQ"%(sFileName,abw,Fs)
-      print(val)
+      print("VSE_Common  :" + val)
       self.write("INST:BLOC:CHAN:FILE:IQW " + val)
       
    #####################################################################
@@ -78,5 +78,6 @@ if __name__ == "__main__":
    ### this won't be run when imported
    VSE = VSE()
    VSE.VISA_Open("127.0.0.1")       #Prints IDN String
-   VSE.Set_File_InputIQW(115.3e6,'file.iqw')
+   VSE.Set_File_InputIQW(115.3e6,'C:\\Users\\LIM_M\\ownCloud\\ATE\\00_Code\\RS_ATE_Python2\\file.iqw')
+   #VSE.Set_SweepCont(0)
    VSE.VISA_ClrErr()
