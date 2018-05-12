@@ -21,7 +21,7 @@ CC_Size = 100e6                     #Component Carrier Size
 Fs      = 115.2e6                   #Sampling Rate
 MeasTim = 500e-6
 
-BaseDir = "C:\\Users\\LIM_M\\ownCloud\\ATE\\00_Code\\RS_ATE_Python2\\"
+BaseDir = "C:\\Users\\LIM_M\\ownCloud\\ATE\\00_Code\\RSSD\\"
 OutFile = BaseDir + "data\\MultiCC_K96"
 IQFile  = BaseDir + "file.iqw"
 OFDMCfg = BaseDir + "misc\\BBAnalog_1CC_100RB_64QAM_IQ-17symC.xml"
@@ -29,21 +29,10 @@ OFDMCfg = BaseDir + "misc\\BBAnalog_1CC_100RB_64QAM_IQ-17symC.xml"
 ##########################################################
 ### Code Overhead
 ##########################################################
-try:     #If run from __main__.py
-   import os
-   import sys
-   import driver.SMW_Common
-   import driver.FSW_Common
-   import driver.VSE_K96
-   import utils.FileIO
-except:
-   os.chdir("..")
-   sys.path.append(os.curdir)
-   import driver.SMW_Common
-   import driver.FSW_Common
-   import driver.VSE_K96
-   import utils.FileIO
-
+import driver.SMW_Common
+import driver.FSW_Common
+import driver.VSE_K96
+import utils.FileIO
 
 f = utils.FileIO.FileIO()
 DataFile = f.Init(OutFile)

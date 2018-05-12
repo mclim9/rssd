@@ -2,7 +2,9 @@
 Reference: https://github.com/Terrabits/rohdeschwarz/blob/master/setup.py
 
 python setup.py --help-commands
-python setup.py bdist
+python setup.py bdist    #Creates
+python setup.py sdist    #Creates tar.gz
+
 """
 
 import os
