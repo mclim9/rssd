@@ -12,9 +12,9 @@ def readme():
     with open(os.path.join(os.path.dirname(__file__), "README.md")) as f:
         return f.read()
 
-setup(name='RS_ATE_Python2',
+setup(name='rssd',
       version='0.1',
-      description='Example FSW/SMW code',
+      description='Rohde & Schwarz SCPI Driver',
       long_description=readme(),
       classifiers=[
         'Development Status :: 3 - Alpha',      #3:Alpha 4:Beta 5:Production/Stable
