@@ -1,10 +1,14 @@
 """ 
-Reference: https://github.com/Terrabits/rohdeschwarz/blob/master/setup.py
-
-python setup.py --help-commands
-python setup.py bdist    #Creates
-python setup.py sdist    #Creates tar.gz
-
+### Reference: https://github.com/Terrabits/rohdeschwarz/blob/master/setup.py
+### Reference: https://python-packaging.readthedocs.io/en/latest/minimal.html
+### 
+### python setup.py --help-commands
+### python setup.py bdist    #Creates zip
+### python setup.py sdist    #Creates tar.gz
+### pip install .
+###
+### python setup.py register #Reserve name in pypi
+### python setup.py sdist    #Creates tar.gz
 """
 
 import os
@@ -28,11 +32,12 @@ setup(name='rssd',
         'Topic :: System :: Hardware :: Hardware Drivers',
       ],
       keywords='Rohde Schwarz FSW SMW SCPI test equipment VSA VGA',
-      url='https://bitbucket.org/mclim/rs_ate_python2',
+      url='https://bitbucket.org/mclim/RS_SCPI_Driver',
       author='Martin Lim',
       author_email='martin.lim@rsa.rohde-schwarz.com',
       license='R&S Terms and Conditions for Royalty-Free Products',
-      packages=find_packages(exclude=['test']),
+      #packages=find_packages(exclude=['test']),
+      packages=['rssd'],
       install_requires=[
           'pyvisa',
       ],

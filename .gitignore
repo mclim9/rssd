@@ -1,7 +1,8 @@
 # Add any directories, files, or patterns you don't want to be tracked by version control
-dist/
-build/
-rssd.egg-info/
+/dist/
+/build/
+/*.egg-info/
+*.pyirc
 *.iqw
 *.pyc
 *.lnk
