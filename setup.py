@@ -11,7 +11,8 @@
 ### Upload to PyPi
 ### python setup.py register #Reserve name in pypi
 ### python setup.py sdist    #Creates tar.gz
-### python setup.py upload
+### python setup.py upload   #Twine? 
+### twine upload 
 """
 import os
 from setuptools import setup, find_packages
