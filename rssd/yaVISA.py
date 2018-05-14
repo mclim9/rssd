@@ -1,27 +1,29 @@
 #####################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ###
-### Purpose: Yet Another VISA wrapper
+### Purpose: Yet(Just) Another VISA wrapper
 ### Author:  Martin C Lim
 ### Date:    2017.09.01
 ### Requird: python -m pip install pyvisa
-###
+### Descrip: Wrapper for common VISA commands
+###          properties for: Make; Model; Version; IDN; last error
+###          logSCPI --> file for 
 #####################################################################
 import visa
 import time
 
-class RSVisa():    
+class jaVisa():    
    ### Rohde & Schwarz VISA Class
    ### Instrument Common functions. 
    def __init__(self):
       self.dataIDN = ""
-      self.dLastErr = ""
       self.filenm = ""
       self.Make   = ""
       self.Model  = ""
       self.Device = ""
       self.Version= ""
-      pass
+      self.prnt = 1
+      self.Ofile = ""
       
    def VISA_Clear(self):
       self.K2.clear()
@@ -104,29 +106,38 @@ class RSVisa():
    def VISA_Reset(self):
       self.write("*RST;*CLS;*WAI")
 
-
    def read_raw(self):
       return self.K2.read_raw()
 
-   def query(self,cmd,prnt=1):
+   def query(self,cmd):
       read =""
       try:
          read = self.K2.query(cmd).strip()
       except:
-         if prnt==1: print("VISA_RdErr  : %s-->%s"%(self.Model,cmd))
+         if self.prnt: print("VISA_RdErr  : %s-->%s"%(self.Model,cmd))
+      if self.Ofile != "" : self.f.write("%s,%s,%s,"%(self.Model,cmd,read))
       return read
-         
-   def write(self,cmd,prnt=1):
+      
+   def write(self,cmd):
       try:
          self.K2.write(cmd)
       except:
-         if prnt==1: print("VISA_WrtErr : %s-->%s"%(self.Model,cmd))
-         
+         if self.prnt: print("VISA_WrtErr : %s-->%s"%(self.Model,cmd))
+      if self.Ofile != "" : self.f.write("%s,%s"%(self.Model,cmd))
+#      if self.Ofile != "" : self.f.write("asdf")
+      
+
+   def logSCPI(self):
+      import rssd.FileIO
+      self.f = rssd.FileIO.FileIO()
+      self.Ofile = "yaVISA"
+      DataFile = self.f.Init("yaVISA")
 
 if __name__ == "__main__":
-   M2 = RSVisa()
-   M2.VISA_Open("192.168.1.109")
-   M2.VISA_IDN()
-   print M2.Device
-
-
+   RS = jaVisa()
+#   RS.logSCPI()
+   RS.VISA_Open("127.0.0.1")
+   RS.VISA_IDN()
+   RS.write("FREQ:CENT 13MHz")
+   
+   print RS.Device
