@@ -72,6 +72,10 @@ class RSVisa():
             break
       print('VISA_OPC_Wait: %0.2fsec'%(delta))
       
+   def VISA_Error(self):
+      RdStr = self.query("SYST:ERR?").strip().split(',')
+      return RdStr
+      
    def VISA_Open(self, IPAddr, fily='none.txt'):
       #*****************************************************************
       #*** Open VISA Connection
