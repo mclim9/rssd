@@ -255,7 +255,11 @@ class VSA(yaVISA.RSVisa):
       self.write('TRAC:IQ:WBAN:MBW %f; *WAI'%fFreq);
    
    def Get_IQ_RecLength(self):
-      RLEN = self.query('TRAC:IQ:RLEN?')	         #Sweep Points
+      RLEN = self.query('TRAC:IQ:RLEN?')	      #Record(Samples) Length
+      return int(RLEN)
+
+   def Set_IQ_RecLength(self,iLen):
+      RLEN = self.query('TRAC:IQ:RLEN %d'%iLen) #Record(Samples) Length
       return int(RLEN)
       
    def Get_IQ_Data_Ascii(self,MLEN=1e3):
