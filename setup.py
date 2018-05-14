@@ -3,14 +3,16 @@
 ### Reference: https://python-packaging.readthedocs.io/en/latest/minimal.html
 ### 
 ### python setup.py --help-commands
-### python setup.py bdist    #Creates zip
-### python setup.py sdist    #Creates tar.gz
-### pip install .
+### python setup.py sdist    #Creates tar.gz| bdist for zip
+### python setup.py install  #Installs package
+### pip install .            #Installs package
 ###
+##########################################################
+### Upload to PyPi
 ### python setup.py register #Reserve name in pypi
 ### python setup.py sdist    #Creates tar.gz
+### python setup.py upload
 """
-
 import os
 from setuptools import setup, find_packages
 
@@ -36,10 +38,11 @@ setup(name='rssd',
       author='Martin Lim',
       author_email='martin.lim@rsa.rohde-schwarz.com',
       license='R&S Terms and Conditions for Royalty-Free Products',
-      #packages=find_packages(exclude=['test']),
-      packages=['rssd'],
+      packages=find_packages(exclude=['test']),
+      #packages=['rssd'],
       install_requires=[
-          'pyvisa',
+          'pyvisa>=1.9.0',
       ],
+      test_suite = 'test',
       include_package_data=True,
       zip_safe=False)
