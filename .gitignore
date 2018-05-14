@@ -2,6 +2,7 @@
 /dist/
 /build/
 /*.egg-info/
+/misc/
 *.pyirc
 *.iqw
 *.pyc
