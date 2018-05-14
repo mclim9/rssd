@@ -1,13 +1,14 @@
 ##########################################################
 ### Rohde & Schwarz Software Test
 ###
-### Purpose: FSW_driver software test
+### Purpose: self.FSW_driver software test
 ### Author:  mclim
 ### Date:    2018.05.07
 ##########################################################
 ### User Entry
 ##########################################################
 host = '192.168.1.109'           #Get local machine name
+host = '127.0.0.1'               #Get local machine name
 port = 5025                      #Reserve a port for your service.
 
 ##########################################################
@@ -18,30 +19,32 @@ import unittest
 
 class TestGeneral(unittest.TestCase):
    def setUp(self):                 #run before each test
-      FSW = VSA()
-      FSW.VISA_Open(host)
-      FSW.VISA_Reset()
-      FSW.VISA_ClrErr()
-      FSW.dLastErr = ""
+      self.FSW = VSA()
+      try:
+         self.FSW.VISA_Open(host)
+         self.FSW.VISA_Reset()
+         self.FSW.VISA_ClrErr()
+         self.FSW.dLastErr = ""
+      except:
+         self.assertTrue(1)
 
    def test_FSW_Connect(self):
-      self.assertEqual(FSW.Make,"Rohde&Schwarz")
+      self.assertEqual(self.FSW.Make,"Rohde&Schwarz")
 
    def test_FSW_Common(self):      
-      FSW.Set_Freq(1e6)
-      FSW.Set_RefLevel(10)
-      FSW.Set_ResBW(1e6)
-      FSW.Set_VidBW(1e6)
-      FSW.Set_Span(100e6)
-      FSW.Get_Attn()
-      FSW.Get_RefLevel()
-      self.assertEqual(FSW.dLastErr,"")
+      self.FSW.Set_Freq(1e6)
+      self.FSW.Set_RefLevel(10)
+      self.FSW.Set_ResBW(1e6)
+      self.FSW.Set_VidBW(1e6)
+      self.FSW.Set_Span(100e6)
+      self.FSW.Get_Attn()
+      self.FSW.Get_RefLevel()
+      self.assertEqual(self.FSW.dLastErr,"")
 
    def test_FSW_Marker(self):      
-      FSW.Set_Mkr_Peak()
-      FSW.Get_Mkr_Freq()
-      self.assertEqual(FSW.dLastErr,"")
-      
+      self.FSW.Set_Mkr_Peak()
+      self.FSW.Get_Mkr_Freq()
+      self.assertEqual(self.FSW.dLastErr,"")
 
 if __name__ == '__main__':
 	unittest.main()
