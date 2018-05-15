@@ -17,13 +17,14 @@ class jaVisa():
    ### Instrument Common functions. 
    def __init__(self):
       self.dataIDN = ""
-      self.filenm = ""
-      self.Make   = ""
-      self.Model  = ""
-      self.Device = ""
-      self.Version= ""
-      self.prnt = 1
-      self.Ofile = ""
+      self.filenm  = ""
+      self.Make    = ""
+      self.Model   = ""
+      self.Device  = ""
+      self.Version = ""
+      self.prnty   = 1
+      self.Ofile   = ""
+      pass
       
    def VISA_Clear(self):
       self.K2.clear()
@@ -40,11 +41,10 @@ class jaVisa():
          RdStr = self.query("SYST:ERR?").strip()
          #print("VISA_ClrErr  :"+RdStr)
          RdStrSplit = RdStr.split(',')
-         if RdStrSplit[0] == "0":
-            break
-         else:
-            self.dLastErr = RdStr
-            print("VISA_ClrErr : %s-->%s"%(self.Model,RdStr))
+         if RdStr == "": break               #No readstring
+         if RdStrSplit[0] == "0": break      #Read 0 error
+         self.dLastErr = RdStr
+         print("VISA_ClrErr : %s-->%s"%(self.Model,RdStr))
          
    def VISA_IDN(self):
       self.dataIDN = self.query("*IDN?").strip()
@@ -114,7 +114,7 @@ class jaVisa():
       try:
          read = self.K2.query(cmd).strip()
       except:
-         if self.prnt: print("VISA_RdErr  : %s-->%s"%(self.Model,cmd))
+         if self.prnty: print("VISA_RdErr  : %s-->%s"%(self.Model,cmd))
       if self.Ofile != "" : self.f.write("%s,%s,%s,"%(self.Model,cmd,read))
       return read
       
@@ -122,10 +122,8 @@ class jaVisa():
       try:
          self.K2.write(cmd)
       except:
-         if self.prnt: print("VISA_WrtErr : %s-->%s"%(self.Model,cmd))
-      if self.Ofile != "" : self.f.write("%s,%s"%(self.Model,cmd))
-#      if self.Ofile != "" : self.f.write("asdf")
-      
+         if self.prnty: print("VISA_WrtErr : %s-->%s"%(self.Model,cmd))
+      if self.Ofile != "" : self.f.write("%s,%s"%(self.Model,cmd))      
 
    def logSCPI(self):
       import rssd.FileIO
@@ -140,4 +138,4 @@ if __name__ == "__main__":
    RS.VISA_IDN()
    RS.write("FREQ:CENT 13MHz")
    
-   print RS.Device
+   print(RS.Device)
