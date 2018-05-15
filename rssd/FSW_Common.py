@@ -14,7 +14,7 @@ class VSA(yaVISA.jaVisa, object):
          super().__init__()
       except:
          super(VSA, self).__init__()
-
+      #self.Model = "FSW"
       
    #####################################################################
    ### FSW Display
@@ -141,10 +141,10 @@ class VSA(yaVISA.jaVisa, object):
          ifovl = self.Get_Ovld_Stat()
        
       """ Final check for IF Overload """
-      print ("Final : Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
       if ifovl != 0:
          reflev = reflev + 1
          self.Set_RefLevel(reflev)
+      print ("Final : Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
 
    #####################################################################
    ### FSW Frequency
@@ -328,7 +328,7 @@ class VSA(yaVISA.jaVisa, object):
       
    def Get_EVM(self):
       #EVM = self.query('FETC:SUMM:EVM:ALL:AVER?')
-      EVM = self.query('FETC:SUMM:EVM?;*WAI',0)
+      EVM = self.query('FETC:SUMM:EVM?;*WAI')
       try:
          EVM = float(EVM.strip())
       except:
@@ -387,7 +387,7 @@ class VSA(yaVISA.jaVisa, object):
 if __name__ == "__main__":
    ### this won't be run when imported
    FSW = VSA()
-   FSW.VISA_Open("127.0.0.1  ")
+   FSW.VISA_Open("192.168.1.109")
    #FSW.Set_Autolevel_IFOvld()
    FSW.VISA_ClrErr()
    

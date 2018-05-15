@@ -45,17 +45,22 @@ FSW = rssd.FSW_Common.VSA()         #Create FSW Object
 FSW.VISA_Open(FSW_IP,DataFile)      #Connect to FSW
 VSE = rssd.VSE_K96.VSE()            #Create VSE Object
 VSE.VISA_Open(VSE_IP,DataFile)      #Connect to VSE
-
+if 0:
+   SMW.logSCPI()
+   FSW.logSCPI()
+   VSE.logSCPI()
+   
 ##########################################################
 ### Setup Instruments
 ##########################################################
+VSE.VISA_Reset()
 VSE.Set_Init_K96()                  #Change Channel
 VSE.Set_DisplayUpdate("ON")         #Display On
-VSE.Set_SweepCont(0)                #Set Single Sweep
+VSE.Set_SweepCont(0)                #Continuous Sweep Off
 VSE.Set_IQ_SamplingRate(Fs)         #Sampling Rate
 VSE.Set_File_InputIQW(Fs,IQFile)    #VSE Input File
 VSE.Set_K96_File_Config(OFDMCfg)    #K96 Demod File
-VSE.Set_K96_BurstSearch("OFF")
+VSE.Set_K96_BurstSearch("OFF")      #Burst Search off
 VSE.Set_K96_OFDMSymbols(14)
 
 FSW.Init_IQ()

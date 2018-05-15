@@ -12,7 +12,7 @@ class VSE(VSE_Common.VSE,object):
       try:
          super().__init__()
       except:
-         super(VSA, self).__init__()
+         super(VSE, self).__init__()
       
    #####################################################################
    ### VSE General Settings

@@ -8,9 +8,13 @@
 #####################################################################
 import yaVISA
 
-class VSG(yaVISA.RSVisa):
+class VSG(yaVISA.jaVisa,object):
    def __init__(self):
-      pass
+      try:
+         super().__init__()            #Python3
+      except:
+         super(VSG,self).__init__()    #Python2
+      self.Model = "SMW"
       
    #####################################################################
    ### SMW Arb

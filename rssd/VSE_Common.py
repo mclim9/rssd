@@ -15,6 +15,7 @@ class VSE(FSW_Common.VSA,object):
          super().__init__()            #Python3
       except:
          super(VSE,self).__init__()    #Python2
+      self.Model = "VSE"
       
    #####################################################################
    ### VSE Display
