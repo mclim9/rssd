@@ -7,10 +7,13 @@
 ### Requird: python -m pip install pyvisa
 import VSE_Common
 
-class VSE(VSE_Common.VSE):
+class VSE(VSE_Common.VSE,object):
    def __init__(self):
-      pass
-      
+      try:
+         super().__init__()            #Python3
+      except:
+         super(VSE,self).__init__()    #Python2
+
    #####################################################################
    ### VSE ADemod Settings
    #####################################################################

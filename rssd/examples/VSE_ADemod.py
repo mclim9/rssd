@@ -7,7 +7,6 @@
 ##########################################################
 ### User Entry
 ##########################################################
-host = '192.168.1.109'           #Get local machine name
 host = '127.0.0.1'               #Get local machine name
 port = 5025                      #Reserve a port for your service.
 
@@ -17,7 +16,8 @@ port = 5025                      #Reserve a port for your service.
 import rssd.VSE_ADemod
 
 VSE = rssd.VSE_ADemod.VSE()
-VSE.VISA_Open(host)
+VSE.VISA_Open(host) 
+VSE.logSCPI()
 VSE.Set_DisplayUpdate("ON")
 VSE.Set_Channel("ADEM")
 VSE.Set_Adem_dbw(500e6)   

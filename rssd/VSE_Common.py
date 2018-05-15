@@ -9,9 +9,12 @@
 #####################################################################
 import FSW_Common
 
-class VSE(FSW_Common.VSA):
+class VSE(FSW_Common.VSA,object):
    def __init__(self):
-      pass
+      try:
+         super().__init__()            #Python3
+      except:
+         super(VSE,self).__init__()    #Python2
       
    #####################################################################
    ### VSE Display
@@ -78,6 +81,6 @@ if __name__ == "__main__":
    ### this won't be run when imported
    VSE = VSE()
    VSE.VISA_Open("127.0.0.1")       #Prints IDN String
-   VSE.Set_File_InputIQW(115.3e6,'C:\\Users\\LIM_M\\ownCloud\\ATE\\00_Code\\RS_ATE_Python2\\file.iqw')
-   #VSE.Set_SweepCont(0)
+   #VSE.Set_File_InputIQW(115.3e6,'C:\\Users\\LIM_M\\ownCloud\\ATE\\00_Code\\RS_ATE_Python2\\file.iqw')
+   VSE.Set_SweepCont(0)
    VSE.VISA_ClrErr()

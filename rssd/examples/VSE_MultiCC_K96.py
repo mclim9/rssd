@@ -12,6 +12,9 @@
 ##########################################################
 ### User Entry
 ##########################################################
+import os
+BaseDir = os.path.dirname(os.path.realpath(__file__))
+
 SMW_IP  = '192.168.1.114'
 FSW_IP  = '192.168.1.109'
 VSE_IP  = '127.0.0.1'               #Get local machine name
@@ -21,26 +24,26 @@ CC_Size = 100e6                     #Component Carrier Size
 Fs      = 115.2e6                   #Sampling Rate
 MeasTim = 500e-6
 
-BaseDir = "C:\\Users\\LIM_M\\ownCloud\\ATE\\00_Code\\RSSD\\"
-OutFile = BaseDir + "data\\MultiCC_K96"
-IQFile  = BaseDir + "file.iqw"
-OFDMCfg = BaseDir + "misc\\BBAnalog_1CC_100RB_64QAM_IQ-17symC.xml"
+#BaseDir = "C:\\Users\\LIM_M\\ownCloud\\ATE\\00_Code\\RSSD\\"
+OutFile = BaseDir + "\\data\\MultiCC_K96"
+IQFile  = BaseDir + "\\file.iqw"
+OFDMCfg = BaseDir + "\\misc\\BBAnalog_1CC_100RB_64QAM_IQ-17symC.xml"
 
 ##########################################################
 ### Code Overhead
 ##########################################################
-import driver.SMW_Common
-import driver.FSW_Common
-import driver.VSE_K96
-import utils.FileIO
+import rssd.SMW_Common
+import rssd.FSW_Common
+import rssd.VSE_K96
+import rssd.FileIO
 
-f = utils.FileIO.FileIO()
+f = rssd.FileIO.FileIO()
 DataFile = f.Init(OutFile)
-SMW = driver.SMW_Common.VSG()       #Create SMW Object
+SMW = rssd.SMW_Common.VSG()         #Create SMW Object
 SMW.VISA_Open(SMW_IP,DataFile)      #Connect to SMW
-FSW = driver.FSW_Common.VSA()       #Create FSW Object
+FSW = rssd.FSW_Common.VSA()         #Create FSW Object
 FSW.VISA_Open(FSW_IP,DataFile)      #Connect to FSW
-VSE = driver.VSE_K96.VSE()          #Create VSE Object
+VSE = rssd.VSE_K96.VSE()            #Create VSE Object
 VSE.VISA_Open(VSE_IP,DataFile)      #Connect to VSE
 
 ##########################################################
@@ -83,4 +86,3 @@ VSE.VISA_ClrErr()                   #Clear Errors
 SMW.VISA_Close()
 FSW.VISA_Close()
 VSE.VISA_Close()
-

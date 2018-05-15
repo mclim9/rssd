@@ -8,9 +8,13 @@
 #####################################################################
 import yaVISA
 
-class VSA(yaVISA.RSVisa):
+class VSA(yaVISA.jaVisa, object):
    def __init__(self):
-      pass
+      try:
+         super().__init__()
+      except:
+         super(VSA, self).__init__()
+
       
    #####################################################################
    ### FSW Display
@@ -383,8 +387,8 @@ class VSA(yaVISA.RSVisa):
 if __name__ == "__main__":
    ### this won't be run when imported
    FSW = VSA()
-   FSW.VISA_Open("192.168.1.109")
-   FSW.Set_Autolevel_IFOvld()
+   FSW.VISA_Open("127.0.0.1  ")
+   #FSW.Set_Autolevel_IFOvld()
    FSW.VISA_ClrErr()
    
 

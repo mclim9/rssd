@@ -7,9 +7,12 @@
 import VSE_Common
 import time         #EVM Wait
 
-class VSE(VSE_Common.VSE):
+class VSE(VSE_Common.VSE,object):
    def __init__(self):
-      pass
+      try:
+         super().__init__()
+      except:
+         super(VSA, self).__init__()
       
    #####################################################################
    ### VSE General Settings
