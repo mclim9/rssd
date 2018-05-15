@@ -39,32 +39,35 @@ class jaVisa():
    def VISA_ClrErr(self):
       while True:
          RdStr = self.query("SYST:ERR?").strip()
-         #print("VISA_ClrErr  :"+RdStr)
          RdStrSplit = RdStr.split(',')
-         if RdStr == "": break               #No readstring
+         if RdStr == "<notRead>": break      #No readstring
          if RdStrSplit[0] == "0": break      #Read 0 error
          self.dLastErr = RdStr
          print("VISA_ClrErr : %s-->%s"%(self.Model,RdStr))
          
    def VISA_IDN(self):
+      self.dataIDN = "Temp"                  #Temp for self.query
       self.dataIDN = self.query("*IDN?").strip()
-      IDNStr = self.dataIDN.split(',')
-      self.Make    = IDNStr[0]
-      self.Model   = IDNStr[1]
-      self.Device  = IDNStr[2]
-      self.Version = IDNStr[3]
+      if self.dataIDN != "<notRead>":        #Data Returned?
+         IDNStr = self.dataIDN.split(',')
+         self.Make    = IDNStr[0]
+         self.Model   = IDNStr[1]
+         self.Device  = IDNStr[2]
+         self.Version = IDNStr[3]
+      else:
+         self.dataIDN = ""                   #Reset if not read 
       return self.dataIDN
             
    def VISA_OPC_Wait(self, InCMD):
       start_time = time.time()
-      self.write("*ESE 1")		            #Event Status Enable
-      self.write("*SRE 32")		         #ServiceReqEnable-Bit5:Std Event
-      self.write(InCMD + ";*OPC")	      #Initiate Read.  *OPC will trigger ESR
+      self.write("*ESE 1")		               #Event Status Enable
+      self.write("*SRE 32")		            #ServiceReqEnable-Bit5:Std Event
+      self.write(InCMD + ";*OPC")	         #Initiate Read.  *OPC will trigger ESR
       #print ('   OPC Wait: ' +InCMD)
       read = "0"
       while (int(read) & 1) != 1:            #Loop until done
          try:
-            read = self.query("*ESR?").strip()	   #Poll EventStatReg-Bit0:Op Complete		
+            read = self.query("*ESR?").strip()#Poll EventStatReg-Bit0:Op Complete		
          except:
             print("VISA_OPC_Wait:*ESR? Error")
          time.sleep(0.5)
@@ -99,7 +102,7 @@ class jaVisa():
             pass
          self.VISA_ClrErr()
       except:
-         print ('VISA: Can not open:' + IPAddr)
+         print ('VISA_OpenErr: ' + IPAddr)
          self.K2 = 'NoVISA'
       return self.K2
 
@@ -110,9 +113,10 @@ class jaVisa():
       return self.K2.read_raw()
 
    def query(self,cmd):
-      read =""
+      read ="<notRead>"
       try:
-         read = self.K2.query(cmd).strip()
+         if self.dataIDN != "": 
+            read = self.K2.query(cmd).strip()   #Write if connected
       except:
          if self.prnty: print("VISA_RdErr  : %s-->%s"%(self.Model,cmd))
       if self.Ofile != "" : self.f.write("%s,%s,%s,"%(self.Model,cmd,read))
@@ -120,7 +124,7 @@ class jaVisa():
       
    def write(self,cmd):
       try:
-         self.K2.write(cmd)
+         if self.dataIDN != "": self.K2.write(cmd) #Write if connected
       except:
          if self.prnty: print("VISA_WrtErr : %s-->%s"%(self.Model,cmd))
       if self.Ofile != "" : self.f.write("%s,%s"%(self.Model,cmd))      
@@ -133,8 +137,9 @@ class jaVisa():
 
 if __name__ == "__main__":
    RS = jaVisa()
-#   RS.logSCPI()
-   RS.VISA_Open("127.0.0.1")
+   #RS.logSCPI()
+   #RS.VISA_Open("127.0.0.1")
+   RS.VISA_Open("192.168.1.109")
    RS.VISA_IDN()
    RS.write("FREQ:CENT 13MHz")
    
