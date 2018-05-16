@@ -30,8 +30,8 @@ class VSA(yaVISA.jaVisa, object):
       if ("'" + sName + "'") in ChList:
          pass
       else:
-         self.write(":INST:CRE %s,'%s'"%(Chan,sName))
-      self.write(":INST:SEL '%s'"%sName)
+         self.query(":INST:CRE %s,'%s';*OPC?"%(Chan,sName))
+      self.query(":INST:SEL '%s';*OPC?"%sName)
       
    def Get_Channels(self):
       ChList = self.query('INST:LIST?').split(',')
@@ -56,8 +56,11 @@ class VSA(yaVISA.jaVisa, object):
    ### FSW Attenuation
    #####################################################################
    def Get_AttnMech(self):
-      MAttn   = self.query('INP:ATT?').strip()
-      return float(MAttn)
+      try:
+         out = float(self.query('INP:ATT?').strip())
+      except:
+         out = -9999
+      return out 
 
    def Set_AttnMech(self,fMAttn):
       self.write('INP:EATT:STAT OFF');
@@ -263,16 +266,15 @@ class VSA(yaVISA.jaVisa, object):
       return int(RLEN)
 
    def Set_IQ_RecLength(self,iLen):
-      RLEN = self.query('TRAC:IQ:RLEN %d'%iLen) #Record(Samples) Length
-      return int(RLEN)
+      self.query('TRAC:IQ:RLEN %d'%iLen)        #Record(Samples) Length
       
    def Get_IQ_Data_Ascii(self,MLEN=1e3):
       CSVd = ""
       self.write('TRAC:DATA ASCII');      
       self.write('TRAC:IQ:DATA:FORM IQP');
-      RLEN = self.Get_IQ_RecLength()               #Sweep Points
+      RLEN = self.Get_IQ_RecLength()            #Sweep Points
       numLoops  = int(round(RLEN/MLEN))+1
-      for i in xrange(numLoops):                   #Read data in chunks
+      for i in xrange(numLoops):                #Read data in chunks
          
          SCPI = "TRAC:IQ:DATA:MEM? %d,%d"%((i * MLEN),MLEN)  #TRAC:IQ:DATA:MEM? <MemStrt>,<MLEN>
          CSVd = CSVd + self.query(SCPI)            #IQ Dump
@@ -280,60 +282,58 @@ class VSA(yaVISA.jaVisa, object):
       return CSVd
 
    def Get_IQ_Data(self,sFilename="file.iqw"):
-    ####################################################################
-    """ Get the IQ data and store to IQW file to process in VSE """
-    ####################################################################
-    self.write("FORM REAL,32")
-    self.write("TRAC:IQ:DATA:FORM IQP")
-    self.write("TRAC:IQ:DATA?")
-    data = self.read_raw()
+      ####################################################################
+      """ Get the IQ data and store to IQW file to process in VSE """
+      ####################################################################
+      self.write("FORM REAL,32")
+      self.write("TRAC:IQ:DATA:FORM IQP")
+      self.write("TRAC:IQ:DATA?")
+      data = self.read_raw()
 
-    samples = self.Get_IQ_RecLength()
-    
-    # Read num of digits to get for No of floats
-    if int(samples) < 125000000:
+      samples = self.Get_IQ_RecLength()
+
+      # Read num of digits to get for No of floats
+      if int(samples) < 125000000:
         digits = data[1]
-    else:
+      else:
         digits = "10"
-    
-    """
-    # Don't need this but including for completeness
-    # Reads total number of bytes that holds IQ data
-    
-    i = 2
-    totalbytes = ""
-    while i <= int(digits)+1:
+
+      """
+      # Don't need this but including for completeness
+      # Reads total number of bytes that holds IQ data
+
+      i = 2
+      totalbytes = ""
+      while i <= int(digits)+1:
         totalbytes = totalbytes + data [i]
         i += 1
-    """
+      """
         
-    iqfile = open (sFilename, "wb")
-    iqfile.write(data[2 + int(digits):])
-    iqfile.close()
+      iqfile = open (sFilename, "wb")
+      iqfile.write(data[2 + int(digits):])
+      iqfile.close()
       
    #####################################################################
    ### FSW Common Query
    #####################################################################
    def Get_ACLR(self):
       ACLR = self.query(':CALC:MARK:FUNC:POW:RES? MCAC').split(',')
-      return float(EVM)
+      return ACLR
 
    def Get_ChPwr(self):
-      Power = self.query('FETC:SUMM:POW?')
       try:
-         out = float(Power)
+         out = float(self.query('FETC:SUMM:POW?'))
       except:
          out = -9999
       return out 
       
    def Get_EVM(self):
       #EVM = self.query('FETC:SUMM:EVM:ALL:AVER?')
-      EVM = self.query('FETC:SUMM:EVM?;*WAI')
       try:
-         EVM = float(EVM.strip())
+         out = float(self.query('FETC:SUMM:EVM?;*WAI').strip())
       except:
-         EVM = -9999
-      return EVM
+         out = -9999
+      return out
 
    def Get_EVM_Params(self):
       MAttn   = self.Get_AttnMech()
@@ -390,6 +390,3 @@ if __name__ == "__main__":
    FSW.VISA_Open("192.168.1.109")
    #FSW.Set_Autolevel_IFOvld()
    FSW.VISA_ClrErr()
-   
-
-
