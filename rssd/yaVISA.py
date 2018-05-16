@@ -11,6 +11,7 @@
 #####################################################################
 import visa
 import time
+import rssd.FileIO
 
 class jaVisa():    
    ### Rohde & Schwarz VISA Class
@@ -81,7 +82,7 @@ class jaVisa():
       RdStr = self.query("SYST:ERR?").strip().split(',')
       return RdStr
       
-   def VISA_Open(self, IPAddr, fily='none.txt'):
+   def VISA_Open(self, IPAddr, fily=''):
       #*****************************************************************
       #*** Open VISA Connection
       #*****************************************************************
@@ -97,8 +98,14 @@ class jaVisa():
          self.VISA_IDN()
          print (self.dataIDN)
          try:
-            fily.write(self.dataIDN + "\n")
+            if fily != "":
+               f=open(fily,'a')
+               f.write(self.dataIDN + "\n")
+               f.close()
          except:
+            #***********************************************************
+            #*** VISA Failed/Try Socket
+            #***********************************************************
             pass
          self.VISA_ClrErr()
       except:
@@ -130,7 +137,6 @@ class jaVisa():
       if self.Ofile != "" : self.f.write("%s,%s"%(self.Model,cmd))      
 
    def logSCPI(self):
-      import rssd.FileIO
       self.f = rssd.FileIO.FileIO()
       self.Ofile = "yaVISA"
       DataFile = self.f.Init("yaVISA")
