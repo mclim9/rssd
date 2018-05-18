@@ -22,7 +22,7 @@ def readme():
         return f.read()
 
 setup(name='rssd',
-      version='0.1',
+      version='0.1.1',
       description='Rohde & Schwarz SCPI Driver',
       long_description=readme(),
       classifiers=[

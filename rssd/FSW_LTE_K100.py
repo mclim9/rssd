@@ -7,9 +7,12 @@
 ### Requird: python -m pip install pyvisa
 import FSW_Common
 
-class VSA(FSW_Common.VSA):
+class VSA(FSW_Common.VSA,object):
    def __init__(self):
-      pass
+      try:
+         super().__init__()
+      except:
+         super(VSA, self).__init__()
       
    #####################################################################
    ### FSW LTE Settings
@@ -62,4 +65,4 @@ if __name__ == "__main__":
    FSW = VSA()
    FSW.VISA_Open("192.168.1.109")
    FSW.VISA_IDN()
-   print FSW.Get_MkrXY()
+   print(FSW.Get_MkrXY())
