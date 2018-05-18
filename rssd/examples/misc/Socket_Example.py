@@ -7,7 +7,7 @@
 ##########################################################
 ### User Entry
 ##########################################################
-host = '127.0.0.1'               #Get local machine name
+host = '192.168.1.109'           #Get local machine name
 port = 5025                      #Reserve a port for your service.
 
 ##########################################################
@@ -39,9 +39,5 @@ def FileWrite(sOutput):
 ### Main Code
 ##########################################################
 sInit()    
-sWrite(":INST:SEL 'OFDM_CC1'")
-print(sQuery(":FETC:SUMM:EVM?"))
-sWrite(":INST:SEL 'OFDM_CC2'")
-print sQuery(":FETC:SUMM:EVM?")
-print sQuery(":SYST:ERR?")
-s.close()
+print(sQuery("*IDN?"))
+sWrite("MMEM:LOAD:DEM 'C:\R_S\Instr\Debug\Allocation_V3.10_17.11.17.198\TwoBWP_AllMods.allocation'")

@@ -17,7 +17,7 @@ import rssd.VSE_ADemod
 
 VSE = rssd.VSE_ADemod.VSE()
 VSE.VISA_Open(host) 
-VSE.logSCPI()
+#VSE.logSCPI()
 VSE.Set_DisplayUpdate("ON")
 VSE.Set_Channel("ADEM")
 VSE.Set_Adem_dbw(500e6)   

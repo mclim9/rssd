@@ -92,7 +92,7 @@ class VSE(VSE_Common.VSE,object):
          EVM_Curr = self.Get_EVM();
          if debug==1: print ("      Ref:%.2f MAttn:%.0f EVM:%.2f"%(RefLvl, MechAttn, EVM_Curr))
          if EVM_Curr =='NAN':
-            print "EVM NAN"
+            print("EVM NAN")
             break
 
          Diff = EVM_Prev - EVM_Curr;      #Positive = improvedEVM
