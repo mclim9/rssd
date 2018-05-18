@@ -77,7 +77,7 @@ class VSE(VSE_Common.VSE,object):
       EVM_Curr = self.Get_EVM();          #Set initial RefLvl & Attn
       RefLvl = self.Get_RefLevel()
       MAttn  = self.Get_AttnMech()
-      if debug==1: print ("      Ref:%.2f MAttn:%.0f EVM:%.2f"%(RefLvl, MAttn, EVM_Curr))
+      if debug==1: print("      Ref:%.2f MAttn:%.0f EVM:%.2f"%(RefLvl, MAttn, EVM_Curr))
       
       #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       #%%%% Attn Sweep
@@ -90,7 +90,7 @@ class VSE(VSE_Common.VSE,object):
          MechAttn = MAttn - i;
          self.Set_AttnMech(MAttn - i)
          EVM_Curr = self.Get_EVM();
-         if debug==1: print ("      Ref:%.2f MAttn:%.0f EVM:%.2f"%(RefLvl, MechAttn, EVM_Curr))
+         if debug==1: print("      Ref:%.2f MAttn:%.0f EVM:%.2f"%(RefLvl, MechAttn, EVM_Curr))
          if EVM_Curr =='NAN':
             print("EVM NAN")
             break
@@ -118,9 +118,9 @@ class VSE(VSE_Common.VSE,object):
       for x in range(0):
          Set_RefLevel(RefLvl - i)
          EVM_Curr = self.Get_EVM();
-         if debug==1: print ("      Ref:%.2f MAttn:%.0f EVM:%.2f"%(RefLvl-i, MechAttn, EVM_Curr))
+         if debug==1: print("      Ref:%.2f MAttn:%.0f EVM:%.2f"%(RefLvl-i, MechAttn, EVM_Curr))
          if EVM_Curr =='NAN':
-            print "EVM NAN"
+            print("EVM NAN")
             break
 
          Diff = EVM_Prev - EVM_Curr;      #Positive = improvedEVM
