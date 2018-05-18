@@ -17,11 +17,12 @@ class VSE(VSE_Common.VSE,object):
    #####################################################################
    ### VSE General Settings
    #####################################################################
-   def Set_Init_K96(self):
+   def Init_K96(self):
       self.Set_Channel('OFDMVSA')
-      self.write("SENS:DEM:FSYN DATA")         # Pilot and Data Aided
-      self.write("SENS:TRAC:TIME ON")         # Timing tracking ON
-      self.write("SENS:TRAC:LEV ON")        # Leveltracking ON
+      time.sleep(10)
+      self.write("SENS:DEM:FSYN DATA")             # Pilot and Data Aided
+      self.write("SENS:TRAC:TIME ON")              # Timing tracking ON
+      self.write("SENS:TRAC:LEV ON")               # Leveltracking ON
 
    def Set_K96_BurstSearch(self,sState):
       self.write('DEM:FORM:BURS %s;*WAI'%sState);  #ON|OFF|1|0
@@ -143,6 +144,8 @@ if __name__ == "__main__":
    VSE = VSE()
    VSE.VISA_Open("127.0.0.1")
    VSE.Set_DisplayUpdate('ON')
-   VSE.Get_EVM_Params()
-   VSE.Set_InitImm()
- 
+   #VSE.VISA_Reset()
+   VSE.Init_K96()
+   #VSE.Get_EVM_Params()
+   #VSE.Set_InitImm()
+   VSE.VISA_ClrErr()

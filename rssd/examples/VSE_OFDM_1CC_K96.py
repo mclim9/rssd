@@ -1,7 +1,7 @@
 ##########################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ###
-### Title  : Multiple CC K96 Example
+### Title  : Single OFDM CC K96 Example
 ### Author : mclim
 ### Date   : 2018.05.01
 ### Steps  : 800MHz FSW IQ Capture
@@ -14,37 +14,35 @@
 ##########################################################
 import os
 BaseDir = os.path.dirname(os.path.realpath(__file__))
+OutFile = BaseDir + "\\data\\" + __file__
+IQFile  = BaseDir + "\\data\\" + __file__ + ".iqw"
+OFDMCfg = BaseDir + "\\misc\\BBAnalog_1CC_100RB_64QAM_IQ-17symC.xml"
 
 SMW_IP  = '192.168.1.114'
 FSW_IP  = '192.168.1.109'
 VSE_IP  = '127.0.0.1'               #Get local machine name
-FreqArry= [2e9]                    #Center Frequency
-PwrArry = [0,2]                       #SMW RMS Power
+FreqArry= [10e9]                    #Center Frequency
+PwrArry = [0,2]                     #SMW RMS Power
 CC_Size = 100e6                     #Component Carrier Size
 Fs      = 115.2e6                   #Sampling Rate
 MeasTim = 500e-6
 
-#BaseDir = "C:\\Users\\LIM_M\\ownCloud\\ATE\\00_Code\\RSSD\\"
-OutFile = BaseDir + "\\data\\MultiCC_K96"
-IQFile  = BaseDir + "\\data\\file.iqw"
-OFDMCfg = BaseDir + "\\misc\\BBAnalog_1CC_100RB_64QAM_IQ-17symC.xml"
-
 ##########################################################
 ### Code Overhead
 ##########################################################
-import rssd.SMW_Common
-import rssd.FSW_Common
-import rssd.VSE_K96
+from rssd.SMW_Common import VSG
+from rssd.FSW_Common import VSA
+from rssd.VSE_K96    import VSE
 import rssd.FileIO
 import time
 
 f = rssd.FileIO.FileIO()
 DataFile = f.Init(OutFile)
-SMW = rssd.SMW_Common.VSG()         #Create SMW Object
+SMW = VSG()                         #Create SMW Object
 SMW.VISA_Open(SMW_IP,f.sFName)      #Connect to SMW
-FSW = rssd.FSW_Common.VSA()         #Create FSW Object
+FSW = VSA()                         #Create FSW Object
 FSW.VISA_Open(FSW_IP,f.sFName)      #Connect to FSW
-VSE = rssd.VSE_K96.VSE()            #Create VSE Object
+VSE = VSE()                         #Create VSE Object
 VSE.VISA_Open(VSE_IP,f.sFName)      #Connect to VSE
 if 0:
    SMW.logSCPI()
@@ -55,7 +53,7 @@ if 0:
 ### Setup Instruments
 ##########################################################
 VSE.VISA_Reset()
-time.sleep(6)
+#time.sleep(6)
 VSE.Init_K96()                      #Change Channel
 VSE.Set_DisplayUpdate("ON")         #Display On
 VSE.Set_SweepCont(0)                #Continuous Sweep Off
@@ -66,7 +64,7 @@ VSE.Set_K96_BurstSearch("OFF")      #Burst Search off
 VSE.Set_K96_OFDMSymbols(14)
 
 FSW.VISA_Reset()
-FSW.Init_IQ()
+FSW.Init_IQ()                       #FSW IQ Channel
 FSW.Set_IQ_SamplingRate(Fs)
 FSW.Set_SweepTime(MeasTim)
 
@@ -79,13 +77,13 @@ SMW.Set_RFState("ON")
 for Freq in FreqArry:
    ### Set Frequency
    SMW.Set_Freq(Freq)
-   FSW.Set_Freq(Freq)
+   FSW.Set_Freq(Freq+50e6)
    VSE.Set_Freq(0)
 
    for Pwr in PwrArry:
       ### Set Power
       SMW.Set_RFPwr(Pwr)
-      FSW.Set_Autolevel_IFOvld()          #Maximize Dynamic Range
+      #FSW.Set_Autolevel_IFOvld()          #Maximize Dynamic Range
 
       ### Measure EVM
       FSW.Get_IQ_Data(IQFile)             #Save IQ Data to file

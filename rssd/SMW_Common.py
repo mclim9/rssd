@@ -6,9 +6,9 @@
 ### Date   : 2018.02.01
 ### Requird: python -m pip install pyvisa
 #####################################################################
-import yaVISA
+from yaVISA import jaVisa
 
-class VSG(yaVISA.jaVisa,object):
+class VSG(jaVisa,object):
    def __init__(self):
       try:
          super().__init__()            #Python3
@@ -87,5 +87,5 @@ class VSG(yaVISA.jaVisa,object):
 if __name__ == "__main__":
    # this won't be run when imported
    SMW = VSG()
-   SMW.VISA_Open("192.168.1.114")
-   SMW.Set_Freq(29e9)
+   SMW.VISA_Open("192.168.1.114","Test.csv")
+   SMW.Set_Freq(6e9)

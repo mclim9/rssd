@@ -1,5 +1,5 @@
 #Rohde&Schwarz Python SCPI Driver & Examples
----
+=======================================================================
 Example automation code for general purpose R&S equipment.  Project   
 also aims to provide a functional python driver for use in other projects.
  
@@ -27,7 +27,7 @@ also aims to provide a functional python driver for use in other projects.
     * Possible compatibility: FSW
 
 ##Getting Started
----
+=======================================================================
 ### Prerequisites
 ```python
     python -m pip install pyvisa
@@ -42,13 +42,13 @@ also aims to provide a functional python driver for use in other projects.
 * Change IP address to match instrument(s)
 * Run
 * Examples Include:
-    * Socket_Example.py    :Socket connection w/o VISA
-    * VSE_ADemod.py        :VSE/FSW Analog FM Demod
-    * VSE_Debug.py         :VSE Raw SCPI
-    * VSE_MultiCC_K96.py   :VSE Multi component carrier EVM w/ K96
+    * SMW_LoadArb.py       |Load 
+    * VSE_ADemod.py        |VSE/FSW Analog FM Demod
+    * VSE_Debug.py         |VSE Raw SCPI
+    * VSE_MultiCC_K96.py   |VSE Multi component carrier EVM w/ K96
 
 ## Versioning
----
+=======================================================================
 We use [Bitbucket](http://www.bitbucket.com/) for versioning.
 
 ### Authors
