@@ -1,5 +1,5 @@
 #Rohde&Schwarz Python SCPI Driver & Examples
-=======================================================================
+=====================================================================
 Example automation code for general purpose R&S equipment.  Project   
 also aims to provide a functional python driver for use in other projects.
  
@@ -27,39 +27,42 @@ also aims to provide a functional python driver for use in other projects.
     * Possible compatibility: FSW
 
 ##Getting Started
-=======================================================================
-### Prerequisites
+=====================================================================
+### Installing
 ```python
-    python -m pip install pyvisa
+    python -m pip install rssd
 ```
 
-### Installing
-* Install prerequisites
-* Unzip code into desired directory
-
 ### Running
-* Load example files in &lt;Python27&gt;\Lib\site-packages\rssd\examples
+* Load example files in &lt;Python&gt;\Lib\site-packages\rssd\examples
 * Change IP address to match instrument(s)
 * Run
 * Examples Include:
-    * SMW_LoadArb.py       |Load 
-    * VSE_ADemod.py        |VSE/FSW Analog FM Demod
-    * VSE_Debug.py         |VSE Raw SCPI
-    * VSE_MultiCC_K96.py   |VSE Multi component carrier EVM w/ K96
+    * SMW_LoadArb.py          |Basic SMW commands
+    * VSE_ADemod.py           |VSE/FSW Analog FM Demod
+    * VSE_Debug.py            |VSE Raw SCPI
+    * VSE_OFDM_1CC_K96.py     |VSE Single OFDM Carrier EVM w/ K96
+    * VSE_OFDM_MultiCC_K96.py |VSE Multi  OFDM Carrier EVM w/ K96
 
 ## Versioning
-=======================================================================
-We use [Bitbucket](http://www.bitbucket.com/) for versioning.
+=====================================================================
+We use [Bitbucket](http://www.bitbucket.com/) for versioning. 
 
-### Authors
+
+### Author
 * Martin C Lim - *Initial work* 
 * Others welcome.  :-D
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) file for details
+This project is licensed under the R&S License for Royalty-Free Products- see the [LICENSE](LICENSE.txt) file for details
+
+## References
+* [SMW User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=smw+vector+user+manual&sort=relevance) https://www.rohde-schwarz.com/us/manual/smw200a/
+* [FSW User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=FSW+user+manual&sort=relevance) https://www.rohde-schwarz.com/us/manual/fsw/
+* [VSE User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=vse+base+user+manual) https://www.rohde-schwarz.com/us/manual/vse/
 
 ## Acknowledgments
----
+=====================================================================
 * Thanx to Nick Lalic for all his help.
 * [Markdown reference](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 

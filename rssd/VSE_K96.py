@@ -144,7 +144,6 @@ if __name__ == "__main__":
    VSE = VSE()
    VSE.VISA_Open("127.0.0.1")
    VSE.Set_DisplayUpdate('ON')
-   #VSE.VISA_Reset()
    VSE.Init_K96()
    #VSE.Get_EVM_Params()
    #VSE.Set_InitImm()
