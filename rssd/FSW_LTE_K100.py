@@ -63,6 +63,6 @@ class VSA(FSW_Common.VSA,object):
 if __name__ == "__main__":
    ### this won't be run when imported
    FSW = VSA()
-   FSW.VISA_Open("192.168.1.109")
-   FSW.VISA_IDN()
+   FSW.jav_Open("192.168.1.109")
+   FSW.jav_IDN()
    print(FSW.Get_MkrXY())

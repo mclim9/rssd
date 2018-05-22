@@ -48,7 +48,7 @@ if __name__ == "__main__":
       import sys
       print(sys.version)
    VSE = VSE()
-   VSE.VISA_Open("127.0.0.1")
+   VSE.jav_Open("127.0.0.1")
    VSE.Set_Channel("ADEM")
    VSE.Set_DisplayUpdate('ON')
    VSE.Set_Adem_dbw(500e6)

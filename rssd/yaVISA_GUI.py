@@ -78,18 +78,18 @@ def btn_Clear():
 def btn_IDN():
    fprintf("--> *IDN?")
    K2 = jaVisa()
-   K2.VISA_Open(Entry1.get())
+   K2.jav_Open(Entry1.get())
    readStr = K2.query("*IDN?")
    fprintf("<-- " + readStr)
-   K2.VISA_Close()
+   K2.jav_Close()
    
 def btn_Query():
    fprintf("--> " + Entry2.get())
    K2 = jaVisa()
-   K2.VISA_Open(Entry1.get())
+   K2.jav_Open(Entry1.get())
    readStr = K2.query(Entry2.get())
    fprintf("<-- " + readStr)
-   K2.VISA_Close()
+   K2.jav_Close()
    
 def btn_Scan():
    K2 = jaVisa()
@@ -97,13 +97,13 @@ def btn_Scan():
    for i in InstrList:
       fprintf("   " + i)
    fprintf("[Resource List]")
-   K2.VISA_Close()
+   K2.jav_Close()
 
 def btn_SCPIList():
    K2 = jaVisa()
-   K2.VISA_Open(Entry1.get())
+   K2.jav_Open(Entry1.get())
    OutList = K2.jav_Super(['*IDN?','*IDN?','DISP:TRAC:Y:RLEV -30'])
-   K2.VISA_Close()
+   K2.jav_Close()
    for Ostr in OutList:
       fprintf("   " + Ostr)
    fprintf("[SCPI LIST]")
@@ -111,9 +111,9 @@ def btn_SCPIList():
 def btn_Write():
    fprintf("-->" + Entry2.get())
    K2 = jaVisa()
-   K2.VISA_Open(Entry1.get())
+   K2.jav_Open(Entry1.get())
    K2.write(Entry2.get())
-   K2.VISA_Close()
+   K2.jav_Close()
    
 def menu_Open():
    asdf = tkFileDialog.askopenfilename()
@@ -148,14 +148,14 @@ def fprintf(inStr):
       pass
 
 def dataSave(data):
-   f = open("yaVISA_GUI.dat","wb")
+   f = open("yajav_GUI.dat","wb")
    f.write("HelloWorld")
    fprintf("DataSave: File Saved")
 
 def dataLoad():
    data = 1
    try:
-      f = open("yaVISA_GUI.dat","wb")
+      f = open("yajav_GUI.dat","wb")
       data = f.read()
       fprintf("DataLoad: OK")
    except:

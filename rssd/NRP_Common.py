@@ -39,5 +39,5 @@ class PMr(jaVisa,object):
 if __name__ == "__main__":
    # this won't be run when imported
    NRP = PMr()
-   NRP.VISA_Open("192.168.1.114","Test.csv")
+   NRP.jav_Open("192.168.1.114","Test.csv")
    NRP.Set_Freq(6e9)

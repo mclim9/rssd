@@ -288,7 +288,7 @@ class VSA(yaVISA.jaVisa, object):
       self.write("FORM REAL,32")
       self.write("TRAC:IQ:DATA:FORM IQP")
       self.write("TRAC:IQ:DATA?")
-      data = self.read_raw()
+      data = self.jav_Read_raw()
 
       samples = self.Get_IQ_RecLength()
 
@@ -387,6 +387,6 @@ class VSA(yaVISA.jaVisa, object):
 if __name__ == "__main__":
    ### this won't be run when imported
    FSW = VSA()
-   FSW.VISA_Open("192.168.1.109")
+   FSW.jav_Open("192.168.1.109")
    #FSW.Set_Autolevel_IFOvld()
-   FSW.VISA_ClrErr()
+   FSW.jav_ClrErr()
