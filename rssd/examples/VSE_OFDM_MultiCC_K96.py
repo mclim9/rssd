@@ -39,20 +39,20 @@ import time
 f = rssd.FileIO.FileIO()
 DataFile = f.Init(OutFile)
 SMW = VSG()                         #Create SMW Object
-SMW.VISA_Open(SMW_IP,f.sFName)      #Connect to SMW
+SMW.jav_Open(SMW_IP,f.sFName)      #Connect to SMW
 FSW = VSA()                         #Create FSW Object
-FSW.VISA_Open(FSW_IP,f.sFName)      #Connect to FSW
+FSW.jav_Open(FSW_IP,f.sFName)      #Connect to FSW
 VSE = VSE()                         #Create VSE Object
-VSE.VISA_Open(VSE_IP,f.sFName)      #Connect to VSE
+VSE.jav_Open(VSE_IP,f.sFName)      #Connect to VSE
 if 0:
-   SMW.logSCPI()
-   FSW.logSCPI()
-   VSE.logSCPI()
+   SMW.jav_logSCPI()
+   FSW.jav_logSCPI()
+   VSE.jav_logSCPI()
    
 ##########################################################
 ### Setup Instruments
 ##########################################################
-VSE.VISA_Reset()
+VSE.jav_Reset()
 time.sleep(6)
 VSE.Init_K96()                      #VSE K96 OFDMVSA CH
 VSE.Set_DisplayUpdate("ON")         #Display On
@@ -63,7 +63,7 @@ VSE.Set_K96_File_Config(OFDMCfg)    #K96 Demod File
 VSE.Set_K96_BurstSearch("OFF")      #Burst Search off
 VSE.Set_K96_OFDMSymbols(14)
 
-FSW.VISA_Reset()
+FSW.jav_Reset()
 FSW.Init_IQ()                       #FSW IQ CH
 FSW.Set_IQ_SamplingRate(Fs)
 FSW.Set_SweepTime(MeasTim)
@@ -90,13 +90,13 @@ for Freq in FreqArry:
       VSE.Set_InitImm()                   #Update VSE
       EVM_Meas = VSE.Get_EVM_Params()     #Attn; RefLvl; Pwr; EVM
       f.write(EVM_Meas)                 
-      VSE.VISA_ClrErr()                   #Clear Errors
+      VSE.jav_ClrErr()                   #Clear Errors
    #end PwrLoop
 #end FreqLoop   
 
 ##########################################################
 ### Cleanup Automation
 ##########################################################
-SMW.VISA_Close()
-FSW.VISA_Close()
-VSE.VISA_Close()
+SMW.jav_Close()
+FSW.jav_Close()
+VSE.jav_Close()

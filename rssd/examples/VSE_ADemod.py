@@ -16,7 +16,7 @@ port = 5025                      #Reserve a port for your service.
 import rssd.VSE_ADemod
 
 VSE = rssd.VSE_ADemod.VSE()
-VSE.VISA_Open(host) 
+VSE.jav_Open(host) 
 #VSE.logSCPI()
 VSE.Set_DisplayUpdate("ON")
 VSE.Set_Channel("ADEM")
@@ -24,4 +24,4 @@ VSE.Set_Adem_dbw(500e6)
 VSE.Set_Adem_LPassStat("ON")
 VSE.Set_Adem_LPassRelative("5PCT")
 VSE.Set_InitImm()
-VSE.VISA_ClrErr()
+VSE.jav_ClrErr()
