@@ -32,19 +32,23 @@ class jaVisa():
 
    def jav_Close(self):
       try:
-         self.jav_ClrErr()
+         errList = self.jav_ClrErr()
          self.K2.close()
+         return errList
       except:
          pass
 
    def jav_ClrErr(self):
+      ErrList = []
       while True:
          RdStr = self.query("SYST:ERR?").strip()
+         ErrList.append(RdStr)
          RdStrSplit = RdStr.split(',')
          if RdStr == "<notRead>": break      #No readstring
          if RdStrSplit[0] == "0": break      #Read 0 error
          self.dLastErr = RdStr
-         print("jav_ClrErr : %s-->%s"%(self.Model,RdStr))
+         print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
+      return ErrList 
          
    def jav_IDN(self):
       self.dataIDN = "Temp"                  #Temp for self.query
@@ -57,6 +61,7 @@ class jaVisa():
          self.Version = IDNStr[3]
       else:
          self.dataIDN = ""                   #Reset if not read 
+      print('jav_IDN   : %s'%(self.dataIDN))
       return self.dataIDN
             
    def jav_OPC_Wait(self, InCMD):
@@ -70,13 +75,13 @@ class jaVisa():
          try:
             read = self.query("*ESR?").strip()#Poll EventStatReg-Bit0:Op Complete		
          except:
-            print("jav_OPC_Wait:*ESR? Error")
+            print("jav_OPCWai:*ESR? Error")
          time.sleep(0.5)
          delta = (time.time() - start_time)
          if delta > 300:
-            print("jav_OPC_Wait: timeout")
+            print("jav_OPCWai: timeout")
             break
-      print('jav_OPC_Wait: %0.2fsec'%(delta))
+      print('jav_OPCWai: %0.2fsec'%(delta))
       
    def jav_Error(self):
       RdStr = self.query("SYST:ERR?").strip().split(',')
@@ -96,20 +101,19 @@ class jaVisa():
          self.K2 = rm.open_resource('TCPIP::'+IPAddr+'::inst0::INSTR')   #Create Visa Obj
          self.K2.timeout = 5000                  #Timeout, millisec
          self.jav_IDN()
-         print (self.dataIDN)
          try:
             if fily != "":
                f=open(fily,'a')
                f.write(self.dataIDN + "\n")
                f.close()
          except:
-            #***********************************************************
-            #*** VISA Failed/Try Socket
-            #***********************************************************
             pass
          self.jav_ClrErr()
       except:
-         print ('jav_OpenErr: ' + IPAddr)
+         #***********************************************************
+         #*** VISA Failed/Try Socket
+         #***********************************************************
+         print ('jav_OpnErr: ' + IPAddr)
          self.K2 = 'NoVISA'
       return self.K2
 
@@ -122,15 +126,18 @@ class jaVisa():
       DataFile = self.f.Init("yaVISA")
 
    def jav_ResList(self):
-      rm = visa.ResourceManager()      #Create Resource Manager
-      rmList = rm.list_resources()     #List VISA Resources
+      try:
+         rm = visa.ResourceManager()      #Create Resource Manager
+         rmList = rm.list_resources()     #List VISA Resources
+      except:
+         rmList =["No VISA"]
       return rmList
 
    def jav_read_raw(self):
       return self.K2.read_raw()
 
    def jav_Super(self,SCPIList):
-      ### Send list of SCPI commands
+      ### Send SCPI list & Query if "?" 
       ### Collect read results into a list for return.
       OutList = []
       for cmd in SCPIList:
@@ -147,7 +154,7 @@ class jaVisa():
          if self.dataIDN != "": 
             read = self.K2.query(cmd).strip()   #Write if connected
       except:
-         if self.prnty: print("jav_RdErr  : %s-->%s"%(self.Model,cmd))
+         if self.prnty: print("jav_RdErr : %s-->%s"%(self.Model,cmd))
       if self.Ofile != "" : self.f.write("%s,%s,%s,"%(self.Model,cmd,read))
       return read
       
@@ -155,7 +162,7 @@ class jaVisa():
       try:
          if self.dataIDN != "": self.K2.write(cmd) #Write if connected
       except:
-         if self.prnty: print("jav_WrtErr : %s-->%s"%(self.Model,cmd))
+         if self.prnty: print("jav_WrtErr: %s-->%s"%(self.Model,cmd))
       if self.Ofile != "" : self.f.write("%s,%s"%(self.Model,cmd))      
 
 if __name__ == "__main__":

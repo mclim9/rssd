@@ -19,16 +19,21 @@ ColorCurs = "White"
 ########################################################################
 ### Code Start
 ########################################################################
-#from Tkinter import *
-import Tkinter as Tk
-import ttk
-import tkMessageBox
-import tkFileDialog
+try:
+   import Tkinter as Tk
+   import ttk
+   import tkFileDialog
+except:
+   import tkinter as Tk
+   from tkinter import ttk
+   import tkinter.filedialog as tkFileDialog
+   
 END = Tk.END
 
 #Code specific libraries
 import csv
 import copy
+from datetime  import datetime
 from os.path   import split
 from yaVISA    import jaVisa
 
@@ -37,7 +42,7 @@ from yaVISA    import jaVisa
 ########################################################################
 class GUIData():
    def __init__(self):
-      GUIData.K2_IP = "192.168.1.109"
+      GUIData.K2_IP = "127.0.0.1"
       GUIData.K2_SCPI = "*IDN?"
       GUIData.FreqArry = ""
       GUIData.WvArry = ""
@@ -89,7 +94,7 @@ def btn_Query():
    K2.jav_Open(Entry1.get())
    readStr = K2.query(Entry2.get())
    fprintf("<-- " + readStr)
-   K2.jav_Close()
+   fprintf(K2.jav_Close())
    
 def btn_Scan():
    K2 = jaVisa()
@@ -100,18 +105,22 @@ def btn_Scan():
    K2.jav_Close()
 
 def btn_SCPIList():
+   fprintf("")
    K2 = jaVisa()
    K2.jav_Open(Entry1.get())
-   OutList = K2.jav_Super(['*IDN?','*IDN?','DISP:TRAC:Y:RLEV -30'])
-   K2.jav_Close()
+   SCPIList = list(lstOutp2.get(0,END))
+   OutList = K2.jav_Super(SCPIList)
+   fprintf('   Err:' + '; '.join(K2.jav_Close()))
    for Ostr in OutList:
       fprintf("   " + Ostr)
    fprintf("[SCPI LIST]")
+
    
 def btn_Write():
-   fprintf("-->" + Entry2.get())
+   fprintf("--> " + Entry2.get())
    K2 = jaVisa()
    K2.jav_Open(Entry1.get())
+   print(Entry2.get())
    K2.write(Entry2.get())
    K2.jav_Close()
    
@@ -139,10 +148,13 @@ def ArrayInput(stringIn):
    
 def fprintf(inStr):
    #print(inStr)
+   sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f")          #Date String
    try:
-      #lstOutpt.insert(END,inStr)
-      lstOutpt.insert(0,inStr)
-      #lstOutpt.see(END)
+      if 1:    #Text moves down
+         lstOutpt.insert(0,sDate + " " + inStr)
+      else:    #Text moves up
+         lstOutpt.insert(END,sDate + " " + inStr)
+         lstOutpt.see(END)
       GUI.update()
    except:
       pass
@@ -197,7 +209,8 @@ lstOutpt.insert(0,"Output Window")
 
 lstOutp2 = Tk.Listbox(GUI,bg=ColorBG, fg=ColorFG,width=WaveWindWid)
 srlOutp2 = ttk.Scrollbar(GUI, orient=Tk.VERTICAL, command=lstOutp2.yview) #Create scrollbar S
-lstOutp2.insert(0,"SCPI Window")
+lstOutp2.insert(0,"*IDN?")
+lstOutp2.insert(0,"OUTP ON")
 for item in RSVar.WvArry:
     lstOutp2.insert(END, item)
 lstOutp2.config(yscrollcommand=srlOutp2.set)        #Link scroll to lstOutp2
