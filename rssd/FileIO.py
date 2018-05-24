@@ -5,7 +5,7 @@
 ### Author: Martin C Lim
 ### Date  : 2018.02.01
 #####################################################################
-import time
+from datetime  import datetime
 
 class FileIO():
    def __init__(self):
@@ -15,21 +15,21 @@ class FileIO():
       pass
       
    def Init(self,sName="Datalog"):
-      self.sFName = "%s-%s.csv"%(sName,time.strftime("%y%m%d"))
+      self.sFName = "%s-%s.csv"%(sName,datetime.now().strftime("%y%m%d"))
       self.Outfile = open(self.sFName, 'a')           #Open File
       return self.Outfile
       
    def write(self,inStr):
       if self.debug: print("FileOut     : %s"%inStr)
-      sDate = time.strftime("%y%m%d,%H%M%S")          #Date String
+      sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
       self.Outfile = open(self.sFName, 'a')           #Open File
-      self.Outfile.write('%s,%s\n'%(sDate,inStr))
+      self.Outfile.write('%s,%s\r\n'%(sDate,inStr))
       self.Outfile.close()
 
    def write_raw(self,inStr):
       if self.debug: print("FileOut     : %s"%inStr)
       self.Outfile = open(self.sFName, 'a')           #Open File
-      self.Outfile.write('%s\n'%(inStr))
+      self.Outfile.write('%s\r\n'%(inStr))
       self.Outfile.close()
       
 #####################################################################

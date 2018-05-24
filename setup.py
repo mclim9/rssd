@@ -11,8 +11,7 @@
 ### Upload to PyPi
 ### python setup.py register #Reserve name in pypi
 ### python setup.py sdist    #Creates tar.gz
-### python setup.py upload   #Twine? 
-### twine upload 
+### twine upload rssd-0.1.1.tar.gz 
 """
 import os
 from setuptools import setup, find_packages
@@ -22,7 +21,7 @@ def readme():
         return f.read()
 
 setup(name='rssd',
-      version='0.1.1',
+      version='0.1.3',
       description='Rohde & Schwarz SCPI Driver',
       long_description=readme(),
       classifiers=[

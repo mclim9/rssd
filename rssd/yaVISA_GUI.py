@@ -143,7 +143,7 @@ def ArrayInput(stringIn):
    return OutputList
    
 def fprintf(inStr):
-   sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f")          #Date String
+   sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
    try:
       if 1:    #Text moves down
          lstOutpt.insert(0,"%s %s"%(sDate,inStr))
