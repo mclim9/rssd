@@ -68,7 +68,10 @@ class VSG(jaVisa,object):
       ### ON, OFF, AUTO, FIX, 
       self.query('SOUR:POW:ALC:DAMP %s;*OPC?'%sState)
       
-
+   def Set_IQMod(self,sState):
+      ### ON, OFF 
+      self.query('SOUR:POW:ALC:DAMP %s;*OPC?'%sState)
+      
    #####################################################################
    ### Verizon 5G
    #####################################################################

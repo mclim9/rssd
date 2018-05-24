@@ -288,7 +288,7 @@ class VSA(yaVISA.jaVisa, object):
       self.write("FORM REAL,32")
       self.write("TRAC:IQ:DATA:FORM IQP")
       self.write("TRAC:IQ:DATA?")
-      data = self.jav_Read_raw()
+      data = self.jav_read_raw()
 
       samples = self.Get_IQ_RecLength()
 
