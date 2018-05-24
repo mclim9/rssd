@@ -170,7 +170,6 @@ if __name__ == "__main__":
    #RS.jav_LogSCPI()
    #RS.jav_Open("127.0.0.1")
    RS.jav_Open("192.168.1.109")
-   RS.jav_IDN()
    RS.write("FREQ:CENT 13MHz")
-   
    print(RS.Device)
+   print(RS.jav_Close())

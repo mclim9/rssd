@@ -19,15 +19,14 @@ ColorCurs = "White"
 ########################################################################
 ### Code Start
 ########################################################################
-try:
+try:                 ### Python 2.x naming
    import Tkinter as Tk
    import ttk
    import tkFileDialog
-except:
+except:              ### Python 3.x naming
    import tkinter as Tk
    from tkinter import ttk
    import tkinter.filedialog as tkFileDialog
-   
 END = Tk.END
 
 #Code specific libraries
@@ -69,12 +68,7 @@ def mnu_Out2WindClear():
    lstOutp2.delete(0,END)
 
 def mnu_SaveCond():
-   RSVar.K2_IP = Entry1.get()
-   RSVar.K2_SCPI = Entry2.get()
-   RSVar.WvArry = list(lstOutp2.get(0,END))
-   RSVar.FreqArry = Entry3.get()
-   RSVar.PwrArry  = Entry4.get()
-   dataSave(RSVar)
+   dataSave()
 
 def btn_Clear():
    posi = lstOutpt.curselection()
@@ -94,8 +88,8 @@ def btn_Query():
    K2.jav_Open(Entry1.get())
    readStr = K2.query(Entry2.get())
    fprintf("<-- " + readStr)
-   fprintf(K2.jav_Close())
-   
+   K2.jav_Close()
+         
 def btn_Scan():
    K2 = jaVisa()
    InstrList = K2.jav_ResList()
@@ -110,17 +104,19 @@ def btn_SCPIList():
    K2.jav_Open(Entry1.get())
    SCPIList = list(lstOutp2.get(0,END))
    OutList = K2.jav_Super(SCPIList)
-   fprintf('   Err:' + '; '.join(K2.jav_Close()))
+   try:
+      fprintf('   Err:' + ''.join(K2.jav_Close()))
+   except:
+      pass
+
    for Ostr in OutList:
       fprintf("   " + Ostr)
    fprintf("[SCPI LIST]")
-
    
 def btn_Write():
    fprintf("--> " + Entry2.get())
    K2 = jaVisa()
    K2.jav_Open(Entry1.get())
-   print(Entry2.get())
    K2.write(Entry2.get())
    K2.jav_Close()
    
@@ -130,13 +126,13 @@ def menu_Open():
    
 def menu_Exit():
    global GUI
-   #btn_SaveCond()
+   dataSave() 
    GUI.quit()
    GUI.destroy()
    print("Program End")
 
 def menu_Save():
-   dataSave(RSVar)
+   dataSave()
 
 def ArrayInput(stringIn):
    OutputList = []
@@ -147,11 +143,10 @@ def ArrayInput(stringIn):
    return OutputList
    
 def fprintf(inStr):
-   #print(inStr)
    sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f")          #Date String
    try:
       if 1:    #Text moves down
-         lstOutpt.insert(0,sDate + " " + inStr)
+         lstOutpt.insert(0,"%s %s"%(sDate,inStr))
       else:    #Text moves up
          lstOutpt.insert(END,sDate + " " + inStr)
          lstOutpt.see(END)
@@ -159,38 +154,46 @@ def fprintf(inStr):
    except:
       pass
 
-def dataSave(data):
-   f = open("yajav_GUI.dat","wb")
-   f.write("HelloWorld")
+def dataSave():
+   #RSVar.WvArry = list(lstOutp2.get(0,END))
+   f = open("yaVISA_GUI.dat","wb")
+   f.write('%s,'%(Entry1.get()))
+   f.write('%s,'%(Entry2.get()))
+   f.close()
+   
    fprintf("DataSave: File Saved")
 
 def dataLoad():
-   data = 1
+   OutObj = GUIData()
    try:
-      f = open("yajav_GUI.dat","wb")
-      data = f.read()
-      fprintf("DataLoad: OK")
+      f = open("yaVISA_GUI.dat","rb")
+      data = f.read().split(',')
+      OutObj.K2_IP   = data[0]
+      OutObj.K2_SCPI = data[1]
    except:
-      data = GUIData()
       fprintf("DataLoad: Default")
-
-   return data
+   return OutObj
                  
 ########################################################################
-# Define GUI Widgets
+### GUI Object
 RSVar = copy.copy(dataLoad())
-GUI = Tk.Tk()                                 #Create GUI object
+GUI = Tk.Tk()                                      #Create GUI object
 GUI.title("Rohde&Schwarz VISA Utility")            #GUI Title
-Lbl1 = Tk.Label(GUI, text="Instrument IP")    #Create Label
+#GUI.iconbitmap('RSIcon.ico')
+GUI.resizable(0,0)
+
+########################################################################
+### Define GUI Widgets
+Lbl1 = Tk.Label(GUI, text="Instrument IP")         #Create Label
 Entry1 = Tk.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs) #Create Entry background
 Entry1.insert(END, RSVar.K2_IP)                    #Default Value
-Lbl2 = Tk.Label(GUI, text="SCPI String")      #Create Label
+Lbl2 = Tk.Label(GUI, text="SCPI String")           #Create Label
 Entry2 = Tk.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs) #Entry Background
 Entry2.insert(END, RSVar.K2_SCPI)                  #Default Value
-Lbl3 = Tk.Label(GUI, text="Freq Array")       #Create Label
+Lbl3 = Tk.Label(GUI, text="Freq Array")            #Create Label
 Entry3 = Tk.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs) #Entry Background
 Entry3.insert(END, RSVar.FreqArry)                 #Default Value
-Lbl4 = Tk.Label(GUI, text="Power Array")      #Create Label
+Lbl4 = Tk.Label(GUI, text="Power Array")           #Create Label
 Entry4 = Tk.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs) #Entry Background
 Entry4.insert(END, RSVar.PwrArry)                  #Default Value
 btnWaveF = Tk.Button(GUI, width=btnWid, text = "VISA Scan", command = btn_Scan)
@@ -204,7 +207,7 @@ btnQuit  = Tk.Button(GUI, width=btnWid, text = "Quit", command = menu_Exit)
 ### List Boxes
 lstOutpt = Tk.Listbox(GUI, width=textWindWid,bg=ColorBG, fg=ColorFG)
 srlOutpt = ttk.Scrollbar(GUI, orient=Tk.VERTICAL, command=lstOutpt.yview) #Create scrollbar S
-lstOutpt.config(yscrollcommand=srlOutpt.set)        #Link scroll to lstOutpt
+lstOutpt.config(yscrollcommand=srlOutpt.set)       #Link scroll to lstOutpt
 lstOutpt.insert(0,"Output Window")
 
 lstOutp2 = Tk.Listbox(GUI,bg=ColorBG, fg=ColorFG,width=WaveWindWid)
@@ -212,7 +215,7 @@ srlOutp2 = ttk.Scrollbar(GUI, orient=Tk.VERTICAL, command=lstOutp2.yview) #Creat
 lstOutp2.insert(0,"*IDN?")
 lstOutp2.insert(0,"OUTP ON")
 for item in RSVar.WvArry:
-    lstOutp2.insert(END, item)
+   lstOutp2.insert(END, item)
 lstOutp2.config(yscrollcommand=srlOutp2.set)        #Link scroll to lstOutp2
 
 ########################################################################
