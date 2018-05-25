@@ -6,9 +6,9 @@
 ### Date   : 2018.02.01
 ### Requird: python -m pip install pyvisa
 #####################################################################
-from yaVISA import jaVisa
+from yaVISA 
 
-class VSG(jaVisa,object):
+class VSG(yaVISA.jaVisa,object):
    def __init__(self):
       try:
          super().__init__()            #Python3
