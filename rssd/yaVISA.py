@@ -154,6 +154,12 @@ class jaVisa(object):
       except:
          return 9999.9999
          
+   def queryInt(self,cmd):
+      try:
+         return int(self.query(cmd))
+      except:
+         return 9999
+         
    def query(self,cmd):
       read ="<notRead>"
       try:
