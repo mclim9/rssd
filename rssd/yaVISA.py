@@ -150,13 +150,13 @@ class jaVisa(object):
       
    def queryFloat(self,cmd):
       try:
-         return float(self.query(cmd))
+         return float(self.query(cmd).strip())
       except:
          return 9999.9999
          
    def queryInt(self,cmd):
       try:
-         return int(self.query(cmd))
+         return int(self.query(cmd).strip())
       except:
          return 9999
          

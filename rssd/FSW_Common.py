@@ -56,10 +56,7 @@ class VSA(yaVISA.jaVisa):
    ### FSW Attenuation
    #####################################################################
    def Get_AttnMech(self):
-      try:
-         out = float(self.query('INP:ATT?').strip())
-      except:
-         out = -9999
+      self.queryFloat('INP:ATT?')
       return out 
 
    def Set_AttnMech(self,fMAttn):
@@ -74,8 +71,8 @@ class VSA(yaVISA.jaVisa):
       self.write('CONF:POW:AUTO %s;*WAI'%sState);     #ON|OFF|1|0
 
    def Get_RefLevel(self):
-      RefLvl = self.query('DISP:TRAC:Y:RLEV?');
-      return float(RefLvl)
+      RefLvl = self.queryFloat('DISP:TRAC:Y:RLEV?');
+      return RefLvl
 
    def Set_RefLevel(self,fReflevel):
       self.write('DISP:TRAC:Y:RLEV %f'%fReflevel);
@@ -85,7 +82,7 @@ class VSA(yaVISA.jaVisa):
 
    def Get_Ovld_Stat(self):
       self.Set_InitImm()
-      Read = int(self.query('STAT:QUES:POW:COND?').strip());
+      Read = self.queryInt('STAT:QUES:POW:COND?'))
       RF_Ovld = Read & 1
       RF_Udld = Read & 2
       IF_Ovld = Read & 4
@@ -200,12 +197,12 @@ class VSA(yaVISA.jaVisa):
       self.write(':SENS:SWE:POIN %f'%iNum);     #Number of trace points
 
    def Get_SweepPoints(self,iNum):
-      points = self.write(':SENS:SWE:POIN?');   #Number of trace points
-      return float(points.strip())
+      points = self.queryInt(':SENS:SWE:POIN?');   #Number of trace points
+      return points
       
    def Get_SweepTime(self):
-      RdTime = self.write('SENS:SWE:TIME?');             #Sweep/Capture Time
-      return float(RdTime.strip())
+      SwpTime = self.queryInt('SENS:SWE:TIME?');             #Sweep/Capture Time
+      return SwpTime
       
    def Set_SweepTime(self,fSwpTime):
       self.write('SENS:SWE:TIME %f'%fSwpTime);  #Sweep/Capture Time
@@ -262,8 +259,8 @@ class VSA(yaVISA.jaVisa):
       self.write('TRAC:IQ:WBAN:MBW %f; *WAI'%fFreq);
    
    def Get_IQ_RecLength(self):
-      RLEN = self.query('TRAC:IQ:RLEN?')	      #Record(Samples) Length
-      return int(RLEN)
+      RLEN = self.queryInt('TRAC:IQ:RLEN?')	      #Record(Samples) Length
+      return RLEN
 
    def Set_IQ_RecLength(self,iLen):
       self.query('TRAC:IQ:RLEN %d'%iLen)        #Record(Samples) Length
@@ -321,18 +318,12 @@ class VSA(yaVISA.jaVisa):
       return ACLR
 
    def Get_ChPwr(self):
-      try:
-         out = float(self.query('FETC:SUMM:POW?'))
-      except:
-         out = -9999
+      out = self.queryFloat('FETC:SUMM:POW?')
       return out 
       
    def Get_EVM(self):
       #EVM = self.query('FETC:SUMM:EVM:ALL:AVER?')
-      try:
-         out = float(self.query('FETC:SUMM:EVM?;*WAI').strip())
-      except:
-         out = -9999
+      out = self.queryFloat('FETC:SUMM:EVM?;*WAI').strip()
       return out
 
    def Get_EVM_Params(self):
@@ -360,7 +351,7 @@ class VSA(yaVISA.jaVisa):
       self.write(':CALC1:MARK%d:FUNC:BPOW:SPAN %f'%(iNum, fFreq));
 
    def Get_Mkr_Freq(self,iNum=1):
-      MkrFreq = self.query(':CALC1:MARK%d:X?'%(iNum)).strip();
+      MkrFreq = self.queryFloat(':CALC1:MARK%d:X?'%(iNum))
       return float(MkrFreq)
       
    def Get_Mkr_TimeDomain(self,iNum=1):
