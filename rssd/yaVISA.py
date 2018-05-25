@@ -148,6 +148,12 @@ class jaVisa(object):
             OutList.append(ReadStr)
       return OutList
       
+   def queryFloat(self,cmd):
+      try:
+         return float(self.query(cmd))
+      except:
+         return 9999.9999
+         
    def query(self,cmd):
       read ="<notRead>"
       try:

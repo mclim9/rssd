@@ -37,8 +37,11 @@ class VSG(jaVisa):
        self.write('SOUR:BB:ARB:WSEG:NEXT:EXEC')
 
    def Get_ArbClockFreq(self):
-      SCPI = self.query('SOUR:BB:ARB:CLOC?')
-      return float(SCPI)
+      SCPI = self.queryFloat('SOUR:BB:ARB:CLOC?')
+      return SCPI
+
+   def Set_ArbClockFreq(self,fFreq,RF=1):
+      self.write('SOUR%d:BB:ARB:CLOC %f'%(RF,fFreq))
 
    def Get_ArbTime(self):
       Fs = Get_ArbClockFreq()
@@ -62,6 +65,26 @@ class VSG(jaVisa):
    def Set_Freq(self,freq):
       self.write(':SOUR1:FREQ:CW %f'%freq);    #RF Freq
 
+   def Set_IQMod(self,sState):
+      ### ON, OFF 
+      self.query('SOUR:POW:ALC:DAMP %s;*OPC?'%sState)
+      
+   #####################################################################
+   ### Generator Power
+   #####################################################################
+   def Get_CrestFactor(self):
+      PEP = self.Get_PowerPEP()
+      RMS = self.Get_PowerRMS()
+      return (PEP - RMS)
+
+   def Get_PowerPEP(self,RF=1):
+      SCPI = self.queryFloat('SOUR%d:POW:PEP?'%RF)
+      return SCPI
+
+   def Get_PowerRMS(self,RF=1):
+      SCPI = self.queryFloat('SOUR%d:POW?'%RF)
+      return SCPI
+
    def Set_RFPwr(self,fPow):   #fPow
       self.write('SOUR:POW %f'%fPow);          #RF Pwr
       
@@ -72,10 +95,17 @@ class VSG(jaVisa):
       ### ON, OFF, AUTO, FIX, 
       self.query('SOUR:POW:ALC:DAMP %s;*OPC?'%sState)
       
-   def Set_IQMod(self,sState):
-      ### ON, OFF 
-      self.query('SOUR:POW:ALC:DAMP %s;*OPC?'%sState)
-      
+   #####################################################################
+   ### NRP connected to SMW
+   #####################################################################
+   def Get_NRPPower(self,NRP=2):
+      self.write(':INIT%d:POW:CONT 1'%(NRP))
+      self.write('SENS%d:UNIT DBM'%(NRP))
+      self.write('SENS%d:TYPE?'%(NRP))
+      SCPI = self.queryFloat(':READ%d:POW?'%(NRP))
+      return SCPI
+
+
    #####################################################################
    ### Verizon 5G
    #####################################################################
