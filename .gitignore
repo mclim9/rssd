@@ -3,8 +3,15 @@
 /build/
 /*.egg-info/
 
-### Other files.
+### IQ Waveform/Capture
 *.iqw
+*.wv
+
+### Administrative
 *.pyc
 *.lnk
+
+### Data files
 *.csv
+*.xls
+*.xlsx
