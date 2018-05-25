@@ -159,7 +159,7 @@ def fprintf(inStr):
 
 def dataSave():
    #RSVar.WvArry = list(lstOutp2.get(0,END))
-   f = open("yaVISA_GUI.dat","wb")
+   f = open("yaVISA_GUI.csv","wb")
    f.write('%s,'%(Entry1.get()))
    f.write('%s,'%(Entry2.get()))
    f.close()
@@ -169,7 +169,7 @@ def dataSave():
 def dataLoad():
    OutObj = GUIData()
    try:
-      f = open("yaVISA_GUI.dat","rb")
+      f = open("yaVISA_GUI.csv","rb")
       data = f.read().split(',')
       OutObj.K2_IP   = data[0]
       OutObj.K2_SCPI = data[1]
