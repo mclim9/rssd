@@ -9,7 +9,7 @@
 #####################################################################
 import FSW_Common
 
-class VSE(FSW_Common.VSA,object):
+class VSE(FSW_Common.VSA):
    def __init__(self):
       try:
          super().__init__()            #Python3

@@ -8,7 +8,7 @@
 #####################################################################
 import yaVISA
 
-class VSA(yaVISA.jaVisa, object):
+class VSA(yaVISA.jaVisa):
    def __init__(self):
       try:
          super().__init__()

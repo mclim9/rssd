@@ -7,7 +7,7 @@
 import VSE_Common
 import time         #EVM Wait
 
-class VSE(VSE_Common.VSE,object):
+class VSE(VSE_Common.VSE):
    def __init__(self):
       try:
          super().__init__()

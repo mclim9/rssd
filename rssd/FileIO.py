@@ -7,7 +7,7 @@
 #####################################################################
 from datetime  import datetime
 
-class FileIO():
+class FileIO(object):
    def __init__(self):
       self.Outfile = ""
       self.sFName = ""

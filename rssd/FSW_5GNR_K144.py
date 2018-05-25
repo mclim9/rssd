@@ -7,7 +7,7 @@
 ### Requird: python -m pip install pyvisa
 import FSW_Common
 
-class VSA(FSW_Common.VSA,object):
+class VSA(FSW_Common.VSA):
    def __init__(self):
       try:
          super().__init__()

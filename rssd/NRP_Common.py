@@ -8,7 +8,7 @@
 #####################################################################
 from yaVISA import jaVisa
 
-class PMr(jaVisa,object):
+class PMr(jaVisa):
    def __init__(self):
       try:
          super().__init__()            #Python3

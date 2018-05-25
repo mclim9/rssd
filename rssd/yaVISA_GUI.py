@@ -42,7 +42,7 @@ from yaVISA    import jaVisa
 ########################################################################
 ### Functions
 ########################################################################
-class GUIData():
+class GUIData(object):
    def __init__(self):
       GUIData.K2_IP = "127.0.0.1"
       GUIData.K2_SCPI = "*IDN?"

@@ -7,7 +7,7 @@
 ### Requird: python -m pip install pyvisa
 import VSE_Common
 
-class VSE(VSE_Common.VSE,object):
+class VSE(VSE_Common.VSE):
    def __init__(self):
       try:
          super().__init__()            #Python3

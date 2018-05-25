@@ -13,7 +13,7 @@ import visa
 import time
 import rssd.FileIO
 
-class jaVisa():    
+class jaVisa(object):
    ### Rohde & Schwarz VISA Class
    ### Instrument Common functions. 
    def __init__(self):

@@ -8,7 +8,11 @@
 #####################################################################
 from yaVISA 
 
+<<<<<<< HEAD
 class VSG(yaVISA.jaVisa,object):
+=======
+class VSG(jaVisa):
+>>>>>>> remotes/origin/object-inheritance-proposal
    def __init__(self):
       try:
          super().__init__()            #Python3
