@@ -8,7 +8,7 @@
 #####################################################################
 from yaVISA import jaVisa
 
-class VSG(jaVisa,object):
+class VSG(jaVisa):
    def __init__(self):
       try:
          super().__init__()            #Python3
