@@ -7,14 +7,17 @@ from __future__ import division     #int div to float
 ########################################################################
 # User Input Settings
 ########################################################################
-btnWid = 12
-textWindWid = 90
-WaveWindWid = 55
+btnWid = 11
+Col0Wid = 10
+Col1Wid = 14
+ColxWid = 4*(btnWid+4) -4
+textWindWid = Col0Wid+Col1Wid+ColxWid+10
 maxCol = 6
-btnRow = 20
-ColorBG = "black"  #gray30
-ColorFG = "green"
-ColorCurs = "White"
+btnRow = 20 
+ClrTxtBg    = "black"  #gray30
+ClrTxtFg    = "green"
+ColorCurs   = "white"
+ClrAppBG    = "grey30"
 
 ########################################################################
 ### Code Start
@@ -181,36 +184,37 @@ GUI = Tk.Tk()                                      #Create GUI object
 GUI.title("Rohde&Schwarz VISA Utility")            #GUI Title
 #GUI.iconbitmap('RSIcon.ico')
 GUI.resizable(0,0)
+GUI.config(bg=ClrAppBG)
 
 ########################################################################
 ### Define GUI Widgets
-Lbl1 = Tk.Label(GUI, text="Instrument IP")         #Create Label
-Entry1 = Tk.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs) #Create Entry background
-Entry1.insert(END, RSVar.K2_IP)                    #Default Value
-Lbl2 = Tk.Label(GUI, text="SCPI String")           #Create Label
-Entry2 = Tk.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs) #Entry Background
-Entry2.insert(END, RSVar.K2_SCPI)                  #Default Value
-Lbl3 = Tk.Label(GUI, text="Freq Array")            #Create Label
-Entry3 = Tk.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs) #Entry Background
-Entry3.insert(END, RSVar.FreqArry)                 #Default Value
-Lbl4 = Tk.Label(GUI, text="Power Array")           #Create Label
-Entry4 = Tk.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs) #Entry Background
-Entry4.insert(END, RSVar.PwrArry)                  #Default Value
-btnWaveF = Tk.Button(GUI, width=btnWid, text = "VISA Scan", command = btn_Scan)
-btnWaveC = Tk.Button(GUI, width=btnWid, text = "SCPI List", command = btn_SCPIList)
-btnSaveC = Tk.Button(GUI, width=btnWid, text = "*IDN?", command = btn_IDN)
-btnClear = Tk.Button(GUI, width=btnWid, text = "Query", command = btn_Query)
-btnRunIt = Tk.Button(GUI, width=btnWid, text = "Write", command = btn_Write)
-btnQuit  = Tk.Button(GUI, width=btnWid, text = "Quit", command = menu_Exit)
+Lbl1   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Instrument IP")         #Create Label
+Entry1 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,insertbackground=ColorCurs) #Create Entry background
+Entry1.insert(END,RSVar.K2_IP)                    #Default Value
+Lbl2   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="SCPI String")           #Create Label
+Entry2 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,insertbackground=ColorCurs) #Entry Background
+Entry2.insert(END,RSVar.K2_SCPI)                  #Default Value
+Lbl3   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Freq Array")            #Create Label
+Entry3 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,insertbackground=ColorCurs) #Entry Background
+Entry3.insert(END,RSVar.FreqArry)                 #Default Value
+Lbl4   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Power Array")           #Create Label
+Entry4 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,insertbackground=ColorCurs) #Entry Background
+Entry4.insert(END,RSVar.PwrArry)                  #Default Value
+btnWaveF = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="VISA Scan",  command = btn_Scan)
+btnWaveC = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="SCPI List",  command = btn_SCPIList)
+btnSaveC = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="*IDN?",      command = btn_IDN)
+btnClear = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="Query",      command = btn_Query)
+btnRunIt = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="Write",      command = btn_Write)
+btnQuit  = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="Quit",       command = menu_Exit)
 
 ########################################################################
 ### List Boxes
-lstOutpt = Tk.Listbox(GUI, width=textWindWid,bg=ColorBG, fg=ColorFG)
+lstOutpt = Tk.Listbox(GUI, width=textWindWid, bg=ClrTxtBg, fg=ClrTxtFg)
 srlOutpt = ttk.Scrollbar(GUI, orient=Tk.VERTICAL, command=lstOutpt.yview) #Create scrollbar S
 lstOutpt.config(yscrollcommand=srlOutpt.set)       #Link scroll to lstOutpt
 lstOutpt.insert(0,"Output Window")
 
-lstOutp2 = Tk.Listbox(GUI,bg=ColorBG, fg=ColorFG,width=WaveWindWid)
+lstOutp2 = Tk.Listbox(GUI,bg=ClrTxtBg, fg=ClrTxtFg,width=ColxWid)
 srlOutp2 = ttk.Scrollbar(GUI, orient=Tk.VERTICAL, command=lstOutp2.yview) #Create scrollbar S
 lstOutp2.insert(0,"*IDN?")
 lstOutp2.insert(0,"OUTP ON")
@@ -220,12 +224,12 @@ lstOutp2.config(yscrollcommand=srlOutp2.set)        #Link scroll to lstOutp2
 
 ########################################################################
 ### Draw Widgets w/ Grid
-Lbl1.grid(row=0,column=0,sticky=Tk.E,columnspan=1)
-Lbl2.grid(row=1,column=0,sticky=Tk.E,columnspan=1)
+Lbl1.grid(row=0,column=0,sticky=Tk.E)
+Lbl2.grid(row=1,column=0,sticky=Tk.E)
 #Lbl3.grid(row=2,column=0,sticky=Tk.E,columnspan=1)
 #Lbl4.grid(row=3,column=0,sticky=Tk.E,columnspan=1)
-Entry1.grid(row=0,column=1,columnspan=1)
-Entry2.grid(row=1,column=1,columnspan=1)
+Entry1.grid(row=0,column=1)
+Entry2.grid(row=1,column=1)
 #Entry3.grid(row=2,column=1,columnspan=1)
 #Entry4.grid(row=3,column=1,columnspan=1)
 btnWaveF.grid(row=btnRow,column=0)
@@ -235,18 +239,18 @@ btnClear.grid(row=btnRow,column=3)
 btnRunIt.grid(row=btnRow,column=4)
 btnQuit.grid(row=btnRow,column=5)
 
-lstOutp2.grid(row=0,column=2,columnspan=4,rowspan=2, sticky=(Tk.E))
-srlOutp2.grid(column=maxCol,row=0,rowspan=2,sticky=(Tk.W,Tk.N,Tk.S))     
-lstOutpt.grid(row=btnRow-1,column=0,columnspan=maxCol)
+lstOutp2.grid(row=0,column=2,columnspan=4,rowspan=4, sticky=(Tk.E))
+srlOutp2.grid(column=maxCol,row=0,rowspan=4,sticky=(Tk.W,Tk.N,Tk.S))     
+lstOutpt.grid(row=btnRow-1,column=0,columnspan=(maxCol+1),sticky=Tk.E)
 srlOutpt.grid(column=maxCol,row=btnRow-1, sticky=(Tk.W,Tk.N,Tk.S))     
 
 # *****************************************************************
 # Define menu
 # *****************************************************************
-menu = Tk.Menu(GUI)                        #create dropdown in GUI
-GUI.config(menu=menu)
+menu = Tk.Menu(GUI)                       #create dropdown in GUI
+GUI.config(menu=menu)                     #define GUI's menu
 
-fileMenu = Tk.Menu(menu)                   #create dropdown in menu
+fileMenu = Tk.Menu(menu)                  #create dropdown menu
 fileMenu.add_command(label="Open",command=menu_Open)
 fileMenu.add_command(label="Save",command=menu_Save)
 fileMenu.add_separator()
@@ -255,7 +259,7 @@ fileMenu.add_command(label="SCPI Clear",command=mnu_Out2WindClear)
 fileMenu.add_separator()
 fileMenu.add_command(label="Exit",command=menu_Exit)
 
-editMenu = Tk.Menu(menu)                   #create dropdown in menu
+editMenu = Tk.Menu(menu)                   #create dropdown menu
 editMenu.add_command(label="Edit",command=menu_Open)
 
 menu.add_cascade(label="File",menu=fileMenu)    #add dropdown menu
