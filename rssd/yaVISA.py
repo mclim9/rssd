@@ -152,13 +152,13 @@ class jaVisa(object):
       try:
          return float(self.query(cmd).strip())
       except:
-         return 9999.9999
+         return -9999.9999
          
    def queryInt(self,cmd):
       try:
          return int(self.query(cmd).strip())
       except:
-         return 9999
+         return -9999
          
    def query(self,cmd):
       read ="<notRead>"
