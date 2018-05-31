@@ -88,21 +88,24 @@ class jaVisa(object):
       return RdStr
       
    def jav_Open(self, IPAddr, fily=''):
-      #*****************************************************************
-      #*** Open VISA Connection
-      #*****************************************************************
       #  VISA: 'TCPIP0::'+IP_Address+'::INSTR'
       #  VISA: 'TCPIP0::'+IP_Address+'::inst0'
       #  VISA: 'TCPIP0::'+IP_Address+'::hislip0'
       #  VISA: 'TCPIP0::'+IP_Address+'::hislip0::INSTR'
+      self.jav_openvisa('TCPIP0::'+IPAddr+'::hislip0::INSTR',fily)
+
+   def jav_openvisa(self, sVISAStr, fily=''):
+      #*****************************************************************
+      #*** Open VISA Connection
+      #*****************************************************************
       rm = visa.ResourceManager()      #Create Resource Manager
       rmList = rm.list_resources()     #List VISA Resources
       try:
-         self.K2 = rm.open_resource('TCPIP::'+IPAddr+'::inst0::INSTR')   #Create Visa Obj
+         self.K2 = rm.open_resource(sVISAStr)    #Create Visa Obj
          self.K2.timeout = 5000                  #Timeout, millisec
          self.jav_IDN()
          try:
-            if fily != "":
+            if fily != '':
                f=open(fily,'a')
                f.write(self.dataIDN + "\n")
                f.close()
@@ -110,22 +113,19 @@ class jaVisa(object):
             pass
          self.jav_ClrErr()
       except:
-         #***********************************************************
-         #*** VISA Failed/Try Socket
-         #***********************************************************
-         print ('jav_OpnErr: ' + IPAddr)
+         print ('jav_OpnErr: ' + sVISAStr)
          self.K2 = 'NoVISA'
       return self.K2
 
    def jav_Reset(self):
       self.write("*RST;*CLS;*WAI")
 
-   def jav_LogSCPI(self):
+   def jav_logscpi(self):
       self.f = rssd.FileIO.FileIO()
       self.Ofile = "yaVISA"
       DataFile = self.f.Init("yaVISA")
 
-   def jav_ResList(self):
+   def jav_reslist(self):
       try:
          rm = visa.ResourceManager()      #Create Resource Manager
          rmList = rm.list_resources()     #List VISA Resources
@@ -136,7 +136,7 @@ class jaVisa(object):
    def jav_read_raw(self):
       return self.K2.read_raw()
 
-   def jav_Super(self,SCPIList):
+   def jav_scpilist(self,SCPIList):
       ### Send SCPI list & Query if "?" 
       ### Collect read results into a list for return.
       OutList = []
@@ -150,7 +150,7 @@ class jaVisa(object):
       
    def queryFloat(self,cmd):
       try:
-         return float(self.query(cmd).strip())
+         return float(self.query(cmd))
       except:
          return -9999.9999
          
@@ -179,7 +179,7 @@ class jaVisa(object):
 
 if __name__ == "__main__":
    RS = jaVisa()
-   #RS.jav_LogSCPI()
+   #RS.jav_logscpi()
    #RS.jav_Open("127.0.0.1")
    RS.jav_Open("192.168.1.109")
    RS.write("FREQ:CENT 13MHz")

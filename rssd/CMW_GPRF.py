@@ -6,9 +6,9 @@
 ### Date:    2018.05.29
 ### Strctr : pyvisa-->yavisa-->CMW_GPRF.py
 #####################################################################
-import yaVISA
+from yaVISA import jaVisa
 
-class BSE(yaVISA.jaVisa):
+class BSE(jaVisa):
    def __init__(self):
       super(BSE, self).__init__()
       self.Model = "CMW-GPRF"
@@ -16,24 +16,6 @@ class BSE(yaVISA.jaVisa):
    #####################################################################
    ### CMW System
    #####################################################################
-   def Set_Channel(self,Chan,sName=""):
-      ##################################################################
-      ### SANALYZER, IQ, PNOISE, NOISE, Spur, ADEM, V5GT, LTE, OFDMVSA
-      ##################################################################
-      if sName == "":
-         sName = Chan
-      ChList = self.query('INST:LIST?').split(',')
-      #print("Chan:%s in %s"%(Chan,ChList))
-      if ("'" + sName + "'") in ChList:
-         pass
-      else:
-         self.query(":INST:CRE %s,'%s';*OPC?"%(Chan,sName))
-      self.query(":INST:SEL '%s';*OPC?"%sName)
-      
-   def Get_Channels(self):
-      ChList = self.query('INST:LIST?').split(',')
-      return(ChList)
-      
    def Set_DisplayUpdate(self,state):
       self.write('SYST:DISP:UPD %s'%state);     #Display Update State
             
@@ -41,37 +23,47 @@ class BSE(yaVISA.jaVisa):
    ### CMW Port Configuration
    #####################################################################
    def Set_Sys_PortAttn(self):
-      CONF:CMWS:FDC:DEAC:TX R11
-      CONF:BASE:FDC:CTAB:CRE 'downlink', 500.0e6, 0.5, 1000e6, 1.0, 1800.e6, 1.5, 2300.e6, 1.8, 5000.e6, 2.5,  6000.e6, 2.8  
-      CONF:CMWS:FDC:ACT:TX R11, 'downlink'
-      CONF:CMWS:FDC:DEAC:RX R12
-      CONF:BASE:FDC:CTAB:CRE 'uplink', 500.0e6, 19.5, 1000e6, 19.0, 1800.e6, 18.5, 2300.e6, 18.2, 5000.e6, 17.5,  6000.e6, 17.2
-      CONF:CMWS:FDC:ACT:RX R12, 'uplink'
-
-            
+      '''
+      self.write('CONF:CMWS:FDC:DEAC:TX R11')
+      self.write('CONF:BASE:FDC:CTAB:CRE 'downlink', 500.0e6, 0.5, 1000e6, 1.0, 1800.e6, 1.5, 2300.e6, 1.8, 5000.e6, 2.5,  6000.e6, 2.8  ')
+      self.write('CONF:CMWS:FDC:ACT:TX R11, 'downlink'')
+      self.write('CONF:CMWS:FDC:DEAC:RX R12')
+      self.write('CONF:BASE:FDC:CTAB:CRE 'uplink', 500.0e6, 19.5, 1000e6, 19.0, 1800.e6, 18.5, 2300.e6, 18.2, 5000.e6, 17.5,  6000.e6, 17.2')
+      self.write('CONF:CMWS:FDC:ACT:RX R12, 'uplink'')
+      '''
    #####################################################################
    ### CMW Vector Spectrum Analyzer
    #####################################################################
+   def Init_VSA(self,port=1):                                     #Val
+      self.write('ROUT:GPRF:MEAS:SCEN:SAL R1%d, RX1'%port)
+      
+   def Init_Power(self,port=1):                                   #Val
+      self.write('ROUT:GPRF:MEAS:SCEN:SAL R1%d, RX1'%port)
+      self.write('INIT:GPRF:MEAS:POW')
+      self.write('CONF:GPRF:MEAS:POW:MODE POW')     #POW|STAT
+      
    def Get_VSA_ACLR(self):
       ACLR = self.query('FETC:NRS:MEAS:MEV:ACLR:AVER?').split(',')
       return ACLR
 
    def Get_ChPwr(self):
-      out = self.queryFloat('FETC:SUMM:POW?')
+      out = self.queryFloat('FETC:GPRF:MEAS:POW:CURR?')
       return out 
    
-   def Set_VSA_Freq(self,fFreq):
-      self.write('CONF:GPRF:MEAS:SPEC:FREQ:CENT %f'%fFreq)
+   def Set_VSA_Freq(self,fFreq):                                  #Val
+#      self.write('CONF:GPRF:MEAS:SPEC:FREQ:CENT %d'%fFreq)
+      self.write('CONF:GPRF:MEAS:RFS:FREQ %d'%fFreq)
 
    def Set_VSA_FreqSpan(self,fFreq):
       self.write('CONF:GPRF:MEAS:SPEC:FREQ:SPAN %f'%fFreq)
 
-   def Set_VSA_RefLevl(self,fRefLvl):
+   def Set_VSA_RefLevl(self,fRefLvl):                             #Val
       ### ENP = Expected Nominal Power
       self.write('CONF:GPRF:MEAS:RFS:ENP %f'%fRefLvl)
 
    def Set_VSA_InitImm(self):
-      self.query('INIT:GPRF:MEAS:SPEC;*OPC?')
+      #self.query('INIT:GPRF:MEAS:SPEC;*OPC?')
+      self.query('INIT:GPRF:MEAS:;*OPC?')
    
    def Set_VSA_ResBW(self,fFreq):
       if fFreq > 0:
@@ -91,11 +83,14 @@ class BSE(yaVISA.jaVisa):
       else:
          self.write('CONF:GPRF:MEAS:SPEC:FSW:SWT:AUTO ON')
          
-
-         
    #####################################################################
    ### CMW Generator
    #####################################################################
+   def Init_VSG(self,port=1):                                     #Val
+      self.write('ROUTe:GPRF:GEN:SCENario:SALone R118, TX11')
+      self.write('CONFigure:GPRF:GEN:CMWS:USAGe:TX:ALL R118, OFF, OFF,OFF, OFF, OFF, OFF, OFF, OFF')
+      self.write('CONFigure:GPRF:GEN:CMWS:USAGe:TX R1%d, ON'%port)
+
    def Get_Gen_ArbWv(self):
       SCPI = self.query('SOUR:GPRF:GEN:ARB:FILE?')
       return SCPI
@@ -107,7 +102,7 @@ class BSE(yaVISA.jaVisa):
    def Set_Gen_ArbStateOn(self):
       self.query('SOUR:GPRF:GEN:BBM ARB;*OPC?')
 
-   def Set_Gen_Freq(self,freq):
+   def Set_Gen_Freq(self,freq):                                   #Val
       self.write('SOUR:GPRF:GEN:RFS:FREQ %f'%freq);    #RF Freq
 
    def Set_Gen_ListMode(self,sState):
@@ -119,7 +114,7 @@ class BSE(yaVISA.jaVisa):
    def Set_Gen_RFPwr(self,fPwr):
       self.write('SOUR:GPRF:GEN:RFS:LEV %f'%(fPwr));
 
-   def Set_Gen_RFState(self,sState):
+   def Set_Gen_RFState(self,sState):                              #Val
       ### ON | OFF
       if sState.upper() == "ON":
          self.query('SOUR:GPRF:GEN:STAT ON;*OPC?')
@@ -133,4 +128,15 @@ if __name__ == "__main__":
    ### this won't be run when imported
    CMW = BSE()
    CMW.jav_Open("127.0.0.1")
+   CMW.Init_VSG(3)
+   CMW.Set_Gen_RFPwr(-50)
+   CMW.Set_Gen_Freq(1199e6)
+   CMW.Set_Gen_RFState("ON")
+
+   CMW.Init_Power(3)
+   CMW.Set_VSA_Freq(1200e6)
+   CMW.Set_VSA_RefLevl(-10)
+   print(CMW.Get_ChPwr())
    CMW.jav_ClrErr()
+   CMW.jav_Close()
+   
