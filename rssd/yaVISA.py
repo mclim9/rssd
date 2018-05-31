@@ -150,13 +150,15 @@ class jaVisa(object):
       
    def queryFloat(self,cmd):
       try:
-         return float(self.query(cmd))
+         strArry = self.query(cmd).split(',')
+         return [float(i) for i in strArry]
       except:
          return -9999.9999
          
    def queryInt(self,cmd):
       try:
-         return int(self.query(cmd).strip())
+         strArry = self.query(cmd).split(',')
+         return [int(i) for i in strArry]
       except:
          return -9999
          
@@ -180,8 +182,8 @@ class jaVisa(object):
 if __name__ == "__main__":
    RS = jaVisa()
    #RS.jav_logscpi()
-   #RS.jav_Open("127.0.0.1")
-   RS.jav_Open("192.168.1.109")
-   RS.write("FREQ:CENT 13MHz")
+   RS.jav_Open("127.0.0.1")
+   #RS.jav_Open("192.168.1.109")
+   print(RS.queryInt("*IDN?"))
    print(RS.Device)
    print(RS.jav_Close())
