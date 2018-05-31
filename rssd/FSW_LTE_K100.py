@@ -9,10 +9,7 @@ import FSW_Common
 
 class VSA(FSW_Common.VSA):
    def __init__(self):
-      try:
-         super().__init__()
-      except:
-         super(VSA, self).__init__()
+      super(VSA, self).__init__()
       
    #####################################################################
    ### FSW LTE Settings

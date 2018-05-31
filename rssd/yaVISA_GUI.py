@@ -95,7 +95,7 @@ def btn_Query():
          
 def btn_Scan():
    K2 = jaVisa()
-   InstrList = K2.jav_ResList()
+   InstrList = K2.jav_reslist()
    for i in InstrList:
       fprintf("   " + i)
    fprintf("[Resource List]")
@@ -106,7 +106,7 @@ def btn_SCPIList():
    K2 = jaVisa()
    K2.jav_Open(Entry1.get())
    SCPIList = list(lstOutp2.get(0,END))
-   OutList = K2.jav_Super(SCPIList)
+   OutList = K2.jav_scpilist(SCPIList)
    try:
       fprintf('   Err:' + ''.join(K2.jav_Close()))
    except:

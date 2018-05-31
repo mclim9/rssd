@@ -6,14 +6,11 @@
 ### Date:    2018.02.01
 ### Strctr : pyvisa-->yavisa-->FSW_Common.py
 #####################################################################
-import yaVISA
+from yaVISA import jaVisa
 
-class VSA(yaVISA.jaVisa):
+class VSA(jaVisa):
    def __init__(self):
-      try:
-         super().__init__()
-      except:
-         super(VSA, self).__init__()
+      super(VSA, self).__init__()
       #self.Model = "FSW"
       
    #####################################################################
