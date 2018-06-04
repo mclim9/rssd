@@ -27,17 +27,35 @@ class FileIO(object):
       self.Outfile.close()
 
    def write_raw(self,inStr):
-      if self.debug: print("FileOut     : %s"%inStr)
+      if self.debug: print("FileOut_raw : %s"%inStr)
       self.Outfile = open(self.sFName, 'a')           #Open File
       self.Outfile.write('%s\n'%(inStr))
       self.Outfile.close()
+   
+   def read(self):
+      self.Outfile = open(self.sFName, 'r')
+      fileData = self.Outfile.readlines()
+      return fileData
       
+   def readcsv(self):
+      dataOut = []
+      self.Outfile = open(self.sFName, 'r')
+      fileData = self.Outfile.readlines()
+      for line in fileData:
+         dataOut.append(line.split(','))
+      return dataOut
+      
+
 #####################################################################
 ### Run if Main
 #####################################################################
 if __name__ == "__main__":
    ### this won't be run when imported
    FileIO = FileIO()
-   FileIO.Init("Test.py")
+   FileIO.Init("FileIO.csv")
    FileIO.write("Hello World")
    FileIO.write_raw("Hello Worldd")
+   data = FileIO.read()
+   for line in data:
+      #print(i)
+      print(line)
