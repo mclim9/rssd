@@ -23,13 +23,13 @@ class FileIO(object):
       if self.debug: print("FileOut     : %s"%inStr)
       sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
       self.Outfile = open(self.sFName, 'a')           #Open File
-      self.Outfile.write('%s,%s\r\n'%(sDate,inStr))
+      self.Outfile.write('%s,%s\n'%(sDate,inStr))
       self.Outfile.close()
 
    def write_raw(self,inStr):
       if self.debug: print("FileOut     : %s"%inStr)
       self.Outfile = open(self.sFName, 'a')           #Open File
-      self.Outfile.write('%s\r\n'%(inStr))
+      self.Outfile.write('%s\n'%(inStr))
       self.Outfile.close()
       
 #####################################################################
