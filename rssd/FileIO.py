@@ -17,7 +17,7 @@ class FileIO(object):
    def Init(self,sName="Datalog"):
       self.sFName = "%s-%s.csv"%(sName,datetime.now().strftime("%y%m%d"))
       self.Outfile = open(self.sFName, 'a')           #Open File
-      return self.Outfile
+      return self
       
    def write(self,inStr):
       if self.debug: print("FileOut     : %s"%inStr)
@@ -42,8 +42,12 @@ class FileIO(object):
       self.Outfile = open(self.sFName, 'r')
       fileData = self.Outfile.readlines()
       for line in fileData:
-         dataOut.append(line.split(','))
+         dataOut.append(line.strip().split(','))
       return dataOut
+   
+   def fname(self,sFile):
+      self.sFName = sFile
+      return self
       
 
 #####################################################################
@@ -55,7 +59,6 @@ if __name__ == "__main__":
    FileIO.Init("FileIO.csv")
    FileIO.write("Hello World")
    FileIO.write_raw("Hello Worldd")
-   data = FileIO.read()
-   for line in data:
-      #print(i)
-      print(line)
+   data = FileIO.readcsv()
+   for i, line in enumerate(data):
+      print("%d:%s"%(i,",".join(data[i])))
