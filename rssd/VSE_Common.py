@@ -11,10 +11,7 @@ import FSW_Common
 
 class VSE(FSW_Common.VSA):
    def __init__(self):
-      try:
-         super().__init__()            #Python3
-      except:
-         super(VSE,self).__init__()    #Python2
+      super(VSE,self).__init__()    #Python2/3
       self.Model = "VSE"
       
    #####################################################################
