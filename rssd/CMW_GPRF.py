@@ -95,8 +95,13 @@ class BSE(jaVisa):
    def Init_VSG(self,port=1):                                     #Val
       self.write('ROUTe:GPRF:GEN:SCENario:SALone R118, TX11')
       self.write('CONFigure:GPRF:GEN:CMWS:USAGe:TX:ALL R118, OFF, OFF,OFF, OFF, OFF, OFF, OFF, OFF')
+
+   def Set_Gen_PortON(self,port=1):
       self.write('CONFigure:GPRF:GEN:CMWS:USAGe:TX R1%d, ON'%port)
 
+   def Set_Gen_PortOFF(self,port=1):
+      self.write('CONFigure:GPRF:GEN:CMWS:USAGe:TX R1%d, OFF'%port)
+      
    def Get_Gen_ArbWv(self):
       SCPI = self.query('SOUR:GPRF:GEN:ARB:FILE?')
       return SCPI
