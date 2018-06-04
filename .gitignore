@@ -6,6 +6,7 @@
 ### IQ Waveform/Capture
 *.iqw
 *.wv
+*.xml
 
 ### Administrative
 *.pyc
