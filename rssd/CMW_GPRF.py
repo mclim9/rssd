@@ -22,31 +22,37 @@ class BSE(jaVisa):
    #####################################################################
    ### CMW Port Configuration
    #####################################################################
-   def Set_Sys_PortAttn(self):
-      '''
-      self.write('CONF:CMWS:FDC:DEAC:TX R11')
-      self.write('CONF:BASE:FDC:CTAB:CRE 'downlink', 500.0e6, 0.5, 1000e6, 1.0, 1800.e6, 1.5, 2300.e6, 1.8, 5000.e6, 2.5,  6000.e6, 2.8  ')
-      self.write('CONF:CMWS:FDC:ACT:TX R11, 'downlink'')
-      self.write('CONF:CMWS:FDC:DEAC:RX R12')
-      self.write('CONF:BASE:FDC:CTAB:CRE 'uplink', 500.0e6, 19.5, 1000e6, 19.0, 1800.e6, 18.5, 2300.e6, 18.2, 5000.e6, 17.5,  6000.e6, 17.2')
-      self.write('CONF:CMWS:FDC:ACT:RX R12, 'uplink'')
-      '''
+   def Set_Sys_TxPortLoss(self,dPort=1,fLoss=0):                  #Val
+      #CONF:BASE:FDC:CTAB:CRE 'downlink', 500.0e6,0.5, 1000e6,1.0, 1800.e6,1.5, 2300.e6,1.8, 5000.e6,2.5,  6000.e6,2.8
+      self.write("CONF:CMWS:FDC:DEAC:TX R1%d"%dPort)
+      self.write("CONF:BASE:FDC:CTAB:CRE 'Out%d',70.0e6,%f,6000.e6,%f"%(dPort,fLoss,fLoss))
+      self.write("CONF:CMWS:FDC:ACT:TX R1%d,'Out%d'"%(dPort,dPort))
+      
+   def Set_Sys_RxPortLoss(self):                                  #Val
+      self.write("CONF:CMWS:FDC:DEAC:RX R11")
+      self.write("CONF:BASE:FDC:CTAB:CRE 'In1', 70.0e6, 0, 6000.e6, 0")
+      self.write("CONF:CMWS:FDC:ACT:RX R11, 'In1'")
+      
    #####################################################################
    ### CMW Vector Spectrum Analyzer
    #####################################################################
-   def Init_VSA(self,port=1):                                     #Val
+   def Init_MeasVSA(self,port=1):                                     #Val
       self.write('ROUT:GPRF:MEAS:SCEN:SAL R1%d, RX1'%port)
       
-   def Init_Power(self,port=1):                                   #Val
+   def Init_MeasPower(self,port=1):                                   #Val
       self.write('ROUT:GPRF:MEAS:SCEN:SAL R1%d, RX1'%port)
       self.write('INIT:GPRF:MEAS:POW')
       self.write('CONF:GPRF:MEAS:POW:MODE POW')     #POW|STAT
       
+   def Init_MeasFFT(self,port=1):                                   #Val
+      self.write('ROUT:GPRF:MEAS:SCEN:SAL R1%d, RX1'%port)
+      self.write('INIT:GPRF:MEAS:FFTS')
+
    def Get_VSA_ACLR(self):
       ACLR = self.query('FETC:NRS:MEAS:MEV:ACLR:AVER?').split(',')
       return ACLR
 
-   def Get_ChPwr(self):
+   def Get_ChPwr(self):                                           #Val
       out = self.queryFloat('FETC:GPRF:MEAS:POW:CURR?')
       return out 
    
@@ -111,7 +117,7 @@ class BSE(jaVisa):
       else:
          self.query('SOUR:GPRF:GEN:LIST OFF;*OPC?')
 
-   def Set_Gen_RFPwr(self,fPwr):
+   def Set_Gen_RFPwr(self,fPwr):                                  #Val
       self.write('SOUR:GPRF:GEN:RFS:LEV %f'%(fPwr));
 
    def Set_Gen_RFState(self,sState):                              #Val
@@ -128,15 +134,3 @@ if __name__ == "__main__":
    ### this won't be run when imported
    CMW = BSE()
    CMW.jav_Open("127.0.0.1")
-   CMW.Init_VSG(3)
-   CMW.Set_Gen_RFPwr(-50)
-   CMW.Set_Gen_Freq(1199e6)
-   CMW.Set_Gen_RFState("ON")
-
-   CMW.Init_Power(3)
-   CMW.Set_VSA_Freq(1200e6)
-   CMW.Set_VSA_RefLevl(-10)
-   print(CMW.Get_ChPwr())
-   CMW.jav_ClrErr()
-   CMW.jav_Close()
-   
