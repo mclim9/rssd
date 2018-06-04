@@ -34,7 +34,7 @@ class PMr(jaVisa):
          self.write('SENS:AVER:COUN:AUTO ON')
 
    def Get_Freq(self):
-      outp = self.queryFloat(':SENS:FREQ?')
+      outp = self.query(':SENS:FREQ?')
       return outp
       
    def Set_Freq(self,fFreq):
@@ -50,8 +50,19 @@ class PMr(jaVisa):
    def Get_Power(self):
       self.write('UNIT:POW DBM')
       self.write('SENS:FUNC "POW:AVG"')
-      self.query('INIT:IMM;*OPC?')        
+      self.write('INIT:IMM')        
       outp = self.queryFloat('FETCH?')
+      return outp
+
+   def Get_PowerAll(self):
+      ### NRP3M
+      self.write('UNIT:POW DBM')
+#      self.write('SENS:FUNC "POW:AVG"')
+      self.write('SENS:CHAN1:ENAB ON')
+      self.write('SENS:CHAN2:ENAB ON')
+      self.write('SENS:CHAN3:ENAB ON')
+      self.query('INIT:IMM;*OPC?')
+      outp = self.queryFloat('FETCH:ALL?')
       return outp
       
    def Set_PowerOffset(self,fOffset):
@@ -65,7 +76,7 @@ class PMr(jaVisa):
          self.write('SENS:CORR:OFFS:STAT ON')
 
 #####################################################################
-### NRPM3M Source 0x0156
+### NRPM3M Source 0x0195
 #####################################################################
    def Set_Gen_MasterPwr(self,bState,iSensor=1):
       ### This cmd sent automatically after 1min to prevent overheating.
@@ -79,14 +90,22 @@ class PMr(jaVisa):
       ### Suggested 1:10 duty cycle
       if bState == 1:
          self.write('OUTP%d:STAT ON'%iSensor)
+         self.write('SYST:LED:CHAN%d:COL 255'%iSensor)
       else:
          self.write('OUTP%d:STAT OFF'%iSensor)
+         self.write('SYST:LED:CHAN%d:COL 0'%iSensor)
          
-   def Get_Gen_Freq(self,bState):
+   def Set_Sys_LED(self,bState,iSensor=1):
+      if bState == 1:
+         self.write('SYST:LED:CHAN%d:COL 255'%iSensor)
+      else:
+         self.write('SYST:LED:CHAN%d:COL 0'%iSensor)
+               
+   def Get_Gen_Freq(self):
       self.write('SOUR:FREQ?')
 
-   def Get_Gen_Freq(self,bState):
-      self.write('SOUR:FREQ?')
+   def Set_Gen_Freq(self,fFreq):
+      self.write('SOUR:FREQ %f'%fFreq)
 
    def Set_Gen_InitImm(self):
       self.query('INIT:IMM;*OPC?')
@@ -101,6 +120,19 @@ class PMr(jaVisa):
 if __name__ == "__main__":
    # this won't be run when imported
    NRP = PMr()
-   NRP.jav_Open("192.168.1.114","Test.csv")
-   NRP.Set_Freq(6e9)
+#   NRP.jav_Open("192.168.1.114","Test.csv")
+   NRP.jav_openvisa("USB0::0x0AAD::0x0196::900105::INSTR")
+#   NRP.jav_logscpi()
+   NRP.jav_Reset()
+   NRP.Set_Freq(24e9)
+
+   print(NRP.Get_PowerAll())        #Power Before SG on
+   for i in range(1,4):
+      NRP.Set_Gen_MasterPwr(1,i)
+      NRP.Set_Gen_RFPwr(1,i)
+      NRP.Set_Gen_Freq(24e9)
+      NRP.Get_Gen_Freq()
+      print(NRP.Get_PowerAll())        #Power SG on 
+      NRP.Set_Gen_RFPwr(0,i)
+      NRP.Set_Gen_MasterPwr(0,i)
    NRP.jav_Close()
