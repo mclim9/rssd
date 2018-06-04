@@ -45,7 +45,7 @@ class FileIO(object):
          dataOut.append(line.strip().split(','))
       return dataOut
    
-   def fname(self,sFile):
+   def initread(self,sFile):
       self.sFName = sFile
       return self
       
