@@ -38,7 +38,7 @@ setup(name='rssd',
       author='Martin Lim',
       author_email='martin.lim@rsa.rohde-schwarz.com',
       license='R&S Terms and Conditions for Royalty-Free Products',
-      packages=find_packages(exclude=['test']),
+      packages=find_packages(exclude=['test','proto']),
       #packages=['rssd'],
       install_requires=[
           'pyvisa>=1.9.0',
