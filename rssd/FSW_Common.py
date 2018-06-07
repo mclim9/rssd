@@ -79,7 +79,7 @@ class VSA(jaVisa):
 
    def Get_Ovld_Stat(self):
       self.Set_InitImm()
-      Read = self.queryInt('STAT:QUES:POW:COND?'))
+      Read = self.queryInt('STAT:QUES:POW:COND?')
       RF_Ovld = Read & 1
       RF_Udld = Read & 2
       IF_Ovld = Read & 4
@@ -334,8 +334,8 @@ class VSA(jaVisa):
    ### FSW marker
    #####################################################################
    def Get_Mkr_XY(self,iNum=1):
-      ValX = self.query(':CALC:MARK%d:X?'%iNum).strip();
-      ValY = self.query(':CALC:MARK%d:Y?'%iNum).strip();
+      ValX = self.query(':CALC:MARK%d:X?'%iNum).strip()
+      ValY = self.query(':CALC:MARK%d:Y?'%iNum).strip()
       return [ValX, ValY]
 
    def Get_Mkr_Band(self,iNum=1):
