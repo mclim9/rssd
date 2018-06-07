@@ -28,10 +28,10 @@ class BSE(jaVisa):
       self.write("CONF:BASE:FDC:CTAB:CRE 'Out%d',70.0e6,%f,6000.e6,%f"%(dPort,fLoss,fLoss))
       self.write("CONF:CMWS:FDC:ACT:TX R1%d,'Out%d'"%(dPort,dPort))
       
-   def Set_Sys_RxPortLoss(self):                                  #Val
-      self.write("CONF:CMWS:FDC:DEAC:RX R11")
-      self.write("CONF:BASE:FDC:CTAB:CRE 'In1', 70.0e6, 0, 6000.e6, 0")
-      self.write("CONF:CMWS:FDC:ACT:RX R11, 'In1'")
+   def Set_Sys_RxPortLoss(self,dPort=1,fLoss=0):                                  #Val
+      self.write("CONF:CMWS:FDC:DEAC:RX R1%d"%dPort)
+      self.write("CONF:BASE:FDC:CTAB:CRE 'In%d',70.0e6,%f,6000.e6,%f"%(dPort,fLoss,fLoss))
+      self.write("CONF:CMWS:FDC:ACT:RX R1%d,'In%d'"%(dPort,dPort))
       
    #####################################################################
    ### CMW Vector Spectrum Analyzer
