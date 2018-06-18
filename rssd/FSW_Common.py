@@ -11,7 +11,7 @@ from yaVISA import jaVisa
 class VSA(jaVisa):
    def __init__(self):
       super(VSA, self).__init__()
-      #self.Model = "FSW"
+      self.Model = "FSW"
       
    #####################################################################
    ### FSW Display
