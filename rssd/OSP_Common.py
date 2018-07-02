@@ -20,7 +20,7 @@ class OSP(jaVisa):
       # ROUT:CLOS? (@F01A11(0161))
       outstr = 'ROUT:CLOS? (@F01A%02d(01%02d))'%(slot,sw)
       print(outstr)
-      #self.queryFloat(outstr)
+      print("A%02d SW%d @Pos%d"%(slot,sw,pos))
       return out 
 
    def Get_SW_SP6T(self,slot=11,sw=1):
@@ -30,10 +30,9 @@ class OSP(jaVisa):
          state = self.queryInt(outstr)[0]
          if state == 1:
             CurrState = pos
-            print("We are at %d"%pos)
+            print("A%02d SW%02d @Pos%02d"%(slot,sw,pos))
       return CurrState
          
-
    def Set_SW(self,slot=11,sw=1,pos=1):
       # ROUT:CLOS (@F01A11(0161))
       outstr = 'ROUT:CLOS (@F01A%02d(%02d%02d))'%(slot,pos,sw)
