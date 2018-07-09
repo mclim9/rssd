@@ -1,7 +1,7 @@
 #####################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ###
-### Purpose: Vector Signal Analyzer Common Functions
+### Purpose: Vector Signal Analyzer 5GNR Functions
 ### Author:  Martin C Lim
 ### Date:    2018.04.03
 ### Requird: python -m pip install pyvisa
@@ -26,41 +26,45 @@ class VSA(FSW_Common.VSA):
       # \Instr\user\V5GTF\AllocationFiles\UL
       self.write('MMEM:LOAD:DEM "%s"'%sFilename);
       
-   def Set_5GNR_Direction(self,sDirection):
-      # sDirection = "UL" or "DL"
-      if sDirection == "UL":
-         self.write(':CONF:NR5G:LDIR UL')
-         self.ldir = sDirection
-      elif sDirection == "DL":
-         self.write(':CONF:NR5G:LDIR DL')
-         self.ldir = sDirection
-      else:
-         print("Set_5GNR_Direction Incorrect.  Must be UL or DL")
-
    def Set_5GNR_FreqRange(self,iRange):
       ### 0:LessThan3GHz 1:3to6GHz 2:GreaterThan 6GHz
       ### LOW; MIDD; HIGH
       self.write(':CONF:NR5G:UL:CC:DFR %s'%iRange);      
-      
-   def Set_5GNR_ChannelBW(self,iBW):
-      ### 5;10;15;20;25;30;40;50;60;70;80;90;100;200;400
-      self.write(':CONF:NR5G:UL:CC:BW BW%d'%iBW);      
       
    def Get_5GNR_BWP(self):
       rdStr = self.query(':CONF:NR5G:DL:CC:FRAM:BWPC?')
       return int(rdStr)
       
    #####################################################################
-   ### FSW LTE Settings
+   ### FSW 5GNR Settings
    #####################################################################
-   def Set_5GNR_Modulation(self,iMod):
-      self.write(':CONF:NR5G:UL:SUBF0:ALL:MOD QPSK')
+   def Set_5GNR_Direction(self,sDirection):
+      # sDirection = "UL" or "DL"
+      if (sDirection == "UL") or (sDirection == "UP"):
+         self.write(':CONF:NR5G:LDIR UL')
+         self.ldir = sDirection
+      elif (sDirection == "DL") or (sDirection == "DOWN"):
+         self.write(':CONF:NR5G:LDIR DL')
+         self.ldir = sDirection
+      else:
+         print("Set_5GNR_Direction must be UL or DL")
 
+   def Set_5GNR_ChannelBW(self,iBW):
+      ### 5;10;15;20;25;30;40;50;60;70;80;90;100;200;400
+      self.write(':CONF:NR5G:UL:CC:BW BW%d'%iBW)
+      
+   def Set_5GNR_SubSpace(self,iSubSp):
+      self.write(':CONF:NR5G:UL:CC:BW BW%d'%iSubSp)
+      
    def Set_5GNR_ResourceBlock(self,iRB):
+      ### RB = (CHBw * 0.95) / (SubSp * 12)
       self.write(':CONF:NR5G:UL:SUBF0:ALL:RBC %d'%iRB)
 
    def Set_5GNR_ResourceBlockOffset(self,iRBO):
       self.write(':CONF:NR5G:UL:SUBF0:ALL:RBOF %d'%iRBO)
+
+   def Set_5GNR_Modulation(self,iMod):
+      self.write(':CONF:NR5G:UL:SUBF0:ALL:MOD QPSK')
 
    #####################################################################
    ### FSW Common Query
