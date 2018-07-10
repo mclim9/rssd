@@ -8,13 +8,13 @@ from __future__ import division     #int div to float
 # User Input Settings
 ########################################################################
 btnWid = 11
-Col0Wid = 10
-Col1Wid = 14
+Col0Wid = 10                                       #Text Labels
+Col1Wid = 14                                       #Text Input
 ColxWid = 4*(btnWid+4) -4
-textWindWid = Col0Wid+Col1Wid+ColxWid+10
+BotWindWid = Col0Wid+Col1Wid+ColxWid+10
 maxCol = 6
 btnRow = 20 
-ClrTxtBg    = "black"  #gray30
+ClrTxtBg    = "black"                              #gray30
 ClrTxtFg    = "green"
 ColorCurs   = "white"
 ClrAppBG    = "grey30"
@@ -50,32 +50,32 @@ class GUIData(object):
       GUIData.WvArry = ""
       GUIData.PwrArry = ""
       
-def mnu_Out2WindLoad_Files():
-   lstOutp2.delete(0,END)
+def mnu_TopWindLoad_Files():
+   lstTopWind.delete(0,END)
    filez = tkFileDialog.askopenfilenames()
    fileList = list(filez)
    for i in fileList:
-      lstOutp2.insert(END,i)
-   lstOutp2.see(END)
+      lstTopWind.insert(END,i)
+   lstTopWind.see(END)
 
-def mnu_Out2WindLoad_Read():
-   lstOutp2.delete(0,END)
+def mnu_TopWindLoad_Read():
+   lstTopWind.delete(0,END)
    filez = tkFileDialog.askopenfilename()
    fprintf(filez)
 #   for i in fileList:
-#      lstOutp2.insert(END,i)
-   lstOutp2.see(END)
+#      lstTopWind.insert(END,i)
+   lstTopWind.see(END)
  
-def mnu_Out2WindClear():
-   posi = lstOutp2.curselection()
-   lstOutp2.delete(0,END)
+def mnu_TopWindClear():
+   posi = lstTopWind.curselection()
+   lstTopWind.delete(0,END)
 
 def mnu_SaveCond():
    dataSave()
 
 def btn_Clear():
-   posi = lstOutpt.curselection()
-   lstOutpt.delete(0,END)
+   posi = lstBotWind.curselection()
+   lstBotWind.delete(0,END)
    
 def btn_IDN():
    fprintf("--> *IDN?")
@@ -94,18 +94,18 @@ def btn_Query():
    K2.jav_Close()
          
 def btn_Scan():
+   fprintf("[Resource List]")
    K2 = jaVisa()
    InstrList = K2.jav_reslist()
    for i in InstrList:
       fprintf("   " + i)
-   fprintf("[Resource List]")
    K2.jav_Close()
 
 def btn_SCPIList():
-   fprintf("")
+   fprintf("[SCPI LIST]")
    K2 = jaVisa()
    K2.jav_Open(Entry1.get())
-   SCPIList = list(lstOutp2.get(0,END))
+   SCPIList = list(lstTopWind.get(0,END))
    OutList = K2.jav_scpilist(SCPIList)
    try:
       fprintf('   Err:' + ''.join(K2.jav_Close()))
@@ -114,7 +114,6 @@ def btn_SCPIList():
 
    for Ostr in OutList:
       fprintf("   " + Ostr)
-   fprintf("[SCPI LIST]")
    
 def btn_Write():
    fprintf("--> " + Entry2.get())
@@ -146,19 +145,19 @@ def ArrayInput(stringIn):
    return OutputList
    
 def fprintf(inStr):
-   sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
+   sDate = datetime.now().strftime("%y%m%d-%H%M%S.%f") #Date String
    try:
-      if 1:    #Text moves down
-         lstOutpt.insert(0,"%s %s"%(sDate,inStr))
+      if 0:    #Text moves down
+         lstBotWind.insert(Tk.INSERT,"%s %s\n"%(sDate[:-3],inStr))
       else:    #Text moves up
-         lstOutpt.insert(END,sDate + " " + inStr)
-         lstOutpt.see(END)
+         lstBotWind.insert(END,"%s %s\n"%(sDate[:-3],inStr))
+         lstBotWind.see(END)
       GUI.update()
-   except:
+   except: 
       pass
 
 def dataSave():
-   #RSVar.WvArry = list(lstOutp2.get(0,END))
+   #RSVar.WvArry = list(lstTopWind.get(0,END))
    f = open("yaVISA_GUI.csv","wb")
    f.write('%s,'%(Entry1.get()))
    f.write('%s,'%(Entry2.get()))
@@ -188,18 +187,18 @@ GUI.config(bg=ClrAppBG)
 
 ########################################################################
 ### Define GUI Widgets
-Lbl1   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Instrument IP")         #Create Label
+Lbl1   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Instrument IP")          #Create Label
 Entry1 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,insertbackground=ColorCurs) #Create Entry background
-Entry1.insert(END,RSVar.K2_IP)                    #Default Value
-Lbl2   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="SCPI String")           #Create Label
+Entry1.insert(END,RSVar.K2_IP)                                                   #Default Value
+Lbl2   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="SCPI String")            #Create Label
 Entry2 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,insertbackground=ColorCurs) #Entry Background
-Entry2.insert(END,RSVar.K2_SCPI)                  #Default Value
-Lbl3   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Freq Array")            #Create Label
+Entry2.insert(END,RSVar.K2_SCPI)                                                 #Default Value
+Lbl3   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Freq Array")             #Create Label
 Entry3 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,insertbackground=ColorCurs) #Entry Background
-Entry3.insert(END,RSVar.FreqArry)                 #Default Value
-Lbl4   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Power Array")           #Create Label
+Entry3.insert(END,RSVar.FreqArry)                                                #Default Value
+Lbl4   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Power Array")            #Create Label
 Entry4 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,insertbackground=ColorCurs) #Entry Background
-Entry4.insert(END,RSVar.PwrArry)                  #Default Value
+Entry4.insert(END,RSVar.PwrArry)                                                 #Default Value
 btnWaveF = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="VISA Scan",  command = btn_Scan)
 btnWaveC = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="SCPI List",  command = btn_SCPIList)
 btnSaveC = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="*IDN?",      command = btn_IDN)
@@ -209,18 +208,20 @@ btnQuit  = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="Quit",       command = m
 
 ########################################################################
 ### List Boxes
-lstOutpt = Tk.Listbox(GUI, width=textWindWid, bg=ClrTxtBg, fg=ClrTxtFg)
-srlOutpt = ttk.Scrollbar(GUI, orient=Tk.VERTICAL, command=lstOutpt.yview) #Create scrollbar S
-lstOutpt.config(yscrollcommand=srlOutpt.set)       #Link scroll to lstOutpt
-lstOutpt.insert(0,"Output Window")
+lstBotWind = Tk.Text(GUI, width=BotWindWid, bg=ClrTxtBg, fg=ClrTxtFg, wrap=Tk.CHAR, height=20)
+srlBotWind = ttk.Scrollbar(GUI, orient=Tk.VERTICAL, command=lstBotWind.yview) #Create scrollbar
+lstBotWind.config(yscrollcommand=srlBotWind.set)                              #Link scroll to lstBotWind
+lstBotWind.insert(Tk.INSERT,"Output Window\n")
+lstBotWind.tag_add("here", "1.0", "1.40")
+lstBotWind.tag_config("here", background="yellow", foreground="blue")
 
-lstOutp2 = Tk.Listbox(GUI,bg=ClrTxtBg, fg=ClrTxtFg,width=ColxWid)
-srlOutp2 = ttk.Scrollbar(GUI, orient=Tk.VERTICAL, command=lstOutp2.yview) #Create scrollbar S
-lstOutp2.insert(0,"*IDN?")
-lstOutp2.insert(0,"OUTP ON")
+lstTopWind = Tk.Listbox(GUI,bg=ClrTxtBg, fg=ClrTxtFg,width=ColxWid)
+srlTopWind = ttk.Scrollbar(GUI, orient=Tk.VERTICAL, command=lstTopWind.yview) #Create scrollbar
+lstTopWind.insert(0,"*IDN?")
+lstTopWind.insert(0,"*OPT?")
 for item in RSVar.WvArry:
-   lstOutp2.insert(END, item)
-lstOutp2.config(yscrollcommand=srlOutp2.set)        #Link scroll to lstOutp2
+   lstTopWind.insert(END, item)
+lstTopWind.config(yscrollcommand=srlTopWind.set)                              #Link scroll to lstTopWind
 
 ########################################################################
 ### Draw Widgets w/ Grid
@@ -239,31 +240,31 @@ btnClear.grid(row=btnRow,column=3)
 btnRunIt.grid(row=btnRow,column=4)
 btnQuit.grid(row=btnRow,column=5)
 
-lstOutp2.grid(row=0,column=2,columnspan=4,rowspan=4, sticky=(Tk.E))
-srlOutp2.grid(column=maxCol,row=0,rowspan=4,sticky=(Tk.W,Tk.N,Tk.S))     
-lstOutpt.grid(row=btnRow-1,column=0,columnspan=(maxCol+1),sticky=Tk.E)
-srlOutpt.grid(column=maxCol,row=btnRow-1, sticky=(Tk.W,Tk.N,Tk.S))     
+lstTopWind.grid(row=0,column=2,columnspan=4,rowspan=4, sticky=(Tk.E))
+srlTopWind.grid(column=maxCol,row=0,rowspan=4,sticky=(Tk.W,Tk.N,Tk.S))
+lstBotWind.grid(row=btnRow-1,column=0,columnspan=(maxCol),sticky=Tk.E)
+srlBotWind.grid(column=maxCol,row=btnRow-1, sticky=(Tk.W,Tk.N,Tk.S))
 
 # *****************************************************************
 # Define menu
 # *****************************************************************
-menu = Tk.Menu(GUI)                       #create dropdown in GUI
-GUI.config(menu=menu)                     #define GUI's menu
+menu = Tk.Menu(GUI)                                #create dropdown in GUI
+GUI.config(menu=menu)                              #define GUI's menu
 
-fileMenu = Tk.Menu(menu)                  #create dropdown menu
+fileMenu = Tk.Menu(menu)                           #create dropdown menu
 fileMenu.add_command(label="Open",command=menu_Open)
 fileMenu.add_command(label="Save",command=menu_Save)
 fileMenu.add_separator()
-fileMenu.add_command(label="SCPI Load", command=mnu_Out2WindLoad_Read)
-fileMenu.add_command(label="SCPI Clear",command=mnu_Out2WindClear)
+fileMenu.add_command(label="SCPI Load", command=mnu_TopWindLoad_Read)
+fileMenu.add_command(label="SCPI Clear",command=mnu_TopWindClear)
 fileMenu.add_separator()
 fileMenu.add_command(label="Exit",command=menu_Exit)
 
-editMenu = Tk.Menu(menu)                   #create dropdown menu
+editMenu = Tk.Menu(menu)                           #create dropdown menu
 editMenu.add_command(label="Edit",command=menu_Open)
 
-menu.add_cascade(label="File",menu=fileMenu)    #add dropdown menu
-menu.add_cascade(label="Edit",menu=editMenu)    #add dropdown menu
+menu.add_cascade(label="File",menu=fileMenu)       #add dropdown menu
+menu.add_cascade(label="Edit",menu=editMenu)       #add dropdown menu
 
 # *****************************************************************
 # Start Program
