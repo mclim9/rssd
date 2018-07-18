@@ -11,7 +11,7 @@ btnWid = 11
 Col0Wid = 10                                       #Text Labels
 Col1Wid = 14                                       #Text Input
 ColxWid = 4*(btnWid+4) -4
-BotWindWid = Col0Wid+Col1Wid+ColxWid+10
+BotWindWid = Col0Wid+Col1Wid+ColxWid
 maxCol = 6
 btnRow = 20 
 ClrTxtBg    = "black"                              #gray30
@@ -19,7 +19,7 @@ ClrTxtFg    = "green"
 ColorCurs   = "white"
 ClrAppBG    = "grey30"
 
-########################################################################
+########################################################################       
 ### Code Start
 ########################################################################
 try:                 ### Python 2.x naming
@@ -62,8 +62,8 @@ def mnu_TopWindLoad_Read():
    lstTopWind.delete(0,END)
    filez = tkFileDialog.askopenfilename()
    fprintf(filez)
-#   for i in fileList:
-#      lstTopWind.insert(END,i)
+   for i in fileList:
+      lstTopWind.insert(END,i)
    lstTopWind.see(END)
  
 def mnu_TopWindClear():
@@ -187,18 +187,22 @@ GUI.config(bg=ClrAppBG)
 
 ########################################################################
 ### Define GUI Widgets
-Lbl1   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Instrument IP")          #Create Label
-Entry1 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,insertbackground=ColorCurs) #Create Entry background
-Entry1.insert(END,RSVar.K2_IP)                                                   #Default Value
-Lbl2   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="SCPI String")            #Create Label
-Entry2 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,insertbackground=ColorCurs) #Entry Background
-Entry2.insert(END,RSVar.K2_SCPI)                                                 #Default Value
-Lbl3   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Freq Array")             #Create Label
-Entry3 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,insertbackground=ColorCurs) #Entry Background
-Entry3.insert(END,RSVar.FreqArry)                                                #Default Value
-Lbl4   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Power Array")            #Create Label
-Entry4 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,insertbackground=ColorCurs) #Entry Background
-Entry4.insert(END,RSVar.PwrArry)                                                 #Default Value
+Lbl1   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Instrument IP")
+Entry1 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,
+                  insertbackground=ColorCurs)
+Entry1.insert(END,RSVar.K2_IP)                                       #Default Value
+Lbl2   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="SCPI String")#Create Label
+Entry2 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,
+                  insertbackground=ColorCurs)
+Entry2.insert(END,RSVar.K2_SCPI)                                     #Default Value
+Lbl3   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Freq Array") #Create Label
+Entry3 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg, 
+                  insertbackground=ColorCurs)
+Entry3.insert(END,RSVar.FreqArry)                                    #Default Value
+Lbl4   = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text="Power Array")#Create Label
+Entry4 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg,
+                  insertbackground=ColorCurs)
+Entry4.insert(END,RSVar.PwrArry)                                     #Default Value
 btnWaveF = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="VISA Scan",  command = btn_Scan)
 btnWaveC = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="SCPI List",  command = btn_SCPIList)
 btnSaveC = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="*IDN?",      command = btn_IDN)
@@ -208,17 +212,20 @@ btnQuit  = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,text="Quit",       command = m
 
 ########################################################################
 ### List Boxes
-lstBotWind = Tk.Text(GUI, width=BotWindWid, bg=ClrTxtBg, fg=ClrTxtFg, wrap=Tk.CHAR, height=20)
+lstBotWind = Tk.Text(GUI, width=BotWindWid, bg=ClrTxtBg, fg=ClrTxtFg, 
+                     wrap=Tk.CHAR, height=15)
 srlBotWind = ttk.Scrollbar(GUI, orient=Tk.VERTICAL, command=lstBotWind.yview) #Create scrollbar
 lstBotWind.config(yscrollcommand=srlBotWind.set)                              #Link scroll to lstBotWind
 lstBotWind.insert(Tk.INSERT,"Output Window\n")
 lstBotWind.tag_add("here", "1.0", "1.40")
 lstBotWind.tag_config("here", background="yellow", foreground="blue")
 
-lstTopWind = Tk.Listbox(GUI,bg=ClrTxtBg, fg=ClrTxtFg,width=ColxWid)
-srlTopWind = ttk.Scrollbar(GUI, orient=Tk.VERTICAL, command=lstTopWind.yview) #Create scrollbar
-lstTopWind.insert(0,"*IDN?")
-lstTopWind.insert(0,"*OPT?")
+lstTopWind = Tk.Text(GUI,bg=ClrTxtBg, fg=ClrTxtFg, width=ColxWid, 
+      height=10)
+srlTopWind = ttk.Scrollbar(GUI, orient=Tk.VERTICAL, 
+      command=lstTopWind.yview)                                               #Create scrollbar
+lstTopWind.insert(Tk.INSERT,"*IDN?\n")
+lstTopWind.insert(Tk.INSERT,"*OPT?\n")
 for item in RSVar.WvArry:
    lstTopWind.insert(END, item)
 lstTopWind.config(yscrollcommand=srlTopWind.set)                              #Link scroll to lstTopWind
@@ -248,7 +255,7 @@ srlBotWind.grid(column=maxCol,row=btnRow-1, sticky=(Tk.W,Tk.N,Tk.S))
 # *****************************************************************
 # Define menu
 # *****************************************************************
-menu = Tk.Menu(GUI)                                #create dropdown in GUI
+menu = Tk.Menu(GUI)                                #create GUI dropdown 
 GUI.config(menu=menu)                              #define GUI's menu
 
 fileMenu = Tk.Menu(menu)                           #create dropdown menu
