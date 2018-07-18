@@ -51,11 +51,18 @@ class VSG(SMW_Common.VSG):
    #####################################################################
    ### FSW 5GNR Settings
    #####################################################################
+   def Get_5GNR_RefA(self):
+      rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:POIN?')
+      return rdStr
 
-   def Get_5GNR_UL_BWP_Count(self):
-      rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:NBWP?')
+   def Get_5GNR_UL_BWP_Center(self):
+      rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:DFR?')
       return rdStr
       
+   def Get_5GNR_UL_BWP_Count(self):
+      rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:NBWP?')
+      return rdStr      
+
    def Get_5GNR_UL_BWP_ResourceBlock(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
       rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:RBN?')
@@ -67,30 +74,30 @@ class VSG(SMW_Common.VSG):
       
    def Get_5GNR_UL_BWP_SlotNum(self):
       ### Number of slots
-      rdStr = self.query(':CONF:NR5G:UL:CC:FRAM:BWP0:SCO?')
+      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:SLOT?')
       return rdStr
       
    def Get_5GNR_UL_BWP_Slot_Modulation(self):
-      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL1:MOD?')
+      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:MOD?')
       return rdStr
       
    def Get_5GNR_UL_BWP_Slot_ResourceBlock(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
-      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL1:RBN?')
+      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:RBN?')
       return rdStr
       
    def Get_5GNR_UL_BWP_Slot_ResourceBlockOffset(self):
-      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL1:RBOF?')
+      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:RBOF?')
       return rdStr
       
    def Get_5GNR_UL_BWP_Slot_SymbNum(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
-      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL1:SYMN?')
+      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:SYMN?')
       return rdStr
       
    def Get_5GNR_UL_BWP_Slot_SymbOff(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
-      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL1:SYM?')
+      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:SYM?')
       return rdStr
       
    def Get_5GNR_UL_ChannelBW(self):
@@ -99,9 +106,9 @@ class VSG(SMW_Common.VSG):
       return rdStr
       
    def Get_5GNR_UL_SubSpace(self):
-      rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:USE?')
-      rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:USE?')
+      rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:SCSP?')
       return rdStr
+      
       
 #####################################################################
 ### Run if Main
@@ -115,7 +122,7 @@ if __name__ == "__main__":
    print(SMW.Get_5GNR_UL_BWP_Count())
    print(SMW.Get_5GNR_UL_BWP_ResourceBlock())
    print(SMW.Get_5GNR_UL_BWP_ResourceBlockOffset())   
-   print(SMW.Get_5GNR_UL_BWP_SlotNum())
+   print(SMW.Get_5GNR_RefA())
 
    print(SMW.Get_5GNR_UL_BWP_Slot_Modulation())
    print(SMW.Get_5GNR_UL_BWP_Slot_ResourceBlock())
