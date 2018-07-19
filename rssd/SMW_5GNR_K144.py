@@ -12,6 +12,9 @@ class VSG(SMW_Common.VSG):
    def __init__(self):
       super(VSG,self).__init__()    #Python2/3
       self.Model = "SMW"
+      self.ldir = "UL"
+      self.BWP = 0
+      self.User = 0
       
    #####################################################################
    ### SMW 5GNR Common

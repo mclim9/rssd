@@ -10,7 +10,7 @@ import FSW_Common
 class VSA(FSW_Common.VSA):
    def __init__(self):
       super(VSA, self).__init__()      #Python 2/3
-      self.ldir = "UL"
+      self.sdir = "UL"
       
    #####################################################################
    ### FSW V5G
@@ -22,7 +22,7 @@ class VSA(FSW_Common.VSA):
       ### EMV; ESPectrum; ACLR; MCAClr; CACLr; MCESpectrum
       self.write('CONF:NR5G:MEAS %s'%sMeas)
 
-   def Set_5GNR_Allocation(self,sFilename):
+   def Set_5GNR_AllocFile(self,sFilename):
       # \Instr\user\V5GTF\AllocationFiles\UL
       self.write('MMEM:LOAD:DEM "%s"'%sFilename);
       
@@ -30,103 +30,106 @@ class VSA(FSW_Common.VSA):
       # sDirection = "UL" or "DL"
       if (sDirection == "UL") or (sDirection == "UP"):
          self.write(':CONF:NR5G:LDIR UL')
-         self.ldir = "UL"
+         self.sdir = "UL"
       elif (sDirection == "DL") or (sDirection == "DOWN"):
          self.write(':CONF:NR5G:LDIR DL')
-         self.ldir = "DL"
+         self.sdir = "DL"
       else:
          print("Set_5GNR_UL_Direction must be UL or DL")
-
+   
+   def Set_5GNR_Parameters(self,sDir):
+      self.Set_5GNR_Direction(sDir)
+      
    #####################################################################
    ### FSW 5GNR Settings
    #####################################################################
    def Get_5GNR_RefA(self):
-      rdStr = self.query(':CONF:NR5G:UL:CC:RPA:RTCF?')
+      rdStr = self.query(':CONF:NR5G:%s:CC:RPA:RTCF?'%(self.sdir))
       return rdStr
 
-   def Get_5GNR_UL_BWP_Center(self):
-      SS = self.Get_5GNR_UL_SubSpace()
+   def Get_5GNR_BWP_Center(self):
+      SS = self.Get_5GNR_SubSpace()
       SS = int(''.join(c for c in SS if c.isdigit()))
-      RB = int(self.Get_5GNR_UL_BWP_ResourceBlock())
-      RBO = int(self.Get_5GNR_UL_BWP_ResourceBlockOffset())
-      self.write(':CONF:NR5G:UL:CC:FRAM:BWP0:RBC MAX')
-      RBMax = int(self.Get_5GNR_UL_BWP_ResourceBlock())
-      self.Set_5GNR_UL_BWP_ResourceBlock(RB)
-      self.Set_5GNR_UL_BWP_ResourceBlockOffset(RBO)
+      RB = int(self.Get_5GNR_BWP_ResBlock())
+      RBO = int(self.Get_5GNR_BWP_ResBlockOffset())
+      self.write(':CONF:NR5G:%s:CC:FRAM:BWP0:RBC MAX'%(self.sdir))
+      RBMax = int(self.Get_5GNR_BWP_ResBlock())
+      self.Set_5GNR_BWP_ResBlock(RB)
+      self.Set_5GNR_BWP_ResBlockOffset(RBO)
       ressy = (SS * 1e3 *12*(RB - RBMax + 2 * RBO))/2 
       return ressy
              
-   def Get_5GNR_UL_BWP_Count(self):
-      rdStr = self.query(':CONF:NR5G:UL:CC:FRAM:BWPC?')
+   def Get_5GNR_BWP_Count(self):
+      rdStr = self.query(':CONF:NR5G:%s:CC:FRAM:BWPC?'%(self.sdir))
       return rdStr
       
-   def Get_5GNR_UL_BWP_ResourceBlock(self):
+   def Get_5GNR_BWP_ResBlock(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
-      rdStr = self.query(':CONF:NR5G:UL:CC:FRAM:BWP0:RBC?')
+      rdStr = self.query(':CONF:NR5G:%s:CC:FRAM:BWP0:RBC?'%(self.sdir))
       return rdStr
       
-   def Get_5GNR_UL_BWP_ResourceBlockOffset(self):
-      rdStr = self.query(':CONF:NR5G:UL:CC:FRAM:BWP0:RBOF?')
+   def Get_5GNR_BWP_ResBlockOffset(self):
+      rdStr = self.query(':CONF:NR5G:%s:CC:FRAM:BWP0:RBOF?'%(self.sdir))
       return rdStr      
       
-   def Get_5GNR_UL_BWP_SlotNum(self):
+   def Get_5GNR_BWP_SlotNum(self):
       ### Number of slots
-      rdStr = self.query(':CONF:NR5G:UL:CC:FRAM:BWP0:SCO?')
+      rdStr = self.query(':CONF:NR5G:%s:CC:FRAM:BWP0:SCO?'%(self.sdir))
       return rdStr
       
-   def Get_5GNR_UL_BWP_Slot_Modulation(self):
-      rdStr = self.query(':CONF:NR5G:UL:CC:FRAM:BWP0:SLOT0:ALL0:MOD?')
+   def Get_5GNR_BWP_Slot_Modulation(self):
+      rdStr = self.query(':CONF:NR5G:%s:CC:FRAM:BWP0:SLOT0:ALL0:MOD?'%(self.sdir))
       return rdStr
       
-   def Get_5GNR_UL_BWP_Slot_ResourceBlock(self):
+   def Get_5GNR_BWP_Slot_ResBlock(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
-      rdStr = self.query(':CONF:NR5G:UL:CC:FRAM:BWP0:SLOT0:ALL0:RBC?')
+      rdStr = self.query(':CONF:NR5G:%s:CC:FRAM:BWP0:SLOT0:ALL0:RBC?'%(self.sdir))
       return rdStr
       
-   def Get_5GNR_UL_BWP_Slot_ResourceBlockOffset(self):
-      rdStr = self.query(':CONF:NR5G:UL:CC:FRAM:BWP0:SLOT0:ALL0:RBOF?')
+   def Get_5GNR_BWP_Slot_ResBlockOffset(self):
+      rdStr = self.query(':CONF:NR5G:%s:CC:FRAM:BWP0:SLOT0:ALL0:RBOF?'%(self.sdir))
       return rdStr
       
-   def Get_5GNR_UL_BWP_Slot_SymbNum(self):
+   def Get_5GNR_BWP_Slot_SymbNum(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
-      rdStr = self.query(':CONF:NR5G:UL:CC:FRAM:BWP0:SLOT0:ALL0:SCO?')
+      rdStr = self.query(':CONF:NR5G:%s:CC:FRAM:BWP0:SLOT0:ALL0:SCO?'%(self.sdir))
       return rdStr
       
-   def Get_5GNR_UL_BWP_Slot_SymbOff(self):
+   def Get_5GNR_BWP_Slot_SymbOff(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
-      rdStr = self.query(':CONF:NR5G:UL:CC:FRAM:BWP0:SLOT0:ALL0:SOFF?')
+      rdStr = self.query(':CONF:NR5G:%s:CC:FRAM:BWP0:SLOT0:ALL0:SOFF?'%(self.sdir))
       return rdStr
       
-   def Get_5GNR_UL_ChannelBW(self):
+   def Get_5GNR_BWP_SubSpace(self):
+      rdStr = self.query(':CONF:NR5G:%s:CC:FRAM:BWP0:SSP?'%(self.sdir))
+      return rdStr
+      
+   def Get_5GNR_ChannelBW(self):
       ### 5;10;15;20;25;30;40;50;60;70;80;90;100;200;400
-      rdStr = self.query(':CONF:NR5G:UL:CC:BW?')
+      rdStr = self.query(':CONF:NR5G:%s:CC:BW?'%(self.sdir))
       return rdStr
       
-   def Get_5GNR_UL_SubSpace(self):
-      rdStr = self.query(':CONF:NR5G:UL:CC:FRAM:BWP0:SSP?')
-      return rdStr
-      
-   def Set_5GNR_UL_ChannelBW(self,iBW):
+   def Set_5GNR_ChannelBW(self,iBW):
       ### 5;10;15;20;25;30;40;50;60;70;80;90;100;200;400
-      self.write(':CONF:NR5G:UL:CC:BW BW%d'%iBW)
+      self.write(':CONF:NR5G:%s:CC:BW BW%d'%(self.sdir,iBW))
       
-   def Set_5GNR_UL_BWP_ResourceBlock(self,iRB):
+   def Set_5GNR_BWP_ResBlock(self,iRB):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
-      self.write(':CONF:NR5G:UL:CC:FRAM:BWP0:RBC %d'%iRB)
+      self.write(':CONF:NR5G:%s:CC:FRAM:BWP0:RBC %d'%(self.sdir,iRB))
 
-   def Set_5GNR_UL_BWP_ResourceBlockOffset(self,iRBO):
-      self.write(':CONF:NR5G:UL:CC:FRAM:BWP0:RBOF %d'%iRBO)
+   def Set_5GNR_BWP_ResBlockOffset(self,iRBO):
+      self.write(':CONF:NR5G:%s:CC:FRAM:BWP0:RBOF %d'%(self.sdir,iRBO))
 
-   def Set_5GNR_UL_BWP_Slot_Modulation(self,iMod):
-      self.write(':CONF:NR5G:UL:SUBF0:ALL:MOD QPSK')
+   def Set_5GNR_BWP_Slot_Modulation(self,iMod):
+      self.write(':CONF:NR5G:%s:SUBF0:ALL:MOD QPSK'%(self.sdir))
 
-   def Set_5GNR_UL_BWP_Slot_SubSpace(self,iSubSp):
-      self.write(':CONF:NR5G:UL:CC:BW BW%d'%iSubSp)
+   def Set_5GNR_BWP_Slot_SubSpace(self,iSubSp):
+      self.write(':CONF:NR5G:%s:CC:BW BW%d'%(self.sdir,iSubSp))
       
-   def Set_5GNR_UL_FreqRange(self,iRange):
+   def Set_5GNR_FreqRange(self,iRange):
       ### 0:LessThan3GHz 1:3to6GHz 2:GreaterThan 6GHz
       ### LOW; MIDD; HIGH
-      self.write(':CONF:NR5G:UL:CC:DFR %s'%iRange);      
+      self.write(':CONF:NR5G:%s:CC:DFR %s'%(self.sdir,iRange))      
             
    #####################################################################
    ### FSW Common Query
@@ -158,13 +161,14 @@ if __name__ == "__main__":
    FSW = VSA()
    FSW.jav_Open("192.168.1.109")
    FSW.Init_5GNR()
-   print(FSW.Get_5GNR_UL_ChannelBW())
-   print(FSW.Get_5GNR_UL_SubSpace())
-   print(FSW.Get_5GNR_UL_BWP_Count())
-   print(FSW.Get_5GNR_UL_BWP_ResourceBlock())
-   print(FSW.Get_5GNR_UL_BWP_ResourceBlockOffset())   
+   FSW.Set_5GNR_Parameters("DL")
+   print(FSW.Get_5GNR_ChannelBW())
+   print(FSW.Get_5GNR_SubSpace())
+   print(FSW.Get_5GNR_BWP_Count())
+   print(FSW.Get_5GNR_BWP_ResBlock())
+   print(FSW.Get_5GNR_BWP_ResBlockOffset())   
    print(FSW.Get_5GNR_RefA())
 
-   print(FSW.Get_5GNR_UL_BWP_Center())
+   print(FSW.Get_5GNR_BWP_Center())
    
    
