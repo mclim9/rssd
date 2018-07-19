@@ -12,12 +12,14 @@
 import os
 BaseDir = os.path.dirname(os.path.realpath(__file__))
 OutFile = BaseDir + "\\data\\SMW_FSW_5GNR"
-
+ 
 print __file__
 
 SMW_IP   = '192.168.1.114'                    #IP Address
 FSW_IP   = '192.168.1.109'                    #IP Address
 Freq     = 10e9
+odata =  [ [0]*13 for i in range(3)]
+odata =  [[] for i in range(3)]
 
 ##########################################################
 ### Code Start
@@ -28,7 +30,7 @@ from rssd.FileIO        import FileIO
 import time
 
 f = FileIO()
-DataFile = f.Init(OutFile)
+odataFile = f.Init(OutFile)
 SMW = VSG()
 SMW.jav_Open(SMW_IP,f.sFName)
 FSW = VSA()
@@ -37,38 +39,51 @@ FSW.jav_Open(FSW_IP,f.sFName)
 ##########################################################
 ### Instrument Settings
 ##########################################################
-SMW.Get_Freq(Freq)
-print(SMW.Get_5GNR_UL_ChannelBW())
-print(SMW.Get_5GNR_UL_SubSpace())
-print(SMW.Get_5GNR_UL_BWP_Count())
-print(SMW.Get_5GNR_UL_BWP_ResourceBlock())
-print(SMW.Get_5GNR_UL_BWP_ResourceBlockOffset())   
-print(SMW.Get_5GNR_UL_BWP_SlotNum())
+odata[0].append("               ")
+odata[0].append("Ch BW          ")
+odata[0].append("SubSpacing     ")
+odata[0].append("Num BWP        ")
+odata[0].append("BWP_RB         ")
+odata[0].append("BWP_RBoff      ")
+odata[0].append("RefA,MHz       ")
+odata[0].append("BWP_Slot_Mod   ")
+odata[0].append("BWP_Slot_RB    ")
+odata[0].append("BWP_Slot_RBOff ")
+odata[0].append("BWP_Slot_SymNum")
+odata[0].append("BWP_Slot_SymOff")
+odata[0].append("BWP_Cntr_Delta")
 
-print(SMW.Get_5GNR_UL_BWP_Slot_Modulation())
-print(SMW.Get_5GNR_UL_BWP_Slot_ResourceBlock())
-print(SMW.Get_5GNR_UL_BWP_Slot_ResourceBlockOffset())
-print(SMW.Get_5GNR_UL_BWP_Slot_SymbNum())
-print(SMW.Get_5GNR_UL_BWP_Slot_SymbOff())
+odata[1].append("SMW   ")
+odata[1].append(SMW.Get_5GNR_UL_ChannelBW())
+odata[1].append(SMW.Get_5GNR_UL_SubSpace())
+odata[1].append(SMW.Get_5GNR_UL_BWP_Count())
+odata[1].append(SMW.Get_5GNR_UL_BWP_ResourceBlock())
+odata[1].append(SMW.Get_5GNR_UL_BWP_ResourceBlockOffset()   )
+odata[1].append(int(SMW.Get_5GNR_RefA())/1e6)
+odata[1].append(SMW.Get_5GNR_UL_BWP_Slot_Modulation())
+odata[1].append(SMW.Get_5GNR_UL_BWP_Slot_ResourceBlock())
+odata[1].append(SMW.Get_5GNR_UL_BWP_Slot_ResourceBlockOffset())
+odata[1].append(SMW.Get_5GNR_UL_BWP_Slot_SymbNum())
+odata[1].append(SMW.Get_5GNR_UL_BWP_Slot_SymbOff())
+odata[1].append(int(SMW.Get_5GNR_UL_BWP_Center())/1e6)
 
-FSW.Get_Freq(Freq)
 FSW.Init_5GNR()
-print(FSW.Get_5GNR_UL_ChannelBW())
-print(FSW.Get_5GNR_UL_SubSpace())
-print(FSW.Get_5GNR_UL_BWP_Count())
-print(FSW.Get_5GNR_UL_BWP_ResourceBlock())
-print(FSW.Get_5GNR_UL_BWP_ResourceBlockOffset())
-print(FSW.Get_5GNR_UL_BWP_SlotCount())
+odata[2].append("FSW")
+odata[2].append(FSW.Get_5GNR_UL_ChannelBW())
+odata[2].append(FSW.Get_5GNR_UL_SubSpace())
+odata[2].append(FSW.Get_5GNR_UL_BWP_Count())
+odata[2].append(FSW.Get_5GNR_UL_BWP_ResourceBlock())
+odata[2].append(FSW.Get_5GNR_UL_BWP_ResourceBlockOffset())
+odata[2].append(int(FSW.Get_5GNR_RefA())/1e6)
+odata[2].append(FSW.Get_5GNR_UL_BWP_Slot_Modulation())
+odata[2].append(FSW.Get_5GNR_UL_BWP_Slot_ResourceBlock())
+odata[2].append(FSW.Get_5GNR_UL_BWP_Slot_ResourceBlockOffset())
+odata[2].append(FSW.Get_5GNR_UL_BWP_Slot_SymbNum())
+odata[2].append(FSW.Get_5GNR_UL_BWP_Slot_SymbOff())
+odata[2].append(int(FSW.Get_5GNR_UL_BWP_Center())/1e6)
 
-print(FSW.Get_5GNR_UL_BWP_SlotNum())
-print(FSW.Get_5GNR_UL_BWP_Slot_Modulation())
-print(FSW.Get_5GNR_UL_BWP_Slot_ResourceBlock())
-print(FSW.Get_5GNR_UL_BWP_Slot_ResourceBlockOffset())
-print(FSW.Get_5GNR_UL_BWP_Slot_SymbNum())
-print(FSW.Get_5GNR_UL_BWP_Slot_SymbOff())
-
-OutStr = "%d,%s"%(freq,EVM)
-f.write(OutStr)
+for i in range(13):
+   print("%s\t%s\t%s"%(odata[0][i],odata[1][i],odata[2][i]))
 
 SMW.jav_ClrErr()                          #Clear Errors
 FSW.jav_ClrErr()                          #Clear Errors
