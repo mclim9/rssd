@@ -16,14 +16,14 @@
 import os
 from setuptools import setup, find_packages
 
-def readme():
-    with open(os.path.join(os.path.dirname(__file__), "README.md")) as f:
-        return f.read()
+with open('README.md') as f:
+    long_description = f.read()
 
 setup(name='rssd',
       version='0.1.5',
       description='Rohde & Schwarz SCPI Driver',
-      long_description=readme(),
+      long_description=long_description,
+      long_description_content_type='text/markdown',  # This is important!
       classifiers=[
         'Development Status :: 3 - Alpha',      #3:Alpha 4:Beta 5:Production/Stable
         'License :: Other/Proprietary License',
