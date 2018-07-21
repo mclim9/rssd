@@ -12,6 +12,7 @@
 import visa
 import time
 import rssd.FileIO
+import socket
 
 class jaVisa(object):
    ### Rohde & Schwarz VISA Class
@@ -50,6 +51,10 @@ class jaVisa(object):
          print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
       return ErrList 
          
+   def jav_Error(self):
+      RdStr = self.query("SYST:ERR?").strip().split(',')
+      return RdStr
+
    def jav_IDN(self):
       self.dataIDN = "Temp"                  #Temp for self.query
       self.dataIDN = self.query("*IDN?").strip()
@@ -83,16 +88,40 @@ class jaVisa(object):
             break
       print('jav_OPCWai: %0.2fsec'%(delta))
       
-   def jav_Error(self):
-      RdStr = self.query("SYST:ERR?").strip().split(',')
-      return RdStr
-      
+   
    def jav_Open(self, IPAddr, fily=''):
       #  VISA: 'TCPIP0::'+IP_Address+'::INSTR'
       #  VISA: 'TCPIP0::'+IP_Address+'::inst0'
       #  VISA: 'TCPIP0::'+IP_Address+'::hislip0'
       #  VISA: 'TCPIP0::'+IP_Address+'::hislip0::INSTR'
-      self.jav_openvisa('TCPIP0::'+IPAddr+'::hislip0::INSTR',fily)
+      try:
+         
+         self.jav_openvisa('TCPIP0::'+IPAddr+'::hislip0::INSTR',fily)
+      except:
+         print('VISA Openerror.  Using Raw Socket')
+         self.jav_opensocket(IPAddr,fily)
+
+   def jav_opensocket(self, sIPAddr, fily=''):
+      #*****************************************************************
+      #*** Open raw socket Connection
+      #*****************************************************************
+      self.K2 = socket.socket()
+      try:
+         #s.setttimeout(1)
+         self.K2.connect((sIPAddr,5025))
+         self.jav_IDN()
+         try:
+            if fily != '':
+               f=open(fily,'a')
+               f.write(self.dataIDN + "\n")
+               f.close()
+         except:
+            pass
+         self.jav_ClrErr()
+      except:
+         print ('jav_OpnErr: ' + sVISAStr)
+         self.K2 = 'NoSOCKET'
+      return self.K2
 
    def jav_openvisa(self, sVISAStr, fily=''):
       #*****************************************************************
@@ -125,6 +154,9 @@ class jaVisa(object):
       self.Ofile = "yaVISA"
       DataFile = self.f.Init("yaVISA")
 
+   def jav_read_raw(self):
+      return self.K2.read_raw()
+
    def jav_reslist(self):
       try:
          rm = visa.ResourceManager()      #Create Resource Manager
@@ -132,9 +164,6 @@ class jaVisa(object):
       except:
          rmList =["No VISA"]
       return rmList
-
-   def jav_read_raw(self):
-      return self.K2.read_raw()
 
    def jav_scpilist(self,SCPIList):
       ### Send SCPI list & Query if "?" 
@@ -147,6 +176,16 @@ class jaVisa(object):
             ReadStr = self.query(cmd)
             OutList.append(ReadStr)
       return OutList
+      
+   def query(self,cmd):
+      read ="<notRead>"
+      try:
+         if self.dataIDN != "": 
+            read = self.K2.query(cmd).strip()   #Write if connected
+      except:
+         if self.prnty: print("jav_RdErr : %s-->%s"%(self.Model,cmd))
+      if self.Ofile != "" : self.f.write("%s,%s,%s,"%(self.Model,cmd,read))
+      return read
       
    def queryFloat(self,cmd):
       try:
@@ -162,16 +201,6 @@ class jaVisa(object):
       except:
          return -9999
          
-   def query(self,cmd):
-      read ="<notRead>"
-      try:
-         if self.dataIDN != "": 
-            read = self.K2.query(cmd).strip()   #Write if connected
-      except:
-         if self.prnty: print("jav_RdErr : %s-->%s"%(self.Model,cmd))
-      if self.Ofile != "" : self.f.write("%s,%s,%s,"%(self.Model,cmd,read))
-      return read
-      
    def write(self,cmd):
       try:
          if self.dataIDN != "": self.K2.write(cmd) #Write if connected
@@ -182,7 +211,7 @@ class jaVisa(object):
 if __name__ == "__main__":
    RS = jaVisa()
    #RS.jav_logscpi()
-   RS.jav_Open("127.0.0.1")
+   RS.jav_Open("192.168.1.114")
    #RS.jav_Open("192.168.1.109")
    print(RS.queryInt("*IDN?"))
    print(RS.Device)
