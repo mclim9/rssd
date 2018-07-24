@@ -11,10 +11,10 @@ aims to provide a python driver for use in other projects.
         * &lt;**instr**&gt;\_&lt;OptionName&gt;\_Kxx.py
         * &lt;**instr**&gt;\_&lt;OptionName&gt;\_Kxx.py
 * yaVISA: pyvisa wrapper
-    * yaVISA.VISA_Open()
-    * yaVISA.write()
-    * yaVISA.logSCPI() to record SCPI commands to file
-    * yaVISA.VISA_OPC_Wait(sCmd) for longer time commands
+    * yaVISA.jav_Open(sFileName, sLogFile): Open VISA link
+    * yaVISA.write(sSCPI): Write SCPI command
+    * yaVISA.jav_logscpi(): Record SCPI to file
+    * yaVISA.jav_OPC_Wait(sCmd): for longer commands
 * FSW: Vector Spectrum Analyzer
     * Base for FSW & VSE drivers
     * Possible compatibility: VSE; FPS; FSV;
@@ -38,6 +38,8 @@ aims to provide a python driver for use in other projects.
 * Change IP address to match instrument(s)
 * Run
 * Examples Include:
+    * SMW_FSW_5GNR_K144_Read  |Read SMW/FSW 5G NR Parameters
+    * SMW_FSW_Sweep.py        |SMW/FSW Frequency Sweep
     * SMW_LoadArb.py          |Basic SMW commands
     * VSE_ADemod.py           |VSE/FSW Analog FM Demod
     * VSE_Debug.py            |VSE Raw SCPI

@@ -118,5 +118,5 @@ if __name__ == "__main__":
    # this won't be run when imported
    SMW = VSG()
 #   SMW.jav_Open("192.168.1.114","Test.csv")
-   SMW.jav_Open("127.0.0.1")
+   SMW.jav_Open("192.168.1.114")
 #   SMW.Set_Freq(6e9)
