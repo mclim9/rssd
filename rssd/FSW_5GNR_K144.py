@@ -5,9 +5,9 @@
 ### Author:  Martin C Lim
 ### Date:    2018.04.03
 ### Requird: python -m pip install pyvisa
-import FSW_Common
+from rssd.FSW_Common import VSA
 
-class VSA(FSW_Common.VSA):
+class VSA(VSA):
    def __init__(self):
       super(VSA, self).__init__()      #Python 2/3
       self.sdir = "UL"
@@ -48,7 +48,7 @@ class VSA(FSW_Common.VSA):
       return rdStr
 
    def Get_5GNR_BWP_Center(self):
-      SS = self.Get_5GNR_SubSpace()
+      SS = self.Get_5GNR_BWP_SubSpace()
       SS = int(''.join(c for c in SS if c.isdigit()))
       RB = int(self.Get_5GNR_BWP_ResBlock())
       RBO = int(self.Get_5GNR_BWP_ResBlockOffset())
@@ -62,7 +62,7 @@ class VSA(FSW_Common.VSA):
    def Get_5GNR_BWP_Count(self):
       rdStr = self.query(':CONF:NR5G:%s:CC:FRAM:BWPC?'%(self.sdir))
       return rdStr
-      
+ 
    def Get_5GNR_BWP_ResBlock(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
       rdStr = self.query(':CONF:NR5G:%s:CC:FRAM:BWP0:RBC?'%(self.sdir))

@@ -1,4 +1,4 @@
-#Rohde&Schwarz Python SCPI Driver
+Rohde&Schwarz Python SCPI Driver
 =====================================================================
 Example automation code for general purpose R&S equipment.  Project   
 aims to provide a python driver for use in other projects.

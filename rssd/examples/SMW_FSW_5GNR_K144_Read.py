@@ -13,7 +13,7 @@ import os
 BaseDir = os.path.dirname(os.path.realpath(__file__))
 OutFile = BaseDir + "\\data\\SMW_FSW_5GNR"
  
-print __file__
+print(__file__)
 
 SMW_IP   = '192.168.1.114'                    #IP Address
 FSW_IP   = '192.168.1.109'                    #IP Address
@@ -52,11 +52,12 @@ odata[0].append("BWP_Slot_SymNum")
 odata[0].append("BWP_Slot_SymOff")
 odata[0].append("BWP_Slot_Cntr  ")
 
-if 0:
+if 1:
+   SMW.Set_5GNR_Parameters("DL")
    odata[1].append("SMW   ")
    odata[1].append(int(SMW.Get_5GNR_RefA())/1e6)
    odata[1].append(SMW.Get_5GNR_ChannelBW())
-   odata[1].append(SMW.Get_5GNR_SubSpace())
+   odata[1].append(SMW.Get_5GNR_BWP_SubSpace())
    odata[1].append(SMW.Get_5GNR_BWP_Count())
    odata[1].append(SMW.Get_5GNR_BWP_ResBlock())
    odata[1].append(SMW.Get_5GNR_BWP_ResBlockOffset())
@@ -72,7 +73,7 @@ FSW.Set_5GNR_Parameters("DL")
 odata[2].append("FSW")
 odata[2].append(int(FSW.Get_5GNR_RefA())/1e6)
 odata[2].append(FSW.Get_5GNR_ChannelBW())
-odata[2].append(FSW.Get_5GNR_SubSpace())
+odata[2].append(FSW.Get_5GNR_BWP_SubSpace())
 odata[2].append(FSW.Get_5GNR_BWP_Count())
 odata[2].append(FSW.Get_5GNR_BWP_ResBlock())
 odata[2].append(FSW.Get_5GNR_BWP_ResBlockOffset())
@@ -84,7 +85,7 @@ odata[2].append(FSW.Get_5GNR_BWP_Slot_SymbOff())
 odata[2].append(int(FSW.Get_5GNR_BWP_Center())/1e6)
 
 for i in range(13):
-   print("%s\t%s\t%s"%(odata[0][i],odata[2][i],odata[2][i]))
+   print("%s\t%s\t%s"%(odata[0][i],odata[1][i],odata[2][i]))
 
 SMW.jav_ClrErr()                          #Clear Errors
 FSW.jav_ClrErr()                          #Clear Errors

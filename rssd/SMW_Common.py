@@ -6,7 +6,7 @@
 ### Date   : 2018.02.01
 ### Requird: python -m pip install pyvisa
 #####################################################################
-from yaVISA import jaVisa
+from rssd.yaVISA import jaVisa
 
 class VSG(jaVisa):
    def __init__(self):
