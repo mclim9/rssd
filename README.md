@@ -21,11 +21,11 @@ Rohde&Schwarz Python SCPI Driver
         * &lt;**instr**&gt;\_&lt;OptionName&gt;\_Kxx.py
         * &lt;**instr**&gt;\_&lt;OptionName&gt;\_Kxx.py
 * yaVISA: pyvisa wrapper
-    * yaVISA.jav_Open(sFileName, sLogFile): Open VISA link
-    * yaVISA.write(sSCPI): Write SCPI command
-    * yaVISA.query(sSCPI): Query SCPI command
-    * yaVISA.jav_logscpi(): Turn on "SCPI to file"
-    * yaVISA.jav_OPC_Wait(sCmd): Wait for longer commands.
+    * **yaVISA.jav_Open(sFileName, sLogFile)**: Open VISA link
+    * **yaVISA.write(sSCPI)**: Write SCPI command
+    * **yaVISA.query(sSCPI)**: Query SCPI command
+    * **yaVISA.jav_logscpi()**: Turn on "SCPI to file"
+    * **yaVISA.jav_OPC_Wait(sCmd)**: Wait for longer commands.
     * Please see code for full list of commands.
 * FSW: Vector Spectrum Analyzer
     * Developed & Tested with FSW
@@ -61,8 +61,9 @@ Getting Started
     * VSE_OFDM_1CC_K96.py     |VSE Single OFDM Carrier EVM w/ K96
     * VSE_OFDM_MultiCC_K96.py |VSE Multi  OFDM Carrier EVM w/ K96
 
-## Versioning
+Versioning
 =====================================================================
+
 We use [Bitbucket](http://www.bitbucket.com/) for versioning. 
 
 ### Author
@@ -77,9 +78,7 @@ This project is licensed under the R&S License for Royalty-Free Products- see th
 * [FSW User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=FSW+user+manual&sort=relevance) https://www.rohde-schwarz.com/us/manual/fsw/
 * [VSE User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=vse+base+user+manual) https://www.rohde-schwarz.com/us/manual/vse/
 
-## Acknowledgments
-=====================================================================
-
+##Acknowledgments
 * Thanx to Nick Lalic for all his help.
 * [Markdown reference](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 
