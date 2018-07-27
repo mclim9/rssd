@@ -1,8 +1,18 @@
 Rohde&Schwarz Python SCPI Driver
 =====================================================================
-Example automation code for general purpose R&S equipment.  Project   
-aims to provide a python driver for use in other projects.
- 
+
+##Project goals:
+* Example general purpose python driver
+    * Vector Spectrum Analyzer, VSA
+    * Vector Signal Generator, VSG
+    * Vector Signal Explorer, VSE
+    * Power Meter, PM
+* Example code 
+    * Automated test example
+    * Instrument speed/repeatability evaluation
+    * Proof of concept
+    * Demo Code
+* The package is in development.  Package API may change at any time. We recommend users "freeze" package version for your project use.
 
 ### Drivers:
 * Structure: 
@@ -13,28 +23,33 @@ aims to provide a python driver for use in other projects.
 * yaVISA: pyvisa wrapper
     * yaVISA.jav_Open(sFileName, sLogFile): Open VISA link
     * yaVISA.write(sSCPI): Write SCPI command
-    * yaVISA.jav_logscpi(): Record SCPI to file
-    * yaVISA.jav_OPC_Wait(sCmd): for longer commands
+    * yaVISA.query(sSCPI): Query SCPI command
+    * yaVISA.jav_logscpi(): Turn on "SCPI to file"
+    * yaVISA.jav_OPC_Wait(sCmd): Wait for longer commands.
+    * Please see code for full list of commands.
 * FSW: Vector Spectrum Analyzer
-    * Base for FSW & VSE drivers
+    * Developed & Tested with FSW
+    * FSW & VSE share many commands.
     * Possible compatibility: VSE; FPS; FSV;
 * SMW: Vector Signal Generator
+    * Developed & Tested with SMW
     * Possible compatibility: SGS; SGT; SMB; SMBV
 * VSE: Vector Signal Explorer SW
-    * FSW & VSE shares many SCPI commands.
+    * Developed & Tested with VSE
     * Drivers represent VSE commands not in FSW code
     * OFDMVSA K96 code resides here as well
     * Possible compatibility: FSW
 
-##Getting Started
+Getting Started
 =====================================================================
+
 ### Installing
 ```python
     python -m pip install rssd
 ```
 
 ### Running
-* Load example files in &lt;Python&gt;\Lib\site-packages\rssd\examples
+* Load example files in Python\Lib\site-packages\rssd\examples
 * Change IP address to match instrument(s)
 * Run
 * Examples Include:
@@ -50,9 +65,8 @@ aims to provide a python driver for use in other projects.
 =====================================================================
 We use [Bitbucket](http://www.bitbucket.com/) for versioning. 
 
-
 ### Author
-* Martin C Lim - *Initial work* 
+* Martin C Lim 
 * Others welcome.  :-D
 
 ## License
@@ -65,6 +79,7 @@ This project is licensed under the R&S License for Royalty-Free Products- see th
 
 ## Acknowledgments
 =====================================================================
+
 * Thanx to Nick Lalic for all his help.
 * [Markdown reference](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 

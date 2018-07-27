@@ -5,7 +5,8 @@
 ### python setup.py --help-commands
 ### python setup.py sdist    #Creates tar.gz| bdist for zip
 ### python setup.py install  #Installs package
-### pip install .            #Installs package
+### pip install .            #Installs package in directory
+### pip install -e .         #Install editable package
 ###
 ##########################################################
 ### Upload to PyPi
