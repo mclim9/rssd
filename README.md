@@ -10,9 +10,9 @@ Rohde&Schwarz Python SCPI Driver
 * Example code 
     * Automated test example
     * Instrument speed/repeatability evaluation
-    * Proof of concept
-    * Demo Code
-* The package is in development.  Package API may change at any time. We recommend users "freeze" package version for your project use.
+    * Proof of concept/Demo code
+    
+* The package is in development.  Package API may change. We recommend users "freeze/save" package version prior to use.
 
 ### Drivers:
 * Structure: 
@@ -53,30 +53,31 @@ Getting Started
 * Change IP address to match instrument(s)
 * Run
 * Examples Include:
-    * SMW_FSW_5GNR_K144_Read  |Read SMW/FSW 5G NR Parameters
-    * SMW_FSW_Sweep.py        |SMW/FSW Frequency Sweep
-    * SMW_LoadArb.py          |Basic SMW commands
-    * VSE_ADemod.py           |VSE/FSW Analog FM Demod
-    * VSE_Debug.py            |VSE Raw SCPI
-    * VSE_OFDM_1CC_K96.py     |VSE Single OFDM Carrier EVM w/ K96
-    * VSE_OFDM_MultiCC_K96.py |VSE Multi  OFDM Carrier EVM w/ K96
 
-Versioning
+    | FileName                |Descriptions                       |
+    |-------------------------|:----------------------------------|
+    | SMW_FSW_5GNR_K144_Read  |Read SMW/FSW 5G NR Parameters      |
+    | SMW_FSW_Sweep.py        |SMW/FSW Frequency Sweep            |
+    | SMW_LoadArb.py          |Basic SMW commands                 |
+    | VSE_ADemod.py           |VSE/FSW Analog FM Demod            |
+    | VSE_Debug.py            |VSE Raw SCPI                       |
+    | VSE_OFDM_1CC_K96.py     |VSE Single OFDM Carrier EVM w/ K96 |
+    | VSE_OFDM_MultiCC_K96.py |VSE Multi  OFDM Carrier EVM w/ K96 |
+
+Project 
 =====================================================================
 
-We use [Bitbucket](http://www.bitbucket.com/) for versioning. 
-
-### Author
-* Martin C Lim 
-* Others welcome.  :-D
-
-## License
-This project is licensed under the R&S License for Royalty-Free Products- see the [LICENSE](LICENSE.txt) file for details
+* Code Repository: [Bitbucket](https://bitbucket.org/mclim/rs_scpi_driver/) 
+* Author: Martin C Lim 
+* License: This project is licensed under the R&S License for Royalty-Free Products- see the [LICENSE](LICENSE.txt) file for details
 
 ## References
-* [SMW User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=smw+vector+user+manual&sort=relevance) https://www.rohde-schwarz.com/us/manual/smw200a/
-* [FSW User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=FSW+user+manual&sort=relevance) https://www.rohde-schwarz.com/us/manual/fsw/
-* [VSE User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=vse+base+user+manual) https://www.rohde-schwarz.com/us/manual/vse/
+* SMW [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=smw+vector+user+manual&sort=relevance) [Options](https://www.rohde-schwarz.com/us/product/smw200a)
+* FSW [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=FSW+user+manual&sort=relevance) [Options](https://www.rohde-schwarz.com/us/product/fsw)
+* VSE [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=vse+base+user+manual) [Options](https://www.rohde-schwarz.com/us/product/vse)
+* NRP [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=nrp_s_sn+user+manual) [Options](https://www.rohde-schwarz.com/us/product/nrp_s_sn)
+* CMW [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=cmw+user+manual) [Options](https://www.rohde-schwarz.com/us/product/CMW500)
+
 
 ##Acknowledgments
 * Thanx to Nick Lalic for all his help.
