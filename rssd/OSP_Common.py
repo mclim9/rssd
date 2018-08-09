@@ -6,7 +6,7 @@
 ### Date:    2018.06.15
 ### Strctr : pyvisa-->yavisa-->OSP_Common.py
 #####################################################################
-from yaVISA import jaVisa
+from rssd.yaVISA import jaVisa
 
 class OSP(jaVisa):
    def __init__(self):
