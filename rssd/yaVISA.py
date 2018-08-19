@@ -78,7 +78,7 @@ class jaVisa(object):
       read = "0"
       while (int(read) & 1) != 1:            #Loop until done
          try:
-            read = self.query("*ESR?").strip()#Poll EventStatReg-Bit0:Op Complete		
+            read = self.query("*ESR?").strip()#Poll EventStatReg-Bit0:Op Complete  (STB?)
          except:
             print("jav_OPCWai:*ESR? Error")
          time.sleep(0.5)

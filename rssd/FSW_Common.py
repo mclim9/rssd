@@ -6,7 +6,7 @@
 ### Date:    2018.02.01
 ### Strctr : pyvisa-->yavisa-->FSW_Common.py
 #####################################################################
-from yaVISA import jaVisa
+from rssd.yaVISA import jaVisa
 
 class VSA(jaVisa):
    def __init__(self):
