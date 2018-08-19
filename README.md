@@ -1,4 +1,4 @@
-#Rohde&Schwarz Python SCPI Driver
+Rohde&Schwarz Python SCPI Driver
 =====================================================================
 Example automation code for general purpose R&S equipment.  Project   
 aims to provide a python driver for use in other projects.
@@ -26,7 +26,7 @@ aims to provide a python driver for use in other projects.
     * OFDMVSA K96 code resides here as well
     * Possible compatibility: FSW
 
-##Getting Started
+Getting Started
 =====================================================================
 ### Installing
 ```python
@@ -44,7 +44,7 @@ aims to provide a python driver for use in other projects.
     * VSE_OFDM_1CC_K96.py     |VSE Single OFDM Carrier EVM w/ K96
     * VSE_OFDM_MultiCC_K96.py |VSE Multi  OFDM Carrier EVM w/ K96
 
-## Versioning
+Versioning
 =====================================================================
 We use [Bitbucket](http://www.bitbucket.com/) for versioning. 
 
@@ -61,7 +61,7 @@ This project is licensed under the R&S License for Royalty-Free Products- see th
 * [FSW User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=FSW+user+manual&sort=relevance) https://www.rohde-schwarz.com/us/manual/fsw/
 * [VSE User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=vse+base+user+manual) https://www.rohde-schwarz.com/us/manual/vse/
 
-## Acknowledgments
+Acknowledgments
 =====================================================================
 * Thanx to Nick Lalic for all his help.
 * [Markdown reference](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)

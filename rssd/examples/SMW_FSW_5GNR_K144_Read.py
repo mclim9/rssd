@@ -13,7 +13,7 @@ import os
 BaseDir = os.path.dirname(os.path.realpath(__file__))
 OutFile = BaseDir + "\\data\\SMW_FSW_5GNR"
  
-print __file__
+print(__file__)
 
 SMW_IP   = '192.168.1.114'                    #IP Address
 FSW_IP   = '192.168.1.109'                    #IP Address
@@ -23,7 +23,9 @@ odata =  [[] for i in range(3)]
 ##########################################################
 ### Code Start
 ##########################################################
-from rssd.SMW_5GNR_K144 import VSG
+
+import rssd.SMW_5GNR_K144
+
 from rssd.FSW_5GNR_K144 import VSA
 from rssd.FileIO        import FileIO
 import time
