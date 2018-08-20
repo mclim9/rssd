@@ -1,21 +1,23 @@
 Rohde&Schwarz Python SCPI Driver
 =====================================================================
 
-##Project goals:
-* Example general purpose python driver
-    * Vector Spectrum Analyzer, VSA
-    * Vector Signal Generator, VSG
-    * Vector Signal Explorer, VSE
-    * Power Meter, PM
+## Project goals:
+* Example python drivers
+    * FSW, Vector Spectrum Analyzer
+    * SMW, Vector Signal Generator
+    * VSE, Vector Signal Explorer
+    * OSP, Switch Driver
+    * NRQ, Frequency Selective Power Sensor
+
 * Example code 
     * Automated test example
     * Instrument speed/repeatability evaluation
     * Proof of concept/Demo code
     
-* The package is in development.  Package API may change. We recommend users "freeze/save" package version prior to use.
+* RSSD is in development.  Package APIs may change. We recommend users "freeze/save" package version prior to use.
 
 ### Drivers:
-* Structure: 
+* Driver Structure: 
     * pyvisa &rarr; yaVISA.py &rarr; &lt;**instr**&gt;\_Common.py &rarr; 
         * &lt;**instr**&gt;\_&lt;OptionName&gt;\_Kxx.py
         * &lt;**instr**&gt;\_&lt;OptionName&gt;\_Kxx.py
@@ -53,7 +55,6 @@ Getting Started
 * Change IP address to match instrument(s)
 * Run
 * Examples Include:
-<<<<<<< HEAD
     * SMW_LoadArb.py          |Basic SMW commands
     * VSE_ADemod.py           |VSE/FSW Analog FM Demod
     * VSE_Debug.py            |VSE Raw SCPI
@@ -63,8 +64,6 @@ Getting Started
 Versioning
 =====================================================================
 We use [Bitbucket](http://www.bitbucket.com/) for versioning. 
-=======
->>>>>>> remotes/origin/master
 
     | FileName                |Descriptions                       |
     |-------------------------|:----------------------------------|
@@ -90,14 +89,11 @@ Project
 * NRP [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=nrp_s_sn+user+manual) [Options](https://www.rohde-schwarz.com/us/product/nrp_s_sn)
 * CMW [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=cmw+user+manual) [Options](https://www.rohde-schwarz.com/us/product/CMW500)
 
-<<<<<<< HEAD
 Acknowledgments
 =====================================================================
-=======
 
-##Acknowledgments
->>>>>>> remotes/origin/master
-* Thanx to Nick Lalic for all his help.
+## Acknowledgments
+* Thanx to [Nick Lalic](https://pypi.org/project/rohdeschwarz/) for all his help.
 * [Markdown reference](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 
 

@@ -1,0 +1,1 @@
+dir /b *.py > dir.txt
