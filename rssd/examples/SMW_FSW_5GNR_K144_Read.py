@@ -22,7 +22,9 @@ odata =  [[] for i in range(3)]
 ##########################################################
 ### Code Start
 ##########################################################
-from rssd.SMW_5GNR_K144 import VSG
+
+import rssd.SMW_5GNR_K144
+
 from rssd.FSW_5GNR_K144 import VSA
 from rssd.FileIO        import FileIO
 import time

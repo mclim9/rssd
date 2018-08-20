@@ -53,6 +53,18 @@ Getting Started
 * Change IP address to match instrument(s)
 * Run
 * Examples Include:
+<<<<<<< HEAD
+    * SMW_LoadArb.py          |Basic SMW commands
+    * VSE_ADemod.py           |VSE/FSW Analog FM Demod
+    * VSE_Debug.py            |VSE Raw SCPI
+    * VSE_OFDM_1CC_K96.py     |VSE Single OFDM Carrier EVM w/ K96
+    * VSE_OFDM_MultiCC_K96.py |VSE Multi  OFDM Carrier EVM w/ K96
+
+Versioning
+=====================================================================
+We use [Bitbucket](http://www.bitbucket.com/) for versioning. 
+=======
+>>>>>>> remotes/origin/master
 
     | FileName                |Descriptions                       |
     |-------------------------|:----------------------------------|
@@ -78,8 +90,13 @@ Project
 * NRP [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=nrp_s_sn+user+manual) [Options](https://www.rohde-schwarz.com/us/product/nrp_s_sn)
 * CMW [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=cmw+user+manual) [Options](https://www.rohde-schwarz.com/us/product/CMW500)
 
+<<<<<<< HEAD
+Acknowledgments
+=====================================================================
+=======
 
 ##Acknowledgments
+>>>>>>> remotes/origin/master
 * Thanx to Nick Lalic for all his help.
 * [Markdown reference](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 
