@@ -190,14 +190,28 @@ class jaVisa(object):
    def queryFloat(self,cmd):
       try:
          strArry = self.query(cmd).split(',')
-         return [float(i) for i in strArry]
+         return [float(i) for i in strArry][0]
       except:
          return -9999.9999
+
+   def queryFloatArry(self,cmd):
+      try:
+         strArry = self.query(cmd).split(',')
+         return [float(i) for i in strArry]
+      except:
+         return [-9999.9999]
+         
+   def queryIntArry(self,cmd):
+      try:
+         strArry = self.query(cmd).split(',')
+         return [int(i) for i in strArry]
+      except:
+         return [-9999]
          
    def queryInt(self,cmd):
       try:
          strArry = self.query(cmd).split(',')
-         return [int(i) for i in strArry]
+         return [int(i) for i in strArry][0]
       except:
          return -9999
          
