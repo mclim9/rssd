@@ -39,37 +39,36 @@ def FileWrite(sOutput):
     f.write("%s,%s,%s\n"%(sDate,sHostname,sOutput))
     f.close()
    
-def Socket_IDN(IPAddr):
-    s = socket.socket()
-    s.settimeout(1.0)
-    s.connect((IPAddr, 5025))
-    s.sendall('*IDN?\n')
-    data = s.recv(1024).strip()
-    IDN = IPAddr + "," + data
-    s.close
-    print(IDN)
-    FileWrite(IDN)
-    
-def VISA_IDN(IPAddr):
-    rm = visa.ResourceManager()
-    rmlist = rm.list_resources()
+def Socket_Query(IPAddr):
     try:
+       s = socket.socket()
+       s.settimeout(1.0)
+       s.connect((IPAddr, 5025))
+       SCPI = '*IDN?' + '\n'
+       s.sendall(SCPI.encode())
+       sRead = s.recv(1024).decode().strip()
+       s.close()
+    except:                               #If error
+       sRead = "###Socket Instrument not found###"
+    print(IPAddr + ',' + sRead)
+    FileWrite(IPAddr + ',' + sRead)
+    
+def VISA_Query(IPAddr):
+    try:
+        rm = visa.ResourceManager()
+        rmlist = rm.list_resources()
         VISA1 = rm.open_resource('TCPIP0::'+ IPAddr +'::inst0::INSTR')
-        data = VISA1.query('*IDN?').strip()
-        IDN = IPAddr + "," + data
+        sRead = VISA1.query('*IDN?').strip()
         VISA1.close()
     except:
-        IDN = IPAddr + ",###Instrument not found###"
-    print(IDN)
-    FileWrite(IDN)
+        sRead = "###VISA Instrument not found###"
+    print(IPAddr + ',' + sRead)
+    FileWrite(IPAddr + ',' + sRead)
 
 ##########################################################
 ### Main Code
 ##########################################################
 for IP in IPArry:
-   Socket_IDN(IP)
-   VISA_IDN(IP)
-
-
-
+    Socket_Query(IP)
+    VISA_Query(IP)
 

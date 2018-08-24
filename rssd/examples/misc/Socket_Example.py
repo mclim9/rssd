@@ -7,7 +7,7 @@
 ##########################################################
 ### User Entry
 ##########################################################
-host = '192.168.1.109'           #Get local machine name
+host = '192.168.1.114'           #Get local machine name
 port = 5025                      #Reserve a port for your service.
 
 ##########################################################
@@ -18,15 +18,17 @@ s = socket.socket()              #Create a socket object
 
 def sInit():
    s.connect((host, port))
-   s.settimeout(20)              #Timeout in seconds  
+   s.settimeout(2)               #Timeout in seconds  
 
 def sQuery(SCPI):
-   s.sendall(SCPI + "\n")        #Write 'cmd'
+   out = SCPI + "\n"
+   s.sendall(out.encode())       #Write 'cmd'
    sOut = s.recv(1024).strip()   #Query socket
    return sOut
 
 def sWrite(SCPI):
-   s.sendall(SCPI + "\n")        #Write 'cmd'
+   out = SCPI + "\n"
+   s.sendall(out.encode())       #Write 'cmd'
 
 def FileWrite(sOutput):
    sHostname = socket.gethostname()
@@ -40,4 +42,4 @@ def FileWrite(sOutput):
 ##########################################################
 sInit()    
 print(sQuery("*IDN?"))
-sWrite("MMEM:LOAD:DEM 'C:\R_S\Instr\Debug\Allocation_V3.10_17.11.17.198\TwoBWP_AllMods.allocation'")
+#sWrite("MMEM:LOAD:DEM 'C:\R_S\Instr\Debug\Allocation_V3.10_17.11.17.198\TwoBWP_AllMods.allocation'")
