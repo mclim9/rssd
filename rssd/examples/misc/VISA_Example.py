@@ -7,7 +7,7 @@
 ##########################################################
 ### User Entry
 ##########################################################
-host = '192.168.1.114'           #Instrument IP address
+host = '192.168.1.109'           #Instrument IP address
 
 ##########################################################
 ### Code Begin
@@ -16,10 +16,18 @@ import visa                      #Import VISA module
 
 def sQuery(SCPI):
    sOut = VISA1.query(SCPI)      #Write cmd
-   return sOut
+   return sOut.strip()
 
 def sWrite(SCPI):
    VISA1.write(SCPI)             #Write cmd
+
+def getSysInfo():
+   xmlIn = sQuery("SYST:DFPR?")
+   strStart = xmlIn.find('deviceId="') + len('deviceID="')
+   strStop  = xmlIn.find('type="') - 2
+   xmlIn = xmlIn[strStart:strStop]#Remove header
+   print(xmlIn)
+   return xmlIn
 
 ##########################################################
 ### Main Code
@@ -30,6 +38,6 @@ VISA1 = rm.open_resource('TCPIP0::'+ host +'::inst0::INSTR')
 
 print("Info:" + sQuery("*IDN?"))
 print("Opts:" + sQuery("*OPT?"))
-print("XML :%s"%(sQuery("SYST:DFPR?")))
+getSysInfo()
 
 VISA1.close()

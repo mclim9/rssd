@@ -7,7 +7,7 @@
 ##########################################################
 ### User Entry
 ##########################################################
-host = '192.168.1.114'           #Instrument IP address
+host = '192.168.1.109'           #Instrument IP address
 port = 5025                      #Instrument control port
 
 ##########################################################
@@ -25,6 +25,14 @@ def sWrite(SCPI):
    out = SCPI + "\n"
    s.sendall(out.encode())       #Write 'cmd'
 
+def getSysInfo():
+   xmlIn = sQuery("SYST:DFPR?")
+   strStart = xmlIn.find('deviceId="') + len('deviceID="')
+   strStop  = xmlIn.find('type="') - 2
+   xmlIn = xmlIn[strStart:strStop]#Remove header
+   print(xmlIn)
+   return xmlIn
+   
 ##########################################################
 ### Main Code
 ##########################################################
@@ -34,6 +42,4 @@ s.settimeout(1)                  #Timeout in seconds
 
 print("Info:" + sQuery("*IDN?"))
 print("Opts:" + sQuery("*OPT?"))
-xmlIn = sQuery("SYST:DFPR?")
-print("XML : %d"%(len(xmlIn)))
-
+getSysInfo()
