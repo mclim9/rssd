@@ -8,32 +8,28 @@
 ### User Entry
 ##########################################################
 host = '192.168.1.114'           #Instrument IP address
-port = 5025                      #Instrument control port
 
 ##########################################################
 ### Code Begin
 ##########################################################
-import socket                    #Import socket module
+import visa                      #Import VISA module
 
 def sQuery(SCPI):
-   out = SCPI + "\n"
-   s.sendall(out.encode())       #Write 'cmd'
-   sOut = s.recv(2048).strip()   #read socket
-   return sOut.decode()
+   sOut = VISA1.query(SCPI)      #Write cmd
+   return sOut
 
 def sWrite(SCPI):
-   out = SCPI + "\n"
-   s.sendall(out.encode())       #Write 'cmd'
+   VISA1.write(SCPI)             #Write cmd
 
 ##########################################################
 ### Main Code
 ##########################################################
-s = socket.socket()              #Create a socket object
-s.connect((host, port))
-s.settimeout(1)                  #Timeout in seconds  
+rm = visa.ResourceManager()
+rmlist = rm.list_resources()
+VISA1 = rm.open_resource('TCPIP0::'+ host +'::inst0::INSTR')
 
 print("Info:" + sQuery("*IDN?"))
 print("Opts:" + sQuery("*OPT?"))
-xmlIn = sQuery("SYST:DFPR?")
-print("XML : %d"%(len(xmlIn)))
+print("XML :%s"%(sQuery("SYST:DFPR?")))
 
+VISA1.close()
