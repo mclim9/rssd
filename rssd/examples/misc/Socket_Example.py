@@ -14,6 +14,7 @@ port = 5025                      #Instrument control port
 ### Code Begin
 ##########################################################
 import socket                    #Import socket module
+import xml.etree.ElementTree as ET 
 
 def sQuery(SCPI):
    out = SCPI + "\n"
