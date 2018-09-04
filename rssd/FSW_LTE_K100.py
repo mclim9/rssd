@@ -5,7 +5,7 @@
 ### Author:  Martin C Lim
 ### Date:    2018.04.03
 ### Requird: python -m pip install pyvisa
-import FSW_Common
+import rssd.FSW_Common
 
 class VSA(FSW_Common.VSA):
    def __init__(self):

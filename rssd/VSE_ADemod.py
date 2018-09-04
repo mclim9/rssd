@@ -5,7 +5,7 @@
 ### Author:  Martin C Lim
 ### Date:    2018.04.27
 ### Requird: python -m pip install pyvisa
-import VSE_Common
+import rssd.VSE_Common
 
 class VSE(VSE_Common.VSE):
    def __init__(self):

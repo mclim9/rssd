@@ -6,7 +6,7 @@
 ### Date:    2018.05.29
 ### Strctr : pyvisa-->yavisa-->CMW_GPRF.py
 #####################################################################
-from yaVISA import jaVisa
+from rssd.yaVISA import jaVisa
 
 class BSE(jaVisa):
    def __init__(self):

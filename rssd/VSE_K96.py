@@ -4,7 +4,7 @@
 ### Purpose: Vector Signal Explorer K96 Functions
 ### Author : Martin C Lim
 ### Date   : 2018.04.27
-import VSE_Common
+import rssd.VSE_Common
 import time         #EVM Wait
 
 class VSE(VSE_Common.VSE):

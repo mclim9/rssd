@@ -7,7 +7,7 @@
 ### Descrip: Add VSE functionality to FSW_Common base code
 ### Strctr : pyvisa-->yavisa-->FSW_Common-->VSE_Common.py
 #####################################################################
-import FSW_Common
+import rssd.FSW_Common
 
 class VSE(FSW_Common.VSA):
    def __init__(self):
