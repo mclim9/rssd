@@ -8,77 +8,15 @@
 ### 
 ### VISAFmt: USB0::0x0AAD::0x0138::100961::INSTR
 ###          <VS>::<Manu>::<Modl>::<SerN>::INSTR
+###          TCPIP0::NRPM3-900105::inst0
 ### 
 #####################################################################
-from yaVISA import jaVisa
+from rssd.NRP_Common import PMr
 
-class PMr(jaVisa):
+class PMr(PMr):
    def __init__(self):
       super(PMr,self).__init__()    #Python2/3
-      self.Model = "NRP"
       
-   #####################################################################
-   ### NRP Common
-   #####################################################################
-   def Get_Average(self):
-      outp = self.queryInt('SENS:AVER:COUN?')
-      return outp
-
-   def Set_Average(self,iAvg):
-      self.write('SENS:AVER:COUN %d'%iAvg)
-
-   def Set_AverageMode(self,bAuto):
-      if bAuto == 0:
-         self.write('SENS:AVER:COUN:AUTO OFF')
-      else:
-         self.write('SENS:AVER:COUN:AUTO ON')
-
-   def Get_Freq(self):
-      outp = self.query(':SENS:FREQ?')
-      return outp
-      
-   def Set_Freq(self,fFreq):
-      self.query('SENS:FREQ %f;*OPC?'%fFreq)
-
-   def Get_Offset(self):
-      ### Offset = Loss
-      ### +Num => +Reading
-      ### -Num ==> -Reading
-      outp = self.queryFloat('SENS:CORR:OFFS?')
-      return outp
-      
-   def Get_Power(self):
-      self.write('UNIT:POW DBM')
-      self.write('SENS:FUNC "POW:AVG"')
-      self.write('INIT:IMM')        
-      outp = self.queryFloat('FETCH?')
-      return outp
-
-   def Get_PowerAll(self):
-      ### NRP3M
-      self.write('UNIT:POW DBM')
-#      self.write('SENS:FUNC "POW:AVG"')
-      self.write('SENS:CHAN1:ENAB ON')
-      self.write('SENS:CHAN2:ENAB ON')
-      self.write('SENS:CHAN3:ENAB ON')
-      self.query('INIT:IMM;*OPC?')
-      outp = self.queryFloat('FETCH:ALL?')
-      return outp
-      
-   def Set_PowerOffset(self,fOffset):
-      self.write('SENS:CORR:OFFS:STAT ON')
-      self.write('SENS:CORR:OFFS %f'%fOffset)
-
-   def Set_PowerOffsetState(self,bState):
-      if bState == 0:
-         self.write('SENS:CORR:OFFS:STAT OFF')
-      else:
-         self.write('SENS:CORR:OFFS:STAT ON')
-
-   def Set_InitImm(self):
-      self.query('INIT:IMM;*OPC?')
-      
-
 #####################################################################
 ### NRPM3M 0x0195
 #####################################################################
@@ -89,7 +27,7 @@ class PMr(jaVisa):
          self.write('SYST:LED:CHAN%d:COL 0'%iSensor)
                
 #####################################################################
-### NRPM3M 0x0195
+### NRPM3N 0x0195
 #####################################################################
    def Set_Gen_MasterPwr(self,bState,iSensor=1):
       ### This cmd sent automatically after 1min to prevent overheating.
@@ -123,9 +61,8 @@ class PMr(jaVisa):
 if __name__ == "__main__":
    # this won't be run when imported
    NRP = PMr()
-#   NRP.jav_Open("192.168.1.114","Test.csv")
    NRP.jav_openvisa("USB0::0x0AAD::0x0196::900105::INSTR")
-#   NRP.jav_logscpi()
+#  NRP.jav_logscpi()
    NRP.jav_Reset()
    NRP.Set_Freq(24e9)
 
