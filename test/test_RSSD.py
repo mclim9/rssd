@@ -24,13 +24,17 @@ class TestGeneral(unittest.TestCase):
       self.CMW = BSE()
       self.assertEqual(self.CMW.Model,"CMW-GPRF")
       
-   def test_FSW_Common(self):
-      from rssd.FSW_Common import VSA
-      self.FSW = VSA()
-      self.assertEqual(self.FSW.Model,"FSW")
-      
+   def test_FileIO(self):
+      from rssd.FileIO import FileIO
+      self.FileIO = FileIO()
+
    def test_FSW_5GNR(self):
       from rssd.FSW_5GNR_K144 import VSA
+      self.FSW = VSA()
+      self.assertEqual(self.FSW.Model,"FSW")
+
+   def test_FSW_Common(self):
+      from rssd.FSW_Common import VSA
       self.FSW = VSA()
       self.assertEqual(self.FSW.Model,"FSW")
 
@@ -39,10 +43,40 @@ class TestGeneral(unittest.TestCase):
       self.FSW = VSA()
       self.assertEqual(self.FSW.Model,"FSW")
       
+   def test_FSW_Transient(self):
+      from rssd.FSW_Transient_K60 import VSA
+      self.FSW = VSA()
+      self.assertEqual(self.FSW.Model,"FSW")
+      
+   def test_NRP_Common(self):
+      from rssd.NRP_Common import PMr
+      self.NRP = PMr()
+      self.assertEqual(self.NRP.Model,"NRP")
+
+   def test_NRQ_Common(self):
+      from rssd.NRQ_Common import NRQ
+      self.NRQ = NRQ()
+      self.assertEqual(self.NRQ.Model,"NRQ")
+
+   def test_OSP_Common(self):
+      from rssd.OSP_Common import OSP
+      self.OSP = OSP()
+      self.assertEqual(self.OSP.Model,"OSP1x0")
+
+   def test_SMW_5GNR(self):
+      from rssd.SMW_5GNR_K144 import VSG
+      self.SMW = VSG()      
+      self.assertEqual(self.SMW.Model,"SMW")
+      
    def test_SMW_Common(self):
       from rssd.SMW_Common import VSG
       self.SMW = VSG()      
       self.assertEqual(self.SMW.Model,"SMW")
+      
+   def test_VSE_ADemod(self):
+      from rssd.VSE_ADemod import VSE
+      self.VSE = VSE()      
+      self.assertEqual(self.VSE.Model,"VSE")
       
    def test_VSE_Common(self):
       from rssd.VSE_Common import VSE
@@ -54,7 +88,10 @@ class TestGeneral(unittest.TestCase):
       self.VSE = VSE()
       self.assertEqual(self.VSE.Model,"VSE")
       
-      
+   def test_yaVISA(self):
+      from rssd.yaVISA import jaVisa
+      self.K2 = jaVisa()
+
    def tearDown(self):
       pass
 

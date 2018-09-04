@@ -5,9 +5,9 @@
 ### Author:  Martin C Lim
 ### Date:    2018.04.27
 ### Requird: python -m pip install pyvisa
-import rssd.VSE_Common
+from rssd.VSE_Common import VSE
 
-class VSE(VSE_Common.VSE):
+class VSE(VSE):
    def __init__(self):
       super(VSE,self).__init__()    #Python2
 
