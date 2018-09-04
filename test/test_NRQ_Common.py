@@ -54,4 +54,6 @@ class TestGeneral(unittest.TestCase):
       self.assertTrue(GetVal > -9999)
 
 if __name__ == '__main__':
-   unittest.main()
+   #unittest.main()
+   suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
+   unittest.TextTestRunner(verbosity=4).run(suite)

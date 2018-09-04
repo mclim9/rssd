@@ -20,22 +20,22 @@ class TestGeneral(unittest.TestCase):
    def setUp(self):                 #run before each test
       self.SMW = VSG()
       try:
-         self.SMW.VISA_Open(host)
-         self.SMW.VISA_Reset()
-         self.SMW.VISA_ClrErr()
+         self.SMW.jav_Open(host)
+         self.SMW.jav_Reset()
+         self.SMW.jav_ClrErr()
          self.SMW.dLastErr = ""
       except:
          self.assertTrue(1)
 
    def test_SMW_Connect(self):
-      self.assertEqual(self.SMW.Make,"Rohde&Schwarz")
+      self.assertEqual(self.SMW.jav_Error()[0],'0')
 
    def test_SMW_Common(self):      
       self.SMW.Set_Freq(1e6)
       self.SMW.Set_Power(10)
       self.SMW.Get_Freq()
       self.SMW.Get_Level()
-      self.assertEqual(self.SMW.dLastErr,"")
+      self.assertEqual(self.SMW.jav_Error()[0],'0')
 
 if __name__ == '__main__':
 	unittest.main()

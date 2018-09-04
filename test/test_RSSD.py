@@ -17,6 +17,7 @@ import unittest
 
 class TestGeneral(unittest.TestCase):
    def setUp(self):              #run before each test
+      print("",end="")
       pass
 
    def test_CMW_GPRF(self):
@@ -96,7 +97,7 @@ class TestGeneral(unittest.TestCase):
       pass
 
 if __name__ == '__main__':
-   if 0:    #Run w/o test names
+   if 1 :    #Run w/o test names
       unittest.main()
    else:    #Verbose run
       suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)

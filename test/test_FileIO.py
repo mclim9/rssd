@@ -21,8 +21,8 @@ class TestGeneral(unittest.TestCase):
       self.FileIO.Init("FileIO.csv")
       
    def test_write(self):
-      self.FileIO.write("Hello World")
-      self.FileIO.write_raw("Hello Worldd")
+      self.FileIO.write("Hello World Test_FileIO.py")
+      self.FileIO.write_raw("Hello World Test_FileIO.py Raw")
       
    def test_readcsv(self):
       data = self.FileIO.readcsv()

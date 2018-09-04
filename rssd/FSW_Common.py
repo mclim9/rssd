@@ -53,7 +53,7 @@ class VSA(jaVisa):
    ### FSW Attenuation
    #####################################################################
    def Get_AttnMech(self):
-      self.queryFloat('INP:ATT?')
+      out = self.queryFloat('INP:ATT?')
       return out 
 
    def Set_AttnMech(self,fMAttn):
