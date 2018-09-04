@@ -81,7 +81,12 @@ class PMr(jaVisa):
       
 
 #####################################################################
-### NRPM-Axx
+### NRPM
+###   - NRP-ZKU   USB cable (3.0m) to R&S®NRPxxS(N)
+###   - NRPM3     OTA power sensor 
+###   - NRPM-ZKD3 Interface cable; R&S®NRPM3 to R&S®NRPM-ZD3
+###   - NRPM-ZD3  Cable feedthrough for anechoic chamber
+###   - NRPM-Axx  OTA Antenna module: A66(27-75)
 #####################################################################
    def Set_Sys_LED(self,bState,iSensor=1):
       if bState == 1:

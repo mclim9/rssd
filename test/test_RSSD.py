@@ -18,7 +18,7 @@ import unittest
 class TestGeneral(unittest.TestCase):
    def setUp(self):              #run before each test
       pass
-      
+
    def test_CMW_GPRF(self):
       from rssd.CMW_GPRF import BSE
       self.CMW = BSE()

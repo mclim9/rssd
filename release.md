@@ -1,6 +1,8 @@
 Release History
 =====================================================================
     * RSSD 0.1.6
+        -Fix Import references to rssd.*
+        -Add Test_rssd.py to validate drivers
     * RSSD 0.1.5 
         -Add AAA_Common.py instrument template
         -Add FSW/SMW_5GNR_144 read functions
