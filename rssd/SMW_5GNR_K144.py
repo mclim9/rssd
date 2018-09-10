@@ -60,6 +60,10 @@ class VSG(VSG):
       rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:POIN?')
       return rdStr
 
+   def Get_5GNR_TransPrecoding(self):
+      rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:DUMR:TPST?')
+      return rdStr
+
    def Get_5GNR_BWP_Center(self):
       rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:DFR?'%(self.sdir))
       return rdStr
@@ -114,7 +118,44 @@ class VSG(VSG):
       rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:CBW?')
       return rdStr
       
+   #####################################################################
+   ### FSW 5G NR DMRS Config
+   #####################################################################
+   def Get_5GNR_DMRS_Config(self):
+      rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:PUSC:DMRS:CONF?')
+      return rdStr
       
+   def Get_5GNR_DMRS_Mapping(self):
+      rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:PUSC:DMRS:MAPT?')
+      return rdStr
+      
+   def Get_5GNR_DMRS_1stDMRSSym(self):
+      rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:PUSC:DMRS:APOS?')
+      return rdStr
+      
+   def Get_5GNR_DMRS_AddPosition(self):
+      rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:PUSC:DMRS:IND?')
+      return rdStr
+      
+   def Get_5GNR_DMRS_MSymbLen(self):
+      rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:PUSC:DMRS:LENG?')
+      return rdStr
+      
+   def Get_5GNR_DMRS_SeqGenMeth(self):
+      #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:PUSC:DMRS:APOS?')
+      rdStr = "<TBD>"
+      return rdStr
+      
+   def Get_5GNR_DMRS_SeqGenSeed(self):
+      #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:PUSC:DMRS:APOS?')
+      rdStr = "<TBD>"
+      return rdStr
+
+   def Get_5GNR_DMRS_RelPwr(self):
+      #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:PUSC:DMRS:APOS?')
+      rdStr = "<TBD>"
+      return rdStr
+   
 #####################################################################
 ### Run if Main
 #####################################################################
