@@ -30,6 +30,13 @@ class VSG(VSG):
       else:
          print("Set_5GNR_Direction must be UP or DOWN")
 
+   def Set_5GNR_BBState(self,iEnable):
+      if iEnable == 1:
+         self.write(':SOUR1:BB:NR5G:STAT 1')
+         self.query('*OPC?')        # Wait for calculation
+      else:
+         self.write(':SOUR1:BB:NR5G:STAT 0')
+
    def Set_5GNR_ChannelBW(self,iBW):
       ### BW in MHz
       ### 5GNR-->NODE-->Carriers-->Channel BW
@@ -101,12 +108,12 @@ class VSG(VSG):
       
    def Get_5GNR_BWP_Slot_SymbNum(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
-      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL1:SYMN?')
+      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:SYMN?')
       return rdStr
       
    def Get_5GNR_BWP_Slot_SymbOff(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
-      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL1:SYM?')
+      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:SYM?')
       return rdStr
       
    def Get_5GNR_BWP_SubSpace(self):

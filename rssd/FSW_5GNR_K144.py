@@ -30,9 +30,12 @@ class VSA(VSA):
       # sDirection = "UL" or "DL"
       if (sDirection == "UL") or (sDirection == "UP"):
          self.write(':CONF:NR5G:LDIR UL')
+         self.write(':CONF:NR5G:UL:CC1:IDC ON')
+
          self.sdir = "UL"
       elif (sDirection == "DL") or (sDirection == "DOWN"):
          self.write(':CONF:NR5G:LDIR DL')
+         self.write(':CONF:NR5G:DL:CC1:IDC ON')
          self.sdir = "DL"
       else:
          print("Set_5GNR_UL_Direction must be UL or DL")
@@ -124,15 +127,15 @@ class VSA(VSA):
    def Set_5GNR_BWP_ResBlockOffset(self,iRBO):
       self.write(':CONF:NR5G:%s:CC1:FRAM1:BWP0:RBOF %d'%(self.sdir,iRBO))
 
-   def Set_5GNR_BWP_Slot_Modulation(self,iMod):
+   def Set_5GNR_BWP_Slot_Modulation(self,sMod):
       # QPSK; QAM16; QAM64; QAM256; PITB
-      self.write(':CONF:NR5G:%s:FRAM1:BWP0:SLOT0:ALL0:MOD QPSK'%(self.sdir))
+      self.write(':CONF:NR5G:%s:FRAM1:BWP0:SLOT0:ALL0:MOD %s'%(self.sdir, sMod))
 
-   def Set_5GNR_BWP_Slot_SubSpace(self,iSubSp):
-      self.write(':CONF:NR5G:%s:CC1:BW BW%d'%(self.sdir,iSubSp))
+   def Set_5GNR_BWP_SubSpace(self,iSubSp):
+      self.write(':CONF:NR5G:%s:CC1:FRAM1:BWP0:SSP SS%d'%(self.sdir,iSubSp))
       
    def Set_5GNR_FreqRange(self,iRange):
-      ### 0:LessThan3GHz 1:3to6GHz 2:GreaterThan 6GHz
+      ### 0:<3GHz 1:3-6GHz 2:>6GHz
       ### LOW; MIDD; HIGH
       self.write(':CONF:NR5G:%s:CC1:DFR %s'%(self.sdir,iRange))      
             
@@ -181,17 +184,17 @@ class VSA(VSA):
       return float(EVM)
 
    def Get_5GNR_ChPwr(self):
-      Power   = float(self.query('FETC:SUMM:POW?'))
+      Power = float(self.query('FETC:SUMM:POW?'))
       return Power
       
    def Get_5GNR_EVM(self):
-      EVM = self.query('FETC:SUMM:EVM?')
-      return float(EVM) 
+      EVM = self.queryFloat('FETC:SUMM:EVM?')
+      return EVM
 
    def Get_5GNR_EVMParams(self):
-      MAttn   = self.Get_AttnMech()
+      MAttn = self.Get_AttnMech()
       RefLvl  = self.Get_RefLevel()
-      Power   = self.Get_5GNR_ChPwr()
+      Power = self.Get_5GNR_ChPwr()
       EVM     = self.Get_5GNR_EVM()
       return ("%.2f,%.2f,%6.2f,%.2f"%(MAttn,RefLvl,Power,EVM))
 
@@ -203,6 +206,7 @@ if __name__ == "__main__":
    FSW = VSA()
    FSW.jav_Open("192.168.1.109")
    FSW.Init_5GNR()
-   FSW.Set_5GNR_Parameters('UL')
-   FSW.Set_5GNR_BWP_Slot_Modulation('QAM64')
-   FSW.jav_clrError()
+   EVM = FSW.Get_5GNR_EVM()
+   print(EVM)
+   FSW.jav_ClrErr()
+   FSW.jav_Close()
