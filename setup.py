@@ -12,7 +12,7 @@
 ### Upload to PyPi
 ### python setup.py register #Reserve name in pypi
 ### python setup.py sdist    #Creates tar.gz
-### twine upload rssd-0.1.6.tar.gz 
+### twine upload rssd-0.1.7.tar.gz 
 ### twine upload dist/* --repository-url=https://test.pypi.org/legacy/
 """
 import os
@@ -22,7 +22,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='rssd',
-      version='0.1.6',
+      version='0.1.7',
       description='Rohde & Schwarz SCPI Driver',
       long_description=long_description,
       long_description_content_type='text/markdown', 
