@@ -55,6 +55,7 @@ Getting Started
 * Change IP address to match instrument(s)
 * Run
 * Examples Include:
+
 | FileName                | Descriptions                       |   |
 |-------------------------|------------------------------------|---|
 | SMW_FSW_5GNR_K144_Read  | Read SMW/FSW 5G NR Parameters      |   |
@@ -65,6 +66,10 @@ Getting Started
 | VSE_OFDM_1CC_K96.py     | VSE Single OFDM Carrier EVM w/ K96 |   |
 | VSE_OFDM_MultiCC_K96.py | VSE Multi  OFDM Carrier EVM w/ K96 |   |
 
+| Day     | Meal    | Price |
+| --------|---------|-------|
+| Monday  | pasta   | $6    |
+| Tuesday | chicken | $8    |
 
 Project 
 =====================================================================
