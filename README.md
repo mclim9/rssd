@@ -56,20 +56,15 @@ Getting Started
 * Run
 * Examples Include:
 
-| FileName                | Descriptions                       |   |
-|-------------------------|------------------------------------|---|
-| SMW_FSW_5GNR_K144_Read  | Read SMW/FSW 5G NR Parameters      |   |
-| SMW_FSW_Sweep.py        | SMW/FSW Frequency Sweep            |   |
-| SMW_LoadArb.py          | Basic SMW commands                 |   |
-| VSE_ADemod.py           | VSE/FSW Analog FM Demod            |   |
-| VSE_Debug.py            | VSE Raw SCPI                       |   |
-| VSE_OFDM_1CC_K96.py     | VSE Single OFDM Carrier EVM w/ K96 |   |
-| VSE_OFDM_MultiCC_K96.py | VSE Multi  OFDM Carrier EVM w/ K96 |   |
-
-| Day     | Meal    | Price |
-| --------|---------|-------|
-| Monday  | pasta   | $6    |
-| Tuesday | chicken | $8    |
+    | FileName                | Descriptions                       |   |
+    |-------------------------|------------------------------------|---|
+    | SMW_FSW_5GNR_K144_Read  | Read SMW/FSW 5G NR Parameters      |   |
+    | SMW_FSW_Sweep.py        | SMW/FSW Frequency Sweep            |   |
+    | SMW_LoadArb.py          | Basic SMW commands                 |   |
+    | VSE_ADemod.py           | VSE/FSW Analog FM Demod            |   |
+    | VSE_Debug.py            | VSE Raw SCPI                       |   |
+    | VSE_OFDM_1CC_K96.py     | VSE Single OFDM Carrier EVM w/ K96 |   |
+    | VSE_OFDM_MultiCC_K96.py | VSE Multi  OFDM Carrier EVM w/ K96 |   |
 
 Project 
 =====================================================================
