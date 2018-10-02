@@ -22,4 +22,4 @@ SMW.Set_RFPwr(-30)               #Output -30dBm
 SMW.Set_RFState('ON')            #Turn RF Output on
 SMW.Set_ArbWv('composer.wv')     #Load file
 SMW.Set_ArbState('ON')           #Turn on Arb & IQ Mod
-SMW.jav_ClrErr()                #Clear Errors
+SMW.jav_ClrErr()                 #Clear Errors
