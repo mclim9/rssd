@@ -377,4 +377,5 @@ if __name__ == "__main__":
    FSW = VSA()
    FSW.jav_Open("192.168.1.109")
    #FSW.Set_Autolevel_IFOvld()
-   FSW.jav_ClrErr()
+#   FSW.jav_ClrErr()
+   del FSW
