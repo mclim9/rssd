@@ -59,9 +59,8 @@ for i in range(10):
    tick = datetime.now()
    FSW.Set_InitImm()
    EVM = FSW.Get_5GNR_EVM()
-   tock = datetime.now()
-   d = tock - tick
-   OutStr = '%f,%d,%d,%s,%2d,%3d.%d'%(EVM,ChBW,SubSp,Mod,i,d.seconds,d.microseconds)
+   d = datetime.now() - tick
+   OutStr = '%f,%d,%d,%s,%2d,%3d.%06d'%(EVM,ChBW,SubSp,Mod,i,d.seconds,d.microseconds)
    OFile.write (OutStr)
    
 ##########################################################

@@ -11,7 +11,7 @@
 ##########################################################
 import os
 BaseDir = os.path.dirname(os.path.realpath(__file__))
-OutFile = BaseDir + "\\data\\" + __file__
+OutFile = BaseDir + __file__
 
 SMW_IP  = '192.168.1.114'
 FSW_IP  = '192.168.1.109'
@@ -55,11 +55,11 @@ for Fs in FsArry:
    print("Starting Fs: %f"%Fs)
    FSW.Set_IQ_SamplingRate(Fs)
    for i in range(50):
-      FSW.Set_InitImm()
       tick = datetime.now()
+      FSW.Set_InitImm()
       FSW.Get_IQ_Data()
-      tock = datetime.now()
-      OutStr = '%f,%f,%d,%s'%(Fs/1e6,MeasTim,i,tock-tick)
+      d = datetime.now() - tick
+      OutStr = '%f,%f,%d,%3d.%06d%3d.%06d'%(Fs/1e6,MeasTim,i,d.seconds,d.microseconds)
       OFile.write (OutStr)
    
 ##########################################################
