@@ -205,7 +205,7 @@ class VSA(jaVisa):
       self.write('SENS:SWE:TIME %f'%fSwpTime);  #Sweep/Capture Time
 
    def Set_SweepCont(self,iON):
-      if iON > 0:
+      if iON == 1:
          self.write('INIT:CONT ON');            #Continuous Sweep
       else:
          self.write('INIT:CONT OFF');           #Single Sweep
@@ -232,7 +232,26 @@ class VSA(jaVisa):
    
    def Set_Trace_Detector(self,sDetect,trace=1):
       self.write('SENS:DET %s'%sDetect)      #RMS|
+
+   #####################################################################
+   ### FSW Trigger
+   #####################################################################
+   def Set_Trig1_Source(self,sDetect):
+      #IMM; EXT; EXT2; EXT3; RFP; IFP; TIME; VID; PSEN 
+      self.write('TRIG:SEQ:SOUR %s'%sDetect)      #RMS|
+   
+   def Set_Trig2_Dir(self,sDir):
+      if (sDir == 'OUT'):
+         self.write('OUTP:TRIG2:DIR OUTP')
+      else:
+         self.write('OUTP:TRIG2:DIR INP')
       
+   def Set_Trig2_OutType(self,sDir):
+      #DEV : Device
+      #TARM: Trigger Armed
+      #UDEF: User Defined
+      self.write('OUTP:TRIG2:OTYP %s')
+
    #####################################################################
    ### FSW IQ Analyzer
    #####################################################################
@@ -308,10 +327,27 @@ class VSA(jaVisa):
       iqfile.close()
       
    #####################################################################
+   ### FSW ACLR
+   #####################################################################
+   def Init_ACLR(self):
+      self.Set_Channel("Spectrum")
+      self.write('CALC:MARK:FUNC:POW:SEL ACP')
+   
+   def Set_ACLR_CHBW(self,dCHBW):
+      self.write('POW:ACH:BAND %d'%dCHBW)
+      
+   def Set_ACLR_AdjBW(self,dCHBW):
+      self.write('POW:ACH:BAND:ACH %d;ALT1 %d;ALT2 %d'%(dCHBW,dCHBW,dCHBW))
+
+   def Set_ACLR_AdjSpace(self,dCHBW):
+      self.write('POW:ACH:SPAC:ACH %d;ALT1 %d;ALT2 %d'%(dCHBW,dCHBW,dCHBW))
+
+
+   #####################################################################
    ### FSW Common Query
    #####################################################################
    def Get_ACLR(self):
-      ACLR = self.query(':CALC:MARK:FUNC:POW:RES? MCAC').split(',')
+      ACLR = self.query(':CALC:MARK:FUNC:POW:RES? MCAC')
       return ACLR
 
    def Get_ChPwr(self):
@@ -378,4 +414,5 @@ if __name__ == "__main__":
    FSW.jav_Open("192.168.1.109")
    #FSW.Set_Autolevel_IFOvld()
 #   FSW.jav_ClrErr()
+   FSW.Set_Trig2_Dir('OUT')
    del FSW
