@@ -21,6 +21,11 @@ class PMr(jaVisa):
    #####################################################################
    ### NRP Common
    #####################################################################
+   def Get_AvailableNRP(self):
+      resList = self.jav_reslist()
+      asdf = [s for s in resList if "USB0::0x0AAD::0x" in s]
+      print(asdf)
+      
    def Get_Average(self):
       outp = self.queryInt('SENS:AVER:COUN?')
       return outp
@@ -71,15 +76,48 @@ class PMr(jaVisa):
       self.write('SENS:CORR:OFFS %f'%fOffset)
 
    def Set_PowerOffsetState(self,bState):
-      if bState == 0:
-         self.write('SENS:CORR:OFFS:STAT OFF')
-      else:
+      if (bState == 1) or (bState == 'ON'):
          self.write('SENS:CORR:OFFS:STAT ON')
+      else:
+         self.write('SENS:CORR:OFFS:STAT OFF')
 
    def Set_InitImm(self):
-      self.query('INIT:IMM;*OPC?')
+      outp = self.query('INIT:IMM;*OPC?')
       
+#####################################################################
+### NRP Trigger
+#####################################################################
+   def Set_TriggerSource(self,sSource):
+      # BUS; EXT2
+      self.write('TRIG:SOUR %s'%sSource)
 
+   def Set_TriggerAuto(self,bState):
+      if (bState == 1) or (bState == 'ON'):
+         self.write('TRIG:ATR:STAT ON')      #Auto-Trigger ON
+      else:
+         self.write('TRIG:ATR:STAT OFF')     #Auto-Trigger OFF
+
+   def Set_TriggerCount(self,iNum):
+      self.write('TRIG:COUN %d'%iNum)
+      
+      
+#####################################################################
+### NRP Advanced
+#####################################################################
+   def Get_EventStatus(self):
+      outp = self.query('STAT:OPER:MEAS:EVEN?')
+      return outp
+      
+   def Set_BufferSize(self,iSize):
+      self.write('SENS:BUFF:SIZE %d'%iSize)            #Buffer size is randomly selected to 17
+
+   def Get_BufferedMeas(self,bState):
+      if (bState == 1) or (bState == 'ON'):
+         self.write('SENS:BUFF:STAT ON')            #Configure a buffered measurement
+      else:
+         self.write('SENS:BUFF:STAT ON')            #Configure a buffered measurement
+
+   
 #####################################################################
 ### NRPM
 ###   - NRP-ZKU   USB cable (3.0m) to R&S®NRPxxS(N)
@@ -100,9 +138,11 @@ class PMr(jaVisa):
 if __name__ == "__main__":
    # this won't be run when imported
    NRP = PMr()
-#   NRP.jav_Open("192.168.1.114","Test.csv")
+   NRP.Get_AvailableNRP()
    NRP.jav_openvisa("USB0::0x0AAD::0x0196::900105::INSTR")
 #   NRP.jav_logscpi()
-   NRP.jav_Reset()
-   NRP.Set_Freq(24e9)
-   NRP.Get_Power()
+#   NRP.jav_Reset()
+#   NRP.Set_Freq(24e9)  
+#   NRP.Get_Power()
+   print("asdf")
+#   NRP.jav_ClrErr()
