@@ -230,8 +230,9 @@ class VSA(jaVisa):
    def Set_Trace_AvgOff(self,trace=1):
       self.write('DISP:TRAC%d:MODE WRIT'%(trace))
    
-   def Set_Trace_Detector(self,sDetect,trace=1):
-      self.write('SENS:DET %s'%sDetect)      #RMS|
+   def Set_Trace_Detector(self,sDetect,iWind):
+      #APE; NEG; POS; QPE; SAMP; RMS; CAV; CRMS
+      self.write('SENS:WIND%d:DET %s'%(iWind,sDetect))      #RMS|
 
    #####################################################################
    ### FSW Trigger
@@ -262,6 +263,13 @@ class VSA(jaVisa):
       # IQ_BW = SamplingRate * 0.8
       self.write('TRAC:IQ:BWID %f'%fFreq);      #Analysis BW
       
+   def Get_IQ_RecLength(self):
+      RLEN = self.queryInt('TRAC:IQ:RLEN?')	      #Record(Samples) Length
+      return RLEN
+
+   def Set_IQ_RecLength(self,iLen):
+      self.query('TRAC:IQ:RLEN %d'%iLen)        #Record(Samples) Length
+      
    def Set_IQ_SamplingRate(self,fFreq):
       # SamplingRate = IQ_BW / 0.8
       self.write('TRAC:IQ:SRAT %f'%fFreq);      #Sampling Rate
@@ -270,17 +278,17 @@ class VSA(jaVisa):
       # Samples = MeasTime * SamplingRate
       self.write('TRAC:IQ:RLEN %d'%iNum);       #Samples
       
+   def Set_IQ_SpectrumWindow(self):
+      self.write(":LAY:ADD:WIND? '1',RIGH,FREQ")
+      self.write(":DISP:WIND2:SUBW:SEL")
+      
+   def Set_IQ_Time(self,fSwpTime):
+      self.Set_SweepTime(fSwpTime)
+
    def Set_IQ_WideBandMax(self,fFreq):
       self.write('TRAC:IQ:WBAN:STAT ON');       #Wideband reduction activated
       self.write('TRAC:IQ:WBAN:MBW %f; *WAI'%fFreq);
-   
-   def Get_IQ_RecLength(self):
-      RLEN = self.queryInt('TRAC:IQ:RLEN?')	      #Record(Samples) Length
-      return RLEN
 
-   def Set_IQ_RecLength(self,iLen):
-      self.query('TRAC:IQ:RLEN %d'%iLen)        #Record(Samples) Length
-      
    def Get_IQ_Data_Ascii(self,MLEN=1e3):
       CSVd = ""
       self.write('TRAC:DATA ASCII');      
@@ -369,38 +377,38 @@ class VSA(jaVisa):
    #####################################################################
    ### FSW marker
    #####################################################################
-   def Get_Mkr_XY(self,iNum=1):
-      ValX = self.query(':CALC:MARK%d:X?'%iNum).strip()
-      ValY = self.query(':CALC:MARK%d:Y?'%iNum).strip()
+   def Get_Mkr_XY(self,iNum=1,iWind=1):
+      ValX = self.query(':CALC%d:MARK%d:X?'%(iWind,iNum)).strip()
+      ValY = self.query(':CALC%d:MARK%d:Y?'%(iWind,iNum)).strip()
       return [ValX, ValY]
 
-   def Get_Mkr_Band(self,iNum=1):
-      ValX = self.query(':CALC:MARK%d:X?'%iNum).strip();
-      ValY = self.query(':CALC:MARK%d:FUNC:BPOW:'%iNum).strip();
+   def Get_Mkr_Band(self,iNum=1,iWind=1):
+      ValX = self.query(':CALC%d:MARK%d:X?'%(iWind,iNum)).strip();
+      ValY = self.query(':CALC%d:MARK%d:FUNC:BPOW:RES?'%(iWind,iNum)).strip();
       return [ValX, ValY]
 
-   def Set_Mkr_Band(self,fFreq,iNum=1):
-      self.write('CALC:MARK%d:FUNC:BPOW:STAT ON'%(iNum));
-      self.write(':CALC1:MARK%d:FUNC:BPOW:SPAN %f'%(iNum, fFreq));
+   def Set_Mkr_Band(self,fFreq,iNum=1,iWind=1):
+      self.write(':CALC%d:MARK%d:FUNC:BPOW:STAT ON'%(iWind,iNum));
+      self.write(':CALC%d:MARK%d:FUNC:BPOW:SPAN %f'%(iWind,iNum, fFreq));
 
-   def Get_Mkr_Freq(self,iNum=1):
-      MkrFreq = self.queryFloat(':CALC1:MARK%d:X?'%(iNum))
+   def Get_Mkr_Freq(self,iNum=1,iWind=1):
+      MkrFreq = self.queryFloat(':CALC%d:MARK%d:X?'%(iWind,iNum))
       return float(MkrFreq)
       
-   def Get_Mkr_TimeDomain(self,iNum=1):
+   def Get_Mkr_TimeDomain(self,iNum=1,iWind=1):
      # self.write(':CALC:MARK%d:FUNC:SUMM:STAT ON'%iNum)
-      MkrFreq = self.query(':CALC:MARK%d:X?'%(iNum)).strip();
-      MkrPwr = self.query(':CALC:MARK%d:FUNC:SUMM:RMS:RES?'%(iNum)).strip();
+      MkrFreq = self.query(':CALC%d:MARK%d:X?'%(iWind,iNum)).strip();
+      MkrPwr  = self.query(':CALC%d:MARK%d:FUNC:SUMM:RMS:RES?'%(iWind,iNum)).strip();
       return float(MkrPwr)
             
-   def Set_Mkr_Freq(self,fFreq,iNum=1):
-      self.write(':CALC1:MARK%d:X %fHz'%(iNum,fFreq));
+   def Set_Mkr_Freq(self,fFreq,iNum=1,iWind=1):
+      self.write(':CALC%d:MARK%d:X %fHz'%(iWind,iNum,fFreq));
 
-   def Set_Mkr_Next(self,iNum=1):
-      self.write(':CALC:MARK%d:MAX:NEXT'%iNum);
+   def Set_Mkr_Next(self,iNum=1,iWind=1):
+      self.write(':CALC%d:MARK%d:MAX:NEXT'%(iWind,iNum));
 
-   def Set_Mkr_Peak(self,iNum=1):
-      self.write(':CALC:MARK%d:MAX:PEAK'%iNum);
+   def Set_Mkr_Peak(self,iNum=1,iWind=1):
+      self.write(':CALC%d:MARK%d:MAX:PEAK'%(iWind,iNum));
 
    def Set_Mkr_Time(self,fSec,iNum=1):
       self.write(':CALC1:MARK%d:X %fS'%(iNum,fSec));
