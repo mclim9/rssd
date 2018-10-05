@@ -14,9 +14,12 @@ BaseDir = os.path.dirname(os.path.realpath(__file__))
 OutFile = BaseDir + '\\' +  __file__
 print(OutFile)
 
-FSW_IP  = '192.168.1.109'
-MeasTim = 1e-3
-
+FSW_IP   = '192.168.1.109'
+MeasTim  = [0.1e-3, 0.2e-3, 0.3e-3, 0.5e-3, 1e-3, 2e-3, 3e-3]
+RFBW     = 95e6
+RFSp     = 100e6
+Freq     = 21.5e9
+NumIter  = 20
 ##########################################################
 ### Code Overhead
 ##########################################################
@@ -33,14 +36,20 @@ if 0:
    FSW.jav_logSCPI()
    
 FSW.jav_Reset()
-FSW.Init_ACLR()                       #FSW ACLR Channel
-FSW.Set_ACLR_CHBW(95e6)
-FSW.Set_ACLR_AdjBW(95e6)
-FSW.Set_ACLR_AdjSpace(100e6)
-   
+FSW.Init_IQ()                       #FSW ACLR Channel
+if 1:
+   FSW.Set_IQ_BW(3.1*RFSp)
+   FSW.Set_IQ_SpectrumWindow()
+   FSW.Set_Trace_Detector('RMS',2)
+   FSW.Set_Mkr_Freq(Freq,1,2)
+   FSW.Set_Mkr_Band(RFBW,1,2)
+   FSW.Set_Mkr_Freq(Freq-RFSp,2,2)
+   FSW.Set_Mkr_Band(RFBW,2,2)
+   FSW.Set_Mkr_Freq(Freq+RFSp,3,2)
+   FSW.Set_Mkr_Band(RFBW,3,2)
+
 FSW.Set_DisplayUpdate("OFF")
 FSW.Set_SweepCont(0)
-FSW.Set_SweepTime(MeasTim)
 FSW.Set_InitImm()
 if 1:
    FSW.Set_Trig1_Source('Ext')
@@ -51,16 +60,20 @@ if 1:
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
 OFile.write('ACLR,CapTime,Iter,CmdTime')
 sumTime = 0
-for i in range(20):
-   tick = datetime.now()
+for mTime in MeasTim:
+   FSW.Set_IQ_Time(mTime)
    FSW.Set_InitImm()
-   aclr = FSW.Get_ACLR()
-   d = datetime.now() - tick
-   sumTime += d.microseconds
-   OutStr = '%.6f,%d,%3d.%06d'%(MeasTim,i,d.seconds,d.microseconds)
-   OFile.write (OutStr)
-
-print('%f'%(sumTime/20))   
+   for i in range(NumIter):
+      tick = datetime.now()
+      FSW.Set_InitImm()
+      aclr = []
+      for i in range(1,3+1):
+         aclr = aclr + FSW.Get_Mkr_Band(i,2)
+      d = datetime.now() - tick
+      sumTime = sumTime + d.microseconds/1e6
+      OutStr = '%s,%.6f,%d,%3d.%06d'%(aclr,mTime,i,d.seconds,d.microseconds)
+      OFile.write (OutStr)
+   print('%f'%(sumTime/NumIter))   
 ##########################################################
 ### Cleanup Automation
 ##########################################################

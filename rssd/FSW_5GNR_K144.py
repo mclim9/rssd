@@ -42,6 +42,10 @@ class VSA(VSA):
    
    def Set_5GNR_Parameters(self,sDir):
       self.Set_5GNR_Direction(sDir)
+   
+   def Set_5GNR_SubFrameCount(self,dSubFrame):
+      self.write(':SENS:NR5G:FRAM:COUN:STAT OFF')
+      self.write(':SENS:NR5G:FRAM:SCO %d'%dSubFrame)
       
    #####################################################################
    ### FSW 5GNR Settings

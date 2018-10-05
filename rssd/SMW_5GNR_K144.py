@@ -31,9 +31,9 @@ class VSG(VSG):
          print("Set_5GNR_Direction must be UP or DOWN")
 
    def Set_5GNR_BBState(self,iEnable):
-      if iEnable == 1:
-         self.write(':SOUR1:BB:NR5G:STAT 1')
-         self.query('*OPC?')        # Wait for calculation
+      if (iEnable == 1) or (iEnable == 'ON'):
+         self.jav_OPC_Wait(':SOUR1:BB:NR5G:STAT 1')
+#         self.query('*OPC?')        # Wait for calculation
       else:
          self.write(':SOUR1:BB:NR5G:STAT 0')
 
@@ -60,6 +60,16 @@ class VSG(VSG):
    def Set_5GNR_Parameters(self,sDir):
       self.Set_5GNR_Direction(sDir)
 
+   def Set_5GNR_FreqRange(self,iRange):
+      ### 0:<3GHz 1:3-6GHz 2:>6GHz
+      ### LOW; MIDD; HIGH
+      if iRange == 'LOW':
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:CARD LT6')
+      elif iRange == 'MIDD':
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:CARD BT36')
+      elif iRange == 'HIGH':
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:CARD GT6')
+         
    #####################################################################
    ### FSW 5GNR Settings
    #####################################################################
@@ -83,6 +93,12 @@ class VSG(VSG):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
       rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:RBN?'%(self.sdir))
       return rdStr
+
+   def Set_5GNR_BWP_ResBlockMax(self):
+      ### RB = (CHBw * 0.95) / (SubSp * 12)
+      MaxRB =  20
+      rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:RBN %d'%(self.sdir,MaxRB))
+      return rdStr
       
    def Get_5GNR_BWP_ResBlockOffset(self):
       rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:RBOF?'%(self.sdir))
@@ -96,6 +112,9 @@ class VSG(VSG):
    def Get_5GNR_BWP_Slot_Modulation(self):
       rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL1:MOD?')
       return rdStr
+      
+   def Set_5GNR_BWP_Slot_Modulation(self,sMod):
+      self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:MOD %s'%(sMod))
       
    def Get_5GNR_BWP_Slot_ResBlock(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
@@ -119,7 +138,19 @@ class VSG(VSG):
    def Get_5GNR_BWP_SubSpace(self):
       rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:SCSP?'%(self.sdir))
       return rdStr
+
+   def Get_5GNR_BWP_TotalSubSpace(self):
+      rdStr = []
+      rdStr.append(self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:NRB?'))
+      rdStr.append(self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:NRB?'))
+      rdStr.append(self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:NRB?'))
+      rdStr.append(self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:NRB?'))
+      return rdStr
       
+   def Set_5GNR_BWP_SubSpace(self,iSubSp):
+      self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S%dK:USE 1'%(iSubSp))
+      self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:SCSP N%d'%(self.sdir,iSubSp))
+
    def Get_5GNR_ChannelBW(self):
       ### 5;10;15;20;25;30;40;50;60;70;80;90;100;200;400
       rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:CBW?')
@@ -170,17 +201,5 @@ if __name__ == "__main__":
    # this won't be run when imported 
    SMW = VSG()
    SMW.jav_Open("192.168.1.114")
-   SMW.Set_5GNR_Parameters("DL")
- 
-   print(SMW.Get_5GNR_ChannelBW())
-   print(SMW.Get_5GNR_BWP_SubSpace())
-   print(SMW.Get_5GNR_BWP_Count())
-   print(SMW.Get_5GNR_BWP_ResourceBlock())
-   print(SMW.Get_5GNR_BWP_ResourceBlockOffset())   
-   print(SMW.Get_5GNR_RefA())
-
-   print(SMW.Get_5GNR_BWP_Slot_Modulation())
-   print(SMW.Get_5GNR_BWP_Slot_ResourceBlock())
-   print(SMW.Get_5GNR_BWP_Slot_ResourceBlockOffset())
-   print(SMW.Get_5GNR_BWP_Slot_SymbNum())
-   print(SMW.Get_5GNR_BWP_Slot_SymbOff())
+   SMW.Set_5GNR_FreqRange('LOW')
+   SMW.jav_Close()
