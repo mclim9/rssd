@@ -230,7 +230,7 @@ class VSA(jaVisa):
    def Set_Trace_AvgOff(self,trace=1):
       self.write('DISP:TRAC%d:MODE WRIT'%(trace))
    
-   def Set_Trace_Detector(self,sDetect,iWind):
+   def Set_Trace_Detector(self,sDetect,iWind=1):
       #APE; NEG; POS; QPE; SAMP; RMS; CAV; CRMS
       self.write('SENS:WIND%d:DET %s'%(iWind,sDetect))      #RMS|
 
