@@ -1,34 +1,47 @@
 Release History
 =====================================================================
-    * RSSD 0.1.6
-        -Fix Import references to rssd.*
-        -Fix SMW/FSW 5G NR methods.  Added methods.
-        -Add Test_rssd.py to validate drivers
-        -Add NRP_Common.py
-    * RSSD 0.1.5 
-        -Add AAA_Common.py instrument template
-        -Add FSW/SMW_5GNR_144 read functions
-        -Add FSW_Transient_K60.py
-        -Add NRQ_Common.py
-        -Fix OSP_Common.Get_SW_SPDT
-        -Chg README.md
-    * RSSD 0.1.4 
-        -Chg FSW_Common.py Bug fix
-        -Add test_RSSD.py
-        -Add test_SMW_Basic.py
-        -Add OSP_Common.py
-        -Examples
-            -Add SMW_FSW_Sweep.py
-            -Add SMB_SMZ_Mixer.py
-            -Chg CMW_GPRF_Loopback.py
-    * RSSD 0.1.3
-         -Chg yaVISA_GUI.py
-         -Chg yaVISA.py method names
-         -Chg __init__ function in class definition
-         -Add CMW_GPRF.py
-    * RSSD 0.1.2
-    * RSSD 0.1.1
-    * RSSD 0.1
-         -Initial release
+- RSSD 0.1.7
+    - FSW
+        - Validate FSW_5GNR_K144.py
+        - Add FSW_NoiseFigure_K30.py
+        - Add FSW Marker methods include window input.
+        - Add FSW_Trigger methods
+    -SMW
+        - Validate FSW_5GNR_K144.py
+        - NRP_Common Add trigger methods
+    - Examples
+        - Add SMW_FSW_5GNR_EVMSpeed.py
+        - Add FSW_ACLR_Timing.py
+        - Add FSW_ACLR_IQ_Timing.py
+- RSSD 0.1.6
+     - Fix Import references to rssd.- 
+     - Fix SMW/FSW 5G NR methods.  Added methods.
+     - Add Test_rssd.py to validate drivers
+     - Add NRP_Common.py
+ - RSSD 0.1.5 
+     - Add AAA_Common.py instrument template
+     - Add FSW/SMW_5GNR_144 read functions
+     - Add FSW_Transient_K60.py
+     - Add NRQ_Common.py
+     - Fix OSP_Common.Get_SW_SPDT
+     - Chg README.md
+ - RSSD 0.1.4 
+     - Chg FSW_Common.py Bug fix
+     - Add test_RSSD.py
+     - Add test_SMW_Basic.py
+     - Add OSP_Common.py
+     - Examples
+         - Add SMW_FSW_Sweep.py
+         - Add SMB_SMZ_Mixer.py
+         - Chg CMW_GPRF_Loopback.py
+ - RSSD 0.1.3
+      - Chg yaVISA_GUI.py
+      - Chg yaVISA.py method names
+      - Chg __init__ function in class definition
+      - Add CMW_GPRF.py
+ - RSSD 0.1.2
+ - RSSD 0.1.1
+ - RSSD 0.1
+      - Initial release
     
     
