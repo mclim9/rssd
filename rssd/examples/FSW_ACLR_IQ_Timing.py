@@ -18,7 +18,7 @@ FSW_IP   = '192.168.1.109'
 MeasTim  = [0.1e-3, 0.2e-3, 0.3e-3, 0.5e-3, 1e-3, 2e-3, 3e-3]
 RFBW     = 95e6
 RFSp     = 100e6
-Freq     = 21.5e9
+Freq     = 28e9
 NumIter  = 20
 ##########################################################
 ### Code Overhead
@@ -38,6 +38,7 @@ if 0:
 FSW.jav_Reset()
 FSW.Init_IQ()                       #FSW ACLR Channel
 if 1:
+   FSW.Set_Freq(Freq)
    FSW.Set_IQ_BW(3.1*RFSp)
    FSW.Set_IQ_SpectrumWindow()
    FSW.Set_Trace_Detector('RMS',2)
