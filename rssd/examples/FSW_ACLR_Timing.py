@@ -16,7 +16,7 @@ print(OutFile)
 
 FSW_IP  = '192.168.1.109'
 MeasTim = 1e-3
-
+Freq    = 28e9
 ##########################################################
 ### Code Overhead
 ##########################################################
@@ -33,7 +33,9 @@ if 0:
    FSW.jav_logSCPI()
    
 FSW.jav_Reset()
+FSW.Set_Freq(Freq)
 FSW.Init_ACLR()                       #FSW ACLR Channel
+FSW.Set_Trace_Detector('RMS')
 FSW.Set_ACLR_CHBW(95e6)
 FSW.Set_ACLR_AdjBW(95e6)
 FSW.Set_ACLR_AdjSpace(100e6)
