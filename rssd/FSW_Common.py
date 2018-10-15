@@ -77,6 +77,9 @@ class VSA(jaVisa):
    def Set_Preamp(self,sState):
       self.write('INP:GAIN:STAT %s;*WAI'%sState);     #ON|OFF|1|0
 
+   def Set_YIG(self,sState):
+      self.write('INP:FILT:YIG:STAT %s;*WAI'%sState); #ON|OFF|1|0
+
    def Get_Ovld_Stat(self):
       self.Set_InitImm()
       Read = self.queryInt('STAT:QUES:POW:COND?')
