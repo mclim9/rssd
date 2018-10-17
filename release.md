@@ -1,5 +1,8 @@
 Release History
 =====================================================================
+- RSSD 0.1.8
+    - VNA
+        - Add prototype for future use
 - RSSD 0.1.7
     - FSW
         - Validate FSW_5GNR_K144.py
