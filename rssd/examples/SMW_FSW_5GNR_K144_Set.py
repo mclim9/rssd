@@ -68,7 +68,7 @@ if 1:
    FSW.Set_5GNR_BWP_SubSpace(NR_SubSp)
 #  FSW.Set_5GNR_ResBlock(NR_RB)
 #  FSW.Set_5GNR_ResBlockOffset(NR_RBO)
-   FSW.Set_5GNR_BWP_Slot_Modulation(NR_Mod) 
+   FSW.Set_5GNR_BWP_Ch_Modulation(NR_Mod) 
 
 EVM = FSW.Get_5GNR_EVM()
 OutStr = "%d,%s"%(Freq,EVM)

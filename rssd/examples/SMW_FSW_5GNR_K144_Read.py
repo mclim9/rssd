@@ -11,7 +11,7 @@
 ##########################################################
 import os
 BaseDir = os.path.dirname(os.path.realpath(__file__))
-OutFile = BaseDir + "SMW_FSW_5GNR"
+OutFile = BaseDir + "\\" + "SMW_FSW_5GNR"
  
 print(__file__)
 
@@ -41,12 +41,12 @@ odata[0].append("               ")
 odata[0].append("RefA,MHz       ")
 odata[0].append("Ch BW          ")
 odata[0].append("TransPrecoding ")
-odata[0].append("=====User======")
+odata[0].append("===User/BWP====")
 odata[0].append("SubSpacing     ")
 odata[0].append("Num BWP        ")
 odata[0].append("BWP_RB         ")
 odata[0].append("BWP_RBoff      ")
-odata[0].append("======BWP======")
+odata[0].append("====Channel====")
 odata[0].append("User_BWP_Mod   ")
 odata[0].append("User_BWP_RB    ")
 odata[0].append("User_BWP_RBOff ")
@@ -63,34 +63,35 @@ odata[0].append("DMRS SeqGenMeth")
 odata[0].append("DMRS SeqGenSeed")
 odata[0].append("DMRS Rel Power ")
 
-
-SMW.Set_5GNR_Parameters("UL")
-odata[1].append("[[SMW]]")
-odata[1].append(int(SMW.Get_5GNR_RefA())/1e6)
-odata[1].append(SMW.Get_5GNR_ChannelBW())
-odata[1].append(SMW.Get_5GNR_TransPrecoding())
-odata[1].append("=User=")
-odata[1].append(SMW.Get_5GNR_BWP_SubSpace())
-odata[1].append(SMW.Get_5GNR_BWP_Count())
-odata[1].append(SMW.Get_5GNR_BWP_ResBlock())
-odata[1].append(SMW.Get_5GNR_BWP_ResBlockOffset())
-odata[1].append("=BWP==")
-odata[1].append(SMW.Get_5GNR_BWP_Slot_Modulation())
-odata[1].append(SMW.Get_5GNR_BWP_Slot_ResBlock())
-odata[1].append(SMW.Get_5GNR_BWP_Slot_ResBlockOffset())
-odata[1].append(SMW.Get_5GNR_BWP_Slot_SymbNum())
-odata[1].append(SMW.Get_5GNR_BWP_Slot_SymbOff())
-odata[1].append(int(SMW.Get_5GNR_BWP_Center())/1e6)
-odata[1].append("=DMRS=")
-odata[1].append(SMW.Get_5GNR_DMRS_Config())
-odata[1].append(SMW.Get_5GNR_DMRS_Mapping())
-odata[1].append(SMW.Get_5GNR_DMRS_1stDMRSSym())
-odata[1].append(SMW.Get_5GNR_DMRS_AddPosition())
-odata[1].append(SMW.Get_5GNR_DMRS_MSymbLen())
-odata[1].append(SMW.Get_5GNR_DMRS_SeqGenMeth())
-odata[1].append(SMW.Get_5GNR_DMRS_SeqGenSeed())
-odata[1].append(SMW.Get_5GNR_DMRS_RelPwr())
-
+try:
+   SMW.Set_5GNR_Parameters("UL")
+   odata[1].append("[[SMW]]")
+   odata[1].append(int(SMW.Get_5GNR_RefA())/1e6)
+   odata[1].append(SMW.Get_5GNR_ChannelBW()) 
+   odata[1].append(SMW.Get_5GNR_TransPrecoding())
+   odata[1].append("=User=")
+   odata[1].append(SMW.Get_5GNR_BWP_SubSpace())
+   odata[1].append(SMW.Get_5GNR_BWP_Count())
+   odata[1].append(SMW.Get_5GNR_BWP_ResBlock())
+   odata[1].append(SMW.Get_5GNR_BWP_ResBlockOffset())
+   odata[1].append("==Ch==")
+   odata[1].append(SMW.Get_5GNR_BWP_Ch_Modulation())
+   odata[1].append(SMW.Get_5GNR_BWP_Ch_ResBlock())
+   odata[1].append(SMW.Get_5GNR_BWP_Ch_ResBlockOffset())
+   odata[1].append(SMW.Get_5GNR_BWP_Ch_SymbNum())
+   odata[1].append(SMW.Get_5GNR_BWP_Ch_SymbOff())
+   odata[1].append(int(SMW.Get_5GNR_BWP_Center())/1e6)
+   odata[1].append("=DMRS=")
+   odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_Config())
+   odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_Mapping())
+   odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_1stDMRSSym())
+   odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_AddPosition())
+   odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_MSymbLen())
+   odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth())
+   odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_SeqGenSeed())
+   odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_RelPwr())
+except:
+   pass
 print(len(odata[1]))
    
 try:
@@ -105,28 +106,33 @@ try:
    odata[2].append(FSW.Get_5GNR_BWP_Count())
    odata[2].append(FSW.Get_5GNR_BWP_ResBlock())
    odata[2].append(FSW.Get_5GNR_BWP_ResBlockOffset())
-   odata[2].append("=BWP==")
-   odata[2].append(FSW.Get_5GNR_BWP_Slot_Modulation())
-   odata[2].append(FSW.Get_5GNR_BWP_Slot_ResBlock())
-   odata[2].append(FSW.Get_5GNR_BWP_Slot_ResBlockOffset())
-   odata[2].append(FSW.Get_5GNR_BWP_Slot_SymbNum())
-   odata[2].append(FSW.Get_5GNR_BWP_Slot_SymbOff())
+   odata[2].append("==CH==")
+   odata[2].append(FSW.Get_5GNR_BWP_Ch_Modulation())
+   odata[2].append(FSW.Get_5GNR_BWP_Ch_ResBlock())
+   odata[2].append(FSW.Get_5GNR_BWP_Ch_ResBlockOffset())
+   odata[2].append(FSW.Get_5GNR_BWP_Ch_SymbNum())
+   odata[2].append(FSW.Get_5GNR_BWP_Ch_SymbOff())
    odata[2].append(int(FSW.Get_5GNR_BWP_Center())/1e6)
    odata[2].append("=DMRS=")
-   odata[2].append(FSW.Get_5GNR_DMRS_Config())
-   odata[2].append(FSW.Get_5GNR_DMRS_Mapping())
-   odata[2].append(FSW.Get_5GNR_DMRS_1stDMRSSym())
-   odata[2].append(FSW.Get_5GNR_DMRS_AddPosition())
-   odata[2].append(FSW.Get_5GNR_DMRS_MSymbLen())
-   odata[2].append(FSW.Get_5GNR_DMRS_SeqGenMeth())
-   odata[2].append("<TBD>")
-#   odata[2].append(FSW.Get_5GNR_DMRS_SeqGenSeed())
-   odata[2].append(FSW.Get_5GNR_DMRS_RelPwr())
+   odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_Config())
+   odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_Mapping())
+   odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_1stDMRSSym())
+   odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_AddPosition())
+   odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_MSymbLen())
+   odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth())
+   odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_SeqGenSeed())
+   odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_RelPwr())
 except:
    pass
 
 for i in range(len(odata[0])):
-   print("%s\t%s\t%s"%(odata[0][i],odata[1][i],odata[2][i]))
+   try:
+      print("%s\t%s\t%s"%(odata[0][i],odata[1][i],odata[2][i]))
+   except:
+      try:
+         print("%s\t%s\t%s"%(odata[0][i],odata[1][i],'<not read>'))
+      except:
+         print("%s\t%s\t%s"%(odata[0][i],'<not read>',odata[2][i]))
 
-#SMW.jav_ClrErr()                          #Clear Errors
+SMW.jav_ClrErr()                          #Clear Errors
 FSW.jav_ClrErr()                          #Clear Errors

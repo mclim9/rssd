@@ -67,12 +67,12 @@ for mod in modArry:
       SMW.Set_5GNR_BBState(0)
       SMW.Set_5GNR_BWP_SubSpace(subC)        #kHz
       FSW.Set_5GNR_BWP_SubSpace(subC)        #kHz
-      SMW.Set_5GNR_BWP_Slot_Modulation(mod)  #QPSK; QAM16; QAM64; QAM256; PITB
-      FSW.Set_5GNR_BWP_Slot_Modulation(mod)  #QPSK; QAM16; QAM64; QAM256; PITB
+      SMW.Set_5GNR_BWP_Ch_Modulation(mod)  #QPSK; QAM16; QAM64; QAM256; PITB
+      FSW.Set_5GNR_BWP_Ch_Modulation(mod)  #QPSK; QAM16; QAM64; QAM256; PITB
       SMW.Set_5GNR_BBState(1)
       print('SubC:%d %s'%(subC,mod))
       FSW.Set_InitImm()
-      if 1:
+      if 0:
          name = input("Verify EVM on FSW? ")
          FSW.Set_DisplayUpdate(0)
          FSW.Set_SweepCont(0)
