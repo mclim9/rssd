@@ -14,27 +14,11 @@ class VSG(jaVisa):
       self.Model = "SMW"
       
    #####################################################################
-   ### SMW Arb
+   ### SMW Get 
    #####################################################################
-   def Set_ArbNextSeg(self,num):
-      self.query('BB:ARB:WSEG:NEXT %d;*OPC?'%d)
-
-   def Set_ArbState(self,sState):
-      self.query('BB:ARB:STATE %s;*OPC?'%sState)
-
-   def Set_ArbWv(self,InWv):
-       self.query('BB:ARB:WAV:SEL "%s"; *OPC?'%InWv)
-      
-   def Set_ArbSeg(self,Seg):
-       self.write('SOUR:BB:ARB:WSEG:NEXT %d'%Seg)
-       self.write('SOUR:BB:ARB:WSEG:NEXT:EXEC')
-
    def Get_ArbClockFreq(self):
       SCPI = self.queryFloat('SOUR:BB:ARB:CLOC?')
       return SCPI
-
-   def Set_ArbClockFreq(self,fFreq,RF=1):
-      self.write('SOUR%d:BB:ARB:CLOC %f'%(RF,fFreq))
 
    def Get_ArbTime(self):
       Fs = Get_ArbClockFreq()
@@ -42,8 +26,28 @@ class VSG(jaVisa):
       WvTime = int(Points)/int(Fs)
       return WvTime
       
+   def Get_CrestFactor(self):
+      PEP = self.Get_PowerPEP()
+      RMS = self.Get_PowerRMS()
+      return (PEP - RMS)
+
+   def Get_NRPPower(self,NRP=2):
+      self.write(':INIT%d:POW:CONT 1'%(NRP))
+      self.write('SENS%d:UNIT DBM'%(NRP))
+      self.write('SENS%d:TYPE?'%(NRP))
+      SCPI = self.queryFloat(':READ%d:POW?'%(NRP))
+      return SCPI
+
+   def Get_PowerPEP(self,RF=1):
+      SCPI = self.queryFloat('SOUR%d:POW:PEP?'%RF)
+      return SCPI
+
+   def Get_PowerRMS(self,RF=1):
+      SCPI = self.queryFloat('SOUR%d:POW?'%RF)
+      return SCPI
+
    #####################################################################
-   ### SMW Generic
+   ### SMW INIT
    #####################################################################
    def Init_Wideband(self):
       self.write('SOUR:POW:ATT:DIG 3')         #Set Digital Attenuation
@@ -55,60 +59,45 @@ class VSG(jaVisa):
       self.write('SOUR:AWGN:STAT 0')           #Turn AWGN off (default)
       self.write('BBIN:STAT OFF')              #Turn BB Input off(default)
 
+
+   #####################################################################
+   ### SMW Settting Methods
+   #####################################################################
+   def Set_ArbClockFreq(self,fFreq,RF=1):
+      self.write('SOUR%d:BB:ARB:CLOC %f'%(RF,fFreq))
+
+   def Set_ArbNextSeg(self,num):
+      self.query('BB:ARB:WSEG:NEXT %d;*OPC?'%d)
+
+   def Set_ArbSeg(self,Seg):
+       self.write('SOUR:BB:ARB:WSEG:NEXT %d'%Seg)
+       self.write('SOUR:BB:ARB:WSEG:NEXT:EXEC')
+
+   def Set_ArbState(self,sState):
+      self.query('BB:ARB:STATE %s;*OPC?'%sState)
+
+   def Set_ArbWv(self,InWv):
+       self.query('BB:ARB:WAV:SEL "%s"; *OPC?'%InWv)
+      
    def Set_Freq(self,freq):
       self.write(':SOUR1:FREQ:CW %f'%freq);    #RF Freq
 
    def Set_IQMod(self,sState):
       ### ON, OFF 
+      if (sState == 1) or (sState == 'ON'):
+         self.query('SOUR:IQ:STAT ON;*OPC?')
+      else:
+         self.query('SOUR:IQ:STAT OFF;*OPC?')         
+
+   def Set_RFDriveAmp(self,sState):
+      ### ON, OFF, AUTO, FIX, 
       self.query('SOUR:POW:ALC:DAMP %s;*OPC?'%sState)
       
-   #####################################################################
-   ### Generator Power
-   #####################################################################
-   def Get_CrestFactor(self):
-      PEP = self.Get_PowerPEP()
-      RMS = self.Get_PowerRMS()
-      return (PEP - RMS)
-
-   def Get_PowerPEP(self,RF=1):
-      SCPI = self.queryFloat('SOUR%d:POW:PEP?'%RF)
-      return SCPI
-
-   def Get_PowerRMS(self,RF=1):
-      SCPI = self.queryFloat('SOUR%d:POW?'%RF)
-      return SCPI
-
    def Set_RFPwr(self,fPow):   #fPow
       self.write('SOUR:POW %f'%fPow);          #RF Pwr
       
    def Set_RFState(self,sState):
       self.query('OUTP %s;*OPC?'%sState)
-
-   def Set_DriveAmp(self,sState):
-      ### ON, OFF, AUTO, FIX, 
-      self.query('SOUR:POW:ALC:DAMP %s;*OPC?'%sState)
-      
-   #####################################################################
-   ### NRP connected to SMW
-   #####################################################################
-   def Get_NRPPower(self,NRP=2):
-      self.write(':INIT%d:POW:CONT 1'%(NRP))
-      self.write('SENS%d:UNIT DBM'%(NRP))
-      self.write('SENS%d:TYPE?'%(NRP))
-      SCPI = self.queryFloat(':READ%d:POW?'%(NRP))
-      return SCPI
-
-
-   #####################################################################
-   ### Verizon 5G
-   #####################################################################
-   def Set_V5GState(self,sState):
-      self.write('SOUR1:BB:V5G:STAT %s;*OPC?'%sState)
-
-   def Set_V5G_Wave(self,sWaveform):
-      ### sWaveform = Uplink_Config_1
-      self.query('SOUR1:BB:V5G:SETT:PCON "%s";*OPC?'%sWaveform)
-      #self.write('SOUR1:BB:V5G:SETT:PCON "%s"'%sWaveform)
 
 
 #####################################################################
@@ -120,3 +109,4 @@ if __name__ == "__main__":
 #   SMW.jav_Open("192.168.1.114","Test.csv")
    SMW.jav_Open("192.168.1.114")
 #   SMW.Set_Freq(6e9)
+   SMW.Set_IQMod(0)
