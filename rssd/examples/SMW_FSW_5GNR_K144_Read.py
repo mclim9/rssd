@@ -9,12 +9,6 @@
 ##########################################################
 ### User Entry
 ##########################################################
-import os
-BaseDir = os.path.dirname(os.path.realpath(__file__))
-OutFile = BaseDir + "\\" + "SMW_FSW_5GNR"
- 
-print(__file__)
-
 SMW_IP   = '192.168.1.114'                    #IP Address
 FSW_IP   = '192.168.1.109'                    #IP Address
 odata =  [[] for i in range(3)]
@@ -22,17 +16,13 @@ odata =  [[] for i in range(3)]
 ##########################################################
 ### Code Start
 ##########################################################
-import  time
-from    rssd.SMW_5GNR_K144 import VSG
-from    rssd.FSW_5GNR_K144 import VSA
-from    rssd.FileIO        import FileIO
+from rssd.FSW_5GNR_K144    import VSA
+from rssd.SMW_5GNR_K144    import VSG
+from rssd.FileIO           import FileIO
 
-f = FileIO()
-odataFile = f.Init(OutFile)
-FSW = VSA()
-FSW.jav_Open(FSW_IP,f.sFName)
-SMW = VSG()
-SMW.jav_Open(SMW_IP,f.sFName)
+OFile = FileIO().makeFile(__file__)
+SMW = VSG().jav_Open(SMW_IP,OFile)  #Create SMW Object
+FSW = VSA().jav_Open(FSW_IP,OFile)  #Create FSW Object
 
 ##########################################################
 ### Instrument Settings
@@ -124,11 +114,12 @@ try:
    odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_RelPwr())
 except:
    pass
+print(len(odata[2]))
 
 for i in range(len(odata[0])):
    try:
       print("%s\t%s\t%s"%(odata[0][i],odata[1][i],odata[2][i]))
-   except:
+   except: 
       try:
          print("%s\t%s\t%s"%(odata[0][i],odata[1][i],'<not read>'))
       except:

@@ -55,8 +55,7 @@ Getting Started
 * Change IP address to match instrument(s)
 * Run
 
-### Examples Code:
-
+### Example Code:
     | FileName                | Descriptions                       |
     |-------------------------|------------------------------------|
     | FSW_ACLR_Timing         | ACLR in Spectral Mode              |
@@ -92,5 +91,4 @@ Acknowledgments
 ## Acknowledgments
 * Thanx to [Nick Lalic](https://pypi.org/project/rohdeschwarz/) for all his help.
 * [Markdown reference](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
-
 

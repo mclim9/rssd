@@ -7,12 +7,6 @@
 ##########################################################
 ### User Entry
 ##########################################################
-import os
-BaseDir = os.path.dirname(os.path.realpath(__file__))
-OutFile = BaseDir + "\\data\\SMW_FSW_Sweep"
-
-print __file__
-
 SMW_IP = '192.168.1.115'                    #IP Address
 FSW_IP = '192.168.1.109'                    #IP Address
 FreqStart = int(51e9)
@@ -25,17 +19,15 @@ Mixer = 0
 ##########################################################
 ### Code Start
 ##########################################################
-from rssd.SMW_Common import VSG
-from rssd.FSW_Common import VSA
-from rssd.FileIO     import FileIO
+from rssd.FSW_Common    import VSA
+from rssd.SMW_Common    import VSG
+from rssd.FileIO        import FileIO
 import time
 
-f = FileIO()
-DataFile = f.Init(OutFile)
-SMW = VSG()
-SMW.jav_Open(SMW_IP,f.sFName)
-FSW = VSA()
-FSW.jav_Open(FSW_IP,f.sFName)
+OFile = FileIO().makeFile(__file__)
+SMW = VSG().jav_Open(SMW_IP,OFile)  #Create SMW Object
+FSW = VSA().jav_Open(FSW_IP,OFile)  #Create FSW Object
+
 
 ##########################################################
 ### Instrument Settings

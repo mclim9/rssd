@@ -224,10 +224,8 @@ class jaVisa(object):
       if self.Ofile != "" : self.f.write("%s,%s"%(self.Model,cmd))      
 
 if __name__ == "__main__":
-   RS = jaVisa()
+   RS = jaVisa().jav_Open("192.168.1.114")
    #RS.jav_logscpi()
-   RS.jav_Open("192.168.1.114")
-   #RS.jav_Open("192.168.1.109")
    print(RS.queryInt("*IDN?"))
    print(RS.Device)
    print(RS.jav_Close())
