@@ -9,10 +9,6 @@
 ##########################################################
 ### User Entry
 ##########################################################
-import os
-BaseDir = os.path.dirname(os.path.realpath(__file__))
-OutFile = BaseDir + "\\data\\" + __file__
-
 SMW_IP  = '192.168.1.114'
 FSW_IP  = '192.168.1.109'
 VSE_IP  = '127.0.0.1'               #Get local machine name
@@ -20,27 +16,22 @@ Fs      = 1200e6                    #Sampling Rate
 MeasTim = 500e-6
 
 ##########################################################
-### Code Overhead
+### Code Overhead: Import and create objects
 ##########################################################
-from rssd.SMW_Common import VSG
-from rssd.FSW_Common import VSA
-from rssd.VSE_K96    import VSE
-import rssd.FileIO
-from datetime  import datetime
+from rssd.FSW_Common    import VSA
+from rssd.SMW_Common    import VSG
+from rssd.VSE_K96       import VSE
+from rssd.FileIO        import FileIO
+from datetime           import datetime
 
-f = rssd.FileIO.FileIO()
-OFile = f.Init(OutFile)
-SMW = VSG()                         #Create SMW Object
-FSW = VSA()                         #Create FSW Object
-VSE = VSE()                         #Create VSE Object
-SMW.jav_Open(SMW_IP,f.sFName)       #Connect to SMW
-FSW.jav_Open(FSW_IP,f.sFName)       #Connect to FSW
-VSE.jav_Open(VSE_IP,f.sFName)       #Connect to VSE
-if 0:
-   SMW.jav_logSCPI()
-   FSW.jav_logSCPI()
-   VSE.jav_logSCPI()
-   
+OFile = FileIO().makeFile(__file__)
+SMW = VSG().jav_Open(SMW_IP,OFile)  #Create SMW Object
+FSW = VSA().jav_Open(FSW_IP,OFile)  #Create FSW Object
+VSE = VSE().jav_Open(VSE_IP,OFile)  #Create FSW Object
+
+##########################################################
+### Code Start
+##########################################################   
 FSW.jav_Reset()
 FSW.Init_IQ()                       #FSW IQ Channel
 FSW.Set_DisplayUpdate("OFF")
