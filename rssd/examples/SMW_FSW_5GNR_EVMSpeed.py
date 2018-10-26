@@ -22,7 +22,7 @@ modArry  = ['QPSK', 'QAM64'] #QPSK; QAM16; QAM64; QAM256; PITB
 numMeas  = 10
 
 ##########################################################
-### Code Overhead
+### Code Overhead: Import and create objects
 ##########################################################
 from    rssd.SMW_5GNR_K144 import VSG
 from    rssd.FSW_5GNR_K144 import VSA
@@ -39,10 +39,13 @@ if 0:
    SMW.jav_logSCPI()
    FSW.jav_logSCPI()
 
+##########################################################
+### Code Start
+##########################################################
 SMW.Set_Freq(Freq)
 SMW.Set_5GNR_Direction('UL')        #UL or DL
 FSW.Set_5GNR_FreqRange('HIGH')      #LOW:<3GHz MIDD:3-6GHz HIGH:>6GHz
-SMW.Set_RFPwr(-2)                    #Output Power
+SMW.Set_RFPwr(-2)                   #Output Power
 SMW.Set_RFState('ON')               #Turn RF Output on
 
 #FSW.jav_Reset()
