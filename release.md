@@ -1,7 +1,7 @@
 Release History
 =====================================================================
 - RSSD 0.1.8
-    - FSW/SMW-K144 <api break>
+    - FSW/SMW-K144:api break
         - Chg methods from _slot_ to _ch_
         - Chg methods from _DMRS_ to _BWP_Ch_DMRS_
         - Methods alphabetized
