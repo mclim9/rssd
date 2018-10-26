@@ -228,8 +228,7 @@ class VSA(VSA):
 #####################################################################
 if __name__ == "__main__":
    ### this won't be run when imported
-   FSW = VSA()
-   FSW.jav_Open("192.168.1.109")
+   FSW = VSA().jav_Open("192.168.1.109")
    FSW.Init_5GNR_SEM()
    FSW.jav_ClrErr()
    FSW.jav_Close()

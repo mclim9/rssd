@@ -148,9 +148,6 @@ class VNA(jaVisa):
 #####################################################################
 if __name__ == "__main__":
    # this won't be run when imported
-   ZVA = VNA()
-   if 0:                                           #Log SCPI to file
-      ZVA.jav_Open("192.168.1.114","Test.csv")
-   ZVA.jav_Open("192.168.1.114")
-   ZVA.Set_Freq(6e9)
-      
+   ZVA = VNA().jav_openvisa('TCPIP0::localhost::5025::SOCKET')
+#   ZVA.Set_Freq(6e9)
+   ZVA.jav_Close()
