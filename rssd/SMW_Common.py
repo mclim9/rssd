@@ -78,7 +78,13 @@ class VSG(jaVisa):
 
    def Set_ArbWv(self,InWv):
        self.query('BB:ARB:WAV:SEL "%s"; *OPC?'%InWv)
-      
+   
+   def Set_BBState(self,sState):
+      if (sState == "ON") or (sState == 1):
+         self.query(':SOUR1:BB:ARB:STAT 1;*OPC?')
+      elif (sState == "OFF") or (sState == 0):
+         self.query(':SOUR1:BB:ARB:STAT 0;*OPC?')
+   
    def Set_Freq(self,freq):
       self.write(':SOUR1:FREQ:CW %f'%freq);    #RF Freq
 
@@ -88,6 +94,9 @@ class VSG(jaVisa):
          self.query('SOUR:IQ:STAT ON;*OPC?')
       else:
          self.query('SOUR:IQ:STAT OFF;*OPC?')         
+
+   def Set_PhaseDelta(self,fPhase):
+      self.write(':SOUR1:PHASE %d'%(fPhase))
 
    def Set_RFDriveAmp(self,sState):
       ### ON, OFF, AUTO, FIX, 
@@ -105,8 +114,7 @@ class VSG(jaVisa):
 #####################################################################
 if __name__ == "__main__":
    # this won't be run when imported
-   SMW = VSG()
-#   SMW.jav_Open("192.168.1.114","Test.csv")
-   SMW.jav_Open("192.168.1.114")
+   SMW = VSG().jav_Open("192.168.1.114")
 #   SMW.Set_Freq(6e9)
    SMW.Set_IQMod(0)
+   SMW.jav_Close()
