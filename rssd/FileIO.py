@@ -6,6 +6,7 @@
 ### Date  : 2018.02.01
 #####################################################################
 from datetime  import datetime
+import os
 
 class FileIO(object):
    def __init__(self):
@@ -13,6 +14,12 @@ class FileIO(object):
       self.sFName = ""
       self.debug = 1
       pass
+   
+   def makeFile(self,sFilepath):
+      BaseDir  = os.path.dirname(os.path.realpath(sFilepath))
+      OutFile  = BaseDir + "\\" + sFilepath
+      self.Init(OutFile)
+      return self
       
    def Init(self,sName="Datalog"):
       self.sFName = "%s-%s.csv"%(sName,datetime.now().strftime("%y%m%d"))
