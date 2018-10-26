@@ -385,10 +385,20 @@ class VSA(jaVisa):
       ValY = self.query(':CALC%d:MARK%d:Y?'%(iWind,iNum)).strip()
       return [ValX, ValY]
 
+   def Get_Mkr_Y(self,iNum=1,iWind=1):
+      ValY = self.queryFloat(':CALC%d:MARK%d:Y?'%(iWind,iNum))
+      return ValY
+
    def Get_Mkr_Band(self,iNum=1,iWind=1):
       ValX = self.query(':CALC%d:MARK%d:X?'%(iWind,iNum)).strip();
       ValY = self.query(':CALC%d:MARK%d:FUNC:BPOW:RES?'%(iWind,iNum)).strip();
       return [ValX, ValY]
+
+   def Set_Mkr_AllOff(self,iWind=1):
+      self.write(':CALC%d:MARK:AOFF'%(iWind));
+
+   def Set_Mkr_On(self,iNum,iWind=1):
+      self.write(':CALC%d:MARK%d ON'%(iWind,iNum));
 
    def Set_Mkr_Band(self,fFreq,iNum=1,iWind=1):
       self.write(':CALC%d:MARK%d:FUNC:BPOW:STAT ON'%(iWind,iNum));
@@ -421,8 +431,7 @@ class VSA(jaVisa):
 #####################################################################
 if __name__ == "__main__":
    ### this won't be run when imported
-   FSW = VSA()
-   FSW.jav_Open("192.168.1.109")
+   FSW = VSA().jav_Open("192.168.1.109")
    #FSW.Set_Autolevel_IFOvld()
 #   FSW.jav_ClrErr()
    FSW.Set_Trig2_Dir('OUT')
