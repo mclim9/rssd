@@ -7,17 +7,19 @@
 ##########################################################
 ### User Entry
 ##########################################################
-host = '127.0.0.1'               #Get local machine name
-port = 5025                      #Reserve a port for your service.
+VSE_IP = '127.0.0.1'               #Get local machine name
+
+##########################################################
+### Code Overhead: Import and create objects
+##########################################################
+from rssd.VSE_ADemod import VSE
+VSE = VSE()
+VSE.jav_Open(VSE_IP) 
+#VSE.logSCPI()
 
 ##########################################################
 ### Code Start
 ##########################################################
-import rssd.VSE_ADemod
-
-VSE = rssd.VSE_ADemod.VSE()
-VSE.jav_Open(host) 
-#VSE.logSCPI()
 VSE.Set_DisplayUpdate("ON")
 VSE.Set_Channel("ADEM")
 VSE.Set_Adem_dbw(500e6)   
