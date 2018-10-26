@@ -100,6 +100,7 @@ class jaVisa(object):
       except:
          print('VISA Openerror.  Using Raw Socket')
          self.jav_opensocket(IPAddr,fily)
+      return self
 
    def jav_opensocket(self, sIPAddr, fily=''):
       #*****************************************************************
