@@ -137,6 +137,10 @@ class VSA(VSA):
       rdStr = self.query(':CONF:NR5G:%s:CC1:RPA:RTCF?'%(self.sdir))
       return rdStr
 
+   def Get_5GNR_SEM(self):
+      rdStr = self.query(':CALC1:LIM:FAIL?')
+      return rdStr
+
    def Get_5GNR_TransPrecoding(self):
       rdStr = self.query(':CONF:NR5G:UL:CC1:TPR?')
       return rdStr
@@ -151,6 +155,10 @@ class VSA(VSA):
       ### EMV; ESPectrum; ACLR; MCAClr; CACLr; MCESpectrum
       self.write('CONF:NR5G:MEAS %s'%sMeas)
 
+   def Init_5GNR_SEM(self):
+      self.Set_Channel('NR5G')
+      self.write(':CONF:NR5G:MEAs ESP')
+      
    #####################################################################
    ### FSW 5GNR Settings
    #####################################################################
@@ -205,6 +213,12 @@ class VSA(VSA):
    def Set_5GNR_Parameters(self,sDir):
       self.Set_5GNR_Direction(sDir)
    
+   def Set_5GNR_SEM_Freq(self,fFreq,dSubBlock=1):
+      self.write(':SENS:ESP%d:SCEN %f'%(dSubBlock,fFreq))
+
+   def Set_5GNR_SEM_SubBlockNum(self,dSubBlock):
+      self.write(':SENS:ESP:SCO %d'%(dSubBlock))
+
    def Set_5GNR_SubFrameCount(self,dSubFrame):
       self.write(':SENS:NR5G:FRAM:COUN:STAT OFF')
       self.write(':SENS:NR5G:FRAM:SCO %d'%dSubFrame)
@@ -216,8 +230,6 @@ if __name__ == "__main__":
    ### this won't be run when imported
    FSW = VSA()
    FSW.jav_Open("192.168.1.109")
-   FSW.Init_5GNR()
-   EVM = FSW.Get_5GNR_EVM()
-   print(EVM)
+   FSW.Init_5GNR_SEM()
    FSW.jav_ClrErr()
    FSW.jav_Close()
