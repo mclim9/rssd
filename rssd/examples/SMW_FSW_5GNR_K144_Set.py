@@ -9,15 +9,9 @@
 ##########################################################
 ### User Entry
 ##########################################################
-import os
-BaseDir = os.path.dirname(os.path.realpath(__file__))
-OutFile = BaseDir + "\\data\\" + __file__
-
-print(__file__)
-
 SMW_IP   = '192.168.1.114'                #IP Address
 FSW_IP   = '192.168.1.109'                #IP Address
-Freq    = 19e9
+Freq     = 19e9
 SWM_Out  = 0
 
 NR_Dir   = 'UL'
@@ -28,19 +22,16 @@ NR_RBO   = 0         #RB Offset
 NR_Mod   = 'QAM64'   #QPSK; QAM16; QAM64; QAM256; PITB
 
 ##########################################################
-### Code Start
+### Code Overhead: Import and create objects
 ##########################################################
 from rssd.SMW_5GNR_K144 import VSG
 from rssd.FSW_5GNR_K144 import VSA
-from rssd.FileIO       import FileIO
+from rssd.FileIO        import FileIO
 import time
 
-f = FileIO()
-DataFile = f.Init(OutFile)
-SMW = VSG()
-SMW.jav_Open(SMW_IP,f.sFName)
-FSW = VSA()
-FSW.jav_Open(FSW_IP,f.sFName)
+OFile = FileIO().makeFile(__file__)
+SMW = VSG().jav_Open(SMW_IP,OFile)  #Create SMW Object
+FSW = VSA().jav_Open(FSW_IP,OFile)  #Create FSW Object
 
 ##########################################################
 ### Instrument Settings
@@ -54,7 +45,7 @@ try:
    SMW.Set_5GNR_ResBlock(NR_RB)
    SMW.Set_5GNR_ResBlockOffset(NR_RBO)
    SMW.Set_5GNR_Modulation(NR_Mod)
-   Set_5GNR_BBState(1)
+   SMW.Set_5GNR_BBState(1)
    SMW.Set_RFPwr(SWM_Out)                   #Output Power
    SMW.Set_RFState('ON')                     #Turn RF Output on
 except:
@@ -71,8 +62,7 @@ if 1:
    FSW.Set_5GNR_BWP_Ch_Modulation(NR_Mod) 
 
 EVM = FSW.Get_5GNR_EVM()
-OutStr = "%d,%s"%(Freq,EVM)
-f.write(OutStr)
+OFile.write("%d,%s"%(Freq,EVM))
 
 SMW.jav_ClrErr()                         #Clear Errors
 FSW.jav_ClrErr()                         #Clear Errors

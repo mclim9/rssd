@@ -47,7 +47,9 @@ OFile.write('Fs,CapTime,Iter,CmdTime')
 for i in range(50):
    FSW.Set_InitImm()
    tick = datetime.now()
+   ### <\thing we are timing>
    FSW.Get_IQ_Data('IQData%d'%i)
+   ### <\thing we are timing>
    tock = datetime.now()
    OutStr = '%f,%f,%d,%s'%(Fs/1e6,MeasTim,i,tock-tick)
    OFile.write (OutStr)

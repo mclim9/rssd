@@ -60,7 +60,6 @@ class AAA(jaVisa):
 ### Run if Main  (Won't run when imported)
 #####################################################################
 if __name__ == "__main__":
-   AAA_Inst = AAA()
-   AAA_Inst.jav_Open("192.168.1.100")
+   AAA_Inst = AAA().jav_Open("192.168.1.100")
    AAA_Inst.jav_IDN()
    AAA_Inst.jav_ClrErr()

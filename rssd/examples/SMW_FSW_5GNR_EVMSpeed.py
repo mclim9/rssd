@@ -3,16 +3,12 @@
 ###
 ### Title  : Timing SCPI Commands Example
 ### Author : mclim
-### Date : 2018.05.24
+### Date   : 2018.05.24
 ### Steps  : 
 ###
 ##########################################################
 ### User Entry
 ##########################################################
-import os
-BaseDir  = os.path.dirname(os.path.realpath(__file__))
-OutFile  = BaseDir + "\\" + __file__
-
 SMW_IP   = '192.168.1.114'
 FSW_IP   = '192.168.1.109'
 Freq     = 28e9
@@ -30,8 +26,8 @@ from datetime           import datetime
 from rssd.FileIO        import FileIO
 
 OFile = FileIO().makeFile(__file__)
-SMW = VSG().jav_Open(SMW_IP,f.sFName)  #Create SMW Object
-FSW = VSA().jav_Open(FSW_IP,f.sFName)  #Create FSW Object
+SMW = VSG().jav_Open(SMW_IP,OFile)  #Create SMW Object
+FSW = VSA().jav_Open(FSW_IP,OFile)  #Create FSW Object
 
 ##########################################################
 ### Code Start

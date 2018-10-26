@@ -1,8 +1,14 @@
 Release History
 =====================================================================
 - RSSD 0.1.8
+    - FSW/SMW-K144 <api break>
+        - Chg methods from _slot_ to _ch_
+        - Chg methods from _DMRS_ to _BWP_Ch_DMRS_
+        - Methods alphabetized
+    - Add FSW_ADemod_K7
     - VNA
         - Add prototype for future use
+    - Chg Object creation in examples
 - RSSD 0.1.7
     - FSW
         - Validate FSW_5GNR_K144.py

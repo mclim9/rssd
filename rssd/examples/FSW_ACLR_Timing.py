@@ -9,29 +9,23 @@
 ##########################################################
 ### User Entry
 ##########################################################
-import os
-BaseDir = os.path.dirname(os.path.realpath(__file__))
-OutFile = BaseDir + '\\' +  __file__
-print(OutFile)
-
 FSW_IP  = '192.168.1.109'
 MeasTim = 1e-3
 Freq    = 28e9
+
 ##########################################################
 ### Code Overhead
 ##########################################################
-from rssd.FSW_Common import VSA
-from datetime        import datetime
-import rssd.FileIO
+from rssd.FSW_Common       import VSA
+from datetime              import datetime
+from rssd.FileIO           import FileIO
 
-f = rssd.FileIO.FileIO()
-OFile = f.Init(OutFile)
-FSW = VSA()                         #Create FSW Object
-FSW.jav_Open(FSW_IP,f.sFName)       #Connect to FSW
-if 0:
-   SMW.jav_logSCPI()
-   FSW.jav_logSCPI()
-   
+OFile = FileIO().makeFile(__file__)
+FSW = VSA().jav_Open(FSW_IP,OFile)  #Create FSW Object
+
+##########################################################
+### Code Start
+##########################################################
 FSW.jav_Reset()
 FSW.Set_Freq(Freq)
 FSW.Init_ACLR()                       #FSW ACLR Channel

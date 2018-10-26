@@ -9,7 +9,6 @@
 ##########################################################
 ### User Entry
 ##########################################################
-FileName    = 'PTE_RelPhase.csv'
 SwpTim      = 150    #Time, msec
 MkrOffset   = 80     #mSec 6.4kHz:90  3.2:80 1.6:70
 Delay       = 50     #mSec Delay between 

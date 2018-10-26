@@ -9,28 +9,24 @@
 ##########################################################
 ### User Entry
 ##########################################################
-import os
-BaseDir = os.path.dirname(os.path.realpath(__file__))
-OutFile = BaseDir + "\\" + __file__
-
 FSW_IP  = '192.168.1.109'
 FsArry  = [100e6, 115.2e6, 200e6, 400e6, 800e6, 1200e6, 1600e6, 2000e6] #Sampling Rate
 MeasTim = 500e-6
 
-##########################################################
-### Code Overhead
-##########################################################
-from     rssd.FSW_Common   import VSA
-from     datetime          import datetime
-import   rssd.FileIO
 
-f = rssd.FileIO.FileIO()
-OFile = f.Init(OutFile)
-FSW = VSA()                         #Create FSW Object
-FSW.jav_Open(FSW_IP,f.sFName)       #Connect to FSW
-if 0:
-   FSW.jav_logSCPI()
-   
+##########################################################
+### Code Overhead: Import and create objects
+##########################################################
+from rssd.FSW_Common    import VSA
+from rssd.FileIO        import FileIO
+from datetime          import datetime
+
+OFile = FileIO().makeFile(__file__)
+FSW = VSA().jav_Open(FSW_IP,OFile)  #Create FSW Object
+
+##########################################################
+### Code Start
+##########################################################
 FSW.jav_Reset()
 FSW.Init_IQ()                       #FSW IQ Channel
 FSW.Set_DisplayUpdate("OFF")
