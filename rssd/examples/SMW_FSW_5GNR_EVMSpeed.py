@@ -24,20 +24,14 @@ numMeas  = 10
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from    rssd.SMW_5GNR_K144 import VSG
-from    rssd.FSW_5GNR_K144 import VSA
-from    datetime           import datetime
-import  rssd.FileIO
+from rssd.SMW_5GNR_K144 import VSG
+from rssd.FSW_5GNR_K144 import VSA
+from datetime           import datetime
+from rssd.FileIO        import FileIO
 
-f = rssd.FileIO.FileIO()
-OFile = f.Init(OutFile)
-SMW = VSG()                         #Create SMW Object
-FSW = VSA()                         #Create FSW Object
-SMW.jav_Open(SMW_IP,f.sFName)       #Connect to SMW
-FSW.jav_Open(FSW_IP,f.sFName)       #Connect to FSW
-if 0:
-   SMW.jav_logSCPI()
-   FSW.jav_logSCPI()
+OFile = FileIO().makeFile(__file__)
+SMW = VSG().jav_Open(SMW_IP,f.sFName)  #Create SMW Object
+FSW = VSA().jav_Open(FSW_IP,f.sFName)  #Create FSW Object
 
 ##########################################################
 ### Code Start
