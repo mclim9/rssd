@@ -158,6 +158,9 @@ class jaVisa(object):
    def jav_read_raw(self):
       return self.K2.read_raw()
 
+   def jav_write_raw(self,SCPI):
+      self.K2.write_raw(SCPI)
+
    def jav_reslist(self):
       try:
          rm = visa.ResourceManager()      #Create Resource Manager
