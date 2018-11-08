@@ -99,7 +99,7 @@ class jaVisa(object):
          self.jav_openvisa('TCPIP0::'+IPAddr+'::hislip0::INSTR',fily)
       except:
          print('VISA Openerror.  Using Raw Socket')
-         self.jav_opensocket(IPAddr,fily)
+         self.jav_openvisa('TCPIP0::'+IPAddr+'::5025::SOCKET',fily)
       return self
 
    def jav_opensocket(self, sIPAddr, fily=''):
@@ -145,7 +145,7 @@ class jaVisa(object):
       except:
          print ('jav_OpnErr: ' + sVISAStr)
          self.K2 = 'NoVISA'
-      return self.K2
+      return self
 
    def jav_Reset(self):
       self.write("*RST;*CLS;*WAI")
