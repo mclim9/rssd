@@ -1,0 +1,6 @@
+<?xml version = '1.0' standalone = 'yes'?>
+<!DOCTYPE KeyInstallation>
+<KeyInstallation format_id="0" rs_device_id="1419.4501K02-110372-SK" content_type="OptionKey" device_id="1419.4501k02/110372" material_description="Vector Signal Generator" model_name="SGT100A" >
+ <OptionKeyData material_no="1419.8007.02" format_id="0" option_index="16" start_date="Installation" full_name="Differential Analog I/Q Outputs" creation_date="2018-09-20" customer_order_no="" duration="30" key_type="Evaluation" license_count="1" option_type="SGT-K16" activation_type="Temporary Duration" />
+ <OptionKey format_id="0" key="126930400839624090172906467919" timestamp="11758704" license_count="1" />
+</KeyInstallation>
