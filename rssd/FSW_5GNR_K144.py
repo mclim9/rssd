@@ -63,9 +63,11 @@ class VSA(VSA):
       return rdStr
       
    def Get_5GNR_BWP_Ch_DMRS_SeqGenSeed(self):
-      #rdStr = self.query(':CONF:NR5G:%s:CC1:FRAM1:BWP0:SLOT0:ALL0:DMRS:NID?'%(self.sdir))
-      #rdStr = "debug"
-      rdStr = "<TBD>"
+      #Only for SeqGenMeth NICP.  Not Valid for NIDC
+      if self.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth() == 'NIDP':
+         rdStr = self.query(':CONF:NR5G:%s:CC1:FRAM1:BWP0:SLOT0:ALL0:DMRS:NID?'%(self.sdir))
+      else:
+         rdStr = '<NICP only>'
       return rdStr
   
    def Get_5GNR_BWP_Ch_Modulation(self):
@@ -122,6 +124,18 @@ class VSA(VSA):
       rdStr = self.query(':CONF:NR5G:%s:CC1:BW?'%(self.sdir))
       return rdStr
       
+   def Get_5GNR_Direction(self):
+      rdStr = self.query(':CONF:NR5G:LDIR?')
+      if rdStr == 'DL':
+         self.sdir = "DL"
+         self.alloc = 1       #Alloc 0:CORSET
+      elif rdStr == 'UL':
+         self.sdir = "UL"         
+         self.alloc = 0       #Alloc 0:PUSCH
+      else:
+         print('Get_5GNR_Direction Error')
+      return rdStr
+
    def Get_5GNR_EVM(self):
       EVM = self.queryFloat('FETC:SUMM:EVM?')
       return EVM
@@ -133,6 +147,10 @@ class VSA(VSA):
       EVM     = self.Get_5GNR_EVM()
       return ("%.2f,%.2f,%6.2f,%.2f"%(MAttn,RefLvl,Power,EVM))
 
+   def Get_5GNR_FreqRange(self):
+      rdStr = self.query(':CONF:NR5G:%s:CC1:DFR?'%(self.sdir))
+      return rdStr
+
    def Get_5GNR_RefA(self):
       rdStr = self.query(':CONF:NR5G:%s:CC1:RPA:RTCF?'%(self.sdir))
       return rdStr
@@ -142,7 +160,10 @@ class VSA(VSA):
       return rdStr
 
    def Get_5GNR_TransPrecoding(self):
-      rdStr = self.query(':CONF:NR5G:UL:CC1:TPR?')
+      if self.sdir == 'UL':
+         rdStr = self.query(':CONF:NR5G:UL:CC1:TPR?')
+      else:
+         rdStr = '<UL only>'
       return rdStr
 
    #####################################################################
@@ -196,7 +217,6 @@ class VSA(VSA):
       if (sDirection == "UL") or (sDirection == "UP"):
          self.write(':CONF:NR5G:LDIR UL')
          self.write(':CONF:NR5G:UL:CC1:IDC ON')
-
          self.sdir = "UL"
       elif (sDirection == "DL") or (sDirection == "DOWN"):
          self.write(':CONF:NR5G:LDIR DL')
@@ -229,6 +249,6 @@ class VSA(VSA):
 if __name__ == "__main__":
    ### this won't be run when imported
    FSW = VSA().jav_Open("192.168.1.109")
-   FSW.Init_5GNR_SEM()
+   FSW.Get_5GNR_Direction()
    FSW.jav_ClrErr()
    FSW.jav_Close()

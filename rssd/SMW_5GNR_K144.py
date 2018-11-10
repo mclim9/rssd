@@ -33,12 +33,21 @@ class VSG(VSG):
 
    def Get_5GNR_BWP_Ch_DMRS_AddPosition(self):
       #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSC:DMRS:IND?'%(self.alloc))
-      rdStr = "<TBD>"
+      if self.sdir == 'UL':
+         # User/BWP-->ULBWP COnfig
+         rdStr = self.query(':SOUR:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:PUSCH:DMTA:APIN?')
+      else:
+         rdStr = self.query(':SOUR:BB:NR5G:UBWP:USER0:CELL0:DL:BWP0:PDSCH:DMTA:APIN?')
       return rdStr
 
    def Get_5GNR_BWP_Ch_DMRS_Config(self):
-      #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSC:DMRS:CONF?'%(self.alloc))
       rdStr = "<TBD>"
+      #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSC:DMRS:CONF?'%(self.alloc))
+      if self.sdir == 'UL':
+         # User/BWP-->ULBWP COnfig
+         rdStr = self.query(':SOUR:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:PUSCH:DMTA:CTYP?')
+      else:
+         rdStr = self.query(':SOUR:BB:NR5G:UBWP:USER0:CELL0:DL:BWP0:PDSCH:DMTA:CTYP?')
       return rdStr
 
    def Get_5GNR_BWP_Ch_DMRS_Mapping(self):
@@ -51,8 +60,11 @@ class VSG(VSG):
       return rdStr
 
    def Get_5GNR_BWP_Ch_DMRS_RelPwr(self):
-      #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSC:DMRS:APOS?')
-      rdStr = "<TBD>"
+      if self.sdir == 'DL':
+         rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PDSCH:DMRS:POW?'%(self.alloc))
+      else:
+         rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSCH:DMRS:POW?'%(self.alloc))         
+      #rdStr = "<TBD>"
       return rdStr
 
    def Get_5GNR_BWP_Ch_DMRS_SeqGenMeth(self):
@@ -123,6 +135,22 @@ class VSG(VSG):
       rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:CBW?')
       return rdStr
 
+   def Get_5GNR_Direction(self):
+      rdStr = self.query(':SOUR1:BB:NR5G:LINK?')
+      if rdStr == 'DOWN':
+         self.sdir = "DL"
+         self.alloc = 1       #Alloc 0:CORSET
+      elif rdStr == 'UP':
+         self.sdir = "UL"         
+         self.alloc = 0       #Alloc 0:PUSCH
+      else:
+         print('Get_5GNR_Direction Error')
+      return rdStr
+
+   def Get_5GNR_FreqRange(self):
+      rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:CARD?')
+      return rdStr
+      
    def Get_5GNR_RefA(self):
       rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:POIN?')
       return rdStr
