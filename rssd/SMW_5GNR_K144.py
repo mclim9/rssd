@@ -155,6 +155,19 @@ class VSG(VSG):
       rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:POIN?')
       return rdStr
 
+   def Get_5GNR_RBMax(self):
+      odata = []
+      rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:NRB?')
+      odata.append([15,int(rdStr)])
+      
+      rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:NRB?')
+      odata.append([30,int(rdStr)])
+      rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:NRB?')
+      odata.append([60,int(rdStr)])
+      rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:NRB?')
+      odata.append([120,int(rdStr)])
+      return odata
+
    def Get_5GNR_TransPrecoding(self):
       rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:DUMR:TPST?')
       return rdStr
@@ -172,16 +185,21 @@ class VSG(VSG):
    def Set_5GNR_BWP_Ch_Modulation(self,sMod):
       self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:MOD %s'%(self.alloc,sMod))
       
-   def Set_5GNR_BWP_Ch_ResourceBlock(self,iRB):
+   def Set_5GNR_BWP_Ch_ResBlock(self,iRB):
       ### 5GNR-->Scheduling-->PUSCH-->No. RBs
       ### RB = (CHBw * 0.95) / (SubSp * 12)
       #self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:RBN %d'%iRB)
       self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:RBN %d'%(self.alloc,iRB))
 
-   def Set_5GNR_BWP_Ch_ResourceBlockOffset(self,iRBO):
+   def Set_5GNR_BWP_Ch_ResBlockOffset(self,iRBO):
       ### 5GNR-->Scheduling-->PUSCH-->No. RBs
       #self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:RBOF %d'%%(self.alloc,iRBO))
       self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:RBOF 0'%(self.alloc))
+
+   def Set_5GNR_BWP_ResBlock(self,iRB):
+      ### RB = (CHBw * 0.95) / (SubSp * 12)
+      self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:RBN %d'%(self.sdir,iRB))
+
 
    def Set_5GNR_BWP_ResBlockMax(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
@@ -214,11 +232,11 @@ class VSG(VSG):
    def Set_5GNR_FreqRange(self,iRange):
       ### 0:<3GHz 1:3-6GHz 2:>6GHz
       ### LOW; MIDD; HIGH
-      if iRange == 'LOW':
+      if (iRange==0) or (iRange == 'LOW'):
          self.write(':SOUR1:BB:NR5G:NODE:CELL0:CARD LT3')
-      elif iRange == 'MIDD':
+      elif (iRange==1) or (iRange == 'MIDD'):
          self.write(':SOUR1:BB:NR5G:NODE:CELL0:CARD BT36')
-      elif iRange == 'HIGH':
+      elif (iRange==2) or (iRange == 'HIGH'):
          self.write(':SOUR1:BB:NR5G:NODE:CELL0:CARD GT6')
          
    def Set_5GNR_Parameters(self,sDir):
@@ -232,5 +250,5 @@ if __name__ == "__main__":
    # this won't be run when imported 
    SMW = VSG()
    SMW.jav_Open("192.168.1.114")
-   SMW.Set_5GNR_FreqRange('LOW')
+   SMW.Get_5GNR_RBMax()
    SMW.jav_Close()
