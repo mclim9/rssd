@@ -228,7 +228,14 @@ class VSA(VSA):
    def Set_5GNR_FreqRange(self,iRange):
       ### 0:<3GHz 1:3-6GHz 2:>6GHz
       ### LOW; MIDD; HIGH
-      self.write(':CONF:NR5G:%s:CC1:DFR %s'%(self.sdir,iRange))      
+      if (iRange==0) or (iRange == 'LOW'):
+         self.write(':CONF:NR5G:%s:CC1:DFR LOW'%(self.sdir))      
+      elif (iRange==1) or (iRange == 'MIDD'):
+         self.write(':CONF:NR5G:%s:CC1:DFR MIDD'%(self.sdir))      
+      elif (iRange==2) or (iRange == 'HIGH'):
+         self.write(':CONF:NR5G:%s:CC1:DFR HIGH'%(self.sdir))
+      else:
+         print('Set_5GNR_FreqRange invalid parameter')
 
    def Set_5GNR_Parameters(self,sDir):
       self.Set_5GNR_Direction(sDir)
