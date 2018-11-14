@@ -69,6 +69,8 @@ def NR5G_SetSettings(FSW,SMW,NR):
       FSW.Set_5GNR_BWP_Ch_Modulation(NR.NR_Mod)
       FSW.Set_SweepCont(1)
       FSW.Set_InitImm()
+      FSW.Set_SweepCont(1)
+      FSW.Set_InitImm()
    except:
       print("NR5G_SetSettings: FSW Error")
       pass

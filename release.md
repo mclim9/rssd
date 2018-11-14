@@ -1,6 +1,8 @@
 Release History
 =====================================================================
 - RSSD 0.1.8
+    - Unity_K144.py added to control FSW & SMW
+        - SMW_FSW_5GNR_K144_Set.py and SMW_FSW_5GNR_K144_Get.py Callable
     - FSW/SMW-K144:api break
         - Chg methods from _slot_ to _ch_
         - Chg methods from _DMRS_ to _BWP_Ch_DMRS_

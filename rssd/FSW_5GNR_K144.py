@@ -137,7 +137,7 @@ class VSA(VSA):
       return rdStr
 
    def Get_5GNR_EVM(self):
-      EVM = self.queryFloat('FETC:SUMM:EVM?')
+      EVM = self.queryFloat(':FETC:CC1:FRAM:SUMM:EVM:ALL:AVER?')
       return EVM
 
    def Get_5GNR_EVMParams(self):
@@ -256,6 +256,6 @@ class VSA(VSA):
 if __name__ == "__main__":
    ### this won't be run when imported
    FSW = VSA().jav_Open("192.168.1.109")
-   FSW.Get_5GNR_Direction()
+   print(FSW.Get_5GNR_EVM())
    FSW.jav_ClrErr()
    FSW.jav_Close()

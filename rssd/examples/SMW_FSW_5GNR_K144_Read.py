@@ -25,6 +25,8 @@ from rssd.SMW_5GNR_K144    import VSG
 ### Instrument Settings
 ##########################################################
 def NR5G_ReadSettings(FSW,SMW):
+   DMRS = 0
+   
    odata =  [[] for i in range(3)]
    odata[0].append("               ")
    odata[0].append("Direction      ")
@@ -44,15 +46,16 @@ def NR5G_ReadSettings(FSW,SMW):
    odata[0].append("User_BWP_SymNum")
    odata[0].append("User_BWP_SymOff")
    odata[0].append("User_BWP_Cntr  ")
-   odata[0].append("=====DMRS======")
-   odata[0].append("DMRS Config    ")
-   odata[0].append("DMRS Mapping   ")
-   odata[0].append("DMRS FirstSym  ")
-   odata[0].append("DMRS Add Positn")
-   odata[0].append("DMRS Length    ")
-   odata[0].append("DMRS SeqGenMeth")
-   odata[0].append("DMRS SeqGenSeed")
-   odata[0].append("DMRS Rel Power ")
+   if DMRS == 1:
+      odata[0].append("=====DMRS======")
+      odata[0].append("DMRS Config    ")
+      odata[0].append("DMRS Mapping   ")
+      odata[0].append("DMRS FirstSym  ")
+      odata[0].append("DMRS Add Positn")
+      odata[0].append("DMRS Length    ")
+      odata[0].append("DMRS SeqGenMeth")
+      odata[0].append("DMRS SeqGenSeed")
+      odata[0].append("DMRS Rel Power ")
 
    try:
    #   SMW.Set_5GNR_Parameters(Direct)
@@ -74,15 +77,16 @@ def NR5G_ReadSettings(FSW,SMW):
       odata[1].append(SMW.Get_5GNR_BWP_Ch_SymbNum())
       odata[1].append(SMW.Get_5GNR_BWP_Ch_SymbOff())
       odata[1].append(int(SMW.Get_5GNR_BWP_Center())/1e6)
-      odata[1].append("=DMRS=")
-      odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_Config())
-      odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_Mapping())
-      odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_1stDMRSSym())
-      odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_AddPosition())
-      odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_MSymbLen())
-      odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth())
-      odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_SeqGenSeed())
-      odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_RelPwr())
+      if DMRS == 1:
+         odata[1].append("=DMRS=")
+         odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_Config())
+         odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_Mapping())
+         odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_1stDMRSSym())
+         odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_AddPosition())
+         odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_MSymbLen())
+         odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth())
+         odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_SeqGenSeed())
+         odata[1].append(SMW.Get_5GNR_BWP_Ch_DMRS_RelPwr())
    except:
       pass
       
@@ -106,15 +110,16 @@ def NR5G_ReadSettings(FSW,SMW):
       odata[2].append(FSW.Get_5GNR_BWP_Ch_SymbNum())
       odata[2].append(FSW.Get_5GNR_BWP_Ch_SymbOff())
       odata[2].append(int(FSW.Get_5GNR_BWP_Center())/1e6)
-      odata[2].append("=DMRS=")
-      odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_Config())
-      odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_Mapping())
-      odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_1stDMRSSym())
-      odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_AddPosition())
-      odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_MSymbLen())
-      odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth())
-      odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_SeqGenSeed())
-      odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_RelPwr())
+      if DMRS == 1:
+         odata[2].append("=DMRS=")
+         odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_Config())
+         odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_Mapping())
+         odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_1stDMRSSym())
+         odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_AddPosition())
+         odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_MSymbLen())
+         odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth())
+         odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_SeqGenSeed())
+         odata[2].append(FSW.Get_5GNR_BWP_Ch_DMRS_RelPwr())
    except:
       pass
    print('SMW/FSW Values: %d %d'%(len(odata[2]),len(odata[2]))) 
