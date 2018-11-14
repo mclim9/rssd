@@ -242,7 +242,10 @@ class VSG(VSG):
    def Set_5GNR_Parameters(self,sDir):
       self.Set_5GNR_Direction(sDir)
 
-   
+   def Set_5GNR_SSB(self):
+      self.write(':SOUR1:BB:NR5G:NODE:CELL0:OFFS POIN')
+      self.write(':SOUR1:BB:NR5G:NODE:CELL0:NSSP 1')
+      
 #####################################################################
 ### Run if Main
 #####################################################################
