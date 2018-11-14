@@ -7,8 +7,8 @@ from __future__ import division     #int div to float
 # User Input Settings
 ########################################################################
 btnWid = 11
-Col0Wid = 10                                       #Text Labels
-Col1Wid = 20                                       #Text Input
+Col0Wid = 15                                       #Text Labels
+Col1Wid = 15                                       #Text Input
 ColxWid = 4*(btnWid+4) -4
 BotWindWid = Col0Wid+Col1Wid+ColxWid
 maxCol = 6
@@ -36,56 +36,61 @@ GUI = Tk.Tk()                                      #Create GUI object
 
 #Code specific libraries
 import copy
-from rssd.yaVISA           import jaVisa
-from rssd.FSW_5GNR_K144    import VSA
-from rssd.SMW_5GNR_K144    import VSG
-from rssd.examples.SMW_FSW_5GNR_K144_Read         import a5GNR_ReadSettings
+from rssd.yaVISA              import jaVisa
+from rssd.FSW_5GNR_K144       import VSA
+from rssd.SMW_5GNR_K144       import VSG
+from rssd.examples.SMW_FSW_5GNR_K144_Read    import NR5G_ReadSettings
+from rssd.examples.SMW_FSW_5GNR_K144_Set     import NR5G_SetSettings
 
 ########################################################################
 ### Functions
 ########################################################################
 class GUIData(object):
    def __init__(self):
-      self.Title  = "Rohde&Schwarz VISA Utility"
-      self.EntTxt1= "SMW IP"
-      self.Entry1 = "192.168.1.114"
-      self.EntTxt2= "FSW IP"
-      self.Entry2 = "192.168.1.109"
-      self.EntTxt3= "Direction"
-      self.Entry3 = "UL"
-      self.EntTxt4= "DeployFreq"
-      self.Entry4 = "HIGH"
-      self.EntTxt5= "Ch BW,MHz"
-      self.Entry5 = "100"
-      self.EntTxt6= "SubCarrier,kHz"
-      self.Entry6 = "60"
-      self.EntTxt7= "RB"
-      self.Entry7 = "100"
-      self.EntTxt8= "Modulation"
-      self.Entry8 = "QPSK"
-      self.List1  = ['K144 Settings']
-      self.BtnTxt1= '*IDN?'
-      self.BtnTxt2= ''
-      self.BtnTxt3= 'Max RB'
-      self.BtnTxt4= 'Set_5GNR'
-      self.BtnTxt5= 'Read_5GNR'
+      self.Title     = "Rohde&Schwarz VISA Utility"
+      self.EntTxt1   = "SMW IP"
+      self.Entry1    = "192.168.1.114"
+      self.EntTxt2   = "FSW IP"
+      self.Entry2    = "192.168.1.109"
+      self.EntTxt3   = "Frequency"
+      self.Entry3    = "28000000000"
+      self.EntTxt4   = "SMW Power,RMS"
+      self.Entry4    = "-5"
+      self.EntTxt10  = "Direction"
+      self.Entry10   = "UL"
+      self.EntTxt11  = "DeployFreq"
+      self.Entry11   = "HIGH"
+      self.EntTxt12  = "Ch BW,MHz"
+      self.Entry12   = "100"
+      self.EntTxt13  = "SubCarrier,kHz"
+      self.Entry13   = "60"
+      self.EntTxt14  = "RB"
+      self.Entry14   = "100"
+      self.EntTxt15  = "Modulation"
+      self.Entry15   = "QPSK"
+      self.List1     = ['K144 Settings']
+      self.BtnTxt1   = '*IDN?'
+      self.BtnTxt2   = ''
+      self.BtnTxt3   = 'Max RB'
+      self.BtnTxt4   = 'Set_5GNR'
+      self.BtnTxt5   = 'Read_5GNR'
       
-Enum3 = Tk.StringVar(GUI)
-Enum3.set("UL") # default value
-Enum4 = Tk.StringVar(GUI)
-Enum4.set("HIGH") # default value
-Enum5 = Tk.StringVar(GUI)
-Enum5.set("100") # default value
-Enum6 = Tk.StringVar(GUI)
-Enum6.set("60") # default value
-Enum8 = Tk.StringVar(GUI)
-Enum8.set("QPSK") # default value
+Enum10 = Tk.StringVar(GUI)
+Enum10.set("UL") # default value
+Enum11 = Tk.StringVar(GUI)
+Enum11.set("HIGH") # default value
+Enum12 = Tk.StringVar(GUI)
+Enum12.set("100") # default value
+Enum13 = Tk.StringVar(GUI)
+Enum13.set("60") # default value
+Enum15 = Tk.StringVar(GUI)
+Enum15.set("QPSK") # default value
 
-PullD3 = Tk.OptionMenu(GUI, Enum3, "UL", "DL")
-PullD4 = Tk.OptionMenu(GUI, Enum4, "LOW", "MIDD", "HIGH")
-PullD5 = Tk.OptionMenu(GUI, Enum5, "20","50","100","200","400")
-PullD6 = Tk.OptionMenu(GUI, Enum6, "15", "30", "60", "120")
-PullD8 = Tk.OptionMenu(GUI, Enum8, "QPSK", "QAM16", "QAM64", "QAM256")
+PullD10 = Tk.OptionMenu(GUI, Enum10, "UL", "DL")
+PullD11 = Tk.OptionMenu(GUI, Enum11, "LOW", "MIDD", "HIGH")
+PullD12 = Tk.OptionMenu(GUI, Enum12, "20","50","100","200","400")
+PullD13 = Tk.OptionMenu(GUI, Enum13, "15", "30", "60", "120")
+PullD15 = Tk.OptionMenu(GUI, Enum15, "QPSK", "QAM16", "QAM64", "QAM256")
       
 def ArrayInput(stringIn):
    OutputList = []
@@ -97,53 +102,50 @@ def ArrayInput(stringIn):
 
 def btn1():
    ### *IDN Query ###
+   SMW = VSG().jav_Open(Entry1.get())  #Create SMW Object
+   FSW = VSA().jav_Open(Entry2.get())  #Create FSW Object
    windowLowerWrite(SMW.query('*IDN?'))
    windowLowerWrite(FSW.query('*IDN?'))
-   pass
+   SMW.jav_Close()
+   FSW.jav_Close()
    
 def btn2():
    pass
    
 def btn3():
    ### Get Max RB ###
+   SMW = VSG().jav_Open(Entry1.get())  #Create SMW Object
    data = SMW.Get_5GNR_RBMax()
+   windowUpperWrite("")
+   windowUpperWrite("=== Max RB ===")
    for i in data:
       windowUpperWrite("SubC:%d  RB Max:%d"%(i[0],i[1]))
    pass
+   SMW.jav_Close()
    
 def btn4():
    ### Set 5GNR Parameters
-   NR_Dir      = Enum3.get()
-   NR_Deploy   = Enum4.get()
-   NR_ChBW     = int(Enum5.get())
-   NR_SubSp    = int(Enum6.get())
-   NR_RB       = int(Entry7.get())
-   NR_Mod      = Enum8.get()
-   ### FSW Setting
-   FSW.Init_5GNR()
-   FSW.Set_5GNR_Direction(NR_Dir)
-   FSW.Set_5GNR_FreqRange(NR_Deploy)
-   FSW.Set_5GNR_ChannelBW(NR_ChBW)
-   FSW.Set_5GNR_BWP_SubSpace(NR_SubSp)
-   FSW.Set_5GNR_BWP_ResBlock(NR_RB)
-   FSW.Set_5GNR_BWP_Ch_ResBlock(NR_RB)
-   FSW.Set_5GNR_BWP_Ch_Modulation(NR_Mod)
-   FSW.Set_SweepCont(1)
-   ### SMW Settings
-   SMW.Set_5GNR_BBState('OFF')
-   SMW.Set_5GNR_Direction(NR_Dir)
-   SMW.Set_5GNR_FreqRange(NR_Deploy)
-   SMW.Set_5GNR_ChannelBW(NR_ChBW)
-   SMW.Set_5GNR_BWP_SubSpace(NR_SubSp)
-   SMW.Set_5GNR_BWP_ResBlock(NR_RB)
-   SMW.Set_5GNR_BWP_Ch_ResBlock(NR_RB)
-   SMW.Set_5GNR_BBState('ON')
-   SMW.Set_5GNR_BWP_Ch_Modulation(NR_Mod)
+   SMW = VSG().jav_Open(Entry1.get())  #Create SMW Object
+   FSW = VSA().jav_Open(Entry2.get())  #Create FSW Object
+   RSVar.Freq        = int(Entry3.get())
+   RSVar.SWM_Out     = float(Entry4.get())
+   RSVar.NR_Dir      = Enum10.get()
+   RSVar.NR_Deploy   = Enum11.get()
+   RSVar.NR_ChBW     = int(Enum12.get())
+   RSVar.NR_SubSp    = int(Enum13.get())
+   RSVar.NR_RB       = int(Entry14.get())
+   RSVar.NR_Mod      = Enum15.get()
+   NR5G_SetSettings(FSW,SMW,RSVar)
    windowLowerWrite("Setting Written")
-            
+   SMW.jav_Close()
+   FSW.jav_Close()
+
 def btn5():
+   SMW = VSG().jav_Open(Entry1.get())  #Create SMW Object
+   FSW = VSA().jav_Open(Entry2.get())  #Create FSW Object
+
    ### Read 5GNR Parameters ###
-   K144Data = a5GNR_ReadSettings(FSW,SMW) 
+   K144Data = NR5G_ReadSettings(FSW,SMW) 
    windowUpperClear()
    windowUpperWrite(" ")
    for i in range(len(K144Data[0])):
@@ -154,7 +156,9 @@ def btn5():
             windowUpperWrite("%s\t%s\t%s"%(K144Data[0][i],K144Data[1][i],'<not read>'))
          except:
             windowUpperWrite("%s\t%s\t%s"%(K144Data[0][i],'<not read>',K144Data[2][i]))
-   
+   SMW.jav_Close()
+   FSW.jav_Close()
+
 def dataLoad():
    OutObj = GUIData()
    try:
@@ -165,8 +169,8 @@ def dataLoad():
       data = f.read().split(',')
       OutObj.Entry1 = data[0]
       OutObj.Entry2 = data[1]
-#      OutObj.Entry3 = data[2]
-#      OutObj.Entry4 = data[3]
+      OutObj.Entry3 = data[2]
+      OutObj.Entry4 = data[3]
       windowLowerWrite("DataLoad: File")
    except:
       windowLowerWrite("DataLoad: Default")
@@ -179,8 +183,8 @@ def dataSave():
       f = open(__file__ + ".csv",'wb')      
    f.write('%s,'%(Entry1.get()))
    f.write('%s,'%(Entry2.get()))
-#   f.write('%s,'%(Entry3.get()))
-#   f.write('%s,'%(Entry4.get()))
+   f.write('%s,'%(Entry3.get()))
+   f.write('%s,'%(Entry4.get()))
    f.close()
    windowLowerWrite("DataSave: File Saved")
    
@@ -262,29 +266,37 @@ Label2 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt2)#Create Lab
 Entry2 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg, insertbackground=ColorCurs)
 Entry2.insert(END,RSVar.Entry2)                   #Default Value
 
-Label3 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt3) #Create Label
-Entry3 = PullD3
-Entry3.config(width=Col1Wid-7, bg=ClrTxtBg, fg=ClrTxtFg)
+Label3 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt3)#Create Label
+Entry3 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg, insertbackground=ColorCurs)
+Entry3.insert(END,RSVar.Entry3)                   #Default Value
 
 Label4 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt4)#Create Label
-Entry4 = PullD4
-Entry4.config(width=Col1Wid-7, bg=ClrTxtBg, fg=ClrTxtFg)
+Entry4 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg, insertbackground=ColorCurs)
+Entry4.insert(END,RSVar.Entry4)                   #Default Value
 
-Label5 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt5)#Create Label
-Entry5 = PullD5
-Entry5.config(width=Col1Wid-7, bg=ClrTxtBg, fg=ClrTxtFg)
+Label10 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt10) #Create Label
+Entry10 = PullD10
+Entry10.config(width=Col1Wid-7, bg=ClrTxtBg, fg=ClrTxtFg)
 
-Label6 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt6)#Create Label
-Entry6 = PullD6
-Entry6.config(width=Col1Wid-7, bg=ClrTxtBg, fg=ClrTxtFg)
+Label11 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt11)#Create Label
+Entry11 = PullD11
+Entry11.config(width=Col1Wid-7, bg=ClrTxtBg, fg=ClrTxtFg)
 
-Label7 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt7)#Create Label
-Entry7 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg, insertbackground=ColorCurs)
-Entry7.insert(END,RSVar.Entry7)                   #Default Value
+Label12 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt12)#Create Label
+Entry12 = PullD12
+Entry12.config(width=Col1Wid-7, bg=ClrTxtBg, fg=ClrTxtFg)
 
-Label8 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt8)#Create Label
-Entry8 = PullD8
-Entry8.config(width=Col1Wid-7, bg=ClrTxtBg, fg=ClrTxtFg)
+Label13 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt13)#Create Label
+Entry13 = PullD13
+Entry13.config(width=Col1Wid-7, bg=ClrTxtBg, fg=ClrTxtFg)
+
+Label14 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt14)#Create Label
+Entry14 = Tk.Entry(GUI,width=Col1Wid, bg=ClrTxtBg, fg=ClrTxtFg, insertbackground=ColorCurs)
+Entry14.insert(END,RSVar.Entry14)                   #Default Value
+
+Label15 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBG, text=RSVar.EntTxt15)#Create Label
+Entry15 = PullD15
+Entry15.config(width=Col1Wid-7, bg=ClrTxtBg, fg=ClrTxtFg)
 
 btnObj1 = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,fg=BtnTxtFg,text=RSVar.BtnTxt1,command = btn1)
 btnObj2 = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,fg=BtnTxtFg,text=RSVar.BtnTxt2,command = btn2)
@@ -296,6 +308,13 @@ btnQuit  = Tk.Button(GUI,width=btnWid,bg=ClrAppBG,fg="yellow",text="Quit",      
 ########################################################################
 ### List Boxes
 ########################################################################
+lstTopWind = Tk.Text(GUI,bg=ClrTxtBg, fg=ClrTxtFg, width=ColxWid, height=26)
+srlTopWind = ttk.Scrollbar(GUI, orient=Tk.VERTICAL,command=lstTopWind.yview)  #Create scrollbar
+lstTopWind.config(tabs=('5c', '7c', '9c'))  
+for item in RSVar.List1:
+   lstTopWind.insert(END, item + '\n')
+lstTopWind.config(yscrollcommand=srlTopWind.set)                              #Link scroll to lstTopWind
+
 lstBotWind = Tk.Text(GUI, width=BotWindWid, bg=ClrTxtBg, fg=ClrTxtFg, 
                      wrap=Tk.CHAR, height=5)
 srlBotWind = ttk.Scrollbar(GUI, orient=Tk.VERTICAL, command=lstBotWind.yview) #Create scrollbar
@@ -305,13 +324,6 @@ lstBotWind.insert(Tk.INSERT,"Output Window\n")
 lstBotWind.tag_add("here", "1.0", "1.40")
 lstBotWind.tag_config("here", background="yellow", foreground="blue")
 
-lstTopWind = Tk.Text(GUI,bg=ClrTxtBg, fg=ClrTxtFg, width=ColxWid, height=26)
-srlTopWind = ttk.Scrollbar(GUI, orient=Tk.VERTICAL,command=lstTopWind.yview)  #Create scrollbar
-lstTopWind.config(tabs=('5c', '7c', '9c'))  
-for item in RSVar.List1:
-   lstTopWind.insert(END, item + '\n')
-lstTopWind.config(yscrollcommand=srlTopWind.set)                              #Link scroll to lstTopWind
-
 ########################################################################
 ### Draw Widgets w/ Grid
 ########################################################################
@@ -319,18 +331,24 @@ Label1.grid(row=0,column=0,sticky=Tk.E)
 Label2.grid(row=1,column=0,sticky=Tk.E)
 Label3.grid(row=2,column=0,sticky=Tk.E)
 Label4.grid(row=3,column=0,sticky=Tk.E)
-Label5.grid(row=4,column=0,sticky=Tk.E)
-Label6.grid(row=5,column=0,sticky=Tk.E)
-Label7.grid(row=6,column=0,sticky=Tk.E)
-Label8.grid(row=7,column=0,sticky=Tk.E)
+Label10.grid(row=4,column=0,sticky=Tk.E)
+Label11.grid(row=5,column=0,sticky=Tk.E)
+Label12.grid(row=6,column=0,sticky=Tk.E)
+Label13.grid(row=7,column=0,sticky=Tk.E)
+Label14.grid(row=8,column=0,sticky=Tk.E)
+Label15.grid(row=9,column=0,sticky=Tk.E)
+
 Entry1.grid(row=0,column=1)
 Entry2.grid(row=1,column=1)
 Entry3.grid(row=2,column=1)
 Entry4.grid(row=3,column=1)
-Entry5.grid(row=4,column=1)
-Entry6.grid(row=5,column=1)
-Entry7.grid(row=6,column=1)
-Entry8.grid(row=7,column=1)
+Entry10.grid(row=4,column=1)
+Entry11.grid(row=5,column=1)
+Entry12.grid(row=6,column=1)
+Entry13.grid(row=7,column=1)
+Entry14.grid(row=8,column=1)
+Entry15.grid(row=9,column=1)
+
 btnObj1.grid(row=btnRow,column=0)
 btnObj2.grid(row=btnRow,column=1)
 btnObj3.grid(row=btnRow,column=2)
@@ -338,8 +356,8 @@ btnObj4.grid(row=btnRow,column=3)
 btnObj5.grid(row=btnRow,column=4)
 btnQuit.grid(row=btnRow,column=5)
 
-lstTopWind.grid(row=0,column=2,columnspan=4,rowspan=8, sticky=(Tk.E))
-srlTopWind.grid(column=maxCol,row=0,rowspan=4,sticky=(Tk.W,Tk.N,Tk.S))
+lstTopWind.grid(row=0,column=2,columnspan=4,rowspan=10, sticky=(Tk.E))
+srlTopWind.grid(column=maxCol,row=0,rowspan=10,sticky=(Tk.W,Tk.N,Tk.S))
 lstBotWind.grid(row=btnRow-1,column=0,columnspan=(maxCol),sticky=Tk.E)
 srlBotWind.grid(column=maxCol,row=btnRow-1, sticky=(Tk.W,Tk.N,Tk.S))
 
@@ -367,8 +385,4 @@ if 0:
 ########################################################################
 # Start Program
 ########################################################################
-SMW = VSG().jav_Open(Entry1.get())  #Create SMW Object
-FSW = VSA().jav_Open(Entry2.get())  #Create FSW Object
 GUI.mainloop()                      #Display window
-#SMW.jav_Close()
-#FSW.jav_Close()
