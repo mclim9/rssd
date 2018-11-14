@@ -11,58 +11,76 @@
 ##########################################################
 SMW_IP   = '192.168.1.114'                #IP Address
 FSW_IP   = '192.168.1.109'                #IP Address
-Freq     = 19e9
-SWM_Out  = 0
 
-NR_Dir   = 'UL'
-NR_BW    = 100       #MHz
-NR_SubSp = 120       #kHz
-NR_RB    = 100       #RB
-NR_RBO   = 0         #RB Offset
-NR_Mod   = 'QAM64'   #QPSK; QAM16; QAM64; QAM256; PITB
+class NR(object):
+   def __init__(self):
+      self.Freq     = 19e9
+      self.SWM_Out  = 0
+      self.NR_Dir   = 'DL'
+      self.NR_Deploy= 'HIGH'    #LOW:MIDD:HIGH
+      self.NR_ChBW  = 100       #MHz
+      self.NR_SubSp = 120       #kHz
+      self.NR_RB    = 66        #RB
+      self.NR_RBO   = 0         #RB Offset
+      self.NR_Mod   = 'QAM64'   #QPSK; QAM16; QAM64; QAM256; PITB
 
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
 from rssd.SMW_5GNR_K144 import VSG
 from rssd.FSW_5GNR_K144 import VSA
-from rssd.FileIO        import FileIO
-import time
-
-OFile = FileIO().makeFile(__file__)
-SMW = VSG().jav_Open(SMW_IP,OFile)  #Create SMW Object
-FSW = VSA().jav_Open(FSW_IP,OFile)  #Create FSW Object
+#from rssd.FileIO        import FileIO
+#OFile = FileIO().makeFile(__file__)
 
 ##########################################################
 ### Instrument Settings
 ##########################################################
-try:
-   SMW.Set_Freq(Freq)
-   Set_5GNR_BBState(0)
-   SMW.Set_5GNR_Direction(NR_Dir)
-   SMW.Set_5GNR_ChannelBW(NR_BW)
-   SMW.Set_5GNR_SubSpace(NR_SubSp)
-   SMW.Set_5GNR_ResBlock(NR_RB)
-   SMW.Set_5GNR_ResBlockOffset(NR_RBO)
-   SMW.Set_5GNR_Modulation(NR_Mod)
-   SMW.Set_5GNR_BBState(1)
-   SMW.Set_RFPwr(SWM_Out)                   #Output Power
-   SMW.Set_RFState('ON')                     #Turn RF Output on
-except:
-   pass
+def NR5G_SetSettings(FSW,SMW,NR):
+   try:
+      ### SMW Settings
+      SMW.Set_Freq(NR.Freq)
+      SMW.Set_5GNR_BBState('OFF')
+      SMW.Set_5GNR_Direction(NR.NR_Dir)
+      SMW.Set_5GNR_FreqRange(NR.NR_Deploy)
+      SMW.Set_5GNR_ChannelBW(NR.NR_ChBW)
+      SMW.Set_5GNR_BWP_SubSpace(NR.NR_SubSp)
+      SMW.Set_5GNR_BWP_ResBlock(NR.NR_RB)
+      #SMW.Set_5GNR_BWP_ResBlockOffset(NR_RBO)
+      SMW.Set_5GNR_BWP_Ch_ResBlock(NR.NR_RB)
+      SMW.Set_5GNR_BWP_Ch_Modulation(NR.NR_Mod)
+      SMW.Set_5GNR_SSB()
+      SMW.Set_5GNR_BBState('ON')
+      SMW.Set_RFState('ON')                     #Turn RF Output on
+      SMW.Set_RFPwr(NR.SWM_Out)                    #Output Power
+   except:
+      print("NR5G_SetSettings: SMW Error")
+      pass
 
-if 1:
-   FSW.Init_5GNR()
-   FSW.Set_Freq(Freq)
-   FSW.Set_5GNR_Direction(NR_Dir)
-   FSW.Set_5GNR_ChannelBW(NR_BW)
-   FSW.Set_5GNR_BWP_SubSpace(NR_SubSp)
-#  FSW.Set_5GNR_ResBlock(NR_RB)
-#  FSW.Set_5GNR_ResBlockOffset(NR_RBO)
-   FSW.Set_5GNR_BWP_Ch_Modulation(NR_Mod) 
+   try:
+      ### FSW Setting
+      FSW.Set_Freq(NR.Freq)
+      FSW.Init_5GNR()
+      FSW.Set_5GNR_Direction(NR.NR_Dir)
+      FSW.Set_5GNR_FreqRange(NR.NR_Deploy)
+      FSW.Set_5GNR_ChannelBW(NR.NR_ChBW)
+      FSW.Set_5GNR_BWP_SubSpace(NR.NR_SubSp)
+      FSW.Set_5GNR_BWP_ResBlock(NR.NR_RB)
+      FSW.Set_5GNR_BWP_Ch_ResBlock(NR.NR_RB)
+      FSW.Set_5GNR_BWP_Ch_Modulation(NR.NR_Mod)
+      FSW.Set_SweepCont(1)
+      FSW.Set_InitImm()
+   except:
+      print("NR5G_SetSettings: FSW Error")
+      pass
 
-EVM = FSW.Get_5GNR_EVM()
-OFile.write("%d,%s"%(Freq,EVM))
+   #EVM = FSW.Get_5GNR_EVM()
 
-SMW.jav_ClrErr()                         #Clear Errors
-FSW.jav_ClrErr()                         #Clear Errors
+
+if __name__ == "__main__":
+   SMW = VSG().jav_Open(SMW_IP)              #Create SMW Object
+   FSW = VSA().jav_Open(FSW_IP)              #Create FSW Object
+   odata = NR5G_SetSettings(FSW,SMW,NR())
+   SMW.jav_ClrErr()                          #Clear Errors
+   FSW.jav_ClrErr()                          #Clear Errors
+   SMW.jav_Close()
+   FSW.jav_Close()

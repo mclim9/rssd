@@ -20,13 +20,11 @@ from rssd.SMW_5GNR_K144    import VSG
 #from rssd.FileIO           import FileIO
 
 #OFile = FileIO().makeFile(__file__)
-SMW = VSG().jav_Open(SMW_IP)  #Create SMW Object
-FSW = VSA().jav_Open(FSW_IP)  #Create FSW Object
 
 ##########################################################
 ### Instrument Settings
 ##########################################################
-def a5GNR_ReadSettings(FSW,SMW):
+def NR5G_ReadSettings(FSW,SMW):
    odata =  [[] for i in range(3)]
    odata[0].append("               ")
    odata[0].append("Direction      ")
@@ -124,7 +122,9 @@ def a5GNR_ReadSettings(FSW,SMW):
    return odata
 
 if __name__ == "__main__":
-   odata = a5GNR_ReadSettings(FSW,SMW)
+   SMW = VSG().jav_Open(SMW_IP)              #Create SMW Object
+   FSW = VSA().jav_Open(FSW_IP)              #Create FSW Object
+   odata = NR5G_ReadSettings(FSW,SMW)
    for i in range(len(odata[0])):
       try:
          print("%s\t%s\t%s"%(odata[0][i],odata[1][i],odata[2][i]))
