@@ -55,7 +55,7 @@ class jaVisa(object):
       RdStr = self.query("SYST:ERR?").strip().split(',')
       return RdStr
 
-   def jav_IDN(self):
+   def jav_IDN(self,prnt=1):
       self.dataIDN = "Temp"                  #Temp for self.query
       self.dataIDN = self.query("*IDN?").strip()
       if self.dataIDN != "<notRead>":        #Data Returned?
@@ -65,8 +65,9 @@ class jaVisa(object):
          self.Device  = IDNStr[2]
          self.Version = IDNStr[3]
       else:
-         self.dataIDN = ""                   #Reset if not read 
-      print('jav_IDN   : %s'%(self.dataIDN))
+         self.dataIDN = ""                   #Reset if not read
+      if prnt==1:
+         print('jav_IDN   : %s'%(self.dataIDN))
       return self.dataIDN
             
    def jav_OPC_Wait(self, InCMD):
@@ -89,20 +90,20 @@ class jaVisa(object):
       print('jav_OPCWai: %0.2fsec'%(delta))
       
    
-   def jav_Open(self, IPAddr, fily=''):
+   def jav_Open(self, IPAddr, fily='',prnt=1):
       #  VISA: 'TCPIP0::'+IP_Address+'::INSTR'
       #  VISA: 'TCPIP0::'+IP_Address+'::inst0'
       #  VISA: 'TCPIP0::'+IP_Address+'::hislip0'
       #  VISA: 'TCPIP0::'+IP_Address+'::hislip0::INSTR'
       try:
          
-         self.jav_openvisa('TCPIP0::'+IPAddr+'::hislip0::INSTR',fily)
+         self.jav_openvisa('TCPIP0::'+IPAddr+'::hislip0::INSTR',fily,prnt)
       except:
          print('VISA Openerror.  Using Raw Socket')
-         self.jav_openvisa('TCPIP0::'+IPAddr+'::5025::SOCKET',fily)
+         self.jav_openvisa('TCPIP0::'+IPAddr+'::5025::SOCKET',fily,prnt)
       return self
 
-   def jav_opensocket(self, sIPAddr, fily=''):
+   def jav_opensocket(self, sIPAddr, fily='',prnt=1):
       #*****************************************************************
       #*** Open raw socket Connection
       #*****************************************************************
@@ -110,7 +111,7 @@ class jaVisa(object):
       try:
          #s.setttimeout(1)
          self.K2.connect((sIPAddr,5025))
-         self.jav_IDN()
+         self.jav_IDN(prnt)
          try:
             if fily != '':
                f=open(fily,'a')
@@ -124,7 +125,7 @@ class jaVisa(object):
          self.K2 = 'NoSOCKET'
       return self.K2
 
-   def jav_openvisa(self, sVISAStr, fily=''):
+   def jav_openvisa(self, sVISAStr, fily='',prnt=1):
       #*****************************************************************
       #*** Open VISA Connection
       #*****************************************************************
@@ -133,7 +134,7 @@ class jaVisa(object):
       try:
          self.K2 = rm.open_resource(sVISAStr)    #Create Visa Obj
          self.K2.timeout = 5000                  #Timeout, millisec
-         self.jav_IDN()
+         self.jav_IDN(prnt)
          try:
             if fily != '':
                f=open(fily,'a')
