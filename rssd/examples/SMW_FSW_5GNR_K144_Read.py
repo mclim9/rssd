@@ -28,12 +28,14 @@ def NR5G_ReadSettings(FSW,SMW):
    DMRS = 0
    
    odata =  [[] for i in range(3)]
-   odata[0].append("               ")
+   odata[0].append("[[Parameter]]  ")
    odata[0].append("Direction      ")
    odata[0].append("FreqRange      ")
    odata[0].append("RefA,MHz       ")
    odata[0].append("Ch BW          ")
    odata[0].append("TransPrecoding ")
+   odata[0].append("====SS/PBCH====")
+   odata[0].append("SubSpacing     ")   
    odata[0].append("===User/BWP====")
    odata[0].append("SubSpacing     ")
    odata[0].append("Num BWP        ")
@@ -59,12 +61,14 @@ def NR5G_ReadSettings(FSW,SMW):
 
    try:
    #   SMW.Set_5GNR_Parameters(Direct)
-      odata[1].append("[[SMW]]")
+      odata[1].append("[-SMW-]")
       odata[1].append(SMW.Get_5GNR_Direction())
       odata[1].append(SMW.Get_5GNR_FreqRange())
       odata[1].append(int(SMW.Get_5GNR_RefA())/1e6)
       odata[1].append(SMW.Get_5GNR_ChannelBW()) 
       odata[1].append(SMW.Get_5GNR_TransPrecoding())
+      odata[1].append("=SSB==")
+      odata[1].append(SMW.Get_5GNR_SSB_SubSpace())
       odata[1].append("=User=")
       odata[1].append(SMW.Get_5GNR_BWP_SubSpace())
       odata[1].append(SMW.Get_5GNR_BWP_Count())
@@ -92,12 +96,14 @@ def NR5G_ReadSettings(FSW,SMW):
       
    try:
       FSW.Init_5GNR()
-      odata[2].append("[[FSW]]")
+      odata[2].append("[-FSW-]")
       odata[2].append(FSW.Get_5GNR_Direction())
       odata[2].append(FSW.Get_5GNR_FreqRange())
       odata[2].append(int(FSW.Get_5GNR_RefA())/1e6)
       odata[2].append(FSW.Get_5GNR_ChannelBW())
       odata[2].append(FSW.Get_5GNR_TransPrecoding())
+      odata[2].append("=SSB==")
+      odata[2].append(FSW.Get_5GNR_SSB_SubSpace())
       odata[2].append("=User=")
       odata[2].append(FSW.Get_5GNR_BWP_SubSpace())
       odata[2].append(FSW.Get_5GNR_BWP_Count())
@@ -135,9 +141,9 @@ if __name__ == "__main__":
          print("%s\t%s\t%s"%(odata[0][i],odata[1][i],odata[2][i]))
       except: 
          try:
-            print("%s\t%s\t%s"%(odata[0][i],odata[1][i],'<not read>'))
+            print("%s\t%s\t%s"%(odata[0][i],odata[1][i],'<notRead>'))
          except:
-            print("%s\t%s\t%s"%(odata[0][i],'<not read>',odata[2][i]))
+            print("%s\t%s\t%s"%(odata[0][i],'<notRead>',odata[2][i]))
    SMW.jav_ClrErr()                          #Clear Errors 
    FSW.jav_ClrErr()                          #Clear Errors
    SMW.jav_Close()
