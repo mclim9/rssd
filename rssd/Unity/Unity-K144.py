@@ -59,16 +59,18 @@ class GUIData(object):
       self.Entry4    = "-5"
       self.EntTxt10  = "Direction"
       self.Entry10   = "UL"
-      self.EntTxt11  = "DeployFreq"
+      self.EntTxt11  = "Freq Band"
       self.Entry11   = "HIGH"
       self.EntTxt12  = "Ch BW,MHz"
       self.Entry12   = "100"
       self.EntTxt13  = "SubCarrier,kHz"
       self.Entry13   = "60"
       self.EntTxt14  = "RB"
-      self.Entry14   = "100"
-      self.EntTxt15  = "Modulation"
-      self.Entry15   = "QPSK"
+      self.Entry14   = "132"
+      self.EntTxt15  = "RB Offset"
+      self.Entry15   = "0"
+      self.EntTxt16  = "Modulation"
+      self.Entry16   = "QPSK"
       self.List1     = ['- Simplified 5GNR Demo utility',
                         '- Utility does not validate settings against 3GPP 5G',
                         '- Click *IDN? to validate IP Addresses',
@@ -88,14 +90,14 @@ Enum12 = Tk.StringVar(GUI)
 Enum12.set("100") # default value
 Enum13 = Tk.StringVar(GUI)
 Enum13.set("60") # default value
-Enum15 = Tk.StringVar(GUI)
-Enum15.set("QPSK") # default value
+Enum16 = Tk.StringVar(GUI)
+Enum16.set("QPSK") # default value
 
 Entry10 = Tk.OptionMenu(GUI, Enum10, "UL", "DL")
 Entry11 = Tk.OptionMenu(GUI, Enum11, "LOW", "MIDD", "HIGH")
 Entry12 = Tk.OptionMenu(GUI, Enum12, "20","50","100","200","400")
 Entry13 = Tk.OptionMenu(GUI, Enum13, "15", "30", "60", "120")
-Entry15 = Tk.OptionMenu(GUI, Enum15, "QPSK", "QAM16", "QAM64", "QAM256")
+Entry16 = Tk.OptionMenu(GUI, Enum16, "QPSK", "QAM16", "QAM64", "QAM256")
 
 def ArrayInput(stringIn):
    OutputList = []
@@ -116,20 +118,22 @@ def btn1():
    
 def btn2():
    ### Get Max RB ###
-   windowUpperWrite('u|<6GHz |010 020 050 100')
-   windowUpperWrite('-+------+---+---+---+---')
-   windowUpperWrite('0 015kHz|052 106 270 N/A')
-   windowUpperWrite('1 030kHz|024 051 133 273')
-   windowUpperWrite('2 060kHz|011 024 065 135')
-   windowUpperWrite('3 120kHz|N/A N/A N/A N/A')
+   windowUpperWrite('--------------------------   --------------------------')
+   windowUpperWrite('|u[<6GHz ]010 020 050 100|   |u[>6GHz ]050 100 200 400|')
+   windowUpperWrite('|-+------+---+---+---+---|   |-+------+---+---+---+---|')
+   windowUpperWrite('|0 015kHz|052 106 270 N/A|   |0 015kHz|N/A N/A N/A N/A|')
+   windowUpperWrite('|1 030kHz|024 051 133 273|   |1 030kHz|N/A N/A N/A N/A|')
+   windowUpperWrite('|2 060kHz|011 024 065 135|   |2 060kHz|066 132 264 N/A|')
+   windowUpperWrite('|3 120kHz|N/A N/A N/A N/A|   |3 120kHz|032 066 132 264|')
+   windowUpperWrite('--------------------------   --------------------------')
    windowUpperWrite(' ')
-   windowUpperWrite('u|>6GHz |050 100 200 400')
-   windowUpperWrite('-+------+---+---+---+---')
-   windowUpperWrite('0 015kHz|N/A N/A N/A N/A')
-   windowUpperWrite('1 030kHz|N/A N/A N/A N/A')
-   windowUpperWrite('2 060kHz|066 132 264 N/A')
-   windowUpperWrite('3 120kHz|032 066 132 264')
-   windowUpperWrite(' ')
+   ### windowUpperWrite('u|>6GHz |050 100 200 400')
+   ### windowUpperWrite('-+------+---+---+---+---')
+   ### windowUpperWrite('0 015kHz|N/A N/A N/A N/A')
+   ### windowUpperWrite('1 030kHz|N/A N/A N/A N/A')
+   ### windowUpperWrite('2 060kHz|066 132 264 N/A')
+   ### windowUpperWrite('3 120kHz|032 066 132 264')
+   ### windowUpperWrite(' ')
    SMW = VSG().jav_Open(Entry1.get(),prnt=0)  #Create SMW Object
    data = SMW.Get_5GNR_RBMax()
    windowUpperWrite("=== Max RB ===")
@@ -158,14 +162,15 @@ def btn4():
    RSVar.NR_ChBW     = int(Enum12.get())
    RSVar.NR_SubSp    = int(Enum13.get())
    RSVar.NR_RB       = int(Entry14.get())
-   RSVar.NR_Mod      = Enum15.get()
+   RSVar.NR_RBO      = int(Entry15.get())
+   RSVar.NR_Mod      = Enum16.get()
    
    ### Do some work
-   windowLowerWrite("Creating Waveform.")
+   windowLowerWrite("SMW Creating Waveform.")
    NR5G_SetSettings(FSW,SMW,RSVar)
    windowLowerWrite(FSW.jav_ClrErr())
    windowLowerWrite(SMW.jav_ClrErr())
-   windowLowerWrite("Setting Written")
+   windowLowerWrite("SMW/FSW Setting Written")
    SMW.jav_Close()
    FSW.jav_Close()
 
@@ -210,18 +215,22 @@ def click14(tkEvent):
    #print(tkEvent)
    if 1:
       NR_RB  = int(Entry14.get())
-      NR_Dir = Entry10.get()
+      NR_Dir = Enum10.get()
       SMW    = VSG().jav_Open(Entry1.get(),prnt=0)  #Create SMW Object
       FSW    = VSA().jav_Open(Entry2.get(),prnt=0)  #Create FSW Object
-      SMW.Set_5GNR_Direction(NR_Dir)
-      SMW.Set_5GNR_BWP_ResBlock(NR_RB)
-      SMW.Set_5GNR_BWP_Ch_ResBlock(NR_RB)
-      FSW.Set_5GNR_Direction()
-      FSW.Set_5GNR_BWP_ResBlock(NR_RB)
-      FSW.Set_5GNR_BWP_Ch_ResBlock(NR_RB)
+      if 0:
+         SMW.Set_5GNR_Direction(NR_Dir)
+         SMW.Set_5GNR_BWP_ResBlock(NR_RB)
+         SMW.Set_5GNR_BWP_Ch_ResBlock(NR_RB)
+         FSW.Set_5GNR_Direction(NR_Dir)
+         FSW.Set_5GNR_BWP_ResBlock(NR_RB)
+         FSW.Set_5GNR_BWP_Ch_ResBlock(NR_RB)
       SMW.jav_Close()
       FSW.jav_Close()
    windowLowerWrite('TBD')
+   
+def click15(tkEvent):
+   pass
    
 def dataLoad():
    OutObj = GUIData()
@@ -359,7 +368,12 @@ Entry14 = Tk.Entry(GUI,width=Col1Wid, bg=EntTxtBg, fg=EntTxtFg, insertbackground
 Entry14.insert(END,RSVar.Entry14)                   #Default Value
 
 Label15 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBg, fg=LblTxtFg, text=RSVar.EntTxt15)#Create Label
-Entry15.config(width=Col1Wid-7, bg=EntTxtBg, fg=EntTxtFg)
+Label15.bind("<Button-1>",click15)
+Entry15 = Tk.Entry(GUI,width=Col1Wid, bg=EntTxtBg, fg=EntTxtFg, insertbackground=ColorCurs)
+Entry15.insert(END,RSVar.Entry15)                   #Default Value
+
+Label16 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBg, fg=LblTxtFg, text=RSVar.EntTxt16)#Create Label
+Entry16.config(width=Col1Wid-7, bg=EntTxtBg, fg=EntTxtFg)
 
 btnObj1 = Tk.Button(GUI,width=btnWid,bg=ClrAppBg,fg=BtnTxtFg,text=RSVar.BtnTxt1,command = btn1)
 btnObj2 = Tk.Button(GUI,width=btnWid,bg=ClrAppBg,fg=BtnTxtFg,text=RSVar.BtnTxt2,command = btn2)
@@ -407,6 +421,7 @@ Label12.grid(row=6,column=0,sticky=Tk.E)
 Label13.grid(row=7,column=0,sticky=Tk.E)
 Label14.grid(row=8,column=0,sticky=Tk.E)
 Label15.grid(row=9,column=0,sticky=Tk.E)
+Label16.grid(row=10,column=0,sticky=Tk.E)
 
 Entry1.grid(row=0,column=1)
 Entry2.grid(row=1,column=1)
@@ -418,6 +433,7 @@ Entry12.grid(row=6,column=1)
 Entry13.grid(row=7,column=1)
 Entry14.grid(row=8,column=1)
 Entry15.grid(row=9,column=1)
+Entry16.grid(row=10,column=1)
 
 btnObj1.grid(row=btnRow,column=0)
 btnObj2.grid(row=btnRow,column=1)
@@ -426,8 +442,8 @@ btnObj4.grid(row=btnRow,column=3)
 btnObj5.grid(row=btnRow,column=4)
 btnQuit.grid(row=btnRow,column=5)
 
-lstTopWind.grid(row=0,column=2,columnspan=4,rowspan=10, sticky=(Tk.E))
-srlTopWind.grid(column=maxCol,row=0,rowspan=10,sticky=(Tk.W,Tk.N,Tk.S))
+lstTopWind.grid(row=0,column=2,columnspan=4,rowspan=11, sticky=(Tk.E))
+srlTopWind.grid(column=maxCol,row=0,rowspan=11,sticky=(Tk.W,Tk.N,Tk.S))
 lstBotWind.grid(row=btnRow-1,column=0,columnspan=(maxCol),sticky=Tk.E)
 srlBotWind.grid(column=maxCol,row=btnRow-1, sticky=(Tk.W,Tk.N,Tk.S))
 
