@@ -88,7 +88,7 @@ class jaVisa(object):
             print("jav_OPCWai: timeout")
             break
       print('jav_OPCWai: %0.2fsec'%(delta))
-      
+      return delta
    
    def jav_Open(self, IPAddr, fily='',prnt=1):
       #  VISA: 'TCPIP0::'+IP_Address+'::INSTR'
