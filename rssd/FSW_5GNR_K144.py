@@ -159,11 +159,18 @@ class VSA(VSA):
       rdStr = self.query(':CALC1:LIM:FAIL?')
       return rdStr
 
+   def Get_5GNR_SSB_SubSpace(self):
+      if self.sdir == 'DL':
+         rdStr = self.query(':CONF:NR5G:DL:CC1:SSBL1:SSP?')
+      else:
+         rdStr = '<UL n/a>'
+      return rdStr
+
    def Get_5GNR_TransPrecoding(self):
       if self.sdir == 'UL':
          rdStr = self.query(':CONF:NR5G:UL:CC1:TPR?')
       else:
-         rdStr = '<UL only>'
+         rdStr = '<DL N/A>'
       return rdStr
 
    #####################################################################

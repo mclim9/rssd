@@ -122,6 +122,13 @@ class VSG(VSG):
       rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:SCSP?'%(self.sdir))
       return rdStr
 
+   def Get_5GNR_SSB_SubSpace(self):
+      if self.sdir == 'DL':
+         rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:SSPB0:SCSP?')
+      else:
+         rdStr = '<UL n/a>'
+      return rdStr
+
    def Get_5GNR_BWP_SubSpaceTotal(self):
       rdStr = []
       rdStr.append(self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:NRB?'))
