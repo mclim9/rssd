@@ -207,13 +207,15 @@ class VSG(VSG):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
       self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:RBN %d'%(self.sdir,iRB))
 
-
    def Set_5GNR_BWP_ResBlockMax(self):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
       MaxRB =  20
       rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:RBN %d'%(self.sdir,MaxRB))
       return rdStr
       
+   def Set_5GNR_BWP_ResBlockOffset(self,iRBO):
+      self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:RBOF %d'%(self.sdir,iRBO))
+
    def Set_5GNR_BWP_SubSpace(self,iSubSp):
       self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S%dK:USE 1'%(iSubSp))
       self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:SCSP N%d'%(self.sdir,iSubSp))
