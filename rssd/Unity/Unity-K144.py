@@ -213,7 +213,7 @@ def click4(tkEvent):
 
 def click14(tkEvent):
    #print(tkEvent)
-   if 1:
+   if 0:
       NR_RB  = int(Entry14.get())
       NR_Dir = Enum10.get()
       SMW    = VSG().jav_Open(Entry1.get(),prnt=0)  #Create SMW Object
@@ -227,9 +227,14 @@ def click14(tkEvent):
          FSW.Set_5GNR_BWP_Ch_ResBlock(NR_RB)
       SMW.jav_Close()
       FSW.jav_Close()
-   windowLowerWrite('TBD')
+   windowLowerWrite('FSW:Signal Description-->RadioFrame-->BWP Config-->RB')
+   windowLowerWrite('FSW:Signal Description-->RadioFrame-->PxSCH Config-->RB')
+   windowLowerWrite('SMW:User/BWP-->UL BWP-->RB')
+   windowLowerWrite('SMW:Scheduling-->PxSCH-->RB')
    
 def click15(tkEvent):
+   windowLowerWrite('FSW:Signal Description-->RadioFrame-->BWP Config-->RB Offset')
+   windowLowerWrite('SMW:User/BWP-->UL BWP-->RB Offset')
    pass
    
 def dataLoad():
@@ -261,7 +266,7 @@ def dataSave():
    f.close()
    windowLowerWrite("DataSave: File Saved")
    
-def windowLowerClear():
+def windowLowerClear(tk=1):
    posi = lstBotWind.curselection()
    lstBotWind.delete(0.0,END)
 
@@ -277,7 +282,7 @@ def windowLowerWrite(inStr):
    except: 
       pass
 #1325.3777.00
-def windowUpperClear():
+def windowUpperClear(tk=1):
    #posi = lstTopWind.curselection()
    lstTopWind.delete(0.0,END)
    
@@ -386,6 +391,7 @@ btnQuit = Tk.Button(GUI,width=btnWid,bg='red2',fg=BtnTxtFg,text="Quit",         
 ### List Boxes
 ########################################################################
 lstTopWind = Tk.Text(GUI,bg=EntTxtBg, fg=EntTxtFg, width=ColxWid, height=26)
+lstTopWind.bind("<Button-3>",windowUpperClear)
 srlTopWind = ttk.Scrollbar(GUI, orient=Tk.VERTICAL,command=lstTopWind.yview)  #Create scrollbar
 lstTopWind.config(font='Courier 10 bold')
 lstTopWind.config(tabs=('5c', '7c', '9c'))
