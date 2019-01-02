@@ -2,6 +2,9 @@
 /dist/
 /build/
 /*.egg-info/
+/rssd/Unity/build/
+/rssd/Unity/dist/
+/rssd/Unity/fixtures/
 
 ### IQ Waveform/Capture
 *.iqw
