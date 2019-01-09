@@ -267,7 +267,7 @@ def dataSave():
    windowLowerWrite("DataSave: File Saved")
    
 def windowLowerClear(tk=1):
-   posi = lstBotWind.curselection()
+   #posi = lstBotWind.curselection()
    lstBotWind.delete(0.0,END)
 
 def windowLowerWrite(inStr):
@@ -306,7 +306,7 @@ def menu_Save():
    dataSave()
 
 def menu_TopWindClear():
-   windowUpplerClear()
+   windowUpperClear()
 
 def menu_TopWindLoad_Files():
    lstTopWind.delete(0,END)
@@ -320,7 +320,7 @@ def menu_TopWindLoad_Read():
    lstTopWind.delete(0,END)
    filez = tkFileDialog.askopenfilename()
    windowLowerWrite(filez)
-   for i in fileList:
+   for i in filez:
       lstTopWind.insert(END,i)
    lstTopWind.see(END)
 
@@ -464,8 +464,8 @@ if 0:
    fileMenu.add_command(label="Open",command=menu_Open)
    fileMenu.add_command(label="Save",command=menu_Save)
    fileMenu.add_separator()
-   fileMenu.add_command(label="SCPI Load", command=mnu_TopWindLoad_Read)
-   fileMenu.add_command(label="SCPI Clear",command=mnu_TopWindClear)
+   fileMenu.add_command(label="SCPI Load", command=menu_TopWindLoad_Read)
+   fileMenu.add_command(label="SCPI Clear",command=menu_TopWindClear)
    fileMenu.add_separator()
    fileMenu.add_command(label="Exit",command=menu_Exit)
    menu.add_cascade(label="File",menu=fileMenu)       #add dropdown menu

@@ -1,5 +1,11 @@
 Release History
 =====================================================================
+- RSSD 0.1.9
+    - Unity_K144.py
+    - yavisa.py open_xxx methods can turn of IDN print.
+    - minor changes to FSW_5GNR_K144.py
+    - Add RB Offset settings
+      
 - RSSD 0.1.8
     - Unity_K144.py added to control FSW & SMW
         - SMW_FSW_5GNR_K144_Set.py and SMW_FSW_5GNR_K144_Get.py Callable

@@ -17,7 +17,7 @@ class VSA(VSA):
    #####################################################################
    def Get_5GNR_ACLR(self): 
       ACLR = self.query(':CALC:MARK:FUNC:POW:RES? MCAC')
-      return float(EVM)
+      return float(ACLR)
 
    def Get_5GNR_BWP_Center(self):
       SS = self.Get_5GNR_BWP_SubSpace()
@@ -161,7 +161,11 @@ class VSA(VSA):
 
    def Get_5GNR_SSB_SubSpace(self):
       if self.sdir == 'DL':
-         rdStr = self.query(':CONF:NR5G:DL:CC1:SSBL1:SSP?')
+         SyncDetStat = self.query(':CONF:NR5G:DL:SSBL1:DET?')
+         if SyncDetStat == 'MAN':
+            rdStr = self.query(':CONF:NR5G:DL:CC1:SSBL1:SSP?')
+         else:
+            rdStr = '<Scanng>'
       else:
          rdStr = '<UL n/a>'
       return rdStr
@@ -192,7 +196,7 @@ class VSA(VSA):
    #####################################################################
    def Set_5GNR_AllocFile(self,sFilename):
       # \Instr\user\V5GTF\AllocationFiles\UL
-      self.write('MMEM:LOAD:DEM "%s"'%sFilename);
+      self.write('MMEM:LOAD:DEM "%s"'%sFilename)
       
    def Set_5GNR_BWP_Ch_Modulation(self,sMod):
       # QPSK; QAM16; QAM64; QAM256; PITB
