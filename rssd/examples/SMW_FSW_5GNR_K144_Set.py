@@ -27,8 +27,8 @@ class NR(object):
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from rssd.SMW_5GNR_K144 import VSG
-from rssd.FSW_5GNR_K144 import VSA
+from rssd.SMW_5GNR_K144 import VSG  #pylint: disable=E0611,E0401
+from rssd.FSW_5GNR_K144 import VSA  #pylint: disable=E0611,E0401
 #from rssd.FileIO        import FileIO
 #OFile = FileIO().makeFile(__file__)
 
@@ -47,6 +47,7 @@ def NR5G_SetSettings(FSW,SMW,NR):
       SMW.Set_5GNR_BWP_ResBlock(NR.NR_RB)
       SMW.Set_5GNR_BWP_ResBlockOffset(NR.NR_RBO)
       SMW.Set_5GNR_BWP_Ch_ResBlock(NR.NR_RB)
+      SMW.Set_5GNR_BWP_Corset_ResBlock(NR.NR_RB)
       #SMW.Set_5GNR_BWP_Ch_ResBlockOffset(NR_RBO)
       SMW.Set_5GNR_BWP_Ch_Modulation(NR.NR_Mod)
       SMW.Set_5GNR_SSB()
@@ -68,6 +69,7 @@ def NR5G_SetSettings(FSW,SMW,NR):
       FSW.Set_5GNR_BWP_ResBlock(NR.NR_RB)
       FSW.Set_5GNR_BWP_ResBlockOffset(NR.NR_RBO)
       FSW.Set_5GNR_BWP_Ch_ResBlock(NR.NR_RB)
+      FSW.Set_5GNR_BWP_Corset_ResBlock(NR.NR_RB)
       #FSW.Set_5GNR_BWP_Ch_ResBlockOffset(NR.NR_RBO)
       FSW.Set_5GNR_BWP_Ch_Modulation(NR.NR_Mod)
       FSW.Set_SweepCont(1)
@@ -76,13 +78,13 @@ def NR5G_SetSettings(FSW,SMW,NR):
       print("NR5G_SetSettings: FSW Error")
       pass
 
-   #EVM = FSW.Get_5GNR_EVM()
+   return 0
 
 
 if __name__ == "__main__":
    SMW = VSG().jav_Open(SMW_IP)              #Create SMW Object
    FSW = VSA().jav_Open(FSW_IP)              #Create FSW Object
-   odata = NR5G_SetSettings(FSW,SMW,NR())
+   odata = NR5G_SetSettings(FSW,SMW,NR)
    SMW.jav_ClrErr()                          #Clear Errors
    FSW.jav_ClrErr()                          #Clear Errors
    SMW.jav_Close()

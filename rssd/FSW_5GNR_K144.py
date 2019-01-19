@@ -5,9 +5,9 @@
 ### Author:  Martin C Lim
 ### Date:    2018.04.03
 ### Requird: python -m pip install pyvisa
-from rssd.FSW_Common import VSA
+from rssd.FSW_Common import VSA        #pylint: disable=E0611,E0401
 
-class VSA(VSA):
+class VSA(VSA):                        #pylint: disable=E0102
    def __init__(self):
       super(VSA, self).__init__()      #Python 2/3
       self.sdir = "UL"
@@ -209,6 +209,14 @@ class VSA(VSA):
    def Set_5GNR_BWP_Ch_ResBlockOffset(self,iRBO):
       self.write(':CONF:NR5G:%s:CC1:FRAM1:BWP0:SLOT0:ALL0:RBOF %d'%(self.sdir,iRBO))
 
+   def Set_5GNR_BWP_Corset_ResBlock(self, iRB):
+      if self.sdir == 'DL':
+         self.write(f':CONF:NR5G:DL:CC1:FRAM1:BWP0:SLOT0:COR0:RBC {iRB}')
+
+   def Set_5GNR_BWP_Corset_ResBlockOffset(self,iRBO):
+      if self.sdir == 'DL':
+         self.write(f':CONF:NR5G:DL:CC1:FRAM1:BWP0:SLOT0:COR0:RBOF {iRBO}')
+   
    def Set_5GNR_BWP_ResBlock(self,iRB):
       ### RB = (CHBw * 0.95) / (SubSp * 12)
       self.write(':CONF:NR5G:%s:CC1:FRAM1:BWP0:RBC %d'%(self.sdir,iRB))

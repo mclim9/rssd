@@ -6,7 +6,7 @@
 ### Date   : 2018.02.01
 ### Requird: python -m pip install pyvisa
 #####################################################################
-from rssd.yaVISA import jaVisa
+from rssd.yaVISA import jaVisa      #pylint: disable=E0611,E0401
 
 class VSG(jaVisa):
    def __init__(self):
@@ -21,7 +21,7 @@ class VSG(jaVisa):
       return SCPI
 
    def Get_ArbTime(self):
-      Fs = Get_ArbClockFreq()
+      Fs = self.Get_ArbClockFreq()
       Points = self.query('BB:ARB:WAV:POIN?').strip()
       WvTime = int(Points)/int(Fs)
       return WvTime
@@ -67,7 +67,7 @@ class VSG(jaVisa):
       self.write('SOUR%d:BB:ARB:CLOC %f'%(RF,fFreq))
 
    def Set_ArbNextSeg(self,num):
-      self.query('BB:ARB:WSEG:NEXT %d;*OPC?'%d)
+      self.query('BB:ARB:WSEG:NEXT %d;*OPC?'%(num))
 
    def Set_ArbSeg(self,Seg):
        self.write('SOUR:BB:ARB:WSEG:NEXT %d'%Seg)
@@ -86,7 +86,7 @@ class VSG(jaVisa):
          self.query(':SOUR1:BB:ARB:STAT 0;*OPC?')
    
    def Set_Freq(self,freq):
-      self.write(':SOUR1:FREQ:CW %f'%freq);    #RF Freq
+      self.write(':SOUR1:FREQ:CW %f'%freq)    #RF Freq
 
    def Set_IQMod(self,sState):
       ### ON, OFF 
@@ -103,7 +103,7 @@ class VSG(jaVisa):
       self.query('SOUR:POW:ALC:DAMP %s;*OPC?'%sState)
       
    def Set_RFPwr(self,fPow):   #fPow
-      self.write('SOUR:POW %f'%fPow);          #RF Pwr
+      self.write('SOUR:POW %f'%fPow)          #RF Pwr
       
    def Set_RFState(self,sState):
       self.query('OUTP %s;*OPC?'%sState)

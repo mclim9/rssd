@@ -6,9 +6,9 @@
 ### Date   : 2018.02.01
 ### Requird: python -m pip install rssd
 #####################################################################
-from rssd.SMW_Common import VSG
+from rssd.SMW_Common import VSG     #pylint: disable=E0611,E0401
 
-class VSG(VSG):
+class VSG(VSG):                     #pylint: disable=E0102
    def __init__(self):
       super(VSG,self).__init__()    #Python2/3
       self.Model = "SMW"
@@ -202,6 +202,15 @@ class VSG(VSG):
       ### 5GNR-->Scheduling-->PUSCH-->No. RBs
       #self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:RBOF %d'%%(self.alloc,iRBO))
       self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:RBOF 0'%(self.alloc))
+
+   def Set_5GNR_BWP_Corset_ResBlock(self, iRB):
+      if self.sdir == 'DL':
+         self.write(f':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:RBN {iRB}')
+
+   def Set_5GNR_BWP_Corset_ResBlockOffset(self,iRBO):
+      if self.sdir == 'DL':
+      ### 5GNR-->Scheduling-->PUSCH-->No. RBs
+         self.write(f':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:RBOF {iRBO}')
 
    def Set_5GNR_BWP_ResBlock(self,iRB):
       ### RB = (CHBw * 0.95) / (SubSp * 12)

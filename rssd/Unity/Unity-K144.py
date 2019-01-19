@@ -281,7 +281,8 @@ def windowLowerWrite(inStr):
       GUI.update()
    except: 
       pass
-#1325.3777.00
+
+
 def windowUpperClear(tk=1):
    #posi = lstTopWind.curselection()
    lstTopWind.delete(0.0,END)
@@ -330,11 +331,14 @@ def menu_TopWindLoad_Read():
 ########################################################################
 RSVar = copy.copy(dataLoad())
 GUI.title(RSVar.Title)                             #GUI Title
-GUI.iconbitmap('Unity.ico')
-#GUI.tk.call('wm', 'iconphoto', GUI._w, Tk.PhotoImage(file='Unity.gif'))
-GUI.resizable(0,0)
-GUI.config(bg=ClrAppBg)
-#Tk.Font(family="Helvetica", size=10, weight=Tk.font.BOLD, slant=Tk.font.ITALIC)
+try:
+   #GUI.tk.call('wm', 'iconphoto', GUI._w, Tk.PhotoImage(file='Unity.gif'))
+   GUI.resizable(0,0)
+   GUI.config(bg=ClrAppBg)
+   #Tk.Font(family="Helvetica", size=10, weight=Tk.font.BOLD, slant=Tk.font.ITALIC)
+   GUI.iconbitmap('Unity.ico')
+except:
+   pass
 ########################################################################
 ### Define GUI Widgets
 Label1 = Tk.Label(GUI,width=Col0Wid, bg=ClrAppBg, fg=LblTxtFg, text=RSVar.EntTxt1)

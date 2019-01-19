@@ -15,8 +15,8 @@ FSW_IP   = '192.168.1.109'                    #IP Address
 ##########################################################
 ### Code Start
 ##########################################################
-from rssd.FSW_5GNR_K144    import VSA
-from rssd.SMW_5GNR_K144    import VSG
+from rssd.FSW_5GNR_K144    import VSA  #pylint: disable=E0611,E0401
+from rssd.SMW_5GNR_K144    import VSG  #pylint: disable=E0611,E0401
 #from rssd.FileIO           import FileIO
 
 #OFile = FileIO().makeFile(__file__)
