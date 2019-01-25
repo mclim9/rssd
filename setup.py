@@ -22,7 +22,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='rssd',
-      version='0.1.9',
+      version='0.1.11',
       description='Rohde & Schwarz SCPI Driver',
       long_description=long_description,
       long_description_content_type='text/markdown', 
@@ -36,7 +36,7 @@ setup(name='rssd',
         'Topic :: System :: Hardware :: Hardware Drivers',
       ],
       keywords='Rohde Schwarz FSW SMW SCPI test equipment VSA VGA',
-      url='https://bitbucket.org/mclim/RS_SCPI_Driver',
+      url='https://github.com/mclim9/rssd',
       author='Martin Lim',
       author_email='martin.lim@rsa.rohde-schwarz.com',
       license='R&S Terms and Conditions for Royalty-Free Products',
