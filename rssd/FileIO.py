@@ -17,7 +17,8 @@ class FileIO(object):
    
    def makeFile(self,sFilepath):
       BaseDir  = os.path.dirname(os.path.realpath(sFilepath))
-      OutFile  = BaseDir + "\\" + sFilepath
+      BaseFile = os.path.basename(sFilepath)
+      OutFile  = f'{BaseDir}\\{BaseFile}'
       self.Init(OutFile)
       return self
       
