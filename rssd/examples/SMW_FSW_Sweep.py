@@ -19,13 +19,13 @@ Mixer = 0
 ##########################################################
 ### Code Start
 ##########################################################
-from rssd.FSW_Common    import VSA
+from rssd.FSW_Common    import VSA          #pylint:disable=
 from rssd.SMW_Common    import VSG
 from rssd.FileIO        import FileIO
 import time
 
-OFileCSV = FileIO().makeFile('FSMW_SweepCSV')
-OFileXML = FileIO().makeFile('FSMW_SweepXML')
+OFileCSV = FileIO().makeFile(__file__+'csv')
+OFileXML = FileIO().makeFile(__file__+'xml')
 SMW = VSG().jav_Open(SMW_IP,OFileCSV)  #Create SMW Object
 FSW = VSA().jav_Open(FSW_IP,OFileCSV)  #Create FSW Object
 
