@@ -56,8 +56,8 @@ class VSA(jaVisa):
         out = self.queryFloat('INP:ATT?')
         return out 
 
-    def Get_Preamp(self,sState):
-        return self.write(f'INP:GAIN:STAT {sState};*WAI').strip()
+    def Get_Preamp(self):
+        return self.query(f'INP:GAIN:STAT?').strip()
 
     def Get_AmpSettings(self):
         attn = self.Get_AttnMech()
@@ -444,7 +444,7 @@ class VSA(jaVisa):
         P00_10 = self.query(f'CALC:STAT:CCDF:X1? P0_1;*WAI')
         P00_01 = self.query(f'CALC:STAT:CCDF:X1? P0_01;*WAI')
         CrestF = self.query(f'CALC:STAT:RES? CFAC')
-        return f'{P10_00},{P01_00},{P00_10},{P00_01}'
+        return f'{CrestF},{P10_00},{P01_00},{P00_10},{P00_01}'
 
     def Set_CCDF(self,sState):
         self.write(f'CALC:STAT:CCDF {sState} ;*WAI') #ON|OFF|1|0
