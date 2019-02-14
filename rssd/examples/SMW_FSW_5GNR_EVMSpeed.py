@@ -19,9 +19,9 @@ numMeas  = 1
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from datetime           import datetime
-from rssd.FileIO        import FileIO
-from rssd.VST_5GNR_K144 import VST
+from datetime           import datetime   #pylint: disable=E0611,E0401
+from rssd.FileIO        import FileIO     #pylint: disable=E0611,E0401
+from rssd.VST_5GNR_K144 import VST        #pylint: disable=E0611,E0401
 
 OFile = FileIO().makeFile(__file__)
 
