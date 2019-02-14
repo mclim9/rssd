@@ -269,12 +269,22 @@ class VSA(VSA):                        #pylint: disable=E0102
       self.write(':SENS:NR5G:FRAM:COUN:STAT OFF')
       self.write(':SENS:NR5G:FRAM:SCO %d'%dSubFrame)
 
+   def Set_5GNR_AutoEVM(self):
+      #self.jav_OPC_Wait(':SENS:ADJ:EVM')
+      self.write(':SENS:ADJ:EVM')
+      self.delay(60)  #timed at 45sec
+
+   def Set_5GNR_EVMUnit(self,sUnit):
+      #DB or PCT
+      self.write('UNIT:EVM %s'%sUnit)
+
 #####################################################################
 ### Run if Main
 #####################################################################
 if __name__ == "__main__":
    ### this won't be run when imported
    FSW = VSA().jav_Open("192.168.1.109")
+   FSW.Set_5GNR_AutoEVM()
    print(FSW.Get_5GNR_EVM())
    FSW.jav_ClrErr()
    FSW.jav_Close()
