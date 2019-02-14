@@ -11,72 +11,53 @@
 ##########################################################
 SMW_IP   = '192.168.1.114'
 FSW_IP   = '192.168.1.109'
-Freq     = 28e9
-ChBW     = 100
 subCarr  = [60, 120]
 modArry  = ['QPSK', 'QAM64'] #QPSK; QAM16; QAM64; QAM256; PITB
-numMeas  = 10
+numMeas  = 1
 
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from rssd.SMW_5GNR_K144 import VSG
-from rssd.FSW_5GNR_K144 import VSA
 from datetime           import datetime
 from rssd.FileIO        import FileIO
+from rssd.VST_5GNR_K144 import VST
 
 OFile = FileIO().makeFile(__file__)
-SMW = VSG().jav_Open(SMW_IP,OFile)  #Create SMW Object
-FSW = VSA().jav_Open(FSW_IP,OFile)  #Create FSW Object
 
 ##########################################################
 ### Code Start
 ##########################################################
-SMW.Set_Freq(Freq)
-SMW.Set_5GNR_Direction('UL')        #UL or DL
-FSW.Set_5GNR_FreqRange('HIGH')      #LOW:<3GHz MIDD:3-6GHz HIGH:>6GHz
-SMW.Set_RFPwr(-2)                   #Output Power
-SMW.Set_RFState('ON')               #Turn RF Output on
-
-#FSW.jav_Reset()
-FSW.Init_5GNR()                     #FSW 5G NR Channel
-FSW.Set_Freq(Freq)
-FSW.Set_5GNR_Direction('UL')        #UL or DL
-FSW.Set_5GNR_FreqRange('HIGH')      #LOW:<3GHz MIDD:3-6GHz HIGH:>6GHz
-FSW.Set_5GNR_ChannelBW(ChBW)        #MHz
-FSW.Set_Trig1_Source('EXT')
-#FSW.Set_5GNR_ResBlock(NR_RB)
-#FSW.Set_5GNR_ResBlockOffset(NR_RBO)
+NR5G = VST().jav_Open(SMW_IP,FSW_IP,OFile)
+NR5G.NR_Dir  = 'UL'
+NR5G.NR_ChBW = 200
+NR5G.Freq    = 40e9
 
 ##########################################################
 ### Measure Time
 ##########################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
 OFile.write('EVM,ChBW,SubSp,Mod,SubFram,Iter,CmdTime')
-FSW.Set_SweepCont(0)
+NR5G.FSW.Set_SweepCont(0)
 
 for mod in modArry:
    for subC in subCarr:
-      SMW.Set_5GNR_BBState(0)
-      SMW.Set_5GNR_BWP_SubSpace(subC)        #kHz
-      FSW.Set_5GNR_BWP_SubSpace(subC)        #kHz
-      SMW.Set_5GNR_BWP_Ch_Modulation(mod)  #QPSK; QAM16; QAM64; QAM256; PITB
-      FSW.Set_5GNR_BWP_Ch_Modulation(mod)  #QPSK; QAM16; QAM64; QAM256; PITB
-      SMW.Set_5GNR_BBState(1)
+      NR5G.NR_SubSp = subC
+      NR5G.NR_Mod   = mod
+      NR5G.Set_5GNR_All()
       print('SubC:%d %s'%(subC,mod))
-      FSW.Set_InitImm()
+      NR5G.FSW.Set_InitImm()
       if 0:
          name = input("Verify EVM on FSW? ")
-         FSW.Set_DisplayUpdate(0)
-         FSW.Set_SweepCont(0)
-      for subFram in [1,2,3,5,10]:
-         FSW.Set_SweepTime((subFram)*1.1e-3)
-         FSW.Set_5GNR_SubFrameCount(subFram)
-         FSW.Set_InitImm()
+         NR5G.FSW.Set_DisplayUpdate(0)
+         NR5G.FSW.Set_SweepCont(0)
+      for subFram in [10]:
+         NR5G.FSW.Set_SweepTime((subFram)*1.1e-3)
+         NR5G.FSW.Set_5GNR_SubFrameCount(subFram)
+         NR5G.FSW.Set_InitImm()
          for i in range(numMeas):
             tick = datetime.now()
-            FSW.Set_InitImm()
-            EVM = FSW.Get_5GNR_EVM()
+            NR5G.FSW.Set_InitImm()
+            EVM = NR5G.FSW.Get_5GNR_EVM()
             d = datetime.now() - tick
             OutStr = '%f,%d,%d,%s,%d,%2d,%3d.%06d'%(EVM,ChBW,subC,mod,subFram,i,d.seconds,d.microseconds)
             OFile.write (OutStr)
@@ -84,5 +65,4 @@ for mod in modArry:
 ##########################################################
 ### Cleanup Automation
 ##########################################################
-SMW.jav_Close()
-FSW.jav_Close()
+NR5G.jav_Close()
