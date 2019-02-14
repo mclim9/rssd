@@ -19,7 +19,7 @@
 ###             \__,_|_| |_|\__\___||___/\__\___|\__,_|
 ###
 #####################################################################
-from rssd.yaVISA import jaVisa
+from rssd.yaVISA import jaVisa         # pylint: disable=E0611,E0401
 
 class VNA(jaVisa):
    def __init__(self):
@@ -27,16 +27,19 @@ class VNA(jaVisa):
       self.Model = "xxx"
    
    #####################################################################
-   ### VNA Functions Alphabetical
+   ### VNA GET Functions Alphabetical
    #####################################################################
    def Get_Trace_Names(self,dChan=1):
-      rdStr = self.write(":CALC%d:PAR:CAT?"%(dChan))
+      rdStr = self.query(":CALC%d:PAR:CAT?"%(dChan))
       return rdStr
       
    def Get_Trace_Save(self,dChan,sFName):
       self.write(":MMEM:STOR:TRAC:PORT %d,'%s.s4p',COMP,1,2,3,4"%(dChan,sFName))
       #self.write(":MMEM:STOR:TRAC:PORT %d,'%s.s2p',COMP,1,2"%(dChan,sFName))
 
+   #####################################################################
+   ### VNA SET Functions Alphabetical
+   #####################################################################
    def Set_Cal_Group(self,sName,dChan=1):
       #sName should end in '.cal'
       if not sName.lower().endswith(".cal"):
@@ -50,14 +53,14 @@ class VNA(jaVisa):
    def Set_Call_Save(self, sName, dChan=1):
       if not sName.lower().endswith(".cal"):
          sName += ".cal"
-      self.write(":MMEM:STOR:CORR d,'%s'"%(dChan,sName))
+      self.write(f":MMEM:STOR:CORR {dChan},'{sName}'")
 
    def Set_Channel(self,dChan,sName=""):
       ##################################################################
       ### SANALYZER, IQ, PNOISE, NOISE, Spur, ADEM, V5GT, LTE, OFDMVSA
       ##################################################################
       if sName == "":
-         sName = Chan
+         sName = dChan
       ChList = self.query(":CALC%d:PAR:CAT?"%(dChan)).split(",")
       #print("Chan:%s in %s"%(Chan,ChList))
       if ("'%s'"%sName) in ChList:
@@ -107,7 +110,7 @@ class VNA(jaVisa):
       return rdStr
       
    def Set_Trace_Avg(self,sType,dChan=1):
-      self.write("DISP:TRAC%d:MODE AVER"%dTrace)
+      self.write("DISP:TRAC%d:MODE AVER"%dChan)
       self.write("SENS:DET1:FUNC AVER")
       self.write("SENS:AVER:TYPE %s"%sType)  #LIN|VID
 
@@ -123,17 +126,17 @@ class VNA(jaVisa):
       # A1G2/A1G4/A2G1  ..... A<port>G<port>
       # B1G2/B1G4/B2G1  ..... B<port>G<port>
       # IP3UI/IP3UO     ..... IP<order:3|5|7|9><side:U|L><DUT:I|O>
-      sTrcName = Set_Trace_Add()
+      sTrcName = self.Set_Trace_Add()
       self.write("CALC%d:PAR:SDEF '%s','%s'"%(dChan,sTrcName,sMeas))
 
    def Set_Trace_MeasAdd_AWave(self,APort,GenPort,dChan=1):
-      self.Set_Trace_MeasAdd("A%dG%d"%(PortA,GenPort,dChan))
+      self.Set_Trace_MeasAdd("A%dG%d"%(APort,GenPort))
 
    def Set_Trace_MeasAdd_BWave(self,BPort,GenPort,dChan=1):
-      self.Set_Trace_MeasAdd("B%dG%d"%(BPort,GenPort,dChan))
+      self.Set_Trace_MeasAdd("B%dG%d"%(BPort,GenPort))
 
    def Set_Trace_MeasAdd_SParam(self,Port1,Port2,dChan=1):
-      self.Set_Trace_MeasAdd("S%d%d"%(Port1,Port2,dChan))
+      self.Set_Trace_MeasAdd("S%d%d"%(Port1,Port2))
 
    def Set_Trace_MeasAdd_IMD3(self,dChan=1):
       self.write("SENS%d:FREQ:IMOD:ORD3 ON"%(dChan))
@@ -148,6 +151,7 @@ class VNA(jaVisa):
 #####################################################################
 if __name__ == "__main__":
    # this won't be run when imported
-   ZVA = VNA().jav_openvisa('TCPIP0::localhost::5025::SOCKET')
-#   ZVA.Set_Freq(6e9)
+#   ZVA = VNA().jav_openvisa('TCPIP0::192.168.1.131::5025::SOCKET')
+   ZVA = VNA().jav_Open('192.168.1.131')
+   print(ZVA.Get_Trace_Names())
    ZVA.jav_Close()
