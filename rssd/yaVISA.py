@@ -27,7 +27,10 @@ class jaVisa(object):
       self.prnty   = 1
       self.Ofile   = ""
       pass
-      
+   
+   def delay(self,sec):
+      time.sleep(sec)
+
    def jav_Clear(self):
       self.K2.clear()
 
