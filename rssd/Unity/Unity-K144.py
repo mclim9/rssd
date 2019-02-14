@@ -37,11 +37,8 @@ GUI = Tk.Tk()                                      #Create GUI object
 
 #Code specific libraries
 import copy
-from rssd.yaVISA              import jaVisa
-from rssd.FSW_5GNR_K144       import VSA
-from rssd.SMW_5GNR_K144       import VSG
-from rssd.examples.SMW_FSW_5GNR_K144_Read    import NR5G_ReadSettings
-from rssd.examples.SMW_FSW_5GNR_K144_Set     import NR5G_SetSettings
+from rssd.yaVISA              import jaVisa        #pylint:disable=E0611,E0401
+from rssd.VST_5GNR_K144       import VST           #pylint:disable=E0611,E0401
 
 ########################################################################
 ### Functions
@@ -109,12 +106,10 @@ def ArrayInput(stringIn):
 
 def btn1():
    ### *IDN Query ###
-   SMW = VSG().jav_Open(Entry1.get(),prnt=0)  #Create SMW Object
-   FSW = VSA().jav_Open(Entry2.get(),prnt=0)  #Create FSW Object
-   windowLowerWrite(SMW.query('*IDN?'))
-   windowLowerWrite(FSW.query('*IDN?'))
-   SMW.jav_Close()
-   FSW.jav_Close()
+   NR5G = VST().jav_Open(Entry1.get(),Entry2.get())
+   windowLowerWrite(NR5G.SMW.query('*IDN?'))
+   windowLowerWrite(NR5G.FSW.query('*IDN?'))
+   NR5G.jav_Close()
    
 def btn2():
    ### Get Max RB ###
@@ -134,52 +129,49 @@ def btn2():
    ### windowUpperWrite('2 060kHz|066 132 264 N/A')
    ### windowUpperWrite('3 120kHz|032 066 132 264')
    ### windowUpperWrite(' ')
-   SMW = VSG().jav_Open(Entry1.get(),prnt=0)  #Create SMW Object
-   data = SMW.Get_5GNR_RBMax()
+   NR5G = VST().jav_Open(Entry1.get(),Entry2.get())
+   data = NR5G.SMW.Get_5GNR_RBMax()
    windowUpperWrite("=== Max RB ===")
-   windowUpperWrite("Mode: %s %sMHz"%(SMW.Get_5GNR_FreqRange(),SMW.Get_5GNR_ChannelBW()))
+   windowUpperWrite("Mode: %s %sMHz"%(NR5G.SMW.Get_5GNR_FreqRange(),NR5G.SMW.Get_5GNR_ChannelBW()))
    for i in data:
       windowUpperWrite("SubC:%d  RB Max:%d"%(i[0],i[1]))
-   SMW.jav_Close()
-   
+   NR5G.jav_Close()
+
 def btn3():
    ### Get EVM ###
-   FSW = VSA().jav_Open(Entry2.get(),prnt=0)  #Create FSW Object
-   FSW.Set_InitImm()
-   windowUpperWrite('EVM:' + str(FSW.Get_5GNR_EVM()))
-   FSW.jav_Close()
+   NR5G = VST().jav_Open(Entry1.get(),Entry2.get())
+   NR5G.FSW.Set_InitImm()
+   windowUpperWrite('EVM:' + str(NR5G.FSW.Get_5GNR_EVM()))
+   NR5G.FSW.jav_Close()
    
 def btn4():
    ### Set 5GNR Parameters
-   SMW = VSG().jav_Open(Entry1.get(),prnt=0)  #Create SMW Object
-   FSW = VSA().jav_Open(Entry2.get(),prnt=0)  #Create FSW Object
+   NR5G = VST().jav_Open(Entry1.get(),Entry2.get())
    
    ### Read values from GUI
-   RSVar.Freq        = int(Entry3.get())
-   RSVar.SWM_Out     = float(Entry4.get())
-   RSVar.NR_Dir      = Enum10.get()
-   RSVar.NR_Deploy   = Enum11.get()
-   RSVar.NR_ChBW     = int(Enum12.get())
-   RSVar.NR_SubSp    = int(Enum13.get())
-   RSVar.NR_RB       = int(Entry14.get())
-   RSVar.NR_RBO      = int(Entry15.get())
-   RSVar.NR_Mod      = Enum16.get()
+   NR5G.Freq        = int(Entry3.get())
+   NR5G.SWM_Out     = float(Entry4.get())
+   NR5G.NR_Dir      = Enum10.get()
+   NR5G.NR_Deploy   = Enum11.get()
+   NR5G.NR_ChBW     = int(Enum12.get())
+   NR5G.NR_SubSp    = int(Enum13.get())
+   NR5G.NR_RB       = int(Entry14.get())
+   NR5G.NR_RBO      = int(Entry15.get())
+   NR5G.NR_Mod      = Enum16.get()
    
    ### Do some work
    windowLowerWrite("SMW Creating Waveform.")
-   NR5G_SetSettings(FSW,SMW,RSVar)
-   windowLowerWrite(FSW.jav_ClrErr())
-   windowLowerWrite(SMW.jav_ClrErr())
+   NR5G.Set_5GNR_All()
+   windowLowerWrite(NR5G.FSW.jav_ClrErr())
+   windowLowerWrite(NR5G.SMW.jav_ClrErr())
    windowLowerWrite("SMW/FSW Setting Written")
-   SMW.jav_Close()
-   FSW.jav_Close()
+   NR5G.jav_Close()
 
 def btn5():
-   SMW = VSG().jav_Open(Entry1.get(),prnt=0)  #Create SMW Object
-   FSW = VSA().jav_Open(Entry2.get(),prnt=0)  #Create FSW Object
+   NR5G = VST().jav_Open(Entry1.get(),Entry2.get())
 
    ### Read 5GNR Parameters ###
-   K144Data = NR5G_ReadSettings(FSW,SMW) 
+   K144Data = NR5G.Get_5GNR_All() 
    #windowUpperClear()
    windowUpperWrite(" ")
    for i in range(len(K144Data[0])):
@@ -190,43 +182,38 @@ def btn5():
             windowUpperWrite("%s\t%s\t%s"%(K144Data[0][i],K144Data[1][i],'<notRead>'))
          except:
             windowUpperWrite("%s\t%s\t%s"%(K144Data[0][i],'<notRead>',K144Data[2][i]))
-   SMW.jav_Close()
-   FSW.jav_Close()
+   NR5G.jav_Close()
 
 def click3(tkEvent):
    #print(tkEvent)
    freq = int(Entry3.get())
-   SMW = VSG().jav_Open(Entry1.get(),prnt=0)  #Create SMW Object
-   FSW = VSA().jav_Open(Entry2.get(),prnt=0)  #Create FSW Object
-   SMW.Set_Freq(freq)
-   FSW.Set_Freq(freq)
-   SMW.jav_Close()
-   FSW.jav_Close()
+   NR5G = VST().jav_Open(Entry1.get(),Entry2.get())
+   NR5G.SMW.Set_Freq(freq)
+   NR5G.FSW.Set_Freq(freq)
+   NR5G.jav_Close()
    windowLowerWrite('SMW/FSW Freq: %d Hz'%freq)
    
 def click4(tkEvent):
    #print(tkEvent)
-   SMW = VSG().jav_Open(Entry1.get(),prnt=0)  #Create SMW Object
-   SMW.Set_RFPwr(int(Entry4.get()))
-   SMW.jav_Close()
+   NR5G = VST().jav_Open(Entry1.get(),Entry2.get())
+   NR5G.SMW.Set_RFPwr(int(Entry4.get()))
+   NR5G.jav_Close()
    windowLowerWrite('SMW RMS Pwr : %d dBm'%int(Entry4.get()))
 
 def click14(tkEvent):
    #print(tkEvent)
    if 0:
+      NR5G = VST().jav_Open(Entry1.get(),Entry2.get())
       NR_RB  = int(Entry14.get())
       NR_Dir = Enum10.get()
-      SMW    = VSG().jav_Open(Entry1.get(),prnt=0)  #Create SMW Object
-      FSW    = VSA().jav_Open(Entry2.get(),prnt=0)  #Create FSW Object
       if 0:
-         SMW.Set_5GNR_Direction(NR_Dir)
-         SMW.Set_5GNR_BWP_ResBlock(NR_RB)
-         SMW.Set_5GNR_BWP_Ch_ResBlock(NR_RB)
-         FSW.Set_5GNR_Direction(NR_Dir)
-         FSW.Set_5GNR_BWP_ResBlock(NR_RB)
-         FSW.Set_5GNR_BWP_Ch_ResBlock(NR_RB)
-      SMW.jav_Close()
-      FSW.jav_Close()
+         NR5G.SMW.Set_5GNR_Direction(NR_Dir)
+         NR5G.SMW.Set_5GNR_BWP_ResBlock(NR_RB)
+         NR5G.SMW.Set_5GNR_BWP_Ch_ResBlock(NR_RB)
+         NR5G.FSW.Set_5GNR_Direction(NR_Dir)
+         NR5G.FSW.Set_5GNR_BWP_ResBlock(NR_RB)
+         NR5G.FSW.Set_5GNR_BWP_Ch_ResBlock(NR_RB)
+      NR5G.jav_Close()
    windowLowerWrite('FSW:Signal Description-->RadioFrame-->BWP Config-->RB')
    windowLowerWrite('FSW:Signal Description-->RadioFrame-->PxSCH Config-->RB')
    windowLowerWrite('SMW:User/BWP-->UL BWP-->RB')
