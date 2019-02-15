@@ -3,14 +3,8 @@
 ###
 ### Purpose: Vector Network Analyzer Common Functions
 ### Author : Martin C Lim
-### Date    : 2018.10.15
-### Requird: python -m pip install pyvisa
-###  _____  _____    ____ _______ ____ _________      _______  ______ 
-### |  __ \|  __ \ / __ \__    __/ __ \__    __\ \    / /  __ \|  ____|
-### | |__) | |__) | |  | | | | | |  | | | |    \ \_/ /| |__) | |__    
-### |  ___/|  _  /| |  | | | | | |  | | | |     \    / |  ___/|  __|  
-### | |     | | \ \| |__| | | | | |__| | | |      | |  | |     | |____ 
-### |_|     |_|  \_\\____/  |_|  \____/  |_|      |_|  |_|     |______|
+### Date   : 2019.02.14
+### Requird: python -m pip install rssd
 ###
 #####################################################################
 from rssd.yaVISA import jaVisa            # pylint: disable=E0611,E0401
@@ -51,14 +45,12 @@ class VNA(jaVisa):
     #####################################################################
     ### VNA SET Functions Alphabetical
     #####################################################################
-'''
-    def Set_Cal_Group(self,sName,dChan=1):                          #MMM
-        #sName should end in '.cal'
-        if not sName.lower().endswith(".cal"):
-            sName += ".cal"
-        self.write(":MMEM:LOAD:CORR:RES %d,%s"%(dChan,sName))       #Resolve Cal Group
-        self.write(":MMEM:LOAD:CORR %s"%(sName))                    #Load cal group.
-'''
+    # def Set_Cal_Group(self,sName,dChan=1):                          #MMM
+    #     #sName should end in '.cal'
+    #     if not sName.lower().endswith(".cal"):
+    #         sName += ".cal"
+    #     self.write(":MMEM:LOAD:CORR:RES %d,%s"%(dChan,sName))       #Resolve Cal Group
+    #     self.write(":MMEM:LOAD:CORR %s"%(sName))                    #Load cal group.
 
     def Set_FreqStart(self,fFreq,dChan=1):
         self.write(":SENS%d:FREQ:STAR %f"%(dChan,fFreq))
@@ -127,12 +119,10 @@ class VNA(jaVisa):
     def Set_Trace_MeasAdd_PwrMtr(self,GenPort,dChan=1):
         self.Set_Trace_MeasAdd(f'Pmtr{1}D{GenPort}')
 
-'''
-    def Set_Trace_MeasAdd_IMD3(self,dChan=1):                         #mmm
-        self.write("SENS%d:FREQ:IMOD:ORD3 ON"%(dChan))
-        self.Set_Trace_MeasAdd("IP3UI")
-        self.Set_Trace_MeasAdd("IP3LI")
-'''
+    # def Set_Trace_MeasAdd_IMD3(self,dChan=1):                         #mmm
+    #     self.write("SENS%d:FREQ:IMOD:ORD3 ON"%(dChan))
+    #     self.Set_Trace_MeasAdd("IP3UI")
+    #     self.Set_Trace_MeasAdd("IP3LI")
 
     def Set_Trace_MeasDel(self,sTrcName,dChan=1):
         self.write("CALC%d:PAR:DEL '%s'"%(dChan,sTrcName))
@@ -143,6 +133,7 @@ class VNA(jaVisa):
 if __name__ == "__main__":
     # this won't be run when imported
     ZVA = VNA().jav_openvisa('TCPIP0::192.168.1.31::inst0')
-    ZVA.Set_Trace_MeasAdd_IMD3()
+    ZVA.Set_FreqStart(2e9)
+    ZVA.Set_FreqStop(40e9)
     print(ZVA.Get_Trace_Names())
     ZVA.jav_Close()
