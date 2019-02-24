@@ -122,13 +122,7 @@ def btn2():
    windowUpperWrite('|3 120kHz|N/A N/A N/A N/A|   |3 120kHz|032 066 132 264|')
    windowUpperWrite('--------------------------   --------------------------')
    windowUpperWrite(' ')
-   ### windowUpperWrite('u|>6GHz |050 100 200 400')
-   ### windowUpperWrite('-+------+---+---+---+---')
-   ### windowUpperWrite('0 015kHz|N/A N/A N/A N/A')
-   ### windowUpperWrite('1 030kHz|N/A N/A N/A N/A')
-   ### windowUpperWrite('2 060kHz|066 132 264 N/A')
-   ### windowUpperWrite('3 120kHz|032 066 132 264')
-   ### windowUpperWrite(' ')
+
    NR5G = VST().jav_Open(Entry1.get(),Entry2.get())
    data = NR5G.SMW.Get_5GNR_RBMax()
    windowUpperWrite("=== Max RB ===")
@@ -269,7 +263,6 @@ def windowLowerWrite(inStr):
    except: 
       pass
 
-
 def windowUpperClear(tk=1):
    #posi = lstTopWind.curselection()
    lstTopWind.delete(0.0,END)
@@ -311,7 +304,6 @@ def menu_TopWindLoad_Read():
    for i in filez:
       lstTopWind.insert(END,i)
    lstTopWind.see(END)
-
 
 ########################################################################       
 ### Main Code
