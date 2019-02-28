@@ -180,8 +180,8 @@ class VST(object):
 
       try:
          ### FSW Setting
-         self.FSW.Set_Freq(self.Freq)
          self.FSW.Init_5GNR()
+         self.FSW.Set_Freq(self.Freq)
          self.FSW.Set_5GNR_Direction(self.NR_Dir)
          self.FSW.Set_5GNR_FreqRange(self.NR_Deploy)
          self.FSW.Set_5GNR_ChannelBW(self.NR_ChBW)

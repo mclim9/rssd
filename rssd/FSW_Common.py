@@ -53,17 +53,17 @@ class VSA(jaVisa):
     ### FSW Attenuation
     #####################################################################
     def Get_AttnMech(self):
-        out = self.queryFloat('INP:ATT?')
+        out = self.queryInt('INP:ATT?')
         return out 
 
     def Get_Preamp(self):
-        return self.query(f'INP:GAIN:STAT?').strip()
+        return self.queryInt(f'INP:GAIN:STAT?')
 
     def Get_AmpSettings(self):
         attn = self.Get_AttnMech()
         prea = self.Get_Preamp()
         refl = self.Get_RefLevel()
-        return f'{attn},{prea},{refl}'
+        return f'{attn:2d},{prea},{refl}'
 
     def Set_AttnMech(self,fMAttn):
         self.write('INP:EATT:STAT OFF')
@@ -436,15 +436,19 @@ class VSA(jaVisa):
         self.write(':CALC1:MARK%d:X %fS'%(iNum,fSec))
 
     #####################################################################
-    ### FSW marker
+    ### FSW CCDF
     #####################################################################
+    def Init_CCDF(self):
+        self.Set_Channel("Spectrum")
+        self.write('CALC:STAT:CCDF ON;*WAI')
+
     def Get_CCDF(self):
-        P10_00 = self.query(f'CALC:STAT:CCDF:X1? P10;*WAI')
-        P01_00 = self.query(f'CALC:STAT:CCDF:X1? P1;*WAI')
-        P00_10 = self.query(f'CALC:STAT:CCDF:X1? P0_1;*WAI')
-        P00_01 = self.query(f'CALC:STAT:CCDF:X1? P0_01;*WAI')
-        CrestF = self.query(f'CALC:STAT:RES? CFAC')
-        return f'{CrestF},{P10_00},{P01_00},{P00_10},{P00_01}'
+        P10_00 = self.queryFloat(f'CALC:STAT:CCDF:X1? P10;*WAI')
+        P01_00 = self.queryFloat(f'CALC:STAT:CCDF:X1? P1;*WAI')
+        P00_10 = self.queryFloat(f'CALC:STAT:CCDF:X1? P0_1;*WAI')
+        P00_01 = self.queryFloat(f'CALC:STAT:CCDF:X1? P0_01;*WAI')
+        CrestF = self.queryFloat(f'CALC:STAT:RES? CFAC')
+        return f'{CrestF:.4f},{P10_00:.2f},{P01_00:.2f},{P00_10:.2f},{P00_01:.2f}'
 
     def Set_CCDF(self,sState):
         self.write(f'CALC:STAT:CCDF {sState} ;*WAI') #ON|OFF|1|0

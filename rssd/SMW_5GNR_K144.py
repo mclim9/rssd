@@ -261,7 +261,7 @@ class VSG(VSG):                     #pylint: disable=E0102
       self.Set_5GNR_Direction(sDir)
 
    def Set_5GNR_SSB(self):
-      self.write(':SOUR1:BB:NR5G:NODE:CELL0:OFFS POIN')
+      #self.write(':SOUR1:BB:NR5G:NODE:CELL0:OFFS POIN')
       self.write(':SOUR1:BB:NR5G:NODE:CELL0:NSSP 1')
       
 #####################################################################
