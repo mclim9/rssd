@@ -5,6 +5,10 @@
 ### Author : Martin C Lim
 ### Date   : 2019.03.05
 ### Requird: python -m pip install rssd
+### Options: K55  LTE Rel  8 Initial Release
+###          K84  LTE Rel  9 Pos Ref Signal
+###          K85  LTE Rel 10 Carrier aggregation
+###          K112 LTE Rel 11 
 #####################################################################
 from rssd.SMW_Common import VSG     #pylint: disable=E0611,E0401
 
@@ -35,11 +39,11 @@ class VSG(VSG):                     #pylint: disable=E0102
         return SCPI     
 
     def Get_LTE_ResBlock(self,cc=1):
-        SCPI = self.query(':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:RBC?')
+        SCPI = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:RBC?')
         return SCPI
 
     def Get_LTE_ResBlockOffset(self,cc=1):
-        SCPI = self.query(':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:VRB')
+        SCPI = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:VRB?')
         return SCPI
 
 

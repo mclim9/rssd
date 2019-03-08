@@ -5,9 +5,10 @@
 ### Author:  Martin C Lim
 ### Date:    2018.04.03
 ### Requird: python -m pip install pyvisa
-from rssd.FSW_Common import VSA
+#####################################################################
+from rssd.FSW_Common import VSA        #pylint: disable=E0611,E0401
 
-class VSA(VSA):
+class VSA(VSA):                        #pylint: disable=E0102
     def __init__(self):
         super(VSA, self).__init__()
       
@@ -52,6 +53,20 @@ class VSA(VSA):
         Power   = self.Get_ChPwr()
         EVM     = self.Get_EVM()
         return ("%.2f,%.2f,%6.2f,%.2f"%(MAttn,RefLvl,Power,EVM))
+
+    #####################################################################
+    ### Init LTE
+    #####################################################################
+    def Init_LTE(self):
+        self.Set_Channel('LTE')
+        
+    def Init_LTE_Meas(self,sMeas):
+        ### EMV; ESPectrum; ACLR; MCAClr; CACLr; MCESpectrum
+        self.write('CONF:LTE:MEAS %s'%sMeas)
+
+    def Init_LTE_SEM(self):
+        self.Set_Channel('LTE')
+        self.write(':CONF:LTE:MEAS ESP')
 
     #####################################################################
     ### VSA Settings

@@ -9,8 +9,8 @@
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from rssd.SMW_LTE_K55 import VSG  #pylint: disable=E0611,E0401
-from rssd.FSW_LTE_K100 import VSA  #pylint: disable=E0611,E0401
+from rssd.SMW_LTE_K55   import VSG  #pylint: disable=E0611,E0401
+from rssd.FSW_LTE_K100  import VSA  #pylint: disable=E0611,E0401
 
 class VST(object):
    def __init__(self):
@@ -20,7 +20,7 @@ class VST(object):
       self.LTE_ChBW  = 100       #MHz
       self.LTE_RB    = 66        #RB
       self.LTE_RBO   = 0         #RB Offset
-      self.LTE_Mod   = 'QAM64'   #QPSK; QAM16; QAM64; QAM256; PITB
+      self.LTE_Mod   = 'QAM64'   #QPSK; QAM16; QAM64; QAM256
       self.LTE_CC    = 1
 
    def Get_LTE_All(self):
@@ -31,19 +31,16 @@ class VST(object):
       odata[0].append("===User/BWP====")
       odata[0].append("RB         ")
       odata[0].append("RBoff      ")
-      odata[0].append("User_Mod   ")
-      odata[0].append("User_RB    ")
-      odata[0].append("User_Cntr  ")
+      odata[0].append("Mod        ")
 
       try:
          odata[1].append("[-SMW-]")
          odata[1].append(self.SMW.Get_LTE_Direction())
-         odata[1].append(self.SMW.Get_LTE_ChannelBW()) 
+         odata[1].append(self.SMW.Get_LTE_ChBW()) 
          odata[1].append("=User=")
          odata[1].append(self.SMW.Get_LTE_ResBlock())
          odata[1].append(self.SMW.Get_LTE_ResBlockOffset())
-         odata[1].append(self.SMW.Get_LTE_Ch_Modulation())
-         odata[1].append(int(self.SMW.Get_LTE_Center())/1e6)
+         odata[1].append(self.SMW.Get_LTE_Modulation())
       except:
          pass
          
@@ -51,12 +48,11 @@ class VST(object):
          self.FSW.Init_LTE()
          odata[2].append("[-FSW-]")
          odata[2].append(self.FSW.Get_LTE_Direction())
-         odata[2].append(self.FSW.Get_LTE_ChannelBW())
+         odata[2].append(self.FSW.Get_LTE_ChBW())
          odata[2].append("=User=")
          odata[2].append(self.FSW.Get_LTE_ResBlock())
          odata[2].append(self.FSW.Get_LTE_ResBlockOffset())
-         odata[2].append(self.FSW.Get_LTE_Ch_Modulation())
-         odata[2].append(int(self.FSW.Get_LTE_Center())/1e6)
+         odata[2].append(self.FSW.Get_LTE_Modulation())
       except:
          pass
       print('SMW/FSW Values: %d %d'%(len(odata[2]),len(odata[2]))) 
