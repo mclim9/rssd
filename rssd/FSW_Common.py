@@ -63,7 +63,7 @@ class VSA(jaVisa):
         attn = self.Get_AttnMech()
         prea = self.Get_Preamp()
         refl = self.Get_RefLevel()
-        return f'{attn:2d},{prea},{refl}'
+        return f'{attn:2d},{prea},{refl:7.3f}'
 
     def Set_AttnMech(self,fMAttn):
         self.write('INP:EATT:STAT OFF')
