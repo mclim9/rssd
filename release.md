@@ -1,13 +1,14 @@
 Release History
 =====================================================================
 - RSSD 0.1.12
+  - Add FSW/SMW/VST LTE commands
+  - Chg Example\VST_5GNR_EVM.py
 - RSSD 0.1.11
   - Created VST_5GNR_K144 instrument
     - Updated examples
     - Updated Unity w/ VST_5GNR_K144 Object
   - Validate VNA_Common.py
   - CCDF added to FSW_Common and example
-  - 
 - RSSD 0.1.10
   - Add _init_.py to Unity directory
   - Changed repository to github

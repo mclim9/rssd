@@ -5,6 +5,7 @@
 /rssd/Unity/build/
 /rssd/Unity/dist/
 /rssd/Unity/fixtures/
+/rssd/.vscode/
 
 ### IQ Waveform/Capture
 *.iqw
@@ -14,6 +15,7 @@
 ### Administrative
 *.pyc
 *.lnk
+*.code-workspace
 
 ### Data files
 *.csv
