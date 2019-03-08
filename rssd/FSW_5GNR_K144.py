@@ -116,14 +116,18 @@ class VSA(VSA):                        #pylint: disable=E0102
       return rdStr
 
    def Get_5GNR_ChPwr(self):
-      Power = float(self.query('FETC:SUMM:POW?'))
+      Power = self.queryFloat('FETC:CC1:FRAM:SUMM:POW:AVER?')
       return Power
       
    def Get_5GNR_ChannelBW(self):
       ### 5;10;15;20;25;30;40;50;60;70;80;90;100;200;400
       rdStr = self.query(':CONF:NR5G:%s:CC1:BW?'%(self.sdir))
       return rdStr
-      
+
+   def Get_5GNR_CrestFactor(self):
+      rdStr = self.queryFloat(':FETC:SUMM:CRES:AVER?')
+      return rdStr
+
    def Get_5GNR_Direction(self):
       rdStr = self.query(':CONF:NR5G:LDIR?')
       if rdStr == 'DL':
@@ -141,11 +145,10 @@ class VSA(VSA):                        #pylint: disable=E0102
       return EVM
 
    def Get_5GNR_EVMParams(self):
-      MAttn = self.Get_AttnMech()
-      RefLvl  = self.Get_RefLevel()
+      Crest = self.Get_5GNR_CrestFactor()
       Power = self.Get_5GNR_ChPwr()
-      EVM     = self.Get_5GNR_EVM()
-      return ("%.2f,%.2f,%6.2f,%.2f"%(MAttn,RefLvl,Power,EVM))
+      EVM   = self.Get_5GNR_EVM()
+      return (f"{Crest:6.3f},{Power:6.3f},{EVM:.2f}")
 
    def Get_5GNR_FreqRange(self):
       rdStr = self.query(':CONF:NR5G:%s:CC1:DFR?'%(self.sdir))
@@ -270,9 +273,9 @@ class VSA(VSA):                        #pylint: disable=E0102
       self.write(':SENS:NR5G:FRAM:SCO %d'%dSubFrame)
 
    def Set_5GNR_AutoEVM(self):
-      #self.jav_OPC_Wait(':SENS:ADJ:EVM')
-      self.write(':SENS:ADJ:EVM')
-      self.delay(60)  #timed at 45sec
+      self.jav_OPC_Wait(':SENS:ADJ:EVM;*OPC?')
+      #self.query(':SENS:ADJ:EVM;*OPC?')
+      #self.delay(60)  #timed at 45sec
 
    def Set_5GNR_EVMUnit(self,sUnit):
       #DB or PCT
@@ -284,7 +287,7 @@ class VSA(VSA):                        #pylint: disable=E0102
 if __name__ == "__main__":
    ### this won't be run when imported
    FSW = VSA().jav_Open("192.168.1.109")
-   FSW.Set_5GNR_AutoEVM()
+   print(FSW.Get_5GNR_EVMParams())
    print(FSW.Get_5GNR_EVM())
    FSW.jav_ClrErr()
    FSW.jav_Close()
