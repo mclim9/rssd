@@ -23,6 +23,7 @@ class VST(object):
       self.NR_RB    = 66        #RB
       self.NR_RBO   = 0         #RB Offset
       self.NR_Mod   = 'QAM64'   #QPSK; QAM16; QAM64; QAM256; PITB
+      self.NR_TF    = 'OFF'
 
    def Get_5GNR_All(self):
       DMRS = 0
@@ -162,6 +163,7 @@ class VST(object):
          self.SMW.Set_Freq(self.Freq)
          self.SMW.Set_5GNR_BBState('OFF')
          self.SMW.Set_5GNR_Direction(self.NR_Dir)
+         self.SMW.Set_5GNR_TransPrecoding(self.NR_TF)
          self.SMW.Set_5GNR_FreqRange(self.NR_Deploy)
          self.SMW.Set_5GNR_ChannelBW(self.NR_ChBW)
          self.SMW.Set_5GNR_BWP_SubSpace(self.NR_SubSp)
@@ -183,6 +185,7 @@ class VST(object):
          self.FSW.Init_5GNR()
          self.FSW.Set_Freq(self.Freq)
          self.FSW.Set_5GNR_Direction(self.NR_Dir)
+         self.FSW.Set_5GNR_TransPrecoding(self.NR_TF)
          self.FSW.Set_5GNR_FreqRange(self.NR_Deploy)
          self.FSW.Set_5GNR_ChannelBW(self.NR_ChBW)
          self.FSW.Set_5GNR_BWP_SubSpace(self.NR_SubSp)

@@ -176,7 +176,8 @@ class VSG(VSG):                     #pylint: disable=E0102
       return odata
 
    def Get_5GNR_TransPrecoding(self):
-      rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:DUMR:TPST?')
+      #SC-FDMA or DFT-S-OFDM
+      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST?')
       return rdStr
 
    #####################################################################
@@ -264,6 +265,13 @@ class VSG(VSG):                     #pylint: disable=E0102
       #self.write(':SOUR1:BB:NR5G:NODE:CELL0:OFFS POIN')
       self.write(':SOUR1:BB:NR5G:NODE:CELL0:NSSP 1')
       
+   def Set_5GNR_TransPrecoding(self, sState):
+      #SC-FDMA or DFT-S-OFDM
+      if sState == 'ON':
+         self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST ON')
+      else:
+         self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST OFF')
+
 #####################################################################
 ### Run if Main
 #####################################################################

@@ -197,6 +197,11 @@ class VSA(VSA):                        #pylint: disable=E0102
    #####################################################################
    ### FSW 5GNR Settings
    #####################################################################
+   def Set_5GNR_AutoEVM(self):
+      self.jav_OPC_Wait(':SENS:ADJ:EVM;*OPC?')
+      #self.query(':SENS:ADJ:EVM;*OPC?')
+      #self.delay(60)  #timed at 45sec
+
    def Set_5GNR_AllocFile(self,sFilename):
       # \Instr\user\V5GTF\AllocationFiles\UL
       self.write('MMEM:LOAD:DEM "%s"'%sFilename)
@@ -247,6 +252,10 @@ class VSA(VSA):                        #pylint: disable=E0102
       else:
          print("Set_5GNR_UL_Direction must be UL or DL")
    
+   def Set_5GNR_EVMUnit(self,sUnit):
+      #DB or PCT
+      self.write('UNIT:EVM %s'%sUnit)
+
    def Set_5GNR_FreqRange(self,iRange):
       ### 0:<3GHz 1:3-6GHz 2:>6GHz
       ### LOW; MIDD; HIGH
@@ -272,14 +281,11 @@ class VSA(VSA):                        #pylint: disable=E0102
       self.write(':SENS:NR5G:FRAM:COUN:STAT OFF')
       self.write(':SENS:NR5G:FRAM:SCO %d'%dSubFrame)
 
-   def Set_5GNR_AutoEVM(self):
-      self.jav_OPC_Wait(':SENS:ADJ:EVM;*OPC?')
-      #self.query(':SENS:ADJ:EVM;*OPC?')
-      #self.delay(60)  #timed at 45sec
-
-   def Set_5GNR_EVMUnit(self,sUnit):
-      #DB or PCT
-      self.write('UNIT:EVM %s'%sUnit)
+   def Set_5GNR_TransPrecoding(self,sState):
+      if self.sdir == 'UL':
+         self.write(f':CONF:NR5G:UL:CC1:TPR {sState}')
+      else:
+         print('<DL TransPrecoding N/A>')
 
 #####################################################################
 ### Run if Main
