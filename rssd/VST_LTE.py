@@ -27,6 +27,7 @@ class VST(object):
       odata =  [[] for i in range(3)]
       odata[0].append("[[Parameter]]  ")
       odata[0].append("Direction      ")
+      odata[0].append("Duplex         ")
       odata[0].append("Ch BW          ")
       odata[0].append("===User/BWP====")
       odata[0].append("RB         ")
@@ -36,6 +37,7 @@ class VST(object):
       try:
          odata[1].append("[-SMW-]")
          odata[1].append(self.SMW.Get_LTE_Direction())
+         odata[1].append(self.SMW.Get_LTE_Duplex())         
          odata[1].append(self.SMW.Get_LTE_ChBW()) 
          odata[1].append("=User=")
          odata[1].append(self.SMW.Get_LTE_ResBlock())
@@ -48,6 +50,7 @@ class VST(object):
          self.FSW.Init_LTE()
          odata[2].append("[-FSW-]")
          odata[2].append(self.FSW.Get_LTE_Direction())
+         odata[2].append(self.FSW.Get_LTE_Duplex())
          odata[2].append(self.FSW.Get_LTE_ChBW())
          odata[2].append("=User=")
          odata[2].append(self.FSW.Get_LTE_ResBlock())
@@ -89,7 +92,7 @@ class VST(object):
          self.SMW.Set_Freq(self.Freq)
          self.SMW.Set_LTE_BBState('OFF')
          self.SMW.Set_LTE_Direction(self.LTE_Dir)
-         self.SMW.Set_LTE_ChannelBW(self.LTE_ChBW)
+         self.SMW.Set_LTE_ChBW(self.LTE_ChBW)
          self.SMW.Set_LTE_ResBlock(self.LTE_RB)
          self.SMW.Set_LTE_ResBlockOffset(self.LTE_RBO)
          self.SMW.Set_LTE_Modulation(self.LTE_Mod)
@@ -104,7 +107,7 @@ class VST(object):
          self.FSW.Init_LTE()
          self.FSW.Set_Freq(self.Freq)
          self.FSW.Set_LTE_Direction(self.LTE_Dir)
-         self.FSW.Set_LTE_ChannelBW(self.LTE_ChBW)
+         self.FSW.Set_LTE_ChBW(self.LTE_ChBW)
          self.FSW.Set_LTE_ResBlock(self.LTE_RB)
          self.FSW.Set_LTE_ResBlockOffset(self.LTE_RBO)
          self.FSW.Set_LTE_Modulation(self.LTE_Mod)
@@ -120,6 +123,7 @@ class VST(object):
 ##########################################################
 if __name__ == "__main__":
    LTE = VST().jav_Open('192.168.1.114','192.168.1.109')
-   LTE.LTE_ChBW = 20
+   LTE.LTE_ChBW = 10
+#   LTE.Set_LTE_All()
    LTE.Get_LTE_All_print()
    LTE.jav_Close()

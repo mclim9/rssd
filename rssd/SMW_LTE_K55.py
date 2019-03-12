@@ -23,28 +23,38 @@ class VSG(VSG):                     #pylint: disable=E0102
     ### VSG Query
     #####################################################################
     def Get_LTE_CC(self):
-        SCPI = self.query(f':SOUR:BB:EUTR:{self.ldir}:CA:CELL0:STAT?')
-        return SCPI
+        rdStr = self.query(f':SOUR:BB:EUTR:{self.ldir}:CA:CELL0:STAT?')
+        return rdStr
 
     def Get_LTE_ChBW(self,cc=1):
-        SCPI = self.query(f':SOUR:BB:EUTR:{self.ldir}:BW?')
-        return SCPI
+        rdStr = self.query(f':SOUR:BB:EUTR:{self.ldir}:BW?')
+        return rdStr
 
     def Get_LTE_Direction(self,cc=1):
-        SCPI = self.query(f':SOUR:BB:EUTR:LINK?')
-        return SCPI
+        rdStr = self.query(f':SOUR:BB:EUTR:LINK?')
+        if rdStr == 'DOWN':
+            self.ldir = "DL"
+        elif rdStr == 'UP':
+            self.ldir = "UL"
+        else:
+            print('Get_LTE_Direction Error')
+        return rdStr
+
+    def Get_LTE_Duplex(self):
+        rdStr = self.query(f':SOUR:BB:EUTR:DUPL?')
+        return rdStr
 
     def Get_LTE_Modulation(self,cc=1):
-        SCPI = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:CW1:PUSC:MOD?')
-        return SCPI     
+        rdStr = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:CW1:PUSC:MOD?')
+        return rdStr     
 
     def Get_LTE_ResBlock(self,cc=1):
-        SCPI = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:RBC?')
-        return SCPI
+        rdStr = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:RBC?')
+        return rdStr
 
     def Get_LTE_ResBlockOffset(self,cc=1):
-        SCPI = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:VRB?')
-        return SCPI
+        rdStr = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:VRB?')
+        return rdStr
 
 
     #####################################################################
@@ -62,8 +72,14 @@ class VSG(VSG):                     #pylint: disable=E0102
     def Set_LTE_Direction(self,sDir, cc=1):
         if self.ldir == 'UL':
             self.write(f':SOUR:BB:EUTR:LINK UP')
-        else:
+        elif self.ldir == 'DL':
             self.write(f':SOUR:BB:EUTR:LINK DOWN')
+        else:
+            print('Set_LTE_Direction Error.  Must be UL or DL')
+
+    def Set_LTE_Duplex(self,sDuplex):
+        #FDD TDD
+        self.write(f':SOUR:BB:EUTR:DUPL {sDuplex}')
 
     def Set_LTE_Modulation(self, sMod, cc=1):
         if self.ldir == 'UL':
