@@ -70,6 +70,25 @@ class VNA(jaVisa):
     def Set_PowerStop(self,fPwr,dChan=1):
         self.write(":SOUR%d:POW:STOP %f dBm"%(dChan,fPwr))
 
+    def Set_Pwrcal_Init(self):
+        self.write(f":SOUR:POW:CORR:COLL:FLAT ON")      #Flatness Cal
+        self.write(f":SOUR:POW:CORR:COLL:RREC ON")      #Ref Rx Cal
+        self.write(f":SOUR:POW:CORR:COLL:VER ON")       #Verification Sweep
+        self.write(f":SOUR:POW:CORR:COLL:METH PMON")    #PMON | RFAF | RRON
+
+    def Set_Pwrcal_NumReading(self,iNum,chan=1):
+        self.write(f":SOUR{chan}:POW:CORR:NRE {iNum}")
+
+    def Set_Pwrcal_Source(self,iPort,dChan=1):
+        self.write(f":SOUR{dChan}:POW:CORR:ACQ PORT,{iPort}")
+    
+    def Set_Pwrcal_Tolerance(self,fTol,dChan=1):
+        self.write(f":SOUR:POW:CORR:COLL:AVER:NTOL {fTol}")
+    
+    def Get_Pwrcal_State(self):
+        rdStr = self.query(f":SENS:CORR:PSTAT?")
+        return rdStr
+
     def Set_SweepCont(self,iON):
         if iON == 1:
             self.write("INIT:CONT ON")                          #Continuous Sweep
@@ -127,13 +146,21 @@ class VNA(jaVisa):
     def Set_Trace_MeasDel(self,sTrcName,dChan=1):
         self.write("CALC%d:PAR:DEL '%s'"%(dChan,sTrcName))
 
+    #####################################################################
+    ### VNA TEST Functions
+    #####################################################################
+    def Test_PwrCal(self):
+        self.Set_Pwrcal_Init()
+        self.Set_Pwrcal_Source(2)
+        self.Set_Pwrcal_Tolerance(0.1)
+        self.Set_Pwrcal_NumReading(10)
+        print(self.Get_Pwrcal_State())
+
 #####################################################################
 ### Run if Main
 #####################################################################
 if __name__ == "__main__":
     # this won't be run when imported
-    ZVA = VNA().jav_openvisa('TCPIP0::192.168.1.31::inst0')
-    ZVA.Set_FreqStart(2e9)
-    ZVA.Set_FreqStop(40e9)
-    print(ZVA.Get_Trace_Names())
+    ZVA = VNA().jav_openvisa('TCPIP0::192.168.1.30::inst0')
+    ZVA.Test_PwrCal()
     ZVA.jav_Close()
