@@ -176,8 +176,10 @@ class VSG(VSG):                     #pylint: disable=E0102
       return odata
 
    def Get_5GNR_TransPrecoding(self):
-      #SC-FDMA or DFT-S-OFDM
-      rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST?')
+      # SC-FDMA or DFT-S-OFDM
+      # 5GNR--> User/BWP --> UL BWP Config --> PUSCH --> TP
+      # rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST?')
+      rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:PUSC:TPST?') #4.50
       return rdStr
 
    #####################################################################
@@ -266,11 +268,14 @@ class VSG(VSG):                     #pylint: disable=E0102
       self.write(':SOUR1:BB:NR5G:NODE:CELL0:NSSP 1')
       
    def Set_5GNR_TransPrecoding(self, sState):
-      #SC-FDMA or DFT-S-OFDM
+      # SC-FDMA or DFT-S-OFDM
+      # 5GNR--> User/BWP --> UL BWP Config --> PUSCH --> TP
       if sState == 'ON':
-         self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST ON')
+         # self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST ON') #4.30SP2?
+         self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:PUSC:TPST ON') #4.50
       else:
-         self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST OFF')
+         # self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST OFF') #4.30SP2?
+         self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:PUSC:TPST OFF') #4.50
 
 #####################################################################
 ### Run if Main
