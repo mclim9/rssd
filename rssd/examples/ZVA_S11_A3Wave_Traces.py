@@ -8,8 +8,7 @@
 ###############################################################################
 ### User Entry
 ###############################################################################
-ZVA_IP      = 'localhost'
-#ZVA_IP      = '192.168.1.31'
+ZVA_IP      = '192.168.1.30'
 FreqStart   = 1e9
 FreqStop    = 6e9
 SwpPt       = 601
@@ -21,8 +20,7 @@ from rssd.VNA_Common    import VNA
 from rssd.FileIO        import FileIO
 
 OFile = FileIO().makeFile(__file__)
-ZVA = VNA().jav_openvisa(f'TCPIP0::localhost::5025::SOCKET',OFile)
-#ZVA = VNA().jav_openvisa(f'TCPIP0::{ZVA_IP}::inst0',OFile)
+ZVA = VNA().jav_openvisa(f'TCPIP0::{ZVA_IP}::inst0',OFile)
 
 ###############################################################################
 ### Code Start
@@ -33,9 +31,9 @@ ZVA.Set_FreqStart(FreqStart)
 ZVA.Set_FreqStop(FreqStop)
 ZVA.Set_SweepPoints(SwpPt)
 print(ZVA.Get_Trace_Names())
-print(ZVA.query('SYST:ERR?\n\r'))
 
 ###############################################################################
 ### Close Nicely
 ###############################################################################
+ZVA.jav_ClrErr()
 ZVA.jav_Close()
