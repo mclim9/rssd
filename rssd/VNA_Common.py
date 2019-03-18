@@ -20,7 +20,15 @@ class VNA(jaVisa):
     def Get_Trace_Names(self,dChan=1):
         rdStr = self.query(":CALC%d:PAR:CAT?"%(dChan))
         return rdStr
-    
+
+    def Get_Pwrcal_State(self):
+        rdStr = self.query(f":SOUR:POW:CORR:STAT?")
+        return rdStr
+
+    def Get_Pwrcal_Rx_State(self):
+        rdStr = self.query(f":SENS:CORR:STAT?")
+        return rdStr
+
     def Save_Cal(self, sFName, dChan=1):
         #Save calibration to cal manager.
         if not sFName.lower().endswith(".cal"):
@@ -79,16 +87,17 @@ class VNA(jaVisa):
     def Set_Pwrcal_NumReading(self,iNum,chan=1):
         self.write(f":SOUR{chan}:POW:CORR:NRE {iNum}")
 
-    def Set_Pwrcal_Source(self,iPort,dChan=1):
+    def Set_Pwrcal_Measure(self,iPort,dChan=1):
         self.write(f":SOUR{dChan}:POW:CORR:ACQ PORT,{iPort}")
     
     def Set_Pwrcal_Tolerance(self,fTol,dChan=1):
         self.write(f":SOUR:POW:CORR:COLL:AVER:NTOL {fTol}")
     
-    def Get_Pwrcal_State(self):
-        rdStr = self.query(f":SENS:CORR:PSTAT?")
-        return rdStr
-
+    def Set_Pwrcal_Rx(self,Source,Port,dChan=1):
+        # CORR:POW:ACQ <What to Cal> <Port>,<SourceTYpe>,<Port#>,<AWAV/NOM>
+        self.write(f":CORR:POW:ACQ BWAV,{Port},PORT,{Source},AWAV")
+        self.query('CORR:POW:AWAV?')
+    
     def Set_SweepCont(self,iON):
         if iON == 1:
             self.write("INIT:CONT ON")                          #Continuous Sweep
@@ -151,10 +160,10 @@ class VNA(jaVisa):
     #####################################################################
     def Test_PwrCal(self):
         self.Set_Pwrcal_Init()
-        self.Set_Pwrcal_Source(2)
         self.Set_Pwrcal_Tolerance(0.1)
         self.Set_Pwrcal_NumReading(10)
-        print(self.Get_Pwrcal_State())
+        self.Set_Pwrcal_Measure(2)                   #Take Power cal on Port2
+        print(self.Get_Pwrcal_State())               #Power cal state 0:OFF  1:ON
 
 #####################################################################
 ### Run if Main
@@ -162,5 +171,6 @@ class VNA(jaVisa):
 if __name__ == "__main__":
     # this won't be run when imported
     ZVA = VNA().jav_openvisa('TCPIP0::192.168.1.30::inst0')
-    ZVA.Test_PwrCal()
+    #ZVA.Test_PwrCal()
+    print(ZVA.Get_Pwrcal_State())
     ZVA.jav_Close()
