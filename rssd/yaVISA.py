@@ -11,7 +11,7 @@
 #####################################################################
 import visa
 import time
-import rssd.FileIO
+import rssd.FileIO                        #pylint: disable=E0611,E0401
 import socket
 
 class jaVisa(object):
@@ -124,7 +124,7 @@ class jaVisa(object):
             pass
          self.jav_ClrErr()
       except:
-         print ('jav_OpnErr: ' + sVISAStr)
+         print ('jav_OpnErr: ' + sIPAddr)
          self.K2 = 'NoSOCKET'
       return self.K2
 
@@ -133,7 +133,7 @@ class jaVisa(object):
       #*** Open VISA Connection
       #*****************************************************************
       rm = visa.ResourceManager()      #Create Resource Manager
-      rmList = rm.list_resources()     #List VISA Resources
+      #rmList = rm.list_resources()     #List VISA Resources
       try:
          self.K2 = rm.open_resource(sVISAStr)    #Create Visa Obj
          self.K2.timeout = 5000                  #Timeout, millisec
@@ -155,9 +155,9 @@ class jaVisa(object):
       self.write("*RST;*CLS;*WAI")
 
    def jav_logscpi(self):
-      self.f = rssd.FileIO.FileIO()
+      self.f = rssd.FileIO.FileIO()       #pylint:disable=E1101
       self.Ofile = "yaVISA"
-      DataFile = self.f.Init("yaVISA")
+      DataFile = self.f.Init("yaVISA")    #pylint:disable=W0612
 
    def jav_read_raw(self):
       return self.K2.read_raw()
