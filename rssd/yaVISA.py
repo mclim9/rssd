@@ -49,7 +49,8 @@ class jaVisa(object):
          ErrList.append(RdStr)
          RdStrSplit = RdStr.split(',')
          if RdStr == "<notRead>": break      #No readstring
-         if RdStrSplit[0] == "0": break      #Read 0 error
+         if RdStrSplit[0] == "0": break      #Read 0 error:R&S
+         if RdStrSplit[0] == "+0": break     #Read 0 error:Other
          self.dLastErr = RdStr
          print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
       return ErrList 
