@@ -31,7 +31,7 @@ class VSA(VSA):                        #pylint: disable=E0102
         ACLR = self.queryFloatArry(':CALC:MARK:FUNC:POW:RES? MCAC')
         return ACLR
 
-    def Get_EVM_n_Params(self):
+    def Get_WLAN_EVMParams(self):
         Power = self.Get_WLAN_PPDUPwr()
         EVM   = self.Get_WLAN_EVM()
         return (f"{Power:6.3f},{EVM:.2f}")
@@ -42,7 +42,10 @@ class VSA(VSA):                        #pylint: disable=E0102
         return rdStr
 
     def Get_WLAN_PPDUPwr(self):
-        rdStr = self.queryFloatArry(f'FETC:BURS:RMS:AVER?')[1]
+        try:
+            rdStr = self.queryFloatArry(f'FETC:BURS:RMS:AVER?')[1]
+        except:
+            rdStr = -9999
         return rdStr
 
     def Get_WLAN_ChBW(self):
@@ -97,6 +100,9 @@ class VSA(VSA):                        #pylint: disable=E0102
     def Set_WLAN_AnalysisMode(self):
         self.write(':SENS:DEM:FORM:BCON:AUTO 1')
 
+    def Set_WLAN_Autolvl(self):
+        self.jav_OPC_Wait('ADJ:LEV')
+
     def Set_WLAN_ChBW(self,iBW):
         # iBW of 0 sets VSA to auto detect
         if iBW == 0:  # Auto
@@ -139,5 +145,6 @@ if __name__ == "__main__":
    FSW = VSA()
    FSW.jav_Open("192.168.1.109")
    #print(FSW.Get_WLAN_Standard())
-   print(FSW.Get_EVM_n_Params())
+   #print(FSW.Get_WLAN_EVMParams())
+   FSW.Set_WLAN_Autolvl()
    FSW.jav_Close()
