@@ -5,7 +5,7 @@ Release History
   - Chg Example\VST_5GNR_EVM.py
   - Add iqdata.py
   - Add Pwrcal to VNA_Common.py
-  - Add WLAN FSW/SMW/VST
+  - Add WLAN FSW/SMW/VST/Example
 - RSSD 0.1.11
   - Created VST_5GNR_K144 instrument
     - Updated examples

@@ -71,7 +71,7 @@
 
 ### Example Code:
 
-FileName                | Descriptions                       
+FileName                | Description                       
 ------------------------|------------------------------------
 FSW_ACLR_Timing         | ACLR in Spectral Mode              
 FSW_ACLR_IQ_Timing      | ACLR in IQ Analyzer                

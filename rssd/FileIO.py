@@ -28,7 +28,7 @@ class FileIO(object):
       return self
       
    def write(self,inStr):
-      if self.debug: print("FileOut     : %s"%inStr)
+      if self.debug: print("FileOut   : %s"%inStr)
       sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
       self.Outfile = open(self.sFName, 'a')           #Open File
       self.Outfile.write('%s,%s\n'%(sDate,inStr))
