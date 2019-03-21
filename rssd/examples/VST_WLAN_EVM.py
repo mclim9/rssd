@@ -1,10 +1,9 @@
 ##########################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ###
-### Title  : Timing SCPI Commands Example
+### Title  : Sample SMW FSW WLAN EVM Sweep
 ### Author : mclim
-### Date   : 2018.05.24
-### Steps  : 
+### Date   : 2019.03.21
 ###
 ##########################################################
 ### User Entry
@@ -16,6 +15,7 @@ pwrArry     = [-20, -10, -5]
 StdArry     = ['AC','N']
 CHBWArry    = [20,40]
 MCSArry     = [1,3,5] 
+SweepTime   = 0.002
 
 ##########################################################
 ### Code Overhead: Import and create objects
@@ -49,6 +49,8 @@ for std in StdArry:                                             #Loop: Standard
             WLAN.WLAN_ChBW  = chbw
             WLAN.Set_WLAN_All()                                 ### Make Waveform ###
             print(f'802.11{std} RFBW:{WLAN.WLAN_ChBW} MCS:{MCS}')
+            WLAN.FSW.Set_SweepTime(SweepTime)
+            WLAN.FSW.write(':TRAC:IQ:SRAT 160e6')
 
             for freq  in FreqArry:                              #Loop: Frequency
                 WLAN.FSW.Set_Freq(freq)
@@ -58,13 +60,11 @@ for std in StdArry:                                             #Loop: Standard
                     #Autolevel Timing
                     tick = datetime.now()
                     WLAN.FSW.Set_WLAN_Autolvl()
+                    WLAN.FSW.Set_SweepCont(0)
                     ALTime = datetime.now() - tick
-                    input('Cont?')
 
                     # Measure EVM
                     tick = datetime.now()
-                    WLAN.FSW.Init_WLAN()
-                    WLAN.FSW.Set_SweepCont(0)
                     WLAN.FSW.Set_InitImm()
                     EVM = WLAN.FSW.Get_WLAN_EVMParams()
                     Attn = WLAN.FSW.Get_AmpSettings()
