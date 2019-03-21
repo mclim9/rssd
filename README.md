@@ -71,22 +71,22 @@
 
 ### Example Code:
 
-    FileName                | Descriptions                       
-    ------------------------|------------------------------------
-    FSW_ACLR_Timing         | ACLR in Spectral Mode              
-    FSW_ACLR_IQ_Timing      | ACLR in IQ Analyzer                
-    FSW_CCDF                | CCDF in Spectral Mode              
-    FSW_IQCaptureTime       | IQ Capture time looping Fs         
-    NRP_BufferedContAvg     | Bufferened NRP measurement         
-    SMW_LoadArb.py          | Load Arb file into SMW             
-    OSP_Debug               | Generic OSP example                
-    VSE_ADemod.py           | VSE/FSW Analog FM Demod            
-    VSE_Debug.py            | VSE Raw SCPI                       
-    VSE_OFDM_1CC_K96.py     | VSE Single OFDM Carrier EVM w/ K96 
-    VSE_OFDM_MultiCC_K96.py | VSE Multi  OFDM Carrier EVM w/ K96 
-    VST_5GNR_EVMSpeed       | FSW K144 speed tests               
-    VST_5GNR_K144_Read      | Read SMW/FSW 5G NR Parameters      
-    VST_Sweep.py            | SMW/FSW Frequency Sweep            
+FileName                | Descriptions                       
+------------------------|------------------------------------
+FSW_ACLR_Timing         | ACLR in Spectral Mode              
+FSW_ACLR_IQ_Timing      | ACLR in IQ Analyzer                
+FSW_CCDF                | CCDF in Spectral Mode              
+FSW_IQCaptureTime       | IQ Capture time looping Fs         
+NRP_BufferedContAvg     | Bufferened NRP measurement         
+SMW_LoadArb.py          | Load Arb file into SMW             
+OSP_Debug               | Generic OSP example                
+VSE_ADemod.py           | VSE/FSW Analog FM Demod            
+VSE_Debug.py            | VSE Raw SCPI                       
+VSE_OFDM_1CC_K96.py     | VSE Single OFDM Carrier EVM w/ K96 
+VSE_OFDM_MultiCC_K96.py | VSE Multi  OFDM Carrier EVM w/ K96 
+VST_5GNR_EVMSpeed       | FSW K144 speed tests               
+VST_5GNR_K144_Read      | Read SMW/FSW 5G NR Parameters      
+VST_Sweep.py            | SMW/FSW Frequency Sweep            
 
 # Project 
 
@@ -103,7 +103,7 @@ FSW | Vector Signal Analyzer    | [User Manual](https://www.rohde-schwarz.com/us
 VSE | Vector Analysis Software  | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=vse+base+user+manual) | [VSE](https://www.rohde-schwarz.com/us/product/vse)
 CMW | Basestation Emulator      | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=cmw+user+manual) | [CMW500](https://www.rohde-schwarz.com/us/product/CMW500); [CMW100](https://www.rohde-schwarz.com/us/product/CMW100)
 NRP | Three Path Power Sensor   | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=nrp_s_sn+user+manual) | [NRP](https://www.rohde-schwarz.com/us/product/nrp_s_sn); [NRPM](https://www.rohde-schwarz.com/us/product/nrpm)
-NRQ | Freq Selective Pwr Sensor | [User Manual](https://www.rohde-schwarz.com/us/manual/nrq6/) | [Options](https://www.rohde-schwarz.com/us/product/nrq6)
+NRQ | Freq Selective Pwr Sensor | [User Manual](https://www.rohde-schwarz.com/us/manual/nrq6/) | [NRQ](https://www.rohde-schwarz.com/us/product/nrq6)
 OSP | Switch Matrix             | [User Manual](https://www.rohde-schwarz.com/us/manual/osp/) | [OPS1xx](https://www.rohde-schwarz.com/us/product/osp); [OPS2xx](https://www.rohde-schwarz.com/us/product/osp-n)
 VNA | Network Analyzer          | [User Manual](https://www.rohde-schwarz.com/us/manual/zva/) | [ZVA](https://www.rohde-schwarz.com/us/product/zva); [ZNA](https://www.rohde-schwarz.com/us/product/zna); [ZNB](https://www.rohde-schwarz.com/us/product/ZNB)
 
