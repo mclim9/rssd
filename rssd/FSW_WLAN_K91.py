@@ -68,8 +68,15 @@ class VSA(VSA):                        #pylint: disable=E0102
         return rdStr
 
     def Get_WLAN_PPDU(self):
-#        rdStr = self.queryInt(f'SENS:DEM:FORM:MCS?')
-        rdStr = '<TBD>'
+        std = self.Get_WLAN_Standard()
+        if std == 'N':
+            rdStr = self.query(':TRAC:DATA? TRACE1')
+        elif std == 'AC':
+            rdStr = self.query(':TRAC:DATA? TRACE1')
+        elif std == 'AX':
+            rdStr = self.query('FETCh:SFIeld:ALL?')
+        else:
+            rdStr = '<TBD>'
         return rdStr
 
     def Get_WLAN_Standard(self):
@@ -146,7 +153,7 @@ if __name__ == "__main__":
    ### this won't be run when imported
    FSW = VSA()
    FSW.jav_Open("192.168.1.109")
-   #print(FSW.Get_WLAN_Standard())
+   print(FSW.query(':TRAC:DATA? TRACE1'))
    #print(FSW.Get_WLAN_EVMParams())
-   FSW.Set_WLAN_Autolvl()
+   #FSW.Set_WLAN_Autolvl()
    FSW.jav_Close()
