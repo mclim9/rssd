@@ -271,6 +271,9 @@ class VSA(VSA):                        #pylint: disable=E0102
    def Set_5GNR_Parameters(self,sDir):
       self.Set_5GNR_Direction(sDir)
    
+   def Set_5GNR_savesetting(self, sName):
+      self.write(f":MMEM:STOR:DEM:CC1 'C:\\R_S\\Instr\\user\\NR5G\\AllocationFiles\\{sName}.allocation'")
+      
    def Set_5GNR_SEM_Freq(self,fFreq,dSubBlock=1):
       self.write(':SENS:ESP%d:SCEN %f'%(dSubBlock,fFreq))
 
@@ -294,6 +297,6 @@ if __name__ == "__main__":
    ### this won't be run when imported
    FSW = VSA().jav_Open("192.168.1.109")
    print(FSW.Get_5GNR_EVMParams())
-   print(FSW.Get_5GNR_EVM())
+   FSW.Set_5GNR_savesetting('asdf'+'1')
    FSW.jav_ClrErr()
    FSW.jav_Close()

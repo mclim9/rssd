@@ -23,9 +23,6 @@ class VSG(VSG):                     #pylint: disable=E0102
       rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:DFR?'%(self.sdir))
       return rdStr
       
-   #####################################################################
-   ### FSW 5G NR DMRS
-   #####################################################################
    def Get_5GNR_BWP_Ch_DMRS_1stDMRSSym(self):
       #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSC:DMRS:APOS?'%(self.alloc))
       rdStr = "<TBD>"
@@ -277,6 +274,11 @@ class VSG(VSG):                     #pylint: disable=E0102
          # self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST OFF') #4.30SP2?
          self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:PUSC:TPST OFF') #4.50
 
+   def Set_5GNR_savesetting(self, sName):
+      self.query(f':SOUR:BB:NR5G:SETT:STOR "/var/user/{sName}";*OPC?')
+      self.query(f':SOUR:BB:NR5G:WAV:CRE "/var/user/{sName}";*OPC?')
+      self.delay(10)
+
 #####################################################################
 ### Run if Main
 #####################################################################
@@ -284,5 +286,5 @@ if __name__ == "__main__":
    # this won't be run when imported 
    SMW = VSG()
    SMW.jav_Open("192.168.1.114")
-   SMW.Get_5GNR_RBMax()
+   SMW.Set_5GNR_savesetting('asdfasdf')
    SMW.jav_Close()
