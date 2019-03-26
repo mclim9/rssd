@@ -100,7 +100,6 @@ class jaVisa(object):
       #  VISA: 'TCPIP0::'+IP_Address+'::hislip0'
       #  VISA: 'TCPIP0::'+IP_Address+'::hislip0::INSTR'
       try:
-         
          self.jav_openvisa('TCPIP0::'+IPAddr+'::hislip0::INSTR',fily,prnt)
       except:
          print('VISA Openerror.  Using Raw Socket')
@@ -185,7 +184,7 @@ class jaVisa(object):
             ReadStr = self.query(cmd)
             OutList.append(ReadStr)
       return OutList
-      
+
    def query(self,cmd):
       read ="<notRead>"
       try:
@@ -195,7 +194,7 @@ class jaVisa(object):
          if self.prnty: print("jav_RdErr : %s-->%s"%(self.Model,cmd))
       if self.Ofile != "" : self.f.write("%s,%s,%s,"%(self.Model,cmd,read))
       return read
-      
+
    def queryFloat(self,cmd):
       try:
          strArry = self.query(cmd).split(',')
@@ -209,21 +208,21 @@ class jaVisa(object):
          return [float(i) for i in strArry]
       except:
          return [-9999.9999]
-         
-   def queryIntArry(self,cmd):
-      try:
-         strArry = self.query(cmd).split(',')
-         return [int(i) for i in strArry]
-      except:
-         return [-9999]
-         
+
    def queryInt(self,cmd):
       try:
          strArry = self.query(cmd).split(',')
          return [int(i) for i in strArry][0]
       except:
          return -9999
-         
+
+   def queryIntArry(self,cmd):
+      try:
+         strArry = self.query(cmd).split(',')
+         return [int(i) for i in strArry]
+      except:
+         return [-9999]
+
    def write(self,cmd):
       try:
          if self.dataIDN != "": self.K2.write(cmd) #Write if connected
