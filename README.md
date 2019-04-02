@@ -51,9 +51,9 @@
   * Possible compatibility: FSW
 * VST: Vector Signal Transceiver
   * Code that calls both SMW & FSW
-  * Typically protocol such as: LTE & 5GNR
+  * Currently 5GNR; LTE; WLAN implemented
 * OSP: Open Switch and Control Platform
-  * Developed & TEsted with OSP120
+  * Developed & Tested with OSP120
 
 # Getting Started
 
@@ -79,6 +79,7 @@ FSW_ACLR_Timing         | VSA       | ACLR in Spectral Mode
 FSW_ACLR_IQ_Timing      | VSA       | ACLR in IQ Analyzer                
 FSW_CCDF                | VSA       | CCDF in Spectral Mode              
 FSW_IQCaptureTime       | VSA       | IQ Capture time looping Fs         
+NRP_AvGPwr              | NRP       | NRP Average power capture
 NRP_BufferedContAvg     | NRP       | Bufferened NRP measurement         
 SMW_LoadArb.py          | VSG       | Load Arb file into SMW             
 OSP_Debug               | OSP       | Generic OSP example                
@@ -86,10 +87,10 @@ VSE_ADemod.py           | VSE       | VSE/FSW Analog FM Demod
 VSE_Debug.py            | VSE       | VSE Raw SCPI                       
 VSE_OFDM_1CC_K96.py     | VSE       | VSE Single OFDM Carrier EVM w/ K96 
 VSE_OFDM_MultiCC_K96.py | VSE       | VSE Multi  OFDM Carrier EVM w/ K96 
-VST_5GNR_EVM            | VSG VSA   | SMW/FSW K144 speed tests               
-VST_5GNR_K144_Read      | VSG VSA   | SMW/FSW Read 5G NR Parametes      
+VST_5GNR_EVM            | VSG VSA   | SMW/FSW K144 speed tests           
+VST_5GNR_K144_Read      | VSG VSA   | SMW/FSW Read 5G NR Parametes       
 VST_Sweep.py            | VSG VSA   | SMW/FSW Frequency Sweep            
-VST_WLAN_EVM            | VSG VSA   | SMW/FSW 802.11 EVM sweep test
+VST_WLAN_EVM            | VSG VSA   | SMW/FSW 802.11 EVM sweep test      
 
 # Project 
 
@@ -101,14 +102,16 @@ VST_WLAN_EVM            | VSG VSA   | SMW/FSW 802.11 EVM sweep test
 
 Driver     | Description | User Manual | Models 
 -----------|-------------|-------------|--------------
-SMW | Vector Signal Generator   | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=smw+vector+user+manual&sort=relevance) | [SMW](https://www.rohde-schwarz.com/us/product/smw200a); [SMBV](https://www.rohde-schwarz.com/us/product/smbv100b); [SGT](https://www.rohde-schwarz.com/us/product/sgt100A); [SGS](https://www.rohde-schwarz.com/us/product/sgs100A); [SMA](https://www.rohde-schwarz.com/us/product/sma100b) | 
-FSW | Vector Signal Analyzer    | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=FSW+user+manual&sort=relevance) | [FSW](https://www.rohde-schwarz.com/us/product/fsw); [FSVA](https://www.rohde-schwarz.com/us/product/fsva); 
+SMW | Vector Signal Generator   | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=smw+vector+user+manual&sort=relevance) | [SMW](https://www.rohde-schwarz.com/us/product/smw200a); [SMBV](https://www.rohde-schwarz.com/us/product/smbv100b); [SGT](https://www.rohde-schwarz.com/us/product/sgt100A); [SGS](https://www.rohde-schwarz.com/us/product/sgs100A); [SMA-B](https://www.rohde-schwarz.com/us/product/sma100b); [SMB-B](https://www.rohde-schwarz.com/us/product/smb100b); [SMF](https://www.rohde-schwarz.com/us/product/smf100a) | 
+FSW | Vector Signal Analyzer    | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=FSW+user+manual&sort=relevance) | [FSW](https://www.rohde-schwarz.com/us/product/fsw); [FSWP](https://www.rohde-schwarz.com/us/product/fswp); [FSVA](https://www.rohde-schwarz.com/us/product/fsva); [FPL](https://www.rohde-schwarz.com/us/product/fpl1000); 
 VSE | Vector Analysis Software  | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=vse+base+user+manual) | [VSE](https://www.rohde-schwarz.com/us/product/vse)
-CMW | Basestation Emulator      | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=cmw+user+manual) | [CMW500](https://www.rohde-schwarz.com/us/product/CMW500); [CMW100](https://www.rohde-schwarz.com/us/product/CMW100)
+CMW | Basestation Emulator      | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=cmw+user+manual) | [CMW500](https://www.rohde-schwarz.com/us/product/CMW500); [CMW100](https://www.rohde-schwarz.com/us/product/CMW100); [CMP200](https://www.rohde-schwarz.com/us/product/CMP200)
 NRP | Three Path Power Sensor   | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=nrp_s_sn+user+manual) | [NRP](https://www.rohde-schwarz.com/us/product/nrp_s_sn); [NRPM](https://www.rohde-schwarz.com/us/product/nrpm)
 NRQ | Freq Selective Pwr Sensor | [User Manual](https://www.rohde-schwarz.com/us/manual/nrq6/) | [NRQ](https://www.rohde-schwarz.com/us/product/nrq6)
 OSP | Switch Matrix             | [User Manual](https://www.rohde-schwarz.com/us/manual/osp/) | [OPS1xx](https://www.rohde-schwarz.com/us/product/osp); [OPS2xx](https://www.rohde-schwarz.com/us/product/osp-n)
 VNA | Network Analyzer          | [User Manual](https://www.rohde-schwarz.com/us/manual/zva/) | [ZVA](https://www.rohde-schwarz.com/us/product/zva); [ZNA](https://www.rohde-schwarz.com/us/product/zna); [ZNB](https://www.rohde-schwarz.com/us/product/ZNB)
+[N/A] | Digital Oscillocope       | [User Manual](https://www.rohde-schwarz.com/us/manual/rtp/) | [RTP](https://www.rohde-schwarz.com/us/product/RTP); [RTO](https://www.rohde-schwarz.com/us/product/RTO); 
+[N/A] | Radiated Chambers         | [User Manual](https://www.rohde-schwarz.com/us/manual/ATS1000/) |[ATS800](https://www.rohde-schwarz.com/us/product/ATS800); [ATS1000](https://www.rohde-schwarz.com/us/product/ATS1000); [ATS1800](https://www.rohde-schwarz.com/us/product/ATS1800); [CMQ](https://www.rohde-schwarz.com/us/product/CMQ100); [DST200](https://www.rohde-schwarz.com/us/product/DST200); [TS7124](https://www.rohde-schwarz.com/us/product/ts7124)
 
 Acknowledgments
 =====================================================================
@@ -116,4 +119,3 @@ Acknowledgments
 ## Acknowledgments
 - Thanx to [Nick Lalic](https://pypi.org/project/rohdeschwarz/) for all his help.
 - [Markdown reference](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
-
