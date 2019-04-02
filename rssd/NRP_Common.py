@@ -10,6 +10,14 @@
 ###          <VS>::<Manu>::<Modl>::<SerN>::INSTR
 ###          TCPIP0::NRPM3-900105::inst0
 ### 
+###   Product  |USB ID        Product  |USB ID
+###   ---------|------        ---------|------
+###   NRP8S     0x00E2        NRP33SN-V 0x0168
+###   NRP8SN    0x0137        NRP40S    0x015F
+###   NRP18S    0x0138        NRP40SN   0x0160
+###   NRP18SN   0x0139        NRP50S    0x0161
+###   NRP33S    0x0145        NRP50SN   0x0162
+###   NRP33SN   0x0146        NRPM      0x0195
 #####################################################################
 from rssd.yaVISA import jaVisa
 
