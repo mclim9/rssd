@@ -17,6 +17,7 @@
 *.pyc
 *.lnk
 *.code-workspace
+*.bat
 
 ### Data files
 *.csv

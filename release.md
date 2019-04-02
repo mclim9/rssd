@@ -1,5 +1,8 @@
 Release History
 =====================================================================
+- RSSD 0.1.13
+  - Chg ALCR methods in WLAN; FSW_Common; FSW_ACLR_Timing;
+  - Add yaVISA_VISA(21MB) and yaVISA_socket (0MB)
 - RSSD 0.1.12
   - Add FSW/SMW/VST LTE commands
   - Chg Example\VST_5GNR_EVM.py
