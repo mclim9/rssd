@@ -71,22 +71,25 @@
 
 ### Example Code:
 
-FileName                | Description                       
-------------------------|------------------------------------
-FSW_ACLR_Timing         | ACLR in Spectral Mode              
-FSW_ACLR_IQ_Timing      | ACLR in IQ Analyzer                
-FSW_CCDF                | CCDF in Spectral Mode              
-FSW_IQCaptureTime       | IQ Capture time looping Fs         
-NRP_BufferedContAvg     | Bufferened NRP measurement         
-SMW_LoadArb.py          | Load Arb file into SMW             
-OSP_Debug               | Generic OSP example                
-VSE_ADemod.py           | VSE/FSW Analog FM Demod            
-VSE_Debug.py            | VSE Raw SCPI                       
-VSE_OFDM_1CC_K96.py     | VSE Single OFDM Carrier EVM w/ K96 
-VSE_OFDM_MultiCC_K96.py | VSE Multi  OFDM Carrier EVM w/ K96 
-VST_5GNR_EVMSpeed       | FSW K144 speed tests               
-VST_5GNR_K144_Read      | Read SMW/FSW 5G NR Parameters      
-VST_Sweep.py            | SMW/FSW Frequency Sweep            
+FileName                | Instrumnt | Description                       
+------------------------|-----------|------------------------------------
+AAA_CommandTime         | Any       | Time command to instrument
+AAA_IDN_IPArry          | Any       | Send *IDN to instruments in IPArry
+FSW_ACLR_Timing         | VSA       | ACLR in Spectral Mode              
+FSW_ACLR_IQ_Timing      | VSA       | ACLR in IQ Analyzer                
+FSW_CCDF                | VSA       | CCDF in Spectral Mode              
+FSW_IQCaptureTime       | VSA       | IQ Capture time looping Fs         
+NRP_BufferedContAvg     | NRP       | Bufferened NRP measurement         
+SMW_LoadArb.py          | VSG       | Load Arb file into SMW             
+OSP_Debug               | OSP       | Generic OSP example                
+VSE_ADemod.py           | VSE       | VSE/FSW Analog FM Demod            
+VSE_Debug.py            | VSE       | VSE Raw SCPI                       
+VSE_OFDM_1CC_K96.py     | VSE       | VSE Single OFDM Carrier EVM w/ K96 
+VSE_OFDM_MultiCC_K96.py | VSE       | VSE Multi  OFDM Carrier EVM w/ K96 
+VST_5GNR_EVM            | VSG VSA   | SMW/FSW K144 speed tests               
+VST_5GNR_K144_Read      | VSG VSA   | SMW/FSW Read 5G NR Parametes      
+VST_Sweep.py            | VSG VSA   | SMW/FSW Frequency Sweep            
+VST_WLAN_EVM            | VSG VSA   | SMW/FSW 802.11 EVM sweep test
 
 # Project 
 
