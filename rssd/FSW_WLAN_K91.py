@@ -8,12 +8,12 @@
 ###
 ### Standrd |Modu|Freqncy|Mode|PPDU|BW |MIMO|BitRate
 ### --------|----|-------|----|----|---|----|-------
-### 802.11b  DSSS 2.4     Legy  CCK 20 SISO   11Mbps
-### 802.11a  OFDM     5.4 Legy         SISO   54Mbps
-### 802.11g  both 2.4 5.4 Legy   L     SISO   54Mbps
-### 802.11n  OFDM 2.4 5.4 GrnF  HT  40 MIMO  300Mbps
-### 802.11ac OFDM     5.4 MixM VHT 160 MIMO 1750Mbps
-### 802.11ax OFDM 2.4 5.4 MixM  HE 160 MIMO   11Gbps
+### 802.11b  DSSS 2.4     Legy  CCK  20 SISO   11Mbps
+### 802.11a  OFDM     5.4 Legy          SISO   54Mbps
+### 802.11g  both 2.4 5.4 Legy    L     SISO   54Mbps
+### 802.11n  OFDM 2.4 5.4 GrnF   HT  40 MIMO  300Mbps
+### 802.11ac OFDM     5.4 MixM  VHT 160 MIMO 1750Mbps
+### 802.11ax OFDM 2.4 5.4 MixM   HE 160 MIMO   11Gbps
 #####################################################################
 from rssd.FSW_Common import VSA        #pylint: disable=E0611,E0401
 
@@ -79,6 +79,10 @@ class VSA(VSA):                        #pylint: disable=E0102
             rdStr = '<TBD>'
         return rdStr
 
+    def Get_WLAN_SEM(self):
+        rdStr = self.query(f':CALC1:LIM:FAIL?')
+        return rdStr
+
     def Get_WLAN_Standard(self):
         #0:A 1:B 2/3:J 4:G 6:N 7:N-MIMO 8:AC 9:P 10:AX
         rdStr = self.queryInt(f':CONF:STAN?')
@@ -95,11 +99,20 @@ class VSA(VSA):                        #pylint: disable=E0102
     #####################################################################
     def Init_WLAN(self):
         self.Set_Channel('WLAN')
-        self.write(':SENS:DEM:FORM:BCON:AUTO 1')
+        self.write(':SENS:DEM:FORM:BCON:AUTO 1')            #Auto PPDU Demod
+
+    def Init_WLAN_ACLR(self):
+        self.Set_Channel('WLAN')
+        self.write(':CONF:BURS:SPEC:ACPR:IMM')              #ACLR
+
+    def Init_WLAN_EVM(self):
+        self.Set_Channel('WLAN')
+        self.write(':SENS:DEM:FORM:BCON:AUTO 1')            #Auto PPDU Demod
+        self.write(':CONF:BURS:IQ:IMM')                     #EVM
 
     def Init_WLAN_SEM(self):
         self.Set_Channel('WLAN')
-        self.write(':CONF:BURS:SPEC:MASK:IMM')
+        self.write(':CONF:BURS:SPEC:MASK:IMM')              #SEM
 
     #####################################################################
     ### VSA Settings

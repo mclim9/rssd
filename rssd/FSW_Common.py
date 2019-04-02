@@ -355,12 +355,15 @@ class VSA(jaVisa):
     
     def Set_ACLR_CHBW(self,dCHBW):
         self.write('POW:ACH:BAND %d'%dCHBW)
-        
+    
+    def Set_ACLR_NumAdj(self,iAdj):
+        self.write(f'POW:ACH:ACP 2')                           #two adjacent channels
+
     def Set_ACLR_AdjBW(self,dCHBW):
-        self.write('POW:ACH:BAND:ACH %d;ALT1 %d;ALT2 %d'%(dCHBW,dCHBW,dCHBW))
+        self.write(f'POW:ACH:BAND:ACH {dCHBW};ALT1 {dCHBW};ALT2 {dCHBW}')
 
     def Set_ACLR_AdjSpace(self,dCHBW):
-        self.write('POW:ACH:SPAC:ACH %d;ALT1 %d;ALT2 %d'%(dCHBW,dCHBW,dCHBW))
+        self.write(f'POW:ACH:SPAC:ACH {dCHBW};ALT1 {2*dCHBW};ALT2 {3*dCHBW}')
 
 
     #####################################################################
