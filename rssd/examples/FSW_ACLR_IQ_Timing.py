@@ -10,7 +10,7 @@
 ### User Entry
 ##########################################################
 FSW_IP   = '192.168.1.109'
-MeasTim  = [0.1e-3, 0.2e-3, 0.3e-3, 0.5e-3, 1e-3, 2e-3, 3e-3]
+MeasTim  = [0.1e-3]
 RFBW     = 95e6
 RFSp     = 100e6
 Freq     = 28e9
@@ -34,14 +34,14 @@ FSW.Init_IQ()                       #FSW ACLR Channel
 if 1:
    FSW.Set_Freq(Freq)
    FSW.Set_IQ_BW(3.1*RFSp)
-   FSW.Set_IQ_SpectrumWindow()
-   FSW.Set_Trace_Detector('RMS',2)
-   FSW.Set_Mkr_Freq(Freq,1,2)
-   FSW.Set_Mkr_Band(RFBW,1,2)
-   FSW.Set_Mkr_Freq(Freq-RFSp,2,2)
-   FSW.Set_Mkr_Band(RFBW,2,2)
-   FSW.Set_Mkr_Freq(Freq+RFSp,3,2)
-   FSW.Set_Mkr_Band(RFBW,3,2)
+   FSW.Set_IQ_SpectrumWindow()         # Add Spectrum Trace
+   FSW.Set_Trace_Detector('RMS',2)     # RMS detector
+   FSW.Set_Mkr_Freq(Freq,1,2)          # Tx Freq
+   FSW.Set_Mkr_Band(RFBW,1,2)          # Tx RFBW
+   FSW.Set_Mkr_Freq(Freq-RFSp,2,2)     # Adj- Freq
+   FSW.Set_Mkr_Band(RFBW,2,2)          # Adj- RFBW
+   FSW.Set_Mkr_Freq(Freq+RFSp,3,2)     # Adj+ Freq
+   FSW.Set_Mkr_Band(RFBW,3,2)          # Adj+ RFBW
 
 FSW.Set_DisplayUpdate("OFF")
 FSW.Set_SweepCont(0)
