@@ -102,6 +102,7 @@ class jaVisa(object):
       try:
          #s.setttimeout(1)
          self.K2.connect((sIPAddr,5025))
+         self.K2.settimeout(1)
          self.jav_IDN(prnt)
          try:  # Try to write file
             f=open(fily,'a')
