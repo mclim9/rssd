@@ -35,14 +35,10 @@ WLAN = VST().jav_Open(SMW_IP,FSW_IP,OFile)
 ### Measure Time
 ##########################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-OFile.write('Freq,SMWPwr,ALTime,Std,ChBW,MCS,Attn,Preamp,RefLvl,TxCh,Adj-,Adj+,Alt1-,Alt1+,Alt2-,Alt2+,CmdTime')        # ACLR
-#OFile.write('Freq,SMWPwr,ALTime,Std,ChBW,MCS,Attn,Preamp,RefLvl,EVM,CmdTime')                                          # EVM
-#OFile.write('Freq,SMWPwr,ALTime,Std,ChBW,MCS,Attn,Preamp,RefLvl,SEM,CmdTime')                                          # SEM
+OFile.write('Freq,SMWPwr,ALTime,Std,ChBW,MCS,Attn,Preamp,RefLvl,MeasPwr,EVM,TxCh,Adj-,Adj+,Alt1-,Alt1+,Alt2-,Alt2+,CmdTime')        # All
 
+WLAN.FSW.jav_Reset()
 WLAN.FSW.Init_WLAN()
-WLAN.FSW.write(':CONF:BURS:SPEC:ACPR:IMM')                      #Config ACLR
-# WLAN.FSW.write(':CONF:BURS:IQ:IMM')                             #Config EVM
-# WLAN.FSW.write(':CONF:BURS:SPEC:MASK:IMM')                      #Config SEM
 WLAN.FSW.Set_Trig1_Source('EXT')
 WLAN.FSW.Set_SweepCont(0)
 
@@ -62,21 +58,36 @@ for std in StdArry:                                             #Loop: Standard
                 WLAN.SMW.Set_Freq(freq)
                 for pwr in pwrArry:                             #Loop: Power
                     WLAN.SMW.Set_RFPwr(pwr)
-                    #Autolevel Timing
+
+                    ### Autolevel Timing
                     tick = datetime.now()
+                    WLAN.FSW.Init_WLAN_EVM()                                            #Config EVM Ch
                     WLAN.FSW.Set_WLAN_Autolvl()
+                    Attn = WLAN.FSW.Get_AmpSettings()
                     WLAN.FSW.Set_SweepCont(0)
                     ALTime = datetime.now() - tick
-
-                    # Measure EVM
                     tick = datetime.now()
                     WLAN.FSW.Set_InitImm()
-                    ACLR = WLAN.FSW.Get_ACLR()
-                    #EVM = WLAN.FSW.Get_WLAN_EVMParams()
-                    #SEM = WLAN.FSW.query(':CALC1:LIM:FAIL?')
-                    Attn = WLAN.FSW.Get_AmpSettings()
+
+                    ### Measure EVM
+                    if 1:
+                        WLAN.FSW.Init_WLAN_EVM()                                        #Config EVM Ch
+                        WLAN.FSW.Set_InitImm()
+                        EVM = WLAN.FSW.Get_WLAN_EVMParams()
+
+                    ### Measure ACLR
+                    if 1:
+                        WLAN.FSW.write(':CONF:BURS:SPEC:ACPR:IMM')                      #Config ACLR Ch
+                        WLAN.FSW.Set_InitImm()
+                        ACLR = WLAN.FSW.Get_ACLR()
+
+                    ### Measure SEM
+                    if 0:
+                        WLAN.FSW.write(':CONF:BURS:SPEC:MASK:IMM')                      #Config SEM Ch
+                        WLAN.FSW.Set_InitImm()
+                        SEM = WLAN.FSW.query(':CALC1:LIM:FAIL?')
                     d = datetime.now() - tick
-                    OutStr = f'{freq},{pwr:3d},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{WLAN.WLAN_Std},{WLAN.WLAN_ChBW},{WLAN.WLAN_MCS},{Attn},{ACLR},{d.seconds:3d}.{d.microseconds:06d}'
+                    OutStr = f'{freq},{pwr:3d},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{WLAN.WLAN_Std},{WLAN.WLAN_ChBW},{WLAN.WLAN_MCS},{Attn},{EVM},{ACLR},{d.seconds:3d}.{d.microseconds:06d}'
                     OFile.write (OutStr)
 
 ##########################################################
