@@ -17,6 +17,10 @@ CHBWArry    = [20,40]
 MCSArry     = [1,3,5] 
 SweepTime   = 0.002
 
+MeasEVM     = 0
+MeasACLR    = 0
+MeasSEM     = 1
+
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
@@ -35,7 +39,7 @@ WLAN = VST().jav_Open(SMW_IP,FSW_IP,OFile)
 ### Measure Time
 ##########################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-OFile.write('Freq,SMWPwr,ALTime,Std,ChBW,MCS,Attn,Preamp,RefLvl,MeasPwr,EVM,TxCh,Adj-,Adj+,Alt1-,Alt1+,Alt2-,Alt2+,CmdTime')        # All
+OFile.write('Freq,SMWPwr,ALTime,Std,ChBW,MCS,Attn,Preamp,RefLvl,MeasPwr,EVM,SEM,TxCh,Adj-,Adj+,Alt1-,Alt1+,Alt2-,Alt2+,CmdTime')        # All
 
 WLAN.FSW.jav_Reset()
 WLAN.FSW.Init_WLAN()
@@ -61,7 +65,8 @@ for std in StdArry:                                             #Loop: Standard
 
                     ### Autolevel Timing
                     tick = datetime.now()
-                    WLAN.FSW.Init_WLAN_EVM()                                            #Config EVM Ch
+                    WLAN.FSW.write(':CONF:BURS:IQ:IMM')                             #EVM
+                    WLAN.FSW.write(':SENS:DEM:FORM:BCON:AUTO 1')                    #Auto PPDU Demod
                     WLAN.FSW.Set_WLAN_Autolvl()
                     Attn = WLAN.FSW.Get_AmpSettings()
                     WLAN.FSW.Set_SweepCont(0)
@@ -70,24 +75,32 @@ for std in StdArry:                                             #Loop: Standard
                     WLAN.FSW.Set_InitImm()
 
                     ### Measure EVM
-                    if 1:
-                        WLAN.FSW.Init_WLAN_EVM()                                        #Config EVM Ch
+                    if MeasEVM:
+                        WLAN.FSW.Set_InitImm()
+                        WLAN.FSW.write(':CONF:BURS:IQ:IMM')                             #EVM
+                        WLAN.FSW.write(':SENS:DEM:FORM:BCON:AUTO 1')                    #Auto PPDU Demod
                         WLAN.FSW.Set_InitImm()
                         EVM = WLAN.FSW.Get_WLAN_EVMParams()
-
+                    else:
+                        EVM = '-9999,-9999'
                     ### Measure ACLR
-                    if 1:
+                    if MeasACLR:
                         WLAN.FSW.write(':CONF:BURS:SPEC:ACPR:IMM')                      #Config ACLR Ch
                         WLAN.FSW.Set_InitImm()
+                        WLAN.FSW.Set_InitImm()
                         ACLR = WLAN.FSW.Get_ACLR()
+                    else:
+                        ACLR = [-9999,-9999,-9999,-9999,-9999,-9999,-9999]
 
                     ### Measure SEM
-                    if 0:
+                    if MeasSEM:
                         WLAN.FSW.write(':CONF:BURS:SPEC:MASK:IMM')                      #Config SEM Ch
                         WLAN.FSW.Set_InitImm()
                         SEM = WLAN.FSW.query(':CALC1:LIM:FAIL?')
+                    else:
+                        SEM = 'NotTested'
                     d = datetime.now() - tick
-                    OutStr = f'{freq},{pwr:3d},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{WLAN.WLAN_Std},{WLAN.WLAN_ChBW},{WLAN.WLAN_MCS},{Attn},{EVM},{ACLR},{d.seconds:3d}.{d.microseconds:06d}'
+                    OutStr = f'{freq},{pwr:3d},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{WLAN.WLAN_Std},{WLAN.WLAN_ChBW},{WLAN.WLAN_MCS},{Attn},{EVM},{SEM},{ACLR},{d.seconds:3d}.{d.microseconds:06d}'
                     OFile.write (OutStr)
 
 ##########################################################
