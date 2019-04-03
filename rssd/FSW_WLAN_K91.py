@@ -107,8 +107,8 @@ class VSA(VSA):                        #pylint: disable=E0102
 
     def Init_WLAN_EVM(self):
         self.Set_Channel('WLAN')
-        self.write(':SENS:DEM:FORM:BCON:AUTO 1')            #Auto PPDU Demod
         self.write(':CONF:BURS:IQ:IMM')                     #EVM
+        self.write(':SENS:DEM:FORM:BCON:AUTO 1')            #Auto PPDU Demod
 
     def Init_WLAN_SEM(self):
         self.Set_Channel('WLAN')
