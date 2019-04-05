@@ -132,18 +132,18 @@ class IQ(object):
         self.NumberOfSamples = len(self.iqiqList) // 2
             
         #Find maximum magnitude and scale for max to be FullScale (1.0)
-        magnitude = []
+        power = []
         for n in range(self.NumberOfSamples):
-            magnitude.append(self.iqiqList[2*n]**2 + self.iqiqList[2*n+1]**2)
-        scaling = math.sqrt(max(magnitude))
+            power.append(abs(self.iqiqList[2*n]**2 + self.iqiqList[2*n+1]**2))
+        scaling = math.sqrt(max(power))
         
         # normalize to magnitude 1
         self.iqiqList = [iq / scaling for iq in self.iqiqList]
         #calculate rms in dB (below full scale)
-        rms = math.sqrt(sum(magnitude)/scaling)
+        rms = math.sqrt(sum(power)/self.NumberOfSamples)/scaling
         rms = abs(20*math.log10(rms))
         # Convert to int16
-        self.iqiqList = [int(iq * 32767 +.5) for iq in self.iqiqList]
+        self.iqiqList = [math.floor(iq * 32767 +.5) for iq in self.iqiqList]
             
         try:
             file = open(FileName, "wb")
@@ -151,7 +151,7 @@ class IQ(object):
             file.write("{COMMENT: R&S WaveForm, TheAE-RA}".encode("ASCII"))
             file.write(("{DATE: " + str(date.today())+ "}").encode("ASCII"))
             file.write(("{CLOCK:" +str(self.fSamplingRate) + "}").encode("ASCII"))
-            file.write(("{LEVEL OFFS:" +  str(rms) + ",0}").encode("ASCII"))
+            file.write(("{LEVEL OFFS:" +  "{:2.4f}".format(rms) + ",0}").encode("ASCII"))
             file.write(("{SAMPLES:" + str(self.NumberOfSamples) + "}").encode("ASCII"))
         #    if(m1start > 0 && m1stop > 0)
         #        %Control Length only needed for markers
@@ -207,7 +207,7 @@ class IQ(object):
         res = re.search("CLOCK[ ]*:[ ]*(?P<SamplingRate>[0-9]*)",tags)
         self.fSamplingRate = float(res.group("SamplingRate"))
         data = list(struct.unpack("h"*self.NumberOfSamples*2, data[binaryStart:-1]))
-        data = list(map(lambda x: (x-.5)/32767.0, data ))
+        data = list(map( lambda x: x/32767.0, data ))
         self.__iqiq2complex__(data)
 
     def writeXml(self, filenameiqw, filenamexml):
@@ -313,7 +313,7 @@ class IQ(object):
             del root
             tar.extract(binaryfilename)
             tar.close()
-            data = self.ReadIqw(binaryfilename)
+            self.ReadIqw(binaryfilename)
             os.remove(binaryfilename)
             
         except:
