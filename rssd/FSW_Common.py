@@ -21,6 +21,7 @@ class VSA(jaVisa):
         return ACLR
 
     def Get_AmpSettings(self):
+        #,Attn,PreAmp,RefLvl,
         attn = self.Get_AttnMech()
         prea = self.Get_Preamp()
         refl = self.Get_RefLevel()
@@ -156,7 +157,7 @@ class VSA(jaVisa):
         return rdStr
 
     def Get_SweepTime(self):
-        rdStr = self.queryInt('SENS:SWE:TIME?')                 #Sweep/Capture Time
+        rdStr = self.queryFloat('SENS:SWE:TIME?')                 #Sweep/Capture Time
         return rdStr
 
     def Get_SweepType(self):
@@ -165,11 +166,12 @@ class VSA(jaVisa):
         return rdStr
        
     def Get_SweepParams(self):
+        # ,SwpTime,SwpPts,SwpType,SwpOpt,
         Opt = self.Get_SweepOpt()
         Pts = self.Get_SweepPoints()
         Tim = self.Get_SweepTime()
         Typ = self.Get_SweepType()
-        return [Opt, Pts, Tim, Typ]
+        return f'{Tim},{Pts},{Typ},{Opt}'
 
     def Get_Trace_Data(self,trace=1):
         self.write('FORM ASCII ')
