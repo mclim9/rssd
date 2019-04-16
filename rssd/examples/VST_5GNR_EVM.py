@@ -11,19 +11,19 @@
 ##########################################################
 SMW_IP      = '192.168.1.114'
 FSW_IP      = '192.168.1.108'
-FreqArry    = [6e9]
+FreqArry    = [28e9]
 pwrArry     = [-5]
-pwrArry     = range(-50,8,1)
+pwrArry     = range(-50,8,1)        #Power Array
 NR_Dir      = 'UL'
-NR_ChBW     = 100
-NR_RB       = 132               #100:060:132  200:060:264  <Not Appli>
-subCarr     = [60]            #100:120:066  200:120:132  400:120:264
-waveparam   =[[100,60,132],
-              [100,120,66]]
+waveparam   =[[100,60,132],         #ChBW, SubSp, RB
+              [100,120,66]]         #ChBW, SubSp, RB
+            #   [200,60,264],       #ChBW, SubSp, RB
+            #   [200,120,132],      #ChBW, SubSp, RB
+            #   [400,120,264]]      #ChBW, SubSp, RB
 subFArry    = [1]
-modArry     = ['QPSK', 'QAM64'] #QPSK; QAM16; QAM64; QAM256; PITB
+modArry     = ['QPSK', 'QAM64']     #QPSK; QAM16; QAM64; QAM256; PITB
 numMeas     = 10
-AutoLvl     = 1                #0:AutoEVM 1:AutoLevel
+AutoLvl     = 1                     #0:AutoEVM 1:AutoLevel
 DFT_S_OFDM  = 'OFF'
 
 ##########################################################
@@ -48,7 +48,8 @@ NR5G.Freq       = FreqArry[0]
 ### Measure Time
 ##########################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-OFile.write('Iter,Freq,K144Crest,K144Pwr,EVM,ChBW,Waveform,SubSp,Mod,Pwr,SubFram,Attn,Preamp,RefLvl,AutoLvl,AlTime,CrestF,P10_00,P01_00,P00_10,P00_01,CmdTime')
+Header = 'Iter,Freq,K144Crest,K144Pwr,EVM,ChBW,Waveform,SubSp,Mod,SMWPwr,SubFram,Attn,Preamp,RefLvl,AutoLvl,AlTime,CrestF,P10_00,P01_00,P00_10,P00_01,CmdTime'
+OFile.write(Header)
 
 NR5G.FSW.Init_5GNR()
 NR5G.FSW.Set_5GNR_EVMUnit('DB')
@@ -63,7 +64,7 @@ NR5G.FSW.Set_SweepCont(0)
 
 for i in range(numMeas):                                        #Loop: Measurements
     for mod in modArry:                                         #Loop: Modulation
-        for param in waveparam:                                    #Loop: Subcarrier
+        for param in waveparam:                                 #Loop: Waveform Parameters
             NR5G.NR_ChBW    = param[0]
             NR5G.NR_SubSp   = param[1]
             NR5G.NR_Mod     = mod
@@ -75,6 +76,7 @@ for i in range(numMeas):                                        #Loop: Measureme
                 NR5G.FSW.Set_InitImm()
                 ccdf = NR5G.FSW.Get_CCDF()
                 print(f'Freq:{freq} RFBW:{NR5G.NR_ChBW} SubC:{NR5G.NR_SubSp} Mod:{NR5G.NR_Mod}')
+                print(Header)
                 #ctypes.windll.user32.MessageBoxW(0, "Verify", "Please Verify Waveform", 1)
                 for pwr in pwrArry:                             #Loop: Power
                     NR5G.FSW.Init_5GNR()
