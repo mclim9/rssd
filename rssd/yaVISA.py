@@ -140,9 +140,9 @@ class jaVisa(object):
          self.jav_IDN(prnt)
          try:
             if fily != '':
-               f=open(fily,'a')
-               f.write(self.dataIDN + "\n")
-               f.close()
+               #f=open(fily,'a')
+               fily.write(self.dataIDN)
+               #f.close()
          except:
             pass
          self.jav_ClrErr()
