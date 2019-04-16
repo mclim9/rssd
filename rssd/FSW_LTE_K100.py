@@ -35,6 +35,14 @@ class VSA(VSA):                        #pylint: disable=E0102
         rdStr = self.query(f':CONF:LTE:{self.ldir}:BW?')
         return rdStr
 
+    def Get_LTE_ChPwr(self):
+        rdStr = self.queryFloat('FETC:CC1:SUMM:POW:AVER?')
+        return rdStr
+
+    def Get_LTE_CrestFactor(self):
+        rdStr = self.queryFloat('FETC:CC1:SUMM:CRES:AVER?')
+        return rdStr
+
     def Get_LTE_Direction(self,cc=1):
         rdStr = self.query(':CONF:LDIR?')
         if rdStr == 'DL':
@@ -43,7 +51,7 @@ class VSA(VSA):                        #pylint: disable=E0102
             self.ldir = "UL"
         else:
             print('Get_5GNR_Direction Error')
-        print(f'LTE DIRECTION = {self.ldir}')
+        # print(f'LTE DIRECTION = {self.ldir}')
         return rdStr
 
     def Get_LTE_Duplex(self):
@@ -53,6 +61,12 @@ class VSA(VSA):                        #pylint: disable=E0102
     def Get_LTE_EVM(self):
         rdStr = self.queryFloat('FETC:SUMM:EVM?')
         return rdStr
+
+    def Get_LTE_EVMParams(self):
+        Crest = self.Get_LTE_CrestFactor()
+        Power = self.Get_LTE_ChPwr()
+        EVM   = self.Get_LTE_EVM()
+        return (f"{Crest:6.3f},{Power:6.3f},{EVM:.2f}")
 
     def Get_LTE_Modulation(self,cc=1):
         if self.ldir == 'UL':
@@ -114,11 +128,20 @@ class VSA(VSA):                        #pylint: disable=E0102
             self.ldir = 'DL'
         else:
             print("Set_5GNR_UL_Direction must be UL or DL")
-        print(self.ldir)
+        # print(self.ldir)
 
     def Set_LTE_Duplex(self,sDup):
         # TDD or FDD
         self.write(f':CONF:LTE:DUPL {sDup}')
+
+    def Set_LTE_EVMUnit(self,sUnit):
+        #DB or PCT
+        self.write(':UNIT:EVM %s'%sUnit)
+
+    def Set_LTE_SubFrameCount(self,dSubFrame):
+        self.write(':SENS:LTE:FRAM:COUN:STAT ON')
+        self.write(':SENS:LTE:FRAM:COUN:AUTO OFF')
+        self.write(':SENS:LTE:FRAM:COUN %d'%dSubFrame)
 
     def Set_LTE_Modulation(self,iMod):
         self.write(f':CONF:LTE:{self.ldir}:SUBF0:ALL:MOD {iMod}')
@@ -128,6 +151,11 @@ class VSA(VSA):                        #pylint: disable=E0102
 
     def Set_LTE_ResBlockOffset(self,iRBO):
         self.write(f':CONF:LTE:{self.ldir}:SUBF0:ALL:RBOF %d'%iRBO)
+
+    def Set_LTE_SweepTime(self,fSwpTime):
+        if fSwpTime < 0.00201:
+            fSwpTime = 0.0021
+        self.write('SENS:SWE:TIME %f'%fSwpTime)  #Sweep/Capture Time
 
 #####################################################################
 ### Run if Main
