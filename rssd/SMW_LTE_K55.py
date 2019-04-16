@@ -60,6 +60,14 @@ class VSG(VSG):                     #pylint: disable=E0102
     #####################################################################
     ### VSG Setting
     #####################################################################
+    def Set_LTE_BBState(self,iEnable):
+        if (iEnable == 1) or (iEnable == 'ON'):
+            self.jav_OPC_Wait(':SOUR1:BB:EUTR:STAT 1')
+    #         self.query('*OPC?')        # Wait for calculation
+        else:
+            self.write(':SOUR1:BB:EUTR:STAT 0')
+
+
     def Set_LTE_CC(self,iCC):
         self.write(''%())
         if iCC > 0:
