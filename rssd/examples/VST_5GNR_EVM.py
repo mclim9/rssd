@@ -4,13 +4,12 @@
 ### Title  : Timing SCPI Commands Example
 ### Author : mclim
 ### Date    : 2018.05.24
-### Steps  : 
 ###
 ##########################################################
 ### User Entry
 ##########################################################
 SMW_IP      = '192.168.1.114'
-FSW_IP      = '192.168.1.108'
+FSW_IP      = '192.168.1.109'
 FreqArry    = [28e9]
 pwrArry     = [-5]
 pwrArry     = range(-50,8,1)        #Power Array
@@ -48,7 +47,7 @@ NR5G.Freq       = FreqArry[0]
 ### Measure Time
 ##########################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-Header = 'Iter,Freq,K144Crest,K144Pwr,EVM,ChBW,Waveform,SubSp,Mod,SMWPwr,SubFram,Attn,Preamp,RefLvl,AutoLvl,AlTime,CrestF,P10_00,P01_00,P00_10,P00_01,CmdTime'
+Header = 'Iter,Freq,K144Crest,K144Pwr,EVM,ChBW,Waveform,SubSp,Mod,SMWPwr,SubFram,Attn,Preamp,RefLvl,AutoLvl,AlTime,CrestF,P10_00,P01_00,P00_10,P00_01,CmdTime,StepTime'
 OFile.write(Header)
 
 NR5G.FSW.Init_5GNR()
@@ -60,6 +59,7 @@ NR5G.FSW.Set_YIG(0)
 NR5G.FSW.Set_CCDF_BW(120e6)
 NR5G.FSW.Set_CCDF_Samples(2e6)
 NR5G.FSW.Set_Trig1_Source('IMM')
+NR5G.FSW.Set_AttnAuto()
 NR5G.FSW.Set_SweepCont(0)
 
 for i in range(numMeas):                                        #Loop: Measurements
@@ -97,7 +97,8 @@ for i in range(numMeas):                                        #Loop: Measureme
                         EVM = NR5G.FSW.Get_5GNR_EVMParams()
                         Attn = NR5G.FSW.Get_AmpSettings()
                         d = datetime.now() - tick
-                        OutStr = f'{i},{freq},{EVM},{NR5G.NR_ChBW},{NR5G.NR_TF},{NR5G.NR_SubSp},{NR5G.NR_Mod},{pwr:3d},{subFram},{Attn},{AutoLvl},{ALTime.seconds:3d}.{ALTime.microseconds:06d},cf:{ccdf},{d.seconds:3d}.{d.microseconds:06d}'
+                        s = datetime.now() - tickA
+                        OutStr = f'{i},{freq},{EVM},{NR5G.NR_ChBW},{NR5G.NR_TF},{NR5G.NR_SubSp},{NR5G.NR_Mod},{pwr:3d},{subFram},{Attn},{AutoLvl},{ALTime.seconds:3d}.{ALTime.microseconds:06d},cf:{ccdf},{d.seconds:3d}.{d.microseconds:06d},{s.seconds:3d}.{s.microseconds:06d}'
                         OFile.write (OutStr)
 
 ##########################################################
