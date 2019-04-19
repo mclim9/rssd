@@ -209,11 +209,14 @@ class VSA(jaVisa):
         self.write('POW:ACH:BAND %d'%dCHBW)
     
     def Set_ACLR_NumAdj(self,iAdj):
-        self.write(f'POW:ACH:ACP 2')                           #two adjacent channels
+        self.write(f'POW:ACH:ACP {iAdj}')                           #two adjacent channels
 
     def Set_AttnMech(self,fMAttn):
         self.write('INP:EATT:STAT OFF')
         self.write('INP:ATT %.0f'%fMAttn)
+
+    def Set_AttnAuto(self):
+        self.write(':INP:ATT:AUTO ON')
 
     def Set_Autolevel(self):
         self.query('ADJ:LEV;*OPC?')
@@ -400,6 +403,13 @@ class VSA(jaVisa):
 
     def Set_Preamp(self,sState):
         self.write('INP:GAIN:STAT %s;*WAI'%sState)      #ON|OFF|1|0
+
+    def Set_PreampToggle(self,ChPwr,fToggle):
+        if ChPwr < fToggle:     #FSVA:-23  FSW:-27
+            self.Set_Preamp('ON')
+        else:
+            self.Set_Preamp('OFF')
+
 
     def Set_RefLevel(self,fReflevel):
         self.write('DISP:TRAC:Y:RLEV %f'%fReflevel)
