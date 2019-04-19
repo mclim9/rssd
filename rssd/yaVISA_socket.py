@@ -25,6 +25,8 @@ class jaVisa(object):
       self.Version = ""
       self.prnty   = 1
       self.Ofile   = ""
+      self.EOL     = '\n'
+      self.f       = ''
       pass
    
    def delay(self,sec):
@@ -44,15 +46,19 @@ class jaVisa(object):
 
    def jav_ClrErr(self):
       ErrList = []
-      while True:
-         RdStr = self.query("SYST:ERR?").strip()
-         ErrList.append(RdStr)
-         RdStrSplit = RdStr.split(',')
-         if RdStr == "<notRead>": break      #No readstring
-         if RdStrSplit[0] == "0": break      #Read 0 error:R&S
-         if RdStrSplit[0] == "+0": break     #Read 0 error:Other
-         self.dLastErr = RdStr
-         print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
+      try:     #Instrument supports SYST:ERR?
+         while True:
+            RdStr = self.query("SYST:ERR?").strip()
+            ErrList.append(RdStr)
+            RdStrSplit = RdStr.split(',')
+            if RdStr == "<notRead>": break      #No readstring
+            if RdStrSplit[0] == "0": break      #Read 0 error:R&S
+            if RdStrSplit[0] == "+0": break     #Read 0 error:Other
+            self.dLastErr = RdStr
+            print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
+      except:  #Instrument does not support SYST:ERR?
+         print("jav_ClrErr: %s-->SYST:ERR not Supported"%(self.Model))
+         pass
       return ErrList 
          
    def jav_Error(self):
@@ -64,10 +70,13 @@ class jaVisa(object):
       self.dataIDN = self.query("*IDN?").strip()
       if self.dataIDN != "<notRead>":        #Data Returned?
          IDNStr = self.dataIDN.split(',')
-         self.Make    = IDNStr[0]
-         self.Model   = IDNStr[1]
-         self.Device  = IDNStr[2]
-         self.Version = IDNStr[3]
+         try:
+            self.Make    = IDNStr[0]
+            self.Model   = IDNStr[1]
+            self.Device  = IDNStr[2]
+            self.Version = IDNStr[3]
+         except:
+            pass
       else:
          self.dataIDN = ""                   #Reset if not read
       if prnt==1:
@@ -94,35 +103,37 @@ class jaVisa(object):
       print('jav_OPCWai: %0.2fsec'%(delta))
       return delta
    
-   def jav_Open(self, sIPAddr, fily='',prnt=1):
+   def jav_Open(self, sIPAddr,fily='',port=5025,prnt=1):
       #*****************************************************************
       #*** Open raw socket Connection
       #*****************************************************************
       self.K2 = socket.socket()
       try:
          #s.setttimeout(1)
-         self.K2.connect((sIPAddr,5025))
+         self.K2.connect((sIPAddr,port))
          self.K2.settimeout(1)
          self.jav_IDN(prnt)
-         try:  # Try to write file
-            f=open(fily,'a')
-            f.write(self.dataIDN + "\n")
-            f.close()
-         except:
-            pass
+         self.jav_fileout(fily, self.dataIDN)
          self.jav_ClrErr()
       except:
          print ('jav_OpnErr: ' + sIPAddr)
          self.K2 = 'NoSOCKET'
       return self
 
+   def jav_fileout(self, fily, outstr):
+      try:
+         if fily != '':
+            fily.write(outstr.strip())
+      except:
+         pass
+
    def jav_Reset(self):
       self.write("*RST;*CLS;*WAI")
 
    def jav_logscpi(self):
-      self.f = rssd.FileIO.FileIO()       #pylint:disable=E1101
+      self.f = rssd.FileIO()       #pylint:disable=E1101
       self.Ofile = "yaVISA"
-      DataFile = self.f.Init("yaVISA")    #pylint:disable=W0612
+      self.f.Init("yaVISA")    #pylint:disable=W0612
 
    def jav_read_raw(self):
       # return self.K2.read()
@@ -158,7 +169,7 @@ class jaVisa(object):
             read = sOut.decode()
       except:
          if self.prnty: print("jav_RdErr : %s-->%s"%(self.Model,cmd))
-      if self.Ofile != "" : self.f.write("%s,%s,%s,"%(self.Model,cmd,read))
+      self.jav_fileout(self.f, "%s,%s,%s"%(self.Model,cmd,read))
       return read
       
    def queryFloat(self,cmd):
@@ -191,11 +202,11 @@ class jaVisa(object):
 
    def write(self,cmd):
       try:
-         out = cmd + "\n"
+         out = cmd + self.EOL
          if self.dataIDN != "": self.K2.sendall(out.encode()) #Write if connected
       except:
          if self.prnty: print("jav_WrtErr: %s-->%s"%(self.Model,cmd))
-      if self.Ofile != "" : self.f.write("%s,%s"%(self.Model,cmd))      
+      self.jav_fileout(self.f, "%s,%s"%(self.Model,cmd))
 
 if __name__ == "__main__":
    RS = jaVisa().jav_Open("192.168.1.109")
