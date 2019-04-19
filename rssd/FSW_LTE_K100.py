@@ -6,7 +6,8 @@
 ### Date:    2018.04.03
 ### Requird: python -m pip install pyvisa
 #####################################################################
-from rssd.FSW_Common import VSA        #pylint: disable=E0611,E0401
+from rssd.FSW_Common    import VSA          #pylint: disable=E0611,E0401
+from datetime           import datetime     #pylint: disable=E0611,E0401
 
 class VSA(VSA):                        #pylint: disable=E0102
     def __init__(self):
@@ -112,6 +113,20 @@ class VSA(VSA):                        #pylint: disable=E0102
     #####################################################################
     ### VSA Settings
     #####################################################################
+    def Set_LTE_AutoRef(self):
+        #Assumes we are in LTE personality
+        tick = datetime.now()
+        self.Init_CCDF()
+        self.Set_AttnAuto()
+        self.Set_InitImm()
+        Crest = self.queryFloat(f':CALC:STAT:CCDF:X1? P0_1;*WAI')
+        ChPwr = self.queryFloat(f':CALC:STAT:RES? MEAN')
+        refLvl = Crest + ChPwr
+        self.Set_RefLevel(refLvl)
+        self.Set_PreampToggle(ChPwr,-23)        #FSVA:-23  FSW:-27
+        d = datetime.now() - tick
+        print(f'Set_LTE_AutoRef: {d.seconds:3d}.{d.microseconds:06d}')
+
     def Set_LTE_CC(self,iCC):
         self.write(':CONF:LTE:NOCC %d'%iCC)
 
