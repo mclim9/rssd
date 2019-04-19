@@ -10,16 +10,16 @@
 ### User Entry
 ##########################################################
 SMW_IP      = '192.168.1.114'
-FSW_IP      = '192.168.1.108'
+FSW_IP      = '192.168.1.109'
 FreqArry    = [6e9]
 pwrArry     = range(-50,8,1)
 LTE_Dir     = 'UL'
 waveparam   =[[20,100],
               [20,66]]
 subFArry    = [1]
-modArry     = ['QPSK', 'QAM64'] #QPSK; QAM16; QAM64; QAM256; PITB
+modArry     = ['QPSK', 'QAM64'] #QPSK; QAM16; QAM64; QAM256
 numMeas     = 1
-AutoLvl     = 1                #0:AutoEVM 1:AutoLevel
+AutoLvl     = 0                #0:AutoRef 1:AutoLevel
 SCFDMA      = 'OFF'
 
 ##########################################################
@@ -44,7 +44,7 @@ LTE.Freq       = FreqArry[0]
 ### Measure Time
 ##########################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-Header = 'Iter,Freq,K144Crest,K144Pwr,EVM,ChBW,SCFDMA,RB,Mod,Pwr,SubFram,Attn,Preamp,RefLvl,AutoLvl,AlTime,CrestF,P10_00,P01_00,P00_10,P00_01,CmdTime'
+Header = 'Iter,Freq,K144Crest,K144Pwr,EVM,ChBW,SCFDMA,RB,Mod,SMWPwr,SubFram,Attn,Preamp,RefLvl,AutoLvl,AlTime,CrestF,P10_00,P01_00,P00_10,P00_01,CmdTime,TotTime'
 OFile.write(Header)
 
 LTE.FSW.Init_LTE()
@@ -56,6 +56,7 @@ LTE.FSW.Set_YIG(0)
 LTE.FSW.Set_CCDF_BW(120e6)
 LTE.FSW.Set_CCDF_Samples(2e6)
 LTE.FSW.Set_Trig1_Source('IMM')
+LTE.FSW.Set_AttnAuto()
 LTE.FSW.Set_SweepCont(0)
 
 for i in range(numMeas):                                        #Loop: Measurements
@@ -74,13 +75,13 @@ for i in range(numMeas):                                        #Loop: Measureme
                 print(Header)
                 #ctypes.windll.user32.MessageBoxW(0, "Verify", "Please Verify Waveform", 1)
                 for pwr in pwrArry:                             #Loop: Power
-                    LTE.FSW.Init_LTE()
                     LTE.SMW.Set_RFPwr(pwr)
                     tickA = datetime.now()
                     if AutoLvl == 1:
+                        LTE.FSW.Init_LTE()
                         LTE.FSW.Set_Autolevel()
                     else:
-                        LTE.FSW.Set_LTE_AutoEVM()
+                        LTE.FSW.Set_LTE_AutoRef()
                     ALTime = datetime.now() - tickA
                     for subFram in subFArry:                    #Loop: Subframe
                         LTE.FSW.Set_LTE_SweepTime((subFram)*1.1e-3)
@@ -92,7 +93,8 @@ for i in range(numMeas):                                        #Loop: Measureme
                         EVM = LTE.FSW.Get_LTE_EVMParams()
                         Attn = LTE.FSW.Get_AmpSettings()
                         d = datetime.now() - tick
-                        OutStr = f'{i},{freq},{EVM},{LTE.LTE_ChBW},{LTE.LTE_TF},{LTE.LTE_RB},{LTE.LTE_Mod},{pwr:3d},{subFram},{Attn},{AutoLvl},{ALTime.seconds:3d}.{ALTime.microseconds:06d},cf:{ccdf},{d.seconds:3d}.{d.microseconds:06d}'
+                        t = datetime.now() - tickA
+                        OutStr = f'{i},{freq},{EVM},{LTE.LTE_ChBW},{LTE.LTE_TF},{LTE.LTE_RB},{LTE.LTE_Mod},{pwr:3d},{subFram},{Attn},{AutoLvl},{ALTime.seconds:3d}.{ALTime.microseconds:06d},cf:{ccdf},{d.seconds:3d}.{d.microseconds:06d},{t.seconds:3d}.{t.microseconds:06d}'
                         OFile.write (OutStr)
 
 ##########################################################
