@@ -26,6 +26,7 @@ class jaVisa(object):
       self.Version = ""
       self.prnty   = 1
       self.Ofile   = ""
+      self.f       = ''    #file object
       pass
    
    def delay(self,sec):
@@ -138,24 +139,25 @@ class jaVisa(object):
          self.K2 = rm.open_resource(sVISAStr)    #Create Visa Obj
          self.K2.timeout = 5000                  #Timeout, millisec
          self.jav_IDN(prnt)
-         try:
-            if fily != '':
-               #f=open(fily,'a')
-               fily.write(self.dataIDN)
-               #f.close()
-         except:
-            pass
+         self.jav_fileout(fily, self.dataIDN)
          self.jav_ClrErr()
       except:
          print ('jav_OpnErr: ' + sVISAStr)
          self.K2 = 'NoVISA'
       return self
 
+   def jav_fileout(self, fily, outstr):
+      try:
+         if fily != '':
+            fily.write(outstr.strip())
+      except:
+         pass
+
    def jav_Reset(self):
       self.write("*RST;*CLS;*WAI")
 
    def jav_logscpi(self):
-      self.f = rssd.FileIO.FileIO()       #pylint:disable=E1101
+      self.f = rssd.FileIO()              #pylint:disable=E1101
       self.Ofile = "yaVISA"
       DataFile = self.f.Init("yaVISA")    #pylint:disable=W0612
 
@@ -192,7 +194,7 @@ class jaVisa(object):
             read = self.K2.query(cmd).strip()   #Write if connected
       except:
          if self.prnty: print("jav_RdErr : %s-->%s"%(self.Model,cmd))
-      if self.Ofile != "" : self.f.write("%s,%s,%s,"%(self.Model,cmd,read))
+      self.jav_fileout(self.f, "%s,%s,%s"%(self.Model,cmd,read))
       return read
 
    def queryFloat(self,cmd):
@@ -228,11 +230,11 @@ class jaVisa(object):
          if self.dataIDN != "": self.K2.write(cmd) #Write if connected
       except:
          if self.prnty: print("jav_WrtErr: %s-->%s"%(self.Model,cmd))
-      if self.Ofile != "" : self.f.write("%s,%s"%(self.Model,cmd))      
+      self.jav_fileout(self.f, "%s,%s"%(self.Model,cmd))
 
 if __name__ == "__main__":
    RS = jaVisa().jav_Open("192.168.1.114")
-   #RS.jav_logscpi()
+   # RS.jav_logscpi()
    print(RS.queryInt("*IDN?"))
    print(RS.Device)
    print(RS.jav_Close())
