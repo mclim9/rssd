@@ -26,6 +26,7 @@ class jaVisa(object):
       self.Version = ""
       self.prnty   = 1
       self.Ofile   = ""
+      self.EOL     = '\n'
       self.f       = ''    #file object
       pass
    
@@ -45,15 +46,18 @@ class jaVisa(object):
 
    def jav_ClrErr(self):
       ErrList = []
-      while True:
-         RdStr = self.query("SYST:ERR?").strip()
-         ErrList.append(RdStr)
-         RdStrSplit = RdStr.split(',')
-         if RdStr == "<notRead>": break      #No readstring
-         if RdStrSplit[0] == "0": break      #Read 0 error:R&S
-         if RdStrSplit[0] == "+0": break     #Read 0 error:Other
-         self.dLastErr = RdStr
-         print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
+      try:     #Instrument supports SYST:ERR?
+         while True:
+            RdStr = self.query("SYST:ERR?").strip()
+            ErrList.append(RdStr)
+            RdStrSplit = RdStr.split(',')
+            if RdStr == "<notRead>": break      #No readstring
+            if RdStrSplit[0] == "0": break      #Read 0 error:R&S
+            if RdStrSplit[0] == "+0": break     #Read 0 error:Other
+            self.dLastErr = RdStr
+            print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
+      except:  #Instrument does not support SYST:ERR?
+         print("jav_ClrErr: %s-->SYST:ERR not Supported"%(self.Model))
       return ErrList 
          
    def jav_Error(self):
@@ -65,10 +69,13 @@ class jaVisa(object):
       self.dataIDN = self.query("*IDN?").strip()
       if self.dataIDN != "<notRead>":        #Data Returned?
          IDNStr = self.dataIDN.split(',')
-         self.Make    = IDNStr[0]
-         self.Model   = IDNStr[1]
-         self.Device  = IDNStr[2]
-         self.Version = IDNStr[3]
+         try:
+            self.Make    = IDNStr[0]
+            self.Model   = IDNStr[1]
+            self.Device  = IDNStr[2]
+            self.Version = IDNStr[3]
+         except:
+            pass
       else:
          self.dataIDN = ""                   #Reset if not read
       if prnt==1:
