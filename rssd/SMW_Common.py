@@ -12,7 +12,7 @@ class VSG(jaVisa):
     def __init__(self):
         super(VSG,self).__init__()     #Python2/3
         self.Model = "SMW"
-        
+
     #####################################################################
      ### SMW Get 
     #####################################################################
@@ -23,13 +23,13 @@ class VSG(jaVisa):
     def Get_ArbName(self):
         WvName = self.query('BB:ARB:WAV:SEL?')
         return WvName
-        
+
     def Get_ArbTime(self):
         Fs = self.Get_ArbClockFreq()
         Points = self.query('BB:ARB:WAV:POIN?').strip()
         WvTime = int(Points)/int(Fs)
         return WvTime
-        
+
     def Get_ArbInfo(self):
         ClkFreq = self.Get_ArbClockFreq()
         ArbName = self.Get_ArbName()
@@ -40,6 +40,10 @@ class VSG(jaVisa):
         PEP = self.Get_PowerPEP()
         RMS = self.Get_PowerRMS()
         return (PEP - RMS)
+
+    def Get_Freq(self):
+        rdStr = self.queryFloat(':SOUR1:FREQ:CW?')     #RF Freq
+        return rdStr
 
     def Get_NRPPower(self,NRP=2):
         self.write(':INIT%d:POW:CONT 1'%(NRP))
@@ -75,7 +79,6 @@ class VSG(jaVisa):
         self.write('SOUR:AWGN:STAT 0')              #Turn AWGN off (default)
         self.write('BBIN:STAT OFF')                  #Turn BB Input off(default)
 
-
     #####################################################################
     ### SMW Settting Methods
     #####################################################################
@@ -94,13 +97,13 @@ class VSG(jaVisa):
 
     def Set_ArbWv(self,InWv):
          self.query('BB:ARB:WAV:SEL "%s"; *OPC?'%InWv)
-    
+
     def Set_BBState(self,sState):
         if (sState == "ON") or (sState == 1):
             self.query(':SOUR1:BB:ARB:STAT 1;*OPC?')
         elif (sState == "OFF") or (sState == 0):
             self.query(':SOUR1:BB:ARB:STAT 0;*OPC?')
-    
+
     def Set_Freq(self,freq):
         self.write(':SOUR1:FREQ:CW %f'%freq)     #RF Freq
 

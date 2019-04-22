@@ -1,49 +1,52 @@
-from __future__ import print_function
-##########################################################
+###############################################################################
 ### Rohde & Schwarz Software Test
 ###
-### Purpose: Test FileIO.py
-### Author:  mclim
-### Date:    2018.06.04
-##########################################################
+### Purpose:Test FileIO.py
+### Author: mclim
+### Date:   2018.06.04
+###############################################################################
 ### User Entry
-##########################################################
+###############################################################################
 
-##########################################################
+###############################################################################
 ### Code Start
-##########################################################
+###############################################################################
+from rssd.FileIO      import FileIO             # pylint: disable=E0611,E0401
 import unittest
-from rssd.FileIO     import FileIO
 
 class TestGeneral(unittest.TestCase):
-   def setUp(self):              #run before each test
-      self.FileIO = FileIO()
-      self.FileIO.Init("FileIO.csv")
-      
-   def test_write(self):
-      self.FileIO.write("Hello World Test_FileIO.py")
-      self.FileIO.write_raw("Hello World Test_FileIO.py Raw")
-      
-   def test_readcsv(self):
-      data = self.FileIO.readcsv()
-      for i, line in enumerate(data):
-         print("%d:%s"%(i,",".join(data[i])))               
-      self.assertEqual("as"+"df","asdf")
-   
-   def test_read(self):
-      data = self.FileIO.read()
-      for i, line in enumerate(data):
-         print("%d:%s"%(i,",".join(line)))               
-         
-      self.assertTrue('FOO'.isupper())
-      self.assertFalse('Foo'.isupper())
-   
-   def tearDown(self):
-      pass
+    def setUp(self):                            #Run before each test
+        self.FileIO = FileIO()
+        self.FileIO.Init("FileIO.csv")
 
+    def tearDown(self):                         #Run after each test
+        pass
+
+    def test_write(self):
+        try:
+            self.FileIO.write("test_write,write")           #Append Date
+            self.FileIO.write_raw("test_write,write_raw")   #No Date
+        except:
+            self.assertTrue(1)                  #FAIL
+
+    def test_readcsv(self):
+        self.FileIO.write('testreadcsv,spam,ham,eggs')
+        data = self.FileIO.readcsv()            #Read as 2D Table
+        size = len(data)
+        self.assertEqual(data[size-1][3],'ham')
+
+    def test_read(self):
+        self.FileIO.write_raw('testread,spam,ham,eggs')
+        data = self.FileIO.read()               #Read entire file
+        size = len(data)
+        self.assertEqual(data[size-1].strip(),'testread,spam,ham,eggs')
+        # self.assertTrue('FOO'.isupper())
+        # self.assertFalse('Foo'.isupper())
+
+###############################################################################
 if __name__ == '__main__':
-   if 0:    #Run w/o test names
-      unittest.main()
-   else:    #Verbose run
-      suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
-      unittest.TextTestRunner(verbosity=2).run(suite)
+    if 0:     #Run w/o test names
+        unittest.main()
+    else:     #Verbose run
+        suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
+        unittest.TextTestRunner(verbosity=2).run(suite)
