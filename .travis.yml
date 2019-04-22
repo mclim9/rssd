@@ -1,0 +1,13 @@
+language: python
+python:
+  - "3.6"
+  - "3.7"
+
+# command to install dependencies
+install:
+  # - pip install -r requirements.txt
+  - pip install pyvisa
+
+# command to run tests
+script:
+  - python -m unittest discover
