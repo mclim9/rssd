@@ -16,7 +16,7 @@ class TestGeneral(unittest.TestCase):
         self.FileIO.Init("FileIO.csv")
 
     def tearDown(self):                         #Run after each test
-        pass
+        self.FileIO.Outfile.close()
 
 ###############################################################################
 ### </Test>
