@@ -1,6 +1,6 @@
 language: python
 python:
-  - "2.7"
+  # - "2.7"  #Removed because of f-strings
   - "3.6"
   - "3.7-dev"
 
@@ -8,7 +8,7 @@ python:
 install:
   # - pip install -r requirements.txt
   - pip install pyvisa
-  - pip install future_fstrings     #3.6 f-Strings in 2.7
+  # - pip install future_fstrings     #3.6 f-Strings in 2.7
 
 # command to run tests
 script:
