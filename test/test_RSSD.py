@@ -1,4 +1,5 @@
 from __future__ import print_function
+#coding: future_fstrings
 ###############################################################################
 ### Rohde & Schwarz SCPI Driver Software Test
 ###

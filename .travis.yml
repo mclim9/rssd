@@ -8,6 +8,7 @@ python:
 install:
   # - pip install -r requirements.txt
   - pip install pyvisa
+  - pip install future_fstrings     #3.6 f-Strings in 2.7
 
 # command to run tests
 script:
