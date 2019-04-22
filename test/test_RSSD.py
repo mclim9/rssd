@@ -2,24 +2,26 @@ from __future__ import print_function
 ###############################################################################
 ### Rohde & Schwarz SCPI Driver Software Test
 ###
-### Purpose: Import Libraries.  Catch obvious typos.
+### Purpose: Import Library-->Create Object-->Catch obvious typos.
 ###          Tests do not require instrument.
 ### Author:  mclim
 ### Date:    2018.06.13
-###############################################################################
-### User Entry
-###############################################################################
-
 ###############################################################################
 ### Code Start
 ###############################################################################
 import unittest
 
 class TestGeneral(unittest.TestCase):
-    def setUp(self):                                #run before each test
+    def setUp(self):                                #Run before each test
         print("",end="")
         pass
 
+    def tearDown(self):                             #Run after each test
+        pass
+
+###############################################################################
+### <Test>
+###############################################################################
     def test_CMW_GPRF(self):
         from rssd.CMW_GPRF import BSE               #pylint:disable=E0611,E0401
         self.CMW = BSE()
@@ -93,29 +95,32 @@ class TestGeneral(unittest.TestCase):
         from rssd.VSE_ADemod import VSE             #pylint:disable=E0611,E0401
         self.VSE = VSE()        
         self.assertEqual(self.VSE.Model,"VSE")
-        
+
     def test_VNA_Common(self):
         from rssd.VNA_Common import VNA             #pylint:disable=E0611,E0401
         self.VNA = VNA()        
         self.assertEqual(self.VNA.Model,"VNA")
-        
+
     def test_VSE_Common(self):
         from rssd.VSE_Common import VSE             #pylint:disable=E0611,E0401
         self.VSE = VSE()        
         self.assertEqual(self.VSE.Model,"VSE")
-        
+
     def test_VSE_K96(self):
         from rssd.VSE_Common import VSE             #pylint:disable=E0611,E0401
         self.VSE = VSE()
         self.assertEqual(self.VSE.Model,"VSE")
-        
+
     def test_yaVISA(self):
         from rssd.yaVISA import jaVisa              #pylint:disable=E0611,E0401
         self.K2 = jaVisa()
 
-    def tearDown(self):
-        pass
+    def test_yaVISASocket(self):
+        from rssd.yaVISA_socket import jaVisa       #pylint:disable=E0611,E0401
+        self.K2 = jaVisa()
 
+###############################################################################
+### </Test>
 ###############################################################################
 if __name__ == '__main__':
     if 1 :     #Run w/o test names

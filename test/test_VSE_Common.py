@@ -17,7 +17,7 @@ from rssd.VSE_Common import VSE
 import unittest
 
 class TestGeneral(unittest.TestCase):
-    def setUp(self):                      #run before each test
+    def setUp(self):                            #Run before each test
         self.VSE = VSE()
         try:
             self.VSE.VISA_Open(host)
@@ -27,6 +27,12 @@ class TestGeneral(unittest.TestCase):
         except:
             self.assertTrue(1)
 
+    def tearDown(self):                         #Run after each test
+        self.VSE.jav_Close()
+
+###############################################################################
+### <Test>
+###############################################################################
     def test_VSE_Connect(self):
         self.assertEqual(self.VSE.Make,"Rohde&Schwarz")
         self.assertEqual(self.VSE.Model,"VSE")
@@ -42,16 +48,15 @@ class TestGeneral(unittest.TestCase):
     def test_VSE_IQ_Data2File(self):
         self.VSE.Get_IQ_Data()
         self.assertEqual(self.VSE.VISA_Error()[0],"0")
-        
-        
-        
-'''
-    def test_VSE_Marker(self):        
-        self.VSE.Set_Mkr_Peak()
-        self.VSE.Get_Mkr_Freq()
-        self.assertEqual(self.VSE.dLastErr,"")
-'''
 
+    # def test_VSE_Marker(self):        
+    #     self.VSE.Set_Mkr_Peak()
+    #     self.VSE.Get_Mkr_Freq()
+    #     self.assertEqual(self.VSE.dLastErr,"")
+
+###############################################################################
+### </Test>
+###############################################################################
 if __name__ == '__main__':
     if 0:     #Run w/o test names
         unittest.main(buffer=1)

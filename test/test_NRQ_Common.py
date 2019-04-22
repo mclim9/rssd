@@ -27,6 +27,12 @@ class TestGeneral(unittest.TestCase):
         except:
             self.assertTrue(1)
 
+    def tearDown(self):                         #Run after each test
+        self.NRQ6.jav_Close()
+
+###############################################################################
+### <Test>
+###############################################################################
     def test_NRQ_Connect(self):
         self.assertEqual(self.NRQ6.Make,"ROHDE&SCHWARZ")
 
@@ -53,6 +59,8 @@ class TestGeneral(unittest.TestCase):
         #print(GetVal)
         self.assertTrue(GetVal > -9999)
 
+###############################################################################
+### </Test>
 ###############################################################################
 if __name__ == '__main__':
     #unittest.main()

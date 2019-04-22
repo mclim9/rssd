@@ -19,7 +19,7 @@ class TestGeneral(unittest.TestCase):
     def setUp(self):                            #Run before each test
         self.FSW = VSA()
         try:
-            self.FSW.jav_Open(host)
+            self.FSW.jav_Open(host,prnt=0)
             #self.FSW.jav_Reset()
             self.FSW.jav_ClrErr()
             self.FSW.dLastErr = ""
@@ -29,8 +29,11 @@ class TestGeneral(unittest.TestCase):
     def tearDown(self):                         #Run after each test
         self.FSW.jav_Close()
 
+###############################################################################
+### <Test>
+###############################################################################
     def test_FSW_Connect(self):
-        self.FSW.jav_IDN()
+        self.FSW.jav_IDN(prnt=0)
         self.assertEqual(self.FSW.Make,"Rohde&Schwarz")
 
     def test_FSW_CommonSettings(self):
@@ -54,6 +57,8 @@ class TestGeneral(unittest.TestCase):
         #var = input("Please enter something: ")
         self.assertEqual(self.FSW.jav_Error()[0],'0')
 
+###############################################################################
+### </Test>
 ###############################################################################
 if __name__ == '__main__':
     if 0:                   #Run w/o test names
