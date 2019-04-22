@@ -10,4 +10,4 @@ install:
 
 # command to run tests
 script:
-  - python -m unittest v test.test_RSSD
+  - python -m unittest -v test.test_RSSD
