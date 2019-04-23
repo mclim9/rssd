@@ -1,13 +1,28 @@
 Release History
 =====================================================================
+- RSSD 0.1.14
+  - README.md: Moved instrument & example tables to top.
+  - Add .travis.yml
 - RSSD 0.1.13
   - ALCR 
     - Chg methods in WLAN; FSW_Common; FSW_ACLR_Timing;
     - Add to examples/FSW_ACLR_IQ_Timing & FSW_ACLR_Timing
       - Power sweep; sweep modes; Alt; test times added.
   - Add yaVISA_VISA(21MB) and yaVISA_socket (0MB)
-  - FSW_Common.py: Alphebetized methods
+    - add jav_fileout
+    - add EOL character
+    - add except in jav_ClrErr
+    - add except in jav_IDN
+    - add port number to jav_Open
+  - FSW_Common.py: 
+    - Chg Alphebetized methods
+    - Add Set_AttnAuto()
+    - Fix Set_ACLR_NumAdj()
+  - Add Examples:
+    - VST_LTE_EVM.py
+    - FSW_ACLR_Methods_Timing.py
   - __init__.py imports
+  - Updated Test cases
 - RSSD 0.1.12
   - Add FSW/SMW/VST LTE commands
   - Chg Example\VST_5GNR_EVM.py
