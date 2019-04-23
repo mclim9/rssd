@@ -1,5 +1,4 @@
-﻿# -*- coding: future_fstrings -*-
-#####################################################################
+﻿#####################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ###
 ### Purpose: Vector Signal Explorer Analog Demod Functions
