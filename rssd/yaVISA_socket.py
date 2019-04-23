@@ -23,7 +23,7 @@ class jaVisa(object):
       self.Model   = ""
       self.Device  = ""
       self.Version = ""
-      self.prnty   = 1
+      self.debug   = 1
       self.Ofile   = ""
       self.EOL     = '\n'
       self.f       = ''
@@ -55,9 +55,9 @@ class jaVisa(object):
             if RdStrSplit[0] == "0": break      #Read 0 error:R&S
             if RdStrSplit[0] == "+0": break     #Read 0 error:Other
             self.dLastErr = RdStr
-            print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
+            if self.debug: print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
       except:  #Instrument does not support SYST:ERR?
-         print("jav_ClrErr: %s-->SYST:ERR not Supported"%(self.Model))
+         if self.debug: print("jav_ClrErr: %s-->SYST:ERR not Supported"%(self.Model))
          pass
       return ErrList 
          
@@ -65,7 +65,7 @@ class jaVisa(object):
       RdStr = self.query("SYST:ERR?").strip().split(',')
       return RdStr
 
-   def jav_IDN(self,prnt=1):
+   def jav_IDN(self):
       self.dataIDN = "Temp"                  #Temp for self.query
       self.dataIDN = self.query("*IDN?").strip()
       if self.dataIDN != "<notRead>":        #Data Returned?
@@ -79,8 +79,7 @@ class jaVisa(object):
             pass
       else:
          self.dataIDN = ""                   #Reset if not read
-      if prnt==1:
-         print('jav_IDN   : %s'%(self.dataIDN))
+      if self.debug: print('jav_IDN   : %s'%(self.dataIDN))
       return self.dataIDN
             
    def jav_OPC_Wait(self, InCMD):
@@ -94,16 +93,16 @@ class jaVisa(object):
          try:
             read = self.query("*ESR?").strip()#Poll EventStatReg-Bit0:Op Complete  (STB?)
          except:
-            print("jav_OPCWai:*ESR? Error")
+            if self.debug: print("jav_OPCWai:*ESR? Error")
          time.sleep(0.5)
          delta = (time.time() - start_time)
          if delta > 300:
-            print("jav_OPCWai: timeout")
+            if self.debug: print("jav_OPCWai: timeout")
             break
-      print('jav_OPCWai: %0.2fsec'%(delta))
+      if self.debug: print('jav_OPCWai: %0.2fsec'%(delta))
       return delta
    
-   def jav_Open(self, sIPAddr,fily='',port=5025,prnt=1):
+   def jav_Open(self, sIPAddr,fily='',port=5025):
       #*****************************************************************
       #*** Open raw socket Connection
       #*****************************************************************
@@ -112,11 +111,11 @@ class jaVisa(object):
          #s.setttimeout(1)
          self.K2.connect((sIPAddr,port))
          self.K2.settimeout(1)
-         self.jav_IDN(prnt)
+         self.jav_IDN()
          self.jav_fileout(fily, self.dataIDN)
          self.jav_ClrErr()
       except:
-         print ('jav_OpnErr: ' + sIPAddr)
+         if self.debug: print ('jav_OpnErr: ' + sIPAddr)
          self.K2 = 'NoSOCKET'
       return self
 
@@ -168,7 +167,7 @@ class jaVisa(object):
             sOut = self.K2.recv(2048).strip()   #read socket
             read = sOut.decode()
       except:
-         if self.prnty: print("jav_RdErr : %s-->%s"%(self.Model,cmd))
+         if self.debug: print("jav_RdErr : %s-->%s"%(self.Model,cmd))
       self.jav_fileout(self.f, "%s,%s,%s"%(self.Model,cmd,read))
       return read
       
@@ -205,7 +204,7 @@ class jaVisa(object):
          out = cmd + self.EOL
          if self.dataIDN != "": self.K2.sendall(out.encode()) #Write if connected
       except:
-         if self.prnty: print("jav_WrtErr: %s-->%s"%(self.Model,cmd))
+         if self.debug: print("jav_WrtErr: %s-->%s"%(self.Model,cmd))
       self.jav_fileout(self.f, "%s,%s"%(self.Model,cmd))
 
 if __name__ == "__main__":
