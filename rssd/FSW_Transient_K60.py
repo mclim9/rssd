@@ -1,3 +1,4 @@
+from __future__ import print_function
 # -*- coding: future_fstrings -*-
 #####################################################################
 ### Rohde & Schwarz Automation for demonstration use.
