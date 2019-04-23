@@ -1,6 +1,6 @@
 ###############################################################################
 ### Rohde & Schwarz Automation for demonstration use.
-### Purpose: OTA Common Functions
+### Purpose: OTA ATS1000 Functions
 ### Author : Martin C Lim
 ### Date   : 20xx.xx.xx
 ###  _____  _____   ____ _______ ____ _________     _______  ______ 
@@ -16,31 +16,50 @@
 ###            | |_| | | | | ||  __/\__ \ ||  __/ (_| |
 ###             \__,_|_| |_|\__\___||___/\__\___|\__,_|
 ###
-### Terms:  Azimuth:    Theta; Turntable;
-###         Elevation:  Phi; ATS1000 Arm; 
+### Terms:  Azimuth:    Θθ; Theta; Turntable;
+###         Elevation:  Φφ; Phi; ATS1000 Arm; 
 ### OTA:    ATS1000     Great Circle Cut; Turntable & Elevation Arm
-###         ATS1500     Az over El;
-###         ATS1800     Az over El;
 ###############################################################################
-from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
+from rssd.OTA_Common     import OTA           #pylint: disable=E0611,E0401
 import time
 
-class OTA(jaVisa):
+class OTA(OTA):
     def __init__(self):
         super(OTA, self).__init__()
-        self.Model = "OTA"
-        self.EOL   = '\x00'
-        self.cmdWait = 0.05     #Seconds
-
-    def query(self,cmd):
-        self.write(cmd)
-        time.sleep(self.cmdWait)
-        rdStr = self.K2.recv(2048).strip().decode()
-        return rdStr
 
     #####################################################################
     ### OTA Get Functions
     #####################################################################
+    def Get_AzimuthAngle(self):
+        rdStr = self.query(f'CX').split(',')[2]
+        return rdStr
+
+    def Get_AzimuthRunning(self):
+        return 'TBD'
+
+    def Get_AzimuthSpeed(self):
+        return 'TBD'
+
+    def Get_CxAngle(self):
+        rdStr = self.query(f'CX')
+        return rdStr 
+
+    def Get_ElevateAngle(self):
+        rdStr = self.query(f'CX').split(',')[0]
+        return rdStr
+
+    def Get_ElevateRunning(self):
+        return 'TBD'
+
+    def Get_ElevateSpeed(self):
+        return 'TBD'
+
+    def Get_IDN(self):
+        rdStr = self.query(f'*IDN?')
+        return rdStr 
+
+    def Get_SysStat(self):
+        return 'TBD'
 
     #####################################################################
     ### OTA Init Functions
@@ -52,11 +71,47 @@ class OTA(jaVisa):
     #####################################################################
     ### OTA Set Functions
     #####################################################################
+    def Set_AzimuthAngle(self,angle):
+        self.write(f'LD 1 DV')
+        self.write(f'LD 72 SF')
+        self.write(f'LD {angle:.2f} DG NP GO')
+
+    def Set_AzimuthSpeed(self,speed):
+        #Speed: 1-72 degree/sec
+        self.write(f'LD 1 DV')
+        self.write(f'LD {speed} SF')
+
+    def Set_AzimuthStop(self):
+        self.write(f'LD 1 DV')
+        self.write(f'ST')
+
+    def Set_ElevateAngle(self,angle):
+        self.write(f'LD 3 DV')
+        self.write(f'LD 10 AF')
+        self.write(f'LD {angle:.2f} DG NP GO')
+	
+    def Set_ElevateSpeed(self,speed):
+        #Speed: 1-20 degree/sec
+        self.write(f'LD 3 DV')
+        self.write(f'LD {speed} AF')
+	
+    def Set_ElevateStop(self):
+        self.write(f'LD 3 DV')
+        self.write(f'ST')
 
 ###############################################################################
 ### Debug Main.  Won't run when imported
 ###############################################################################
 if __name__ == "__main__":
-    ATS1000 = OTA()
-    ATS1000.jav_Open('192.168.1.50',port=200)
+    if 1:
+        ATS1000 = OTA()
+        ATS1000.EOL = '\x00'
+        ATS1000.jav_Open('192.168.1.50',port=200)
+    else:
+        ATS1000 = OTA()
+        ATS1000.EOL = '\n'
+        ATS1000.jav_logscpi()
+        ATS1000.jav_Open('192.168.1.109',port=5025)
+    # print(ATS1000.Get_ElevateAngle())
+    # print(ATS1000.Get_AzimuthAngle())
     print(ATS1000.Get_IDN())
