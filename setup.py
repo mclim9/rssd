@@ -22,7 +22,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='rssd',
-      version='0.1.13',
+      version='0.1.14',
       description='Rohde & Schwarz SCPI Driver',
       long_description=long_description,
       long_description_content_type='text/markdown', 
@@ -30,6 +30,7 @@ setup(name='rssd',
         'Development Status :: 4 - Beta',      #3:Alpha 4:Beta 5:Production/Stable
         'License :: Other/Proprietary License',
         'Intended Audience :: Developers',
+        'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python :: 3.7',
         'Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)',
         'Topic :: System :: Hardware :: Hardware Drivers',
@@ -43,6 +44,7 @@ setup(name='rssd',
       #packages=['rssd'],
       install_requires=[
           'pyvisa>=1.9.0',
+          'future_fstrings>=1.0.0',
       ],
       test_suite = 'test',
       include_package_data=True,
