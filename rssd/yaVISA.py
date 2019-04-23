@@ -28,6 +28,7 @@ class jaVisa(object):
       self.Ofile   = ""
       self.EOL     = '\n'
       self.f       = ''    #file object
+      self.debug   = 0
       pass
    
    def delay(self,sec):

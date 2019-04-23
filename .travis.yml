@@ -1,18 +1,18 @@
 language: python
 python:
-  # - "2.7"  #Removed because of f-strings
+  - "2.7"
   - "3.6"
   - "3.7-dev"
 
 os:
   - linux
-  - osx
-  - windows
+  # - osx         #Not working 19.04.23
+  # - windows     #Windows does not support python
   
 # command to install dependencies
 install:
   # - pip install -r requirements.txt
-  # - pip install future_fstrings     #3.6 f-Strings in 2.7
+  - pip install future_fstrings     #3.6 f-Strings in 2.7
   - pip install pyvisa
 
 # command to run tests
