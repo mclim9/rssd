@@ -1,3 +1,4 @@
+from __future__ import print_function
 #coding: future_fstrings
 ###############################################################################
 ### Rohde & Schwarz SCPI Driver Software Test
@@ -23,11 +24,19 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
     def test_yaVISA(self):
         from rssd.yaVISA import jaVisa              #pylint:disable=E0611,E0401
-        self.K2 = jaVisa()
+        self.Instr = jaVisa()
+        self.Instr.jav_Open('127.0.0.1')
+        self.Instr.Model = 'R_S'
+        pass
 
     def test_yaVISASocket(self):
+        setting = 1.23
         from rssd.yaVISA_socket import jaVisa       #pylint:disable=E0611,E0401
-        self.K2 = jaVisa()
+        self.Instr = jaVisa()
+        self.Instr.jav_Open('www.google.com',port=80)
+        self.Instr.K2.settimeout(setting)
+        rdStr = self.Instr.K2.gettimeout()
+        self.assertEqual(setting,rdStr)
 
 ###############################################################################
 ### </Test>

@@ -55,6 +55,7 @@ class jaVisa(object):
             if RdStr == "<notRead>": break      #No readstring
             if RdStrSplit[0] == "0": break      #Read 0 error:R&S
             if RdStrSplit[0] == "+0": break     #Read 0 error:Other
+            if 'Page Could not be Displayed' in RdStrSplit[0] : break      #For html testing socket
             self.dLastErr = RdStr
             if self.debug: print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
       except:  #Instrument does not support SYST:ERR?
@@ -69,7 +70,7 @@ class jaVisa(object):
    def jav_IDN(self):
       self.dataIDN = "Temp"                  #Temp for self.query
       self.dataIDN = self.query("*IDN?").strip()
-      if self.dataIDN != "<notRead>":        #Data Returned?
+      if (self.dataIDN != "<notRead>") and ('<title>' not in self.dataIDN):        #Data Returned?
          IDNStr = self.dataIDN.split(',')
          try:
             self.Make    = IDNStr[0]
