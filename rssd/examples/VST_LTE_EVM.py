@@ -44,7 +44,7 @@ LTE.Freq       = FreqArry[0]
 ### Measure Time
 ##########################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-Header = 'Iter,Freq,K144Crest,K144Pwr,EVM,ChBW,SCFDMA,RB,Mod,SMWPwr,SubFram,Attn,Preamp,RefLvl,AutoLvl,AlTime,CrestF,P10_00,P01_00,P00_10,P00_01,CmdTime,TotTime'
+Header = 'Iter,Model,Freq,K144Crest,K144Pwr,EVM,ChBW,SCFDMA,RB,Mod,SMWPwr,SubFram,Attn,Preamp,RefLvl,AutoLvl,AlTime,CrestF,P10_00,P01_00,P00_10,P00_01,CmdTime,TotTime'
 OFile.write(Header)
 
 LTE.FSW.Init_LTE()
@@ -92,9 +92,9 @@ for i in range(numMeas):                                        #Loop: Measureme
                         LTE.FSW.Set_InitImm()
                         EVM = LTE.FSW.Get_LTE_EVMParams()
                         Attn = LTE.FSW.Get_AmpSettings()
-                        d = datetime.now() - tick
-                        t = datetime.now() - tickA
-                        OutStr = f'{i},{freq},{EVM},{LTE.LTE_ChBW},{LTE.LTE_TF},{LTE.LTE_RB},{LTE.LTE_Mod},{pwr:3d},{subFram},{Attn},{AutoLvl},{ALTime.seconds:3d}.{ALTime.microseconds:06d},cf:{ccdf},{d.seconds:3d}.{d.microseconds:06d},{t.seconds:3d}.{t.microseconds:06d}'
+                        d = datetime.now() - tick       #Measurement only
+                        t = datetime.now() - tickA      #Autolevel + Measurement
+                        OutStr = f'{i},{LTE.FSW.Model},{freq},{EVM},{LTE.LTE_ChBW},{LTE.LTE_TF},{LTE.LTE_RB},{LTE.LTE_Mod},{pwr:3d},{subFram},{Attn},{AutoLvl},{ALTime.seconds:3d}.{ALTime.microseconds:06d},cf:{ccdf},{d.seconds:3d}.{d.microseconds:06d},{t.seconds:3d}.{t.microseconds:06d}'
                         OFile.write (OutStr)
 
 ##########################################################

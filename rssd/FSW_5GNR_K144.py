@@ -203,6 +203,9 @@ class VSA(VSA):                        #pylint: disable=E0102
       #self.query(':SENS:ADJ:EVM;*OPC?')
       #self.delay(60)  #timed at 45sec
 
+   def Set_5GNR_AutoRefLvl(self):
+      pass
+
    def Set_5GNR_AllocFile(self,sFilename):
       # \Instr\user\V5GTF\AllocationFiles\UL
       self.write('MMEM:LOAD:DEM "%s"'%sFilename)

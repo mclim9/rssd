@@ -9,7 +9,7 @@
 ### User Entry
 ##########################################################
 SMW_IP      = '192.168.1.114'
-FSW_IP      = '192.168.1.109'
+FSW_IP      = '192.168.1.108'
 FreqArry    = [28e9]
 pwrArry     = [-5]
 pwrArry     = range(-50,8,1)        #Power Array
@@ -21,7 +21,7 @@ waveparam   =[[100,60,132],         #ChBW, SubSp, RB
             #   [400,120,264]]      #ChBW, SubSp, RB
 subFArry    = [1]
 modArry     = ['QPSK', 'QAM64']     #QPSK; QAM16; QAM64; QAM256; PITB
-numMeas     = 10
+numMeas     = 1
 AutoLvl     = 1                     #0:AutoEVM 1:AutoLevel
 DFT_S_OFDM  = 'OFF'
 
@@ -47,7 +47,7 @@ NR5G.Freq       = FreqArry[0]
 ### Measure Time
 ##########################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-Header = 'Iter,Freq,K144Crest,K144Pwr,EVM,ChBW,Waveform,SubSp,Mod,SMWPwr,SubFram,Attn,Preamp,RefLvl,AutoLvl,AlTime,CrestF,P10_00,P01_00,P00_10,P00_01,CmdTime,StepTime'
+Header = 'Iter,Model,Freq,K144Crest,K144Pwr,EVM,ChBW,Waveform,SubSp,Mod,SMWPwr,SubFram,Attn,Preamp,RefLvl,AutoLvl,AlTime,CrestF,P10_00,P01_00,P00_10,P00_01,CmdTime,StepTime'
 OFile.write(Header)
 
 NR5G.FSW.Init_5GNR()
@@ -81,7 +81,7 @@ for i in range(numMeas):                                        #Loop: Measureme
                 for pwr in pwrArry:                             #Loop: Power
                     NR5G.FSW.Init_5GNR()
                     NR5G.SMW.Set_RFPwr(pwr)
-                    tickA = datetime.now()
+                    tickA = datetime.now()                      #TickA
                     if AutoLvl == 1:
                         NR5G.FSW.Set_Autolevel()
                     else:
@@ -90,15 +90,15 @@ for i in range(numMeas):                                        #Loop: Measureme
                     for subFram in subFArry:                    #Loop: Subframe
                         NR5G.FSW.Set_SweepTime((subFram)*1.1e-3)
                         NR5G.FSW.Set_5GNR_SubFrameCount(subFram)
-                        tick = datetime.now()
+                        tick = datetime.now()                   #Tick
                         NR5G.FSW.Init_5GNR()
                         NR5G.FSW.Set_SweepCont(0)
                         NR5G.FSW.Set_InitImm()
                         EVM = NR5G.FSW.Get_5GNR_EVMParams()
                         Attn = NR5G.FSW.Get_AmpSettings()
-                        d = datetime.now() - tick
-                        s = datetime.now() - tickA
-                        OutStr = f'{i},{freq},{EVM},{NR5G.NR_ChBW},{NR5G.NR_TF},{NR5G.NR_SubSp},{NR5G.NR_Mod},{pwr:3d},{subFram},{Attn},{AutoLvl},{ALTime.seconds:3d}.{ALTime.microseconds:06d},cf:{ccdf},{d.seconds:3d}.{d.microseconds:06d},{s.seconds:3d}.{s.microseconds:06d}'
+                        d = datetime.now() - tick               #Measurement only test time
+                        s = datetime.now() - tickA              #Total test time
+                        OutStr = f'{i},{NR5G.FSW.Model},{freq},{EVM},{NR5G.NR_ChBW},{NR5G.NR_TF},{NR5G.NR_SubSp},{NR5G.NR_Mod},{pwr:3d},{subFram},{Attn},{AutoLvl},{ALTime.seconds:3d}.{ALTime.microseconds:06d},cf:{ccdf},{d.seconds:3d}.{d.microseconds:06d},{s.seconds:3d}.{s.microseconds:06d}'
                         OFile.write (OutStr)
 
 ##########################################################
