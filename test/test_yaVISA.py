@@ -22,13 +22,6 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
-    def test_yaVISA(self):
-        from rssd.yaVISA import jaVisa              #pylint:disable=E0611,E0401
-        self.Instr = jaVisa()
-        self.Instr.jav_Open('127.0.0.1')
-        self.Instr.Model = 'R_S'
-        pass
-
     def test_yaVISASocket(self):
         setting = 1.23
         from rssd.yaVISA_socket import jaVisa       #pylint:disable=E0611,E0401
