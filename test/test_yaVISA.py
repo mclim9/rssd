@@ -26,9 +26,11 @@ class TestGeneral(unittest.TestCase):
         setting = 1.23
         from rssd.yaVISA_socket import jaVisa       #pylint:disable=E0611,E0401
         self.Instr = jaVisa()
+        self.Instr.debug = 0
         self.Instr.jav_Open('www.google.com',port=80)
         self.Instr.K2.settimeout(setting)
         rdStr = self.Instr.K2.gettimeout()
+        self.Instr.K2.close()
         self.assertEqual(setting,rdStr)
 
 ###############################################################################
