@@ -40,10 +40,11 @@ class FileIO(object):
       self.Outfile = open(self.sFName, 'a')           #Open File
       self.Outfile.write('%s\n'%(inStr))
       self.Outfile.close()
-   
+
    def read(self):
       self.Outfile = open(self.sFName, 'r')
       fileData = self.Outfile.readlines()
+      self.Outfile.close()
       return fileData
       
    def readcsv(self):
@@ -52,6 +53,7 @@ class FileIO(object):
       fileData = self.Outfile.readlines()
       for line in fileData:
          dataOut.append(line.strip().split(','))
+      self.Outfile.close()
       return dataOut
    
    def initread(self,sFile):
