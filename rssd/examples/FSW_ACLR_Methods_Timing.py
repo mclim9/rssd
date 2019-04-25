@@ -41,10 +41,12 @@ meth = {0:'Autolvl()',
         2:'AvgOff()',
         3:'AutoRBW()',
         4:'SwpTime()',
-        5:'SetReflvl()'}
+        5:'SetReflvl()',
+        6:'K18()'
+        }
 meth = {
         1:'SetReflvl()',
-        0:'Autolvl()',
+        0:'K18()',
         }
 numMeth = 2
 
@@ -88,6 +90,10 @@ def SetReflvl():
     else:
         VSA.Set_Preamp('OFF')
 
+def K18():
+    VSA.Set_Channel('AMPL')
+    VSA.Set_Autolevel()                             # Auto-Tune
+
 ##########################################################
 ### Code Start
 ##########################################################
@@ -120,12 +126,12 @@ for i in range(Repeat):
     for autoMeth in range(numMeth):
         for pwr in range(PwrSweep):
             ### <\thing we are timing>
-            VSG.query(f':POW:AMPL {-50 + pwr}dbm;*OPC?')                  ### VSG Power
+            VSG.query(f':POW:AMPL {-50 + pwr}dbm;*OPC?')            # VSG Power
             tick = datetime.now()
-            #################
-            ### AUTOLEVEL ###
-            #################
-            eval(meth[autoMeth])
+
+            ### <AUTOLEVEL> ###
+            eval(meth[autoMeth])                                    # Dynamically call
+            ### <AUTOLEVEL> ###
 
             tockA =  datetime.now()
             VSA.write(':INIT:CONT OFF')                             # Single Sweep
