@@ -4,72 +4,91 @@
 ### Title  : Timing SCPI Commands Example
 ### Author : mclim
 ### Date   : 2018.05.24
-### Steps  : 
 ###
 ##########################################################
 ### User Entry
 ##########################################################
-FSW_IP   = '192.168.1.109'
-MeasTim  = [0.1e-3]
-RFBW     = 95e6
-RFSp     = 100e6
-Freq     = 28e9
-NumIter  = 20
+VSA_IP  = '192.168.1.108'
+VSG_IP  = '192.168.1.114' 
+MeasTim = 100e-6
+Freq    = 3e9
+RBW     = 20e3
+ChBW    = 95e6
+ChSpace = 100e6
+Avg     = 0
+SweMode = 'NA'
+SweType = 'NA'
+
+### Loops
+Repeat  = 1
+PwrSweep = 59
+
+meth = {
+        0:'VSA.Set_Mkr_BandAutoLvl()',
+        1:'VSA.Set_Autolevel()'
+        }
 
 ##########################################################
-### Code Overhead: Import and create objects
+### Code Overhead
 ##########################################################
-from rssd.FSW_Common       import VSA
-from datetime              import datetime
-from rssd.FileIO           import FileIO
+from rssd.FSW_Common        import VSA              #pylint: disable=E0611,E0401
+from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
+from datetime               import datetime         
+from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
 
 OFile = FileIO().makeFile(__file__)
-FSW = VSA().jav_Open(FSW_IP,OFile)  #Create FSW Object
-   
+VSA = VSA().jav_Open(VSA_IP,OFile)                  #Create VSA Object
+VSG = jaVisa().jav_Open(VSG_IP,OFile)               #Create Object
 ##########################################################
 ### Code Start
 ##########################################################
-FSW.jav_Reset()
-FSW.Init_IQ()                       #FSW ACLR Channel
+#VSA.jav_Reset()
+VSA.Init_IQ()                                       #FSW ACLR Channel
 if 1:
-   FSW.Set_Freq(Freq)
-   FSW.Set_IQ_BW(3.1*RFSp)
-   FSW.Set_IQ_SpectrumWindow()         # Add Spectrum Trace
-   FSW.Set_Trace_Detector('RMS',2)     # RMS detector
-   FSW.Set_Mkr_Freq(Freq,1,2)          # Tx Freq
-   FSW.Set_Mkr_Band(RFBW,1,2)          # Tx RFBW
-   FSW.Set_Mkr_Freq(Freq-RFSp,2,2)     # Adj- Freq
-   FSW.Set_Mkr_Band(RFBW,2,2)          # Adj- RFBW
-   FSW.Set_Mkr_Freq(Freq+RFSp,3,2)     # Adj+ Freq
-   FSW.Set_Mkr_Band(RFBW,3,2)          # Adj+ RFBW
+   VSA.Set_Freq(Freq)
+   VSA.Set_IQ_ACLR(ChBW, ChSpace)
 
-FSW.Set_DisplayUpdate("OFF")
-FSW.Set_SweepCont(0)
-FSW.Set_InitImm()
-if 1:
-   FSW.Set_Trig1_Source('Ext')
+#VSA.Set_DisplayUpdate("OFF")
+VSA.Set_Param_Couple_All()
+VSA.Set_SweepTime(MeasTim)
+VSA.Set_Trace_Avg('LIN')
+VSA.Set_Trace_AvgCount(Avg)
+VSA.Set_YIG('OFF')
+if 0:
+    VSA.Set_Trig1_Source('Ext')
 
 ##########################################################
 ### Measure Time
 ##########################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-OFile.write('ACLR,CapTime,Iter,CmdTime')
-sumTime = 0
-for mTime in MeasTim:
-   FSW.Set_IQ_Time(mTime)
-   FSW.Set_InitImm()
-   for i in range(NumIter):
-      tick = datetime.now()
-      FSW.Set_InitImm()
-      aclr = []
-      for i in range(1,3+1):
-         aclr = aclr + FSW.Get_Mkr_Band(i,2)
-      d = datetime.now() - tick
-      sumTime = sumTime + d.microseconds/1e6
-      OutStr = '%s,%.6f,%d,%3d.%06d'%(aclr,mTime,i,d.seconds,d.microseconds)
-      OFile.write (OutStr)
-   print('%f'%(sumTime/NumIter))   
+OFile.write('Model    ,Iter,Freq,RBW,SwpTime,SMWPwr,ALType,ALTime,TotTime,Attn,PreAmp,RefLvl,SwpTime,SwpPts,SwpType,SwpOpt,TxPwr,Adj-,Adj+,Alt-,Alt+,ChSpace')
+for i in range(Repeat):
+    for autoMeth in range(len(meth)):
+        for pwr in range(PwrSweep):
+            ### <\thing we are timing>
+            VSG.write(f':POW:AMPL {-50 + pwr}dbm')                  ### VSG Power
+            tick = datetime.now()
+
+            ### <AUTOLEVEL> ###
+            eval(meth[autoMeth])                                    # Dynamically call
+            ### <AUTOLEVEL> ###
+
+            tockA =  datetime.now()
+            VSA.write(':INIT:CONT OFF')                             # Single Sweep
+            VSA.query(':INIT:IMM;*OPC?')                            # Take Sweep
+            ACLR = VSA.Get_Mkr_BandACLR()
+            ### <\thing we are timing>
+
+            tockB = datetime.now()
+            SwpParam = VSA.Get_SweepParams()
+            AmpSet  = VSA.Get_AmpSettings()
+            ALTime = tockA - tick
+            TotTime = tockB - tick
+            OutStr = f'{VSA.Model},{i},{Freq},{RBW},{MeasTim},{-50+pwr},{meth[autoMeth]},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{TotTime.seconds:3d}.{TotTime.microseconds:06d},{AmpSet},{SwpParam},{ACLR},{ChSpace}'
+            OFile.write (OutStr)
+
 ##########################################################
 ### Cleanup Automation
 ##########################################################
-FSW.jav_Close()
+OFile.write("\n")
+VSA.jav_Close()

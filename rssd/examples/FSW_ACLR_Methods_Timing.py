@@ -9,7 +9,7 @@
 ##########################################################
 ### User Entry
 ##########################################################
-VSA_IP  = '192.168.1.109'
+VSA_IP  = '192.168.1.108'
 VSG_IP  = '192.168.1.114' 
 MeasTim = 10e-3
 Freq    = 28e9
@@ -48,7 +48,7 @@ meth = {
         1:'SetReflvl()',
         0:'K18()',
         }
-numMeth = 2
+asdf=len(meth)
 
 def Autolvl():
     VSA.query(':SENS:ADJ:LEV;*OPC?')                        # Auto-Tune
@@ -121,9 +121,9 @@ if 0:
 ### Measure Time
 ##########################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-OFile.write('Iter,RBW,SwpTime,SMWPwr,ALType,AL Time,TotalTime,Attn,PreAmp,RefLvl,SwpTime,SwpPts,SwpType,SwpOpt,TxPwr,Adj-,Adj+,Alt-,Alt+,Freq,ChBw')
+OFile.write('Instr,Iter,RBW,SwpTime,SMWPwr,ALType,AL Time,TotalTime,Attn,PreAmp,RefLvl,SwpTime,SwpPts,SwpType,SwpOpt,TxPwr,Adj-,Adj+,Alt-,Alt+,Freq,ChBw')
 for i in range(Repeat):
-    for autoMeth in range(numMeth):
+    for autoMeth in range(len(meth)):
         for pwr in range(PwrSweep):
             ### <\thing we are timing>
             VSG.query(f':POW:AMPL {-50 + pwr}dbm;*OPC?')            # VSG Power
@@ -143,7 +143,7 @@ for i in range(Repeat):
             AmpSet  = VSA.Get_AmpSettings()
             ALTime = tockA - tick
             TotTime = tockB - tick
-            OutStr = f'{i},{RBW},{MeasTim},{-50+pwr},{meth[autoMeth]},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{TotTime.seconds:3d}.{TotTime.microseconds:06d},{AmpSet},{SwpParam},{ACLR},{Freq},{ChBW}'
+            OutStr = f'{VSA.Model},{i},{RBW},{MeasTim},{-50+pwr},{meth[autoMeth]},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{TotTime.seconds:3d}.{TotTime.microseconds:06d},{AmpSet},{SwpParam},{ACLR},{Freq},{ChBW}'
             OFile.write (OutStr)
 
 ##########################################################
