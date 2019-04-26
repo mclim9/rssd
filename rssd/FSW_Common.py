@@ -21,6 +21,14 @@ class VSA(jaVisa):
         ACLR = self.query(':CALC:MARK:FUNC:POW:RES? MCAC')
         return ACLR
 
+    def Get_Mkr_BandACLR(self):
+        for i in range(1,3+1):
+            if i == 1:
+                ACLR = f'{self.Get_Mkr_Band(i)[1]}'
+            else:
+                ACLR = f'{ACLR},{self.Get_Mkr_Band(i)[1]}'
+        return ACLR
+
     def Get_AmpSettings(self):
         #,Attn,PreAmp,RefLvl,
         attn = self.Get_AttnMech()
@@ -59,6 +67,10 @@ class VSA(jaVisa):
         Power    = self.Get_ChPwr()
         EVM      = self.Get_EVM()
         return ("%.2f,%.2f,%6.2f,%.2f"%(MAttn,RefLvl,Power,EVM))
+
+    def Get_Freq(self):
+        rdStr = self.queryFloat(':SENS:FREQ:CENT?')
+        return rdStr
 
     def Get_IQ_Data(self,sFilename="file.iqw"):
         ####################################################################
@@ -110,8 +122,8 @@ class VSA(jaVisa):
         return RLEN
 
     def Get_Mkr_Band(self,iNum=1,iWind=1):
-        ValX = self.query(':CALC%d:MARK%d:X?'%(iWind,iNum)).strip()
-        ValY = self.query(':CALC%d:MARK%d:FUNC:BPOW:RES?'%(iWind,iNum)).strip()
+        ValX = self.queryFloat(':CALC%d:MARK%d:X?'%(iWind,iNum))
+        ValY = self.queryFloat(':CALC%d:MARK%d:FUNC:BPOW:RES?'%(iWind,iNum))
         return [ValX, ValY]
 
     def Get_Mkr_Freq(self,iNum=1,iWind=1):
@@ -208,7 +220,7 @@ class VSA(jaVisa):
 
     def Set_ACLR_CHBW(self,dCHBW):
         self.write('POW:ACH:BAND %d'%dCHBW)
-    
+
     def Set_ACLR_NumAdj(self,iAdj):
         self.write(f'POW:ACH:ACP {iAdj}')                           #two adjacent channels
 
@@ -220,7 +232,7 @@ class VSA(jaVisa):
         self.write(':INP:ATT:AUTO ON')
 
     def Set_Autolevel(self):
-        self.query('ADJ:LEV;*OPC?')
+        self.write(':SENS:ADJ:LEV;*WAI')
 
     def Set_Autolevel_Proto(self,sState):
     ### Used by WLAN; K96.  Please use ADJ:LEV;
@@ -247,7 +259,7 @@ class VSA(jaVisa):
             gain = 20
             maxmix = -30
         
-        rfatt = level + gain - optmix     #Calc RfAttn for optimal mixer level
+        rfatt = level + gain - optmix       #Calc RfAttn for optimal mixer level
         if rfatt < 0: rfatt = 0             #If calculated RF atten < 0, set 0
         self.Set_AttnMech(rfatt)            #Set Attenuation
          
@@ -339,6 +351,45 @@ class VSA(jaVisa):
     #####################################################################
     ### FSW IQ Analyzer
     #####################################################################
+    def Set_IQ_ACLR(self, ChBW, ChSpace):
+        ## Author: Darren Tipton, RSUK
+        Freq = self.Get_Freq()
+
+        #Configure Advanced FFT parameters
+        self.Set_IQ_Adv_Mode()
+        self.Set_IQ_Adv_TransAlgo('AVER')
+        self.Set_IQ_Adv_FFTLenth(16384)                     #Reduce RBW
+        self.Set_IQ_Adv_Window('BLAC')
+        self.Set_IQ_Adv_WindowLenth(16384)                  #Reduce RBW
+
+        self.Set_IQ_BW(3.1*ChSpace)
+        self.Set_IQ_SpectrumWindow()                        # Add Spectrum Trace
+        self.Set_Trace_Detector('RMS')                      # RMS detector
+        self.Set_Mkr_Freq(Freq,1)                           # Tx Freq
+        self.Set_Mkr_Band(ChBW,1)                           # Tx RFBW
+        self.Set_Mkr_Freq(Freq-ChSpace,2)                   # Adj- Freq
+        self.Set_Mkr_Band(ChBW,2)                           # Adj- RFBW
+        self.Set_Mkr_Freq(Freq+ChSpace,3)                   # Adj+ Freq
+        self.Set_Mkr_Band(ChBW,3)                           # Adj+ RFB
+        self.Set_SweepCont(0)
+
+    def Set_IQ_Adv_FFTLenth(self, dLength):
+        self.write(f'IQ:FFT:LENG {dLength}')    
+
+    def Set_IQ_Adv_Mode(self):
+        self.write("IQ:BAND:MODE FFT")
+
+    def Set_IQ_Adv_TransAlgo(self, sInput):
+        # AVER SING
+        self.write(f"IQ:FFT:ALG {sInput}")
+
+    def Set_IQ_Adv_Window(self, sInput):
+        # BLAC FLAT GAUS RECT P5
+        self.write(f'IQ:FFT:WIND:TYPE {sInput}')
+
+    def Set_IQ_Adv_WindowLenth(self, dLength):
+        self.write("IQ:FFT:WIND:LENG 16384")
+
     def Set_IQ_BW(self,fFreq):
         # IQ_BW = SamplingRate * 0.8
         self.write('TRAC:IQ:BWID %f'%fFreq)        #Analysis BW
@@ -355,8 +406,16 @@ class VSA(jaVisa):
         self.write('TRAC:IQ:SRAT %f'%fFreq)        #Sampling Rate
 
     def Set_IQ_SpectrumWindow(self):
-        self.write(":LAY:ADD:WIND? '1',RIGH,FREQ")
-        self.write(":DISP:WIND2:SUBW:SEL")
+        if 0:
+            windList = self.query('LAY:CAT:WIND?').split(',')
+            numWind = len(windList)
+            if numWind > 2:
+                for indx in range(2,int(numWind/2)+1):
+                    self.write(f'LAY:REM "{indx}"')
+            self.write(":LAY:ADD:WIND? '1',RIGH,FREQ")
+            self.write(":DISP:WIND2:SUBW:SEL")
+        else:
+            self.write("LAY:REPL '1',Freq")
 
     def Set_IQ_Time(self,fSwpTime):
         self.Set_SweepTime(fSwpTime)
@@ -384,8 +443,25 @@ class VSA(jaVisa):
         self.write(':CALC%d:MARK:AOFF'%(iWind))
 
     def Set_Mkr_Band(self,fFreq,iNum=1,iWind=1):
-        self.write(':CALC%d:MARK%d:FUNC:BPOW:STAT ON'%(iWind,iNum))
-        self.write(':CALC%d:MARK%d:FUNC:BPOW:SPAN %f'%(iWind,iNum, fFreq))
+        self.write(f':CALC{iWind}:MARK{iNum}:FUNC:BPOW:STAT ON')
+        self.write(f':CALC{iWind}:MARK{iNum}:FUNC:BPOW:SPAN {fFreq}')
+
+    def Set_Mkr_BandDelta(self,fFreq,iNum=1,iWind=1):
+        self.write(f':CALC{iWind}:DELT{iNum}:STAT ON')
+        self.write(f':CALC{iWind}:DELT{iNum}:FUNC:BPOW:STAT ON')
+        self.write(f':CALC{iWind}:DELT{iNum}:FUNC:BPOW:SPAN {fFreq}')
+        self.write(f':CALC{iWind}:DELT{iNum}:FUNC:BPOW:MODE RPOW')
+
+    def Set_Mkr_BandAutoLvl(self):
+        self.Set_SweepCont(0)
+        self.Set_InitImm()                                   # Take Sweep
+        ChPwr = self.Get_Mkr_Band(1)[1]
+        self.Set_RefLevel(ChPwr + 5)
+        if ChPwr > -24:         #FSVA:-24
+            self.Set_Preamp(0)
+        else:
+            self.Set_Preamp(1)
+            self.write('INP:GAIN:VAL 15')
 
     def Set_Mkr_Freq(self,fFreq,iNum=1,iWind=1):
         self.write(':CALC%d:MARK%d:X %fHz'%(iWind,iNum,fFreq))
@@ -402,15 +478,21 @@ class VSA(jaVisa):
     def Set_Mkr_Time(self,fSec,iNum=1):
         self.write(':CALC1:MARK%d:X %fS'%(iNum,fSec))
 
+    def Set_Param_Couple_All(self):
+        self.write("INST:COUP:CENT ALL")
+        self.write("INST:COUP:RLEV ALL")
+        self.write("INST:COUP:ATTEN ALL")
+        self.write("INST:COUP:GAIN ALL")
+
     def Set_Preamp(self,sState):
-        self.write('INP:GAIN:STAT %s;*WAI'%sState)      #ON|OFF|1|0
+        #ON|OFF|1|0
+        self.write('INP:GAIN:STAT %s;*WAI'%sState)
 
     def Set_PreampToggle(self,ChPwr,fToggle):
         if ChPwr < fToggle:     #FSVA:-23  FSW:-27
             self.Set_Preamp('ON')
         else:
             self.Set_Preamp('OFF')
-
 
     def Set_RefLevel(self,fReflevel):
         self.write('DISP:TRAC:Y:RLEV %f'%fReflevel)
