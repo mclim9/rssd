@@ -20,7 +20,7 @@ SweMode = 'NA'
 SweType = 'NA'
 
 ### Loops
-Repeat  = 1
+Repeat  = 10
 PwrSweep = 59
 
 meth = {
@@ -71,9 +71,9 @@ for i in range(Repeat):
 
             ### <AUTOLEVEL> ###
             eval(meth[autoMeth])                                    # Dynamically call
+            tockA =  datetime.now()
             ### <AUTOLEVEL> ###
 
-            tockA =  datetime.now()
             VSA.write(':INIT:CONT OFF')                             # Single Sweep
             VSA.query(':INIT:IMM;*OPC?')                            # Take Sweep
             ACLR = VSA.Get_Mkr_BandACLR()
