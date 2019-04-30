@@ -232,7 +232,7 @@ class VSA(jaVisa):
         self.write(':INP:ATT:AUTO ON')
 
     def Set_Autolevel(self):
-        self.write(':SENS:ADJ:LEV;*WAI')
+        self.query(':SENS:ADJ:LEV;*OPC?')
 
     def Set_Autolevel_Proto(self,sState):
     ### Used by WLAN; K96.  Please use ADJ:LEV;
@@ -453,6 +453,7 @@ class VSA(jaVisa):
         self.write(f':CALC{iWind}:DELT{iNum}:FUNC:BPOW:MODE RPOW')
 
     def Set_Mkr_BandAutoLvl(self):
+        self.Set_AttnAuto()
         self.Set_SweepCont(0)
         self.Set_InitImm()                                   # Take Sweep
         ChPwr = self.Get_Mkr_Band(1)[1]
