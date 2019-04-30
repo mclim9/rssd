@@ -290,7 +290,7 @@ class IQ(object):
         path,filename = os.path.split(FileName)
         data=[]
         self.fSamplingRate = 0
-            
+
         try:
             tar = tarfile.open(FileName, "r:")
             a=tar.getnames()
@@ -367,17 +367,23 @@ class IQ(object):
 
     def main(self):
         #for testing only
+        filename = "C:\\Users\\lim_m\\ownCloud\\ATE\\AA_Code\\RSSD\\rssd\\Test64.wv"
 
         ### Read data
-        #self.ReadWv("test_chirp.wv")
-        self.ReadIqTar("test_chirp.iq.tar")        
-        #self.Iqw2Iqtar("test.iqw")
+        if '.wv' in filename: 
+            self.ReadWv(filename)
+        elif '.iq.tar' in filename:
+            self.ReadIqTar(filename)
+        elif '.iqw' in filename:
+            self.ReadIqw(filename)
+        else:
+            print('Filetype not supported')
 
         import time
         start = time.time()
-        self.writeIqTar("test.iq.tar")
-        self.writeWv("test2.wv")
-        self.writeIqw("test.iQW")
+        self.writeIqTar(filename + '.iq.tar')
+        self.writeWv(filename + '.wv')
+        self.writeIqw(filename + '.iqw')
         duration = time.time() - start
         print(f"Total: {self.NumberOfSamples} samples in {duration*1e3:2.2f} ms. writeSpeed: {self.NumberOfSamples/1e6/duration:3.0f} MSamples/s")
 
@@ -387,4 +393,4 @@ class IQ(object):
     
 if __name__ == "__main__":
     # execute only if run as a script
-    IQ().main()    
+    IQ().main()
