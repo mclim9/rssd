@@ -72,6 +72,11 @@ class VSA(jaVisa):
         rdStr = self.queryFloat(':SENS:FREQ:CENT?')
         return rdStr
 
+    def Get_IFOvld(self):
+        self.Set_InitImm()
+        rdStr = self.query("STAT:QUES:POW:COND?").strip()
+        return rdStr
+
     def Get_IQ_Data(self,sFilename="file.iqw"):
         ####################################################################
         """ Get the IQ data and store to IQW file to process in VSE """
@@ -296,6 +301,73 @@ class VSA(jaVisa):
             self.Set_RefLevel(reflev)
         print ("Final : Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
 
+    def Set_AutoOpt_FSx_Level(self):
+        ####################################################################
+        """ Algorithm designed by Darren Tipton & Florian Ramien"""
+        """ Optimise level for Mixer Input => Optimal EVM """
+        """ Optimises for signals using IF gain as well as attenuation """    
+        ####################################################################
+        startmix = 0                            # Mixer starting point
+        iterstepsatten = 0
+        iterstepsreflev = 0
+
+        pathgain = 0 #MMM
+        level = 
+        freq = self.Get_Freq()
+
+        if level >= -20:
+            self.Set_Preamp(0)
+            gain = 0
+            if freq < 8000:
+                maxmix = 0                      # <8GHz, could drive more power.
+            else:
+                maxmix = -10                    # >8GHz, Microwave mixers are more sensitive
+        else:
+            self.Set_Preamp(1)
+            gain = 30
+            if freq < 8000:
+                maxmix = -30
+            else:
+                maxmix = -40
+            
+        """ Calculate attenuation for optimal mixer level - we need a start point for iterating """   
+        rfatt = level + pathgain + gain - startmix
+
+        if rfatt < 0:                           # 0 min attenuation
+            rfatt = 0
+        
+        self.Set_AttnMech(rfatt)                # Set Initial Attn
+        reflev = maxmix + rfatt
+        self.Set_RefLevel(reflev)               # Set initial reflvl
+        
+        ifovl = self.Get_IFOvld()               # Check IF overload w/ initial setting
+        while ifovl != "0":                     # Incrase Attn if IF OLV
+            rfatt = rfatt + step
+            self.Set_AttnMech(rfatt)
+            reflev = maxmix + rfatt             # Set new ref level accounting for new attn
+            self.Set_RefLevel(reflev)
+            ifovl = self.Get_IFOvld()           # Check IF Overload w/ new setting
+            iterstepsatten += 1
+        reflevmax = maxmix + rfatt              # reflevmax does not produce an overload!
+
+        reflevmin = maxmix + rfatt - 20
+        while abs(reflevmax-reflevmin) > 1:     #Opt Reflvl
+            reflev = reflevmax - (reflevmax-reflevmin)/2          # If there isn't an IF OVL bring the ref level down
+            self.Set_RefLevel(reflev)
+            ifovl = self.Get_IFOvld()           # Check IF Overload w/ new setting
+            iterstepsreflev += 1
+            if ifovl:                           # Chg max and min depending on whether we have an OVLD
+                reflevmin = reflev              # OVLD: max stays (now OVLD)
+            else:
+                reflevmax = reflev              # min is reflev (OVLD)
+        reflev = reflevmax                      # after loop (less than 1 dB difference), assign reflevmax (no OVLD) to reflev and use it
+
+        ifovl = self.Get_IFOvld()               # Final IF Overload check
+        if ifovl != "0":                        # If IF OVL, back off ref level by 'step' 
+            reflev = reflev + step
+            self.Set_RefLevel(reflev)
+        return iterstepsatten, iterstepsreflev
+
     #####################################################################
     ### FSW CCDF
     #####################################################################
@@ -452,7 +524,7 @@ class VSA(jaVisa):
         self.write(f':CALC{iWind}:DELT{iNum}:FUNC:BPOW:SPAN {fFreq}')
         self.write(f':CALC{iWind}:DELT{iNum}:FUNC:BPOW:MODE RPOW')
 
-    def Set_Mkr_BandAutoLvl(self):
+    def Set_Mkr_BandSetRef(self):
         self.Set_AttnAuto()
         self.Set_SweepCont(0)
         self.Set_InitImm()                                   # Take Sweep
@@ -484,6 +556,16 @@ class VSA(jaVisa):
         self.write("INST:COUP:RLEV ALL")
         self.write("INST:COUP:ATTEN ALL")
         self.write("INST:COUP:GAIN ALL")
+        # self.query(":INST:COUP:USER1:NEW? 'Level','All Windows','Reference Level','LTE','All Windows','Reference Level',BID,ON")
+        # self.query(":INST:COUP:USER2:NEW? 'Level','All Windows','Attenuation','LTE','All Windows','Attenuation',BID,ON")
+        # self.query(":INST:COUP:USER3:NEW? 'Level','All Windows','Center Frequency','LTE','All Windows','Center Frequency',BID,ON")
+        # self.query(":INST:COUP:USER4:NEW? 'Level','All Windows','Preamplifier','LTE','All Windows','Preamplifier',BID,ON")
+
+        # self.query(":INST:COUP:USER1:NEW? 'Level','All Windows','Reference Level','IQACP','All Windows','Reference Level',BID,ON")
+        # self.query(":INST:COUP:USER2:NEW? 'Level','All Windows','Attenuation','IQACP','All Windows','Attenuation',BID,ON")
+        # self.query(":INST:COUP:USER3:NEW? 'Level','All Windows','Center Frequency','IQACP','All Windows','Center Frequency',BID,ON")
+        # self.query(":INST:COUP:USER4:NEW? 'Level','All Windows','Preamplifier','IQACP','All Windows','Preamplifier',BID,ON")
+
 
     def Set_Preamp(self,sState):
         #ON|OFF|1|0
@@ -496,7 +578,7 @@ class VSA(jaVisa):
             self.Set_Preamp('OFF')
 
     def Set_RefLevel(self,fReflevel):
-        self.write('DISP:TRAC:Y:RLEV %f'%fReflevel)
+        self.write('DISP:WIND:TRAC:Y:SCAL:RLEV %fdBm'%fReflevel)
 
     def Set_ResBW(self,fFreq):
         if fFreq == 0:
@@ -579,9 +661,7 @@ class VSA(jaVisa):
 #####################################################################
 if __name__ == "__main__":
     ### this won't be run when imported
-    FSW = VSA().jav_Open("192.168.1.109")
-    FSW.Set_SweepOpt('DYN')        #SPE | DYN
-    FSW.Set_SweepType('FFT')
-    print(FSW.Get_SweepParams())
+    FSW = VSA().jav_Open("192.168.1.108")
+    FSW.Set_AutoOpt_FSx_Level(4)
     FSW.jav_ClrErr()
     del FSW
