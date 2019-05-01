@@ -312,7 +312,7 @@ class VSA(jaVisa):
         iterstepsreflev = 0
 
         pathgain = 0 #MMM
-        level = 
+        level = 10
         freq = self.Get_Freq()
 
         if level >= -20:
