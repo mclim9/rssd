@@ -24,8 +24,9 @@ Repeat  = 10
 PwrSweep = 59
 
 meth = {
-        0:'VSA.Set_Mkr_BandAutoLvl()',
-        1:'VSA.Set_Autolevel()'
+        0:'VSA.Set_AutoOpt_FSx_Level()',
+        # 1:'VSA.Set_Autolevel()',
+        1:'VSA.Set_Mkr_BandSetRef()'
         }
 
 ##########################################################

@@ -1,8 +1,22 @@
 Release History
 =====================================================================
-- RSSD 0.1.14
-  - README.md: Moved instrument & example tables to top.
-  - Add .travis.yml
+- RSSD 2019.5.1
+  - Administrative
+    - README.md: Moved instrument & example tables to top.
+    - Version number now date
+    - Add .travis.yml
+      - Testing FileIO; RSSD Module load; Basic ya_VISA
+      - Testing Python 2.7; 3.6; 3.7
+  - FSW_Common-ACLR/EVM time optimization
+    - Add Get_Mkr_BandACLR
+    - Add Get_Freq
+    - Chg Get_Mkr_Band output to Float
+    - Add Set_IQ_ACLR 
+    - Add Set_IQ_Adv_* methods
+    - Chg Set_IQ_SpectrumWindow
+    - Add Set_Mkr_BandDelta
+    - Add Set_Param_Couple_All
+    - Add Set_AutoOpt_FSx_Level
 - RSSD 0.1.13
   - ALCR 
     - Chg methods in WLAN; FSW_Common; FSW_ACLR_Timing;
