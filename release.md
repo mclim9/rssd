@@ -1,5 +1,8 @@
 Release History
 =====================================================================
+- RSSD 2019.5.2
+  - Add rssd script
+  - Fixed FSW_Common typo in 5.1
 - RSSD 2019.5.1
   - Administrative
     - README.md: Moved instrument & example tables to top.

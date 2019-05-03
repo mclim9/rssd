@@ -1,2 +1,4 @@
 python setup.py sdist
-twine upload .\dist\rssd-2019.5.1.1.tar.gz 
+python -m unittest -v test.test_RSSD
+python -m unittest -v test.test_yaVISA
+twine upload .\dist\rssd-2019.5.2.tar.gz 
