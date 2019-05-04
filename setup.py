@@ -5,6 +5,7 @@
 ### python setup.py --help-commands
 ### python setup.py bdist    #Creates <pkg>.zip
 ### python setup.py install  #Installs package
+### python setup.py install_scripts
 ### pip install .            #Installs package in directory
 ### pip install -e .         #Install editable package
 ##########################################################
@@ -19,7 +20,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='rssd',
-      version='2019.5.2',
+      version='2019.5.3',
       description='Rohde & Schwarz SCPI Driver',
       long_description=long_description,
       long_description_content_type='text/markdown', 
@@ -52,7 +53,7 @@ setup(name='rssd',
       zip_safe=False,
       entry_points={
         'console_scripts': [
-          'rssd=rssd.bin.rssd:main'
+          'rssd=rssd.bin.cli:main'
         ],
       },
     )

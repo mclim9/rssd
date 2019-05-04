@@ -1,5 +1,5 @@
 """
-   R&S FSW; SMW; NRP; NRQ; OSP; VSA; VSG; VST; example code
+   Rohde&Schwarz Python FSW; SMW; NRP; NRQ; OSP; VSA; VSG; VST; driver example code
 """
 
 __author__ = "Martin C Lim <martin.lim@rsa.rohde-schwarz.com>"

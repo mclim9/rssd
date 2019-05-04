@@ -8,6 +8,7 @@ from rssd.yaVISA_socket import jaVisa
 import argparse
 import rssd
 import sys
+import os
 
 def main():
     parser = argparse.ArgumentParser(description='RSSD Helper')
@@ -15,7 +16,9 @@ def main():
     parser.add_argument('-b','--bar', required=False, help='Description for bar argument')
     args = parser.parse_args()          #Dictionary of args
 
-    print(f'RSSD@ {rssd.__file__}')
+    print(f'RSSD Examples@ {os.path.dirname(rssd.__file__)}\\examples')
+    os.chdir(os.path.dirname(rssd.__file__)+'\\examples')
+
     if args.idn:
         try:
             instr = jaVisa()
@@ -25,7 +28,7 @@ def main():
             print(f'Could not open {args.idn}')
 
     if args.bar:
-        print(f'Bar is: {args.bar}')
+        print(f'BBar is: {args.bar}')
 
     # print(f'Number of arguments: {len(sys.argv)} arguments.')
     # print(f'Argument List:{str(sys.argv)}')

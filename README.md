@@ -7,12 +7,12 @@
   - SMW, Vector Signal Generator
   - NRP, Power Sensor
   - VSE, Vector Signal Explorer
-  - VST, Vectro Signal Transciever (FSW/SMW calls)
+  - VST, Vectro Signal Transciever (Calls to FSW & SMW)
   - OSP, Switch Driver
   - NRQ, Frequency Selective Power Sensor
 
 - Example code
-  - Automated test example
+  - Automated test examples (see below table)
   - Instrument speed/repeatability evaluation
   - Proof of concept/Demo code
 
@@ -44,24 +44,24 @@ python -m pip install rssd
 
 FileName                | Instrumnt | Description                        |
 ------------------------|-----------|------------------------------------|
-AAA_CommandTime         | Any       | Time command to instrument         |
-AAA_IDN_IPArry          | Any       | Send *IDN to instruments in IPArry |
-FSW_ACLR_Timing         | VSA       | ACLR in Spectral Mode              |
-FSW_ACLR_IQ_Timing      | VSA       | ACLR in IQ Analyzer                |
-FSW_CCDF                | VSA       | CCDF in Spectral Mode              |
-FSW_IQCaptureTime       | VSA       | IQ Capture time looping Fs         |
-NRP_AvGPwr              | NRP       | NRP Average power capture          |
-NRP_BufferedContAvg     | NRP       | Bufferened NRP measurement         |
-SMW_LoadArb.py          | VSG       | Load Arb file into SMW             |
-OSP_Debug               | OSP       | Generic OSP example                |
-VSE_ADemod.py           | VSE       | VSE/FSW Analog FM Demod            |
-VSE_Debug.py            | VSE       | VSE Raw SCPI                       |
-VSE_OFDM_1CC_K96.py     | VSE       | VSE Single OFDM Carrier EVM w/ K96 |
-VSE_OFDM_MultiCC_K96.py | VSE       | VSE Multi  OFDM Carrier EVM w/ K96 |
-VST_5GNR_EVM            | VSG VSA   | SMW/FSW K144 speed tests           |
-VST_5GNR_K144_Read      | VSG VSA   | SMW/FSW Read 5G NR Parametes       |
-VST_Sweep.py            | VSG VSA   | SMW/FSW Frequency Sweep            |
-VST_WLAN_EVM            | VSG VSA   | SMW/FSW 802.11 EVM sweep test      |
+[AAA_CommandTime](https://github.com/mclim9/rssd/blob/master/rssd/examples/)         | Any       | Time command to instrument         |
+[AAA_IDN_IPArry](https://github.com/mclim9/rssd/blob/master/rssd/examples/)          | Any       | Send *IDN to instruments in IPArry |
+[FSW_ACLR_Timing](https://github.com/mclim9/rssd/blob/master/rssd/examples/)         | VSA       | ACLR in Spectral Mode              |
+[FSW_ACLR_IQ_Timing](https://github.com/mclim9/rssd/blob/master/rssd/examples/)      | VSA       | ACLR in IQ Analyzer                |
+[FSW_CCDF](https://github.com/mclim9/rssd/blob/master/rssd/examples/)                | VSA       | CCDF in Spectral Mode              |
+[FSW_IQCaptureTime](https://github.com/mclim9/rssd/blob/master/rssd/examples/)       | VSA       | IQ Capture time looping Fs         |
+[NRP_AvGPwr](https://github.com/mclim9/rssd/blob/master/rssd/examples/)              | NRP       | NRP Average power capture          |
+[NRP_BufferedContAvg](https://github.com/mclim9/rssd/blob/master/rssd/examples/)     | NRP       | Bufferened NRP measurement         |
+[SMW_LoadArb.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/)          | VSG       | Load Arb file into SMW             |
+[OSP_Debug](https://github.com/mclim9/rssd/blob/master/rssd/examples/)               | OSP       | Generic OSP example                |
+[VSE_ADemod.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/)           | VSE       | VSE/FSW Analog FM Demod            |
+[VSE_Debug.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/)            | VSE       | VSE Raw SCPI                       |
+[VSE_OFDM_1CC_K96.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/)     | VSE       | VSE Single OFDM Carrier EVM w/ K96 |
+[VSE_OFDM_MultiCC_K96.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/) | VSE       | VSE Multi  OFDM Carrier EVM w/ K96 |
+[VST_5GNR_EVM](https://github.com/mclim9/rssd/blob/master/rssd/examples/)            | VSG VSA   | SMW/FSW K144 speed tests           |
+[VST_5GNR_K144_Read](https://github.com/mclim9/rssd/blob/master/rssd/examples/)      | VSG VSA   | SMW/FSW Read 5G NR Parametes       |
+[VST_Sweep.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/)            | VSG VSA   | SMW/FSW Frequency Sweep            |
+[VST_WLAN_EVM](https://github.com/mclim9/rssd/blob/master/rssd/examples/)            | VSG VSA   | SMW/FSW 802.11 EVM sweep test      |
 
 # Documentation
 
