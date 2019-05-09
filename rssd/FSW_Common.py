@@ -169,6 +169,15 @@ class VSA(jaVisa):
         RefLvl = self.queryFloat('DISP:TRAC:Y:RLEV?')
         return RefLvl
 
+    def Get_Screenshot(self,file='screenshot'):
+        ### File will be in FSW's C:\R_S\Instr\User
+        self.write(f'MMEM:NAME "C:\\R_S\\INSTR\\USER\\{file}"')
+        self.write('HCOP:CONT WIND')     #Print Displayed Windo
+        self.write('HCOP:CMAP:DEF4')     #Screeen Colors
+        self.write('HCOP:DEST "MMEM"')   #Send Data to file
+        self.write('HCOP:DEV:LANG JPG')  #Save JPG
+        self.write('HCOP:IMM')           #Create File
+
     def Get_SweepOpt(self):
         #AUTO | SPEed | DYN
         rdStr = self.query(':SENS:SWE:OPT?')
@@ -602,6 +611,6 @@ class VSA(jaVisa):
 if __name__ == "__main__":
     ### this won't be run when imported
     FSW = VSA().jav_Open("192.168.1.108")
-    FSW.Set_Autolevel_IQIF()
+    FSW.Get_Screenshot('asdf')
     FSW.jav_ClrErr()
     del FSW
