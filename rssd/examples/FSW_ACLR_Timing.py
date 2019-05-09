@@ -9,7 +9,7 @@
 ##########################################################
 ### User Entry
 ##########################################################
-VSA_IP  = '192.168.1.109'
+VSA_IP  = '192.168.1.108'
 VSG_IP  = '192.168.1.114' 
 MeasTim = 10e-3
 Freq    = 2.3e9
@@ -21,7 +21,7 @@ SweMode = 'AUTO'            #AUTO | SPEed | DYN
 SweType = 'AUTO'           #AUTO | SWE | FFT
 
 ### Loops
-Repeat  = 10
+Repeat  = 1
 PwrSweep = 59
 
 ##########################################################
@@ -31,6 +31,7 @@ from rssd.FSW_Common        import VSA              #pylint: disable=E0611,E0401
 from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
 from datetime               import datetime         
 from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
+import rssd.VSA_Leveling as VSAL        # pylint: disable=E0611,E0401
 
 OFile = FileIO().makeFile(__file__)
 VSA = VSA().jav_Open(VSA_IP,OFile)                  #Create VSA Object
@@ -40,6 +41,7 @@ VSG = jaVisa().jav_Open(VSG_IP,OFile)               #Create Object
 ##########################################################
 # VSA.jav_Reset()
 VSA.Set_Freq(Freq)
+VSA.Set_Param_Couple_All()
 VSA.Init_ACLR()                                     #VSA ACLR Channel
 VSA.Set_ACLR_CHBW(ChBW)
 VSA.Set_ACLR_AdjBW(ChBW)
@@ -63,6 +65,8 @@ if 0:
 ##########################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
 OFile.write('Iter,RBW,SwpTime,SMWPwr,AL Time,TotalTime,Attn,PreAmp,RefLvl,SwpTime,SwpPts,SwpType,SwpOpt,TxPwr,Adj-,Adj+,Alt-,Alt+')
+table = VSAL.ReadLevellingTables(Freq)
+
 for i in range(Repeat):
     for pwr in range(PwrSweep):
         tick = datetime.now()
@@ -72,20 +76,13 @@ for i in range(Repeat):
         #################
         ### AUTOLEVEL ###
         #################
-        if 1:
+        if 0:
             VSA.write(':INIT:CONT ON')                              # Sweep Continuous
             VSA.query(':SENS:ADJ:LEV;*OPC?')                        # Auto-Tune
         else:
-            VSA.query(':INIT:IMM;*OPC?')                            # Take Sweep
-            ChPwr = VSA.queryFloatArry(':CALC:MARK:FUNC:POW:RES? MCAC')[0]
-            VSA.Set_RefLevel(ChPwr + 5)
-            if ChPwr > -20:
-                VSA.write('INP:GAIN:STAT OFF')
-            else:
-                VSA.write('INP:GAIN:STAT ON')
-                VSA.write('INP:GAIN:VAL 15')
-
+            lvlTable = VSA.Set_Autolevel_IQIF(table)
         tockA =  datetime.now()
+        VSA.Set_Channel('Spectrum')
         VSA.write(':INIT:CONT OFF')                             # Single Sweep
         VSA.query(':INIT:IMM;*OPC?')                            # Take Sweep
         ACLR = VSA.query(':CALC:MARK:FUNC:POW:RES? MCAC')
@@ -97,6 +94,7 @@ for i in range(Repeat):
         TotTime = tockB - tick
         OutStr = f'{i},{RBW},{MeasTim},{-50+pwr},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{TotTime.seconds:3d}.{TotTime.microseconds:06d},{AmpSet},{SwpParam},{ACLR}'
         OFile.write (OutStr)
+VSAL.WriteLevellingTables(Freq, table)
 
 ##########################################################
 ### Cleanup Automation
