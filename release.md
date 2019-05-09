@@ -1,5 +1,6 @@
 Release History
 =====================================================================
+- RSSD 2019.5.4
 - RSSD 2019.5.3
   - Add Example links to readme.md
 - RSSD 2019.5.2

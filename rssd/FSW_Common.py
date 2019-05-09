@@ -8,6 +8,10 @@
 ### Strctr : pyvisa-->yavisa-->FSW_Common.py
 #####################################################################
 from rssd.yaVISA import jaVisa              # pylint: disable=E0611,E0401
+try:
+    import rssd.VSA_Leveling as VSAL        # pylint: disable=E0611,E0401
+except:
+    pass
 
 class VSA(jaVisa):
     def __init__(self):
@@ -230,7 +234,7 @@ class VSA(jaVisa):
         self.write(f'POW:ACH:ACP {iAdj}')                           #two adjacent channels
 
     def Set_AttnMech(self,fMAttn):
-        self.write('INP:EATT:STAT OFF')
+        #self.write('INP:EATT:STAT OFF')
         self.write('INP:ATT %.0f'%fMAttn)
 
     def Set_AttnAuto(self):
@@ -301,72 +305,8 @@ class VSA(jaVisa):
             self.Set_RefLevel(reflev)
         print ("Final : Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
 
-    def Set_AutoOpt_FSx_Level(self):
-        ####################################################################
-        """ Algorithm designed by Darren Tipton & Florian Ramien"""
-        """ Optimise level for Mixer Input => Optimal EVM """
-        """ Optimises for signals using IF gain as well as attenuation """    
-        ####################################################################
-        startmix = 0                            # Mixer starting point
-        iterstepsatten = 0
-        iterstepsreflev = 0
-
-        pathgain = 0 #MMM
-        level = 10
-        freq = self.Get_Freq()
-
-        if level >= -20:
-            self.Set_Preamp(0)
-            gain = 0
-            if freq < 8000:
-                maxmix = 0                      # <8GHz, could drive more power.
-            else:
-                maxmix = -10                    # >8GHz, Microwave mixers are more sensitive
-        else:
-            self.Set_Preamp(1)
-            gain = 30
-            if freq < 8000:
-                maxmix = -30
-            else:
-                maxmix = -40
-            
-        """ Calculate attenuation for optimal mixer level - we need a start point for iterating """   
-        rfatt = level + pathgain + gain - startmix
-
-        if rfatt < 0:                           # 0 min attenuation
-            rfatt = 0
-        
-        self.Set_AttnMech(rfatt)                # Set Initial Attn
-        reflev = maxmix + rfatt
-        self.Set_RefLevel(reflev)               # Set initial reflvl
-        
-        ifovl = self.Get_IFOvld()               # Check IF overload w/ initial setting
-        while ifovl != "0":                     # Incrase Attn if IF OLV
-            rfatt = rfatt + step
-            self.Set_AttnMech(rfatt)
-            reflev = maxmix + rfatt             # Set new ref level accounting for new attn
-            self.Set_RefLevel(reflev)
-            ifovl = self.Get_IFOvld()           # Check IF Overload w/ new setting
-            iterstepsatten += 1
-        reflevmax = maxmix + rfatt              # reflevmax does not produce an overload!
-
-        reflevmin = maxmix + rfatt - 20
-        while abs(reflevmax-reflevmin) > 1:     #Opt Reflvl
-            reflev = reflevmax - (reflevmax-reflevmin)/2          # If there isn't an IF OVL bring the ref level down
-            self.Set_RefLevel(reflev)
-            ifovl = self.Get_IFOvld()           # Check IF Overload w/ new setting
-            iterstepsreflev += 1
-            if ifovl:                           # Chg max and min depending on whether we have an OVLD
-                reflevmin = reflev              # OVLD: max stays (now OVLD)
-            else:
-                reflevmax = reflev              # min is reflev (OVLD)
-        reflev = reflevmax                      # after loop (less than 1 dB difference), assign reflevmax (no OVLD) to reflev and use it
-
-        ifovl = self.Get_IFOvld()               # Final IF Overload check
-        if ifovl != "0":                        # If IF OVL, back off ref level by 'step' 
-            reflev = reflev + step
-            self.Set_RefLevel(reflev)
-        return iterstepsatten, iterstepsreflev
+    def Set_Autolevel_IQIF(self,tables):
+        VSAL.Optimise_FSx_Level(self,tables)
 
     #####################################################################
     ### FSW CCDF
@@ -662,6 +602,6 @@ class VSA(jaVisa):
 if __name__ == "__main__":
     ### this won't be run when imported
     FSW = VSA().jav_Open("192.168.1.108")
-    FSW.Set_AutoOpt_FSx_Level(4)
+    FSW.Set_Autolevel_IQIF()
     FSW.jav_ClrErr()
     del FSW
