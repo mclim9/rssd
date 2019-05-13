@@ -111,8 +111,8 @@ class jaVisa(object):
       self.K2 = socket.socket()
       try:
          #s.setttimeout(1)
-         self.K2.connect((sIPAddr,port))
          self.K2.settimeout(1)
+         self.K2.connect((sIPAddr,port))
          self.jav_IDN()
          self.jav_fileout(fily, self.dataIDN)
          self.jav_ClrErr()
