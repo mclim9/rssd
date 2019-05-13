@@ -227,11 +227,29 @@ class VSG(VSG):                     #pylint: disable=E0102
       self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:RBOF %d'%(self.sdir,iRBO))
 
    def Set_5GNR_BWP_SubSpace(self,iSubSp):
-      self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:USE 0')
-      self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:USE 0')
-      self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:USE 0')
-      self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:USE 0')
-      self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S%dK:USE 1'%(iSubSp))
+      if iSubSp == 15:
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:USE 1')
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:USE 0')
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:USE 0')
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:USE 0')
+      elif iSubSp == 30:
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:USE 1')
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:USE 0')
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:USE 0')
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:USE 0')
+      elif iSubSp == 60:
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:USE 1')
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:USE 0')
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:USE 0')
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:USE 0')
+      elif iSubSp == 120:
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:USE 1')
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:USE 0')
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:USE 0')
+         self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:USE 0')
+      else:
+         print('Subcarrier spacing not supported')
+      self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:RES')
       self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:SCSP N%d'%(self.sdir,iSubSp))
 
    def Set_5GNR_ChannelBW(self,iBW):
