@@ -29,9 +29,10 @@ PwrSweep = 59
 ##########################################################
 from rssd.FSW_Common        import VSA              #pylint: disable=E0611,E0401
 from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
-from datetime               import datetime         
+from datetime               import datetime
 from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
-import rssd.VSA_Leveling as VSAL        # pylint: disable=E0611,E0401
+import rssd.VSA_Leveling    as VSAL                 # pylint: disable=E0611,E0401
+import timeit
 
 OFile = FileIO().makeFile(__file__)
 VSA = VSA().jav_Open(VSA_IP,OFile)                  #Create VSA Object
@@ -63,36 +64,36 @@ if 0:
 ##########################################################
 ### Measure Time
 ##########################################################
-#sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
+#sDate = timeit.default_timer().strftime("%y%m%d-%H:%M:%S.%f") #Date String
 OFile.write('Iter,RBW,SwpTime,SMWPwr,AL Time,TotalTime,Attn,PreAmp,RefLvl,SwpTime,SwpPts,SwpType,SwpOpt,TxPwr,Adj-,Adj+,Alt-,Alt+')
 table = VSAL.ReadLevellingTables(Freq)
 
 for i in range(Repeat):
     for pwr in range(PwrSweep):
-        tick = datetime.now()
+        tick = timeit.default_timer()
+
         ### <\thing we are timing>
         VSG.write(f':POW:AMPL {-50 + pwr}dbm')                  ### VSG Power
-
         #################
         ### AUTOLEVEL ###
         #################
         if 0:
-            VSA.write(':INIT:CONT ON')                              # Sweep Continuous
-            VSA.query(':SENS:ADJ:LEV;*OPC?')                        # Auto-Tune
+            VSA.write(':INIT:CONT ON')                          # Sweep Continuous
+            VSA.query(':SENS:ADJ:LEV;*OPC?')                    # Auto-Tune
         else:
             lvlTable = VSA.Set_Autolevel_IQIF(table)
-        tockA =  datetime.now()
+        tockA =  timeit.default_timer()
         VSA.Set_Channel('Spectrum')
         VSA.write(':INIT:CONT OFF')                             # Single Sweep
         VSA.query(':INIT:IMM;*OPC?')                            # Take Sweep
         ACLR = VSA.query(':CALC:MARK:FUNC:POW:RES? MCAC')
         ### <\thing we are timing>
-        tockB = datetime.now()
+        tockB    = timeit.default_timer()
         SwpParam = VSA.Get_SweepParams()
-        AmpSet  = VSA.Get_AmpSettings()
-        ALTime = tockA - tick
-        TotTime = tockB - tick
-        OutStr = f'{i},{RBW},{MeasTim},{-50+pwr},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{TotTime.seconds:3d}.{TotTime.microseconds:06d},{AmpSet},{SwpParam},{ACLR}'
+        AmpSet   = VSA.Get_AmpSettings()
+        ALTime   = f'{(tockA-tick):2,.6f}'
+        TotTime  = f'{(tockB-tick):2,.6f}'
+        OutStr   = f'{i},{RBW},{MeasTim},{-50+pwr},{ALTime},{TotTime},{AmpSet},{SwpParam},{ACLR}'
         OFile.write (OutStr)
 VSAL.WriteLevellingTables(Freq, table)
 
