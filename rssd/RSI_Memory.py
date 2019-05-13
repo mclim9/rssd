@@ -29,21 +29,30 @@ class RSI(jaVisa):
     ### AAA Get Functions
     #####################################################################
     def Get_dirInfo(self):
-        dirInfo = self.query(':MMEM:CAT?').strip().replace('"','').split(',')
+        # FSW/FSVA uses ':MMEM:CAT:LONG?'
+        # SMW/ZVA  uses ':MMEM:CAT?'
+        dirInfo = self.query(':MMEM:CAT:LONG?')
+        if '<notRead>' in dirInfo:
+            dirInfo = self.query(':MMEM:CAT?')
+        dirInfo = dirInfo.strip().replace('"','').split(',')
+        print(dirInfo,'\n')
         if len(dirInfo) > 2:
             self.usedSpace = dirInfo.pop(0)
             self.freeSpace = dirInfo.pop(0)
             self.dir       = []
-            self.files     = []
+            self.files     = {}
             for i in range(0, len(dirInfo), 3):
                 if dirInfo[i+1] == 'DIR':
-                    self.dir.append(dirInfo[i])
+                    self.dir.append(dirInfo[i])                             #Add directories to self.dir
                 else:
-                    self.files.append([f'{dirInfo[i]}',int(dirInfo[i+2])])
+                    self.files[dirInfo[i]]= int(dirInfo[i+2])               #Add file to self.files
         return dirInfo
 
     def Get_File(self,filename):
-        rsStr = self.query(f':MMEM:DATA? {filename}')
+        self.Get_dirInfo()
+        self.write(f':MMEM:DATA? {filename}')
+        size = self.files[filename]
+        rdStr = self.K2.read_raw(self.files[filename])
         return rdStr
 
     #####################################################################
@@ -67,6 +76,5 @@ class RSI(jaVisa):
 ###############################################################################
 if __name__ == "__main__":
     RSI = RSI().jav_Open("192.168.1.108")
-    asdf = RSI.Get_dirInfo()
-    print(RSI.files)
+    asdf = RSI.Get_File('autolog.txt')
     RSI.jav_ClrErr()
