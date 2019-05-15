@@ -28,7 +28,7 @@ class VST(object):
 
    def Get_5GNR_All(self):
       DMRS = 0
-      
+
       odata =  [[] for i in range(3)]
       odata[0].append("[[Parameter]]  ")
       odata[0].append("Direction      ")
@@ -62,11 +62,11 @@ class VST(object):
          odata[0].append("DMRS Rel Power ")
 
       try:
-      #   self.SMW.Set_5GNR_Parameters(Direct)
+         # self.SMW.Set_5GNR_Parameters(self.NR_Dir)
          odata[1].append("[-SMW-]")
          odata[1].append(self.SMW.Get_5GNR_Direction())
          odata[1].append(self.SMW.Get_5GNR_FreqRange())
-         odata[1].append(int(self.SMW.Get_5GNR_RefA())/1e6)
+         odata[1].append(self.SMW.Get_5GNR_RefA()/1e6)
          odata[1].append(self.SMW.Get_5GNR_ChannelBW()) 
          odata[1].append(self.SMW.Get_5GNR_TransPrecoding())
          odata[1].append("=SSB==")
@@ -82,7 +82,7 @@ class VST(object):
          odata[1].append(self.SMW.Get_5GNR_BWP_Ch_ResBlockOffset())
          odata[1].append(self.SMW.Get_5GNR_BWP_Ch_SymbNum())
          odata[1].append(self.SMW.Get_5GNR_BWP_Ch_SymbOff())
-         odata[1].append(int(self.SMW.Get_5GNR_BWP_Center())/1e6)
+         odata[1].append(self.SMW.Get_5GNR_BWP_Center()/1e6)
          if DMRS:
             odata[1].append("=DMRS=")
             odata[1].append(self.SMW.Get_5GNR_BWP_Ch_DMRS_Config())
@@ -101,7 +101,7 @@ class VST(object):
          odata[2].append("[-FSW-]")
          odata[2].append(self.FSW.Get_5GNR_Direction())
          odata[2].append(self.FSW.Get_5GNR_FreqRange())
-         odata[2].append(int(self.FSW.Get_5GNR_RefA())/1e6)
+         odata[2].append(self.FSW.Get_5GNR_RefA()/1e6)
          odata[2].append(self.FSW.Get_5GNR_ChannelBW())
          odata[2].append(self.FSW.Get_5GNR_TransPrecoding())
          odata[2].append("=SSB==")
@@ -111,13 +111,13 @@ class VST(object):
          odata[2].append(self.FSW.Get_5GNR_BWP_Count())
          odata[2].append(self.FSW.Get_5GNR_BWP_ResBlock())
          odata[2].append(self.FSW.Get_5GNR_BWP_ResBlockOffset())
-         odata[2].append("==CH==")
+         odata[2].append("==Ch==")
          odata[2].append(self.FSW.Get_5GNR_BWP_Ch_Modulation())
          odata[2].append(self.FSW.Get_5GNR_BWP_Ch_ResBlock())
          odata[2].append(self.FSW.Get_5GNR_BWP_Ch_ResBlockOffset())
          odata[2].append(self.FSW.Get_5GNR_BWP_Ch_SymbNum())
          odata[2].append(self.FSW.Get_5GNR_BWP_Ch_SymbOff())
-         odata[2].append(int(self.FSW.Get_5GNR_BWP_Center())/1e6)
+         odata[2].append(self.FSW.Get_5GNR_BWP_Center()/1e6)
          if DMRS:
             odata[2].append("=DMRS=")
             odata[2].append(self.FSW.Get_5GNR_BWP_Ch_DMRS_Config())
@@ -139,11 +139,11 @@ class VST(object):
       for i in range(len(data[0])):
          try:
             print("%s\t%s\t%s"%(data[0][i],data[1][i],data[2][i]))
-         except: 
-            try:
-               print("%s\t%s\t%s"%(data[0][i],data[1][i],'<notRead>'))
-            except:
-               print("%s\t%s\t%s"%(data[0][i],'<notRead>',data[2][i]))
+         # except: 
+         #    try:
+         #       print("%s\t%s\t%s"%(data[0][i],data[1][i],'<notRead>'))
+         #    except:
+         #       print("%s\t%s\t%s"%(data[0][i],'<notRead>',data[2][i]))
 
    def jav_Open(self,SMW_IP,FSW_IP,OFile=''):
       self.SMW = VSG().jav_Open(SMW_IP,OFile,prnt=0)  #Create SMW Object
