@@ -156,7 +156,7 @@ class VSA(VSA):                        #pylint: disable=E0102
       return rdStr
 
    def Get_5GNR_RefA(self):
-      rdStr = self.query(':CONF:NR5G:%s:CC1:RPA:RTCF?'%(self.sdir))
+      rdStr = self.queryInt(':CONF:NR5G:%s:CC1:RPA:RTCF?'%(self.sdir))
       return rdStr
 
    def Get_5GNR_SEM(self):
