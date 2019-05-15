@@ -1,5 +1,7 @@
 # Rohde&Schwarz Python SCPI Driver
 
+[![](https://travis-ci.org/mclim9/rssd.svg?branch=master)](https://pypi.org/project/rssd/)
+
 ## Description
 
 - Example python drivers
@@ -31,14 +33,24 @@ python -m pip install rssd
 
 ### Running
 
-- Load example files in &lt;Python Install Directory&gt;\Lib\site-packages\rssd\examples
+#### Method 1
 
-    ```python
-    python -m pip show rssd
-    ```
+- Goto Example directory
+  - Open command prompt and type `rssd`
+  - Example directory will be printed.
+- Run Example
+  - Open desired example
+  - Change IP address to match instrument(s)
+  - Run file
 
-- Change IP address to match instrument(s)
-- Run
+#### Method 2
+- Goto Example directory
+  - Open command prompt and type: `python -m pip show rssd`
+  - Load example files listed after `Location:`
+- Run Example
+  - Open desired example
+  - Change IP address to match instrument(s)
+  - Run
 
 ### Example Code
 
