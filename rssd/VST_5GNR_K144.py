@@ -139,11 +139,12 @@ class VST(object):
       for i in range(len(data[0])):
          try:
             print("%s\t%s\t%s"%(data[0][i],data[1][i],data[2][i]))
-         # except: 
+         except: 
          #    try:
          #       print("%s\t%s\t%s"%(data[0][i],data[1][i],'<notRead>'))
          #    except:
          #       print("%s\t%s\t%s"%(data[0][i],'<notRead>',data[2][i]))
+            pass
 
    def jav_Open(self,SMW_IP,FSW_IP,OFile=''):
       self.SMW = VSG().jav_Open(SMW_IP,OFile,prnt=0)  #Create SMW Object
