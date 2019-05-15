@@ -13,15 +13,16 @@ class VSG(VSG):                     #pylint: disable=E0102
    def __init__(self):
       super(VSG,self).__init__()    #Python2/3
       self.Model = "SMW"
-      self.ldir = "UL"
+      self.sdir = "UL"
       self.BWP = 0
       self.User = 0
-      
+      self.alloc = 0
+
    #####################################################################
    ### SMW 5GNR Get Methods
    #####################################################################
    def Get_5GNR_BWP_Center(self):
-      rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:DFR?'%(self.sdir))
+      rdStr = self.queryInt(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:DFR?'%(self.sdir))
       return rdStr
       
    def Get_5GNR_BWP_Ch_DMRS_1stDMRSSym(self):
@@ -157,7 +158,7 @@ class VSG(VSG):                     #pylint: disable=E0102
       return rdStr
       
    def Get_5GNR_RefA(self):
-      rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:POIN?')
+      rdStr = self.queryInt(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:POIN?')
       return rdStr
 
    def Get_5GNR_RBMax(self):
