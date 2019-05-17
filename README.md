@@ -1,6 +1,4 @@
-# Rohde&Schwarz Python SCPI Driver
-
-[![](https://travis-ci.org/mclim9/rssd.svg?branch=master)](https://pypi.org/project/rssd/)
+# Rohde&Schwarz Python SCPI Driver [![](https://travis-ci.org/mclim9/rssd.svg?branch=master)](https://pypi.org/project/rssd/)
 
 ## Description
 
