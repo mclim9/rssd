@@ -60,7 +60,7 @@ FileName                | Instrumnt | Description                        |
 [FSW_ACLR_IQ_Timing](https://github.com/mclim9/rssd/blob/master/rssd/examples/)      | VSA       | ACLR in IQ Analyzer                |
 [FSW_CCDF](https://github.com/mclim9/rssd/blob/master/rssd/examples/)                | VSA       | CCDF in Spectral Mode              |
 [FSW_IQCaptureTime](https://github.com/mclim9/rssd/blob/master/rssd/examples/)       | VSA       | IQ Capture time looping Fs         |
-[NRP_AvGPwr](https://github.com/mclim9/rssd/blob/master/rssd/examples/)              | NRP       | NRP Average power capture          |
+[NRP_AvgPwr](https://github.com/mclim9/rssd/blob/master/rssd/examples/)              | NRP       | NRP Average power capture          |
 [NRP_BufferedContAvg](https://github.com/mclim9/rssd/blob/master/rssd/examples/)     | NRP       | Bufferened NRP measurement         |
 [SMW_LoadArb.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/)          | VSG       | Load Arb file into SMW             |
 [OSP_Debug](https://github.com/mclim9/rssd/blob/master/rssd/examples/)               | OSP       | Generic OSP example                |
@@ -89,7 +89,7 @@ NRQ | Freq Selective Pwr Sensor | [User Manual](https://www.rohde-schwarz.com/us
 OSP | Switch Matrix             | [User Manual](https://www.rohde-schwarz.com/us/manual/osp/) | [OPS1xx](https://www.rohde-schwarz.com/us/product/osp); [OPS2xx](https://www.rohde-schwarz.com/us/product/osp-n)
 VNA | Network Analyzer          | [User Manual](https://www.rohde-schwarz.com/us/manual/zva/) | [ZVA](https://www.rohde-schwarz.com/us/product/zva); [ZNA](https://www.rohde-schwarz.com/us/product/zna); [ZNB](https://www.rohde-schwarz.com/us/product/ZNB)
 [N/A] | Digital Oscillocope       | [User Manual](https://www.rohde-schwarz.com/us/manual/rtp/) | [RTP](https://www.rohde-schwarz.com/us/product/RTP); [RTO](https://www.rohde-schwarz.com/us/product/RTO);
-[N/A] | Radiated Chambers         | [User Manual](https://www.rohde-schwarz.com/us/manual/ATS1000/) |[ATS800](https://www.rohde-schwarz.com/us/product/ATS800); [ATS1000](https://www.rohde-schwarz.com/us/product/ATS1000); [ATS1800](https://www.rohde-schwarz.com/us/product/ATS1800); [CMQ](https://www.rohde-schwarz.com/us/product/CMQ100); [DST200](https://www.rohde-schwarz.com/us/product/DST200); [TS7124](https://www.rohde-schwarz.com/us/product/ts7124)
+OTA | Radiated Chambers         | [User Manual](https://www.rohde-schwarz.com/us/manual/ATS1000/) |[ATS800](https://www.rohde-schwarz.com/us/product/ATS800); [ATS1000](https://www.rohde-schwarz.com/us/product/ATS1000); [ATS1800](https://www.rohde-schwarz.com/us/product/ATS1800); [CMQ](https://www.rohde-schwarz.com/us/product/CMQ100); [DST200](https://www.rohde-schwarz.com/us/product/DST200); [TS7124](https://www.rohde-schwarz.com/us/product/ts7124)
 
 # Project
 
