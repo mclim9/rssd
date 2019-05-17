@@ -81,9 +81,9 @@ class jaVisa(object):
                 
     def jav_OPC_Wait(self, InCMD):
         start_time = time.time()
-        self.write("*ESE 1")		                        #Event Status Enable
-        self.write("*SRE 32")		                        #ServiceReqEnable-Bit5:Std Event
-        self.write(InCMD + ";*OPC")	                        #Initiate Read.  *OPC will trigger ESR
+        self.write("*ESE 1")                                #Event Status Enable
+        self.write("*SRE 32")                               #ServiceReqEnable-Bit5:Std Event
+        self.write(InCMD + ";*OPC")                         #Initiate Read.  *OPC will trigger ESR
         #print ('    OPC Wait: ' +InCMD)
         read = "0"
         while (int(read) & 1) != 1:                         #Loop until done
@@ -216,8 +216,9 @@ class jaVisa(object):
 if __name__ == "__main__":
     RS = jaVisa()
     RS.debug = 0
-    RS.jav_Open("192.168.1.114")
+    RS.jav_Open("192.168.1.108")
     # RS.jav_logscpi()
+    RS.jav_OPC_Wait('INIT:IMM')
     print(RS.query("*IDN?"))
     print(RS.Device)
     print(RS.jav_Close())
