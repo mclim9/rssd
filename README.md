@@ -75,42 +75,8 @@ FileName                | Instrumnt | Description                        |
 [VST_Sweep.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/)            | VSG VSA   | SMW/FSW Frequency Sweep            |
 [VST_WLAN_EVM](https://github.com/mclim9/rssd/blob/master/rssd/examples/)            | VSG VSA   | SMW/FSW 802.11 EVM sweep test      |
 
-# Documentation
+# [Documentation](https://github.com/mclim9/rssd/wiki/)
 
-## Driver Structure
-
-- Driver Structure:
-  - Common Driver Call: pyvisa &rarr; yaVISA.py &rarr; &lt;**instr**&gt;\_Common.py &rarr;
-  - Instrument Options: pyvisa &rarr; yaVISA.py &rarr; &lt;**instr**&gt;\_Common.py &rarr; &lt;**instr**&gt;\_&lt;OptionName&gt;\_Kxx.py
-- yaVISA: pyvisa wrapper
-  - **yaVISA.jav_Open(sFileName, sLogFile)**: Open VISA link
-  - **yaVISA.write(sSCPI)**: Write SCPI command
-  - **yaVISA.query(sSCPI)**: Query SCPI command
-  - **yaVISA.jav_logscpi()**: Turn on "SCPI to file"
-  - **yaVISA.jav_OPC_Wait(sCmd)**: Wait for longer commands.
-  - Please see **yaVISA.py*- for full list of commands.
-
-## Specific Instrument Drivers
-
-- FSW: Vector Spectrum Analyzer
-  - Developed & Tested with FSW
-  - FSW & VSE share many commands.
-  - Possible compatibility: VSE; FPS; FSV;
-- SMW: Vector Signal Generator
-  - Developed & Tested with SMW
-  - Possible compatibility: SGS; SGT; SMB; SMBV
-- NRP: Power Sensor
-  - Developed & Tested with NRPxxS/SN sensors
-- VSE: Vector Signal Explorer SW
-  - Developed & Tested with VSE
-  - Drivers represent VSE commands not in FSW code
-  - OFDMVSA K96 code resides here as well
-  - Possible compatibility: FSW
-- VST: Vector Signal Transceiver
-  - Code that calls both SMW & FSW
-  - Currently 5GNR; LTE; WLAN implemented
-- OSP: Open Switch and Control Platform
-  - Developed & Tested with OSP120
 
 ## Instrument Documentation
 
