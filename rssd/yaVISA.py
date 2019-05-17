@@ -68,10 +68,10 @@ class jaVisa(object):
         if self.dataIDN != "<notRead>":                     #Data Returned?
             IDNStr = self.dataIDN.split(',')
             try:
-                self.Make     = IDNStr[0]
-                self.Model    = IDNStr[1]
-                self.Device  = IDNStr[2]
-                self.Version = IDNStr[3]
+                self.Make       = IDNStr[0]
+                self.Model      = IDNStr[1]
+                self.Device     = IDNStr[2]
+                self.Version    = IDNStr[3]
             except:
                 pass
         else:

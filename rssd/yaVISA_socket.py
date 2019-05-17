@@ -71,23 +71,22 @@ class jaVisa(object):
         if (self.dataIDN != "<notRead>") and ('<title>' not in self.dataIDN):          #Data Returned?
             IDNStr = self.dataIDN.split(',')
             try:
-                self.Make     = IDNStr[0]
-                self.Model    = IDNStr[1]
-                self.Device  = IDNStr[2]
-                self.Version = IDNStr[3]
+                self.Make       = IDNStr[0]
+                self.Model      = IDNStr[1]
+                self.Device     = IDNStr[2]
+                self.Version    = IDNStr[3]
             except:
                 pass
         else:
             self.dataIDN = ""                               #Reset if not read
-        if self.debug: print('jav_IDN    : %s'%(self.dataIDN))
+        if self.debug: print('jav_IDN   : %s'%(self.dataIDN))
         return self.dataIDN
                 
     def jav_OPC_Wait(self, InCMD):
         start_time = time.time()
-        self.write("*ESE 1")		                        #Event Status Enable
-        self.write("*SRE 32")		                        #ServiceReqEnable-Bit5:Std Event
-        self.write(InCMD + ";*OPC")	                        #Initiate Read.  *OPC will trigger ESR
-        #print ('    OPC Wait: ' +InCMD)
+        self.write("*ESE 1")                                #Event Status Enable
+        self.write("*SRE 32")                               #ServiceReqEnable-Bit5:Std Event
+        self.write(InCMD + ";*OPC")                         #Initiate Read.  *OPC will trigger ESR
         read = "0"
         while (int(read) & 1) != 1:                         #Loop until done
             try:
@@ -108,7 +107,6 @@ class jaVisa(object):
         #*****************************************************************
         self.K2 = socket.socket()
         try:
-            #s.setttimeout(1)
             self.K2.settimeout(1)
             self.K2.connect((sIPAddr,port))
             self.jav_IDN()
