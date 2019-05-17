@@ -1,4 +1,12 @@
 language: python
+
+notifications:
+  email:
+    recipients:
+      - martin.lim@rsa.rohde-schwarz.com
+    on_success: never     # default: change
+    on_failure: always    # default: always
+
 python:
   - "2.7"
   - "3.6"
@@ -20,3 +28,4 @@ script:
   - python -m unittest -v test.test_RSSD
   - python -m unittest -v test.test_FileIO
   - python -m unittest -v test.test_yaVISA
+
