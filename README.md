@@ -16,10 +16,12 @@
   - Instrument speed/repeatability evaluation
   - Proof of concept/Demo code
 
-- RSSD is in development
-  - Package APIs **may*- change.
+
+- RSSD is open source.
+  - Package APIs *may*- change.
   - We recommend users "freeze/save" package version prior to use.
-  - SW is provided as is
+  - **SW is provided as is**
+  - Not an official Rohde & Schwarz supported product
 
 ## Getting Started
 
