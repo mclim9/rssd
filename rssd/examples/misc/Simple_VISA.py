@@ -1,7 +1,7 @@
 ##########################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ##########################################################
-host = '192.168.1.114'           #Instrument IP address
+host = '192.168.1.108'           #Instrument IP address
 
 ##########################################################
 ### Code Begin
@@ -16,7 +16,7 @@ def vQuery(SCPI):
 def vWrite(SCPI):
    VISA1.write(SCPI)             #Write cmd
 
-def getSysInfo2():
+def getSysInfo():
    xmlIn = vQuery("SYST:DFPR?")
 
    xmlIn = xmlIn[xmlIn.find('>')+1:]#Remove header
@@ -27,9 +27,9 @@ def getSysInfo2():
       dType = DData[1][1]
    devID = root[0].attrib['deviceId']
    dType = root[0].attrib['type']
-   os    = root[2][1].attrib['name']
-   osVer = root[2][1].attrib['version']
-   print(os, osVer)
+   # os    = root[2][1].attrib['name']
+   # osVer = root[2][1].attrib['version']
+   # print(os, osVer)
    print(dType, devID)
 
 ##########################################################
@@ -40,6 +40,7 @@ rmlist = rm.list_resources()
 VISA1 = rm.open_resource('TCPIP0::'+ host +'::inst0::INSTR')
 
 print("Info:" + vQuery("*IDN?"))
-print("Opts:" + vQuery("*OPT?"))
+#print("Opts:" + vQuery("*OPT?"))
+getSysInfo()
 
 VISA1.close()
