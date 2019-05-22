@@ -266,7 +266,7 @@ class VSA(VSA):                        #pylint: disable=E0102
       if (iRange==0) or (iRange == 'LOW'):
          self.write(':CONF:NR5G:%s:CC1:DFR LOW'%(self.sdir))      
       elif (iRange==1) or (iRange == 'MIDD'):
-         self.write(':CONF:NR5G:%s:CC1:DFR MIDD'%(self.sdir))      
+         self.write(':CONF:NR5G:%s:CC1:DFR MIDD'%(self.sdir))
       elif (iRange==2) or (iRange == 'HIGH'):
          self.write(':CONF:NR5G:%s:CC1:DFR HIGH'%(self.sdir))
       else:

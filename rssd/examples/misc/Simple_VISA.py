@@ -1,11 +1,5 @@
 ##########################################################
 ### Rohde & Schwarz Automation for demonstration use.
-###
-### Purpose: Simple Instrument Socket Example
-### Author:  mclim
-### Date:    2017.09.01
-##########################################################
-### User Entry
 ##########################################################
 host = '192.168.1.114'           #Instrument IP address
 
@@ -15,23 +9,15 @@ host = '192.168.1.114'           #Instrument IP address
 import visa                      #Import VISA module
 import xml.etree.ElementTree as ET  
 
-def sQuery(SCPI):
-   sOut = VISA1.query(SCPI)      #Write cmd
-   return sOut.strip()
+def vQuery(SCPI):
+   vOut = VISA1.query(SCPI)      #Query cmd
+   return vOut.strip()
 
-def sWrite(SCPI):
+def vWrite(SCPI):
    VISA1.write(SCPI)             #Write cmd
 
-def getSysInfo():
-   xmlIn = sQuery("SYST:DFPR?")
-   strStart = xmlIn.find('deviceId="') + len('deviceID="')
-   strStop  = xmlIn.find('type="') - 2
-   xmlIn = xmlIn[strStart:strStop]
-   print(xmlIn)
-   return xmlIn 
-
 def getSysInfo2():
-   xmlIn = sQuery("SYST:DFPR?")
+   xmlIn = vQuery("SYST:DFPR?")
 
    xmlIn = xmlIn[xmlIn.find('>')+1:]#Remove header
    root  = ET.fromstring(xmlIn)
@@ -45,7 +31,7 @@ def getSysInfo2():
    osVer = root[2][1].attrib['version']
    print(os, osVer)
    print(dType, devID)
-   
+
 ##########################################################
 ### Main Code
 ##########################################################
@@ -53,8 +39,7 @@ rm = visa.ResourceManager()
 rmlist = rm.list_resources()
 VISA1 = rm.open_resource('TCPIP0::'+ host +'::inst0::INSTR')
 
-print("Info:" + sQuery("*IDN?"))
-print("Opts:" + sQuery("*OPT?"))
-getSysInfo2()
+print("Info:" + vQuery("*IDN?"))
+print("Opts:" + vQuery("*OPT?"))
 
 VISA1.close()
