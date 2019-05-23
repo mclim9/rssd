@@ -1,6 +1,6 @@
 ### Reference: https://github.com/Terrabits/rohdeschwarz/blob/master/setup.py
 ### Reference: https://python-packaging.readthedocs.io/en/latest/minimal.html
-### 
+###
 ### python setup.py register #Reserve name in pypi
 ### python setup.py --help-commands
 ### python setup.py bdist    #Creates <pkg>.zip
@@ -20,11 +20,11 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='rssd',
-      version='2019.5.4',
-      description='Rohde & Schwarz SCPI Driver',
-      long_description=long_description,
-      long_description_content_type='text/markdown', 
-      classifiers=[
+    version='2019.5.4',
+    description='Rohde & Schwarz SCPI Driver',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    classifiers=[
         'Development Status :: 4 - Beta',      #3:Alpha 4:Beta 5:Production/Stable
         'License :: Freely Distributable',
         'License :: Other/Proprietary License',
@@ -36,24 +36,24 @@ setup(name='rssd',
         'Programming Language :: Python :: 3.7',
         'Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)',
         'Topic :: System :: Hardware :: Hardware Drivers',
-      ],
-      keywords='Rohde Schwarz test equipment FSW FSV NRP NRQ OSP SGT SMA SMB SMBV SMW SCPI VSA VSG VST',
-      url='https://github.com/mclim9/rssd',
-      author='Martin Lim',
-      author_email='martin.lim@rsa.rohde-schwarz.com',
-      license='R&S Terms and Conditions for Royalty-Free Products',
-      packages=find_packages(exclude=['test','proto']),
-      #packages=['rssd'],
-      install_requires=[
-          'pyvisa>=1.9.0',
-          'future_fstrings>=1.0.0',
-      ],
-      test_suite = 'test',
-      include_package_data=True,
-      zip_safe=False,
-      entry_points={
+    ],
+    keywords='Rohde Schwarz test equipment FSW FSV NRP NRQ OSP SGT SMA SMB SMBV SMW SCPI VSA VSG VST',
+    url='https://github.com/mclim9/rssd',
+    author='Martin Lim',
+    author_email='martin.lim@rsa.rohde-schwarz.com',
+    license='R&S Terms and Conditions for Royalty-Free Products',
+    packages=find_packages(exclude=['test','proto']),
+    #packages=['rssd'],
+    install_requires=[
+        'pyvisa>=1.9.0',
+        'future_fstrings>=1.0.0',
+    ],
+    test_suite = 'test',
+    include_package_data=True,
+    zip_safe=False,
+    entry_points={
         'console_scripts': [
           'rssd=rssd.bin.cli:main'
         ],
-      },
-    )
+    },
+)
