@@ -14,7 +14,7 @@ except:
     pass
 
 class VSA(jaVisa):
-    """ Rohde & Schwarz Vector Signal Analyzer Driver """
+    """ Rohde & Schwarz Vector Signal Analyzer Object """
     def __init__(self):
         super(VSA, self).__init__()
         self.Model = "FSW"
