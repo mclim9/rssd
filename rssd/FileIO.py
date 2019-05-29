@@ -16,51 +16,47 @@ class FileIO(object):
         self.sFName = ""
         self.debug = 1
         pass
-    
+
     def makeFile(self,sFilepath):
         BaseDir  = os.path.dirname(os.path.realpath(sFilepath))
         BaseFile = os.path.basename(sFilepath)
         OutFile  = f'{BaseDir}\\{BaseFile}'
         self.Init(OutFile)
         return self
-        
+
     def Init(self,sName="Datalog"):
         self.sFName = "%s-%s.csv"%(sName,datetime.now().strftime("%y%m%d"))
         self.Outfile = open(self.sFName, 'a')              #Open File
         return self
-        
+
     def write(self,inStr):
         if self.debug: print("FileOut    : %s"%inStr)
         sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-        self.Outfile = open(self.sFName, 'a')              #Open File
-        self.Outfile.write('%s,%s\n'%(sDate,inStr))
-        self.Outfile.close()
+        with open(self.sFName, 'a') as csv_file:
+            csv_file.write(f'{sDate},{inStr}\n')
 
     def write_raw(self,inStr):
         if self.debug: print("FileOut_raw : %s"%inStr)
-        self.Outfile = open(self.sFName, 'a')              #Open File
-        self.Outfile.write('%s\n'%(inStr))
-        self.Outfile.close()
+        with open(self.sFName, 'a') as csv_file:
+            csv_file.write(f'{inStr}\n')
 
     def read(self):
-        self.Outfile = open(self.sFName, 'r')
-        fileData = self.Outfile.readlines()
-        self.Outfile.close()
+        with open(self.sFName, 'r') as csv_file:
+            fileData = csv_file.readlines()
         return fileData
-        
+
     def readcsv(self):
         dataOut = []
-        self.Outfile = open(self.sFName, 'r')
-        fileData = self.Outfile.readlines()
-        for line in fileData:
-            dataOut.append(line.strip().split(','))
-        self.Outfile.close()
+        with open(self.sFName, 'r') as csv_file:
+            fileData = csv_file.readlines()
+            for line in fileData:
+                dataOut.append(line.strip().split(','))
         return dataOut
-    
+
     def initread(self,sFile):
         self.sFName = sFile
         return self
-        
+
 #####################################################################
 ### Run if Main
 #####################################################################
