@@ -11,7 +11,7 @@
 from rssd.FSW_Common import VSA
 
 class VSE(VSA):
-     """ Rohde & Schwarz Vector Signal Explorer Object """
+    """ Rohde & Schwarz Vector Signal Explorer Object """
     def __init__(self):
         super(VSE,self).__init__()     #Python2/3
         self.Model = "VSE"

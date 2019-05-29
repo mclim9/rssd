@@ -10,8 +10,8 @@
 from rssd.yaVISA import jaVisa        #pylint: disable=E0611,E0401
 
 class VSG(jaVisa):
-    def __init__(self):
     """ Rohde & Schwarz Vector Signal Generator Object """
+    def __init__(self):
         super(VSG,self).__init__()     #Python2/3
         self.Model = "SMW"
 
