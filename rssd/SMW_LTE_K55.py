@@ -14,6 +14,7 @@
 from rssd.SMW_Common import VSG     #pylint: disable=E0611,E0401
 
 class VSG(VSG):                     #pylint: disable=E0102
+    """ Rohde & Schwarz Vector Signal Generator LTE Object """
     def __init__(self):
         super(VSG,self).__init__()    #Python2/3
         self.Model = "SMW"

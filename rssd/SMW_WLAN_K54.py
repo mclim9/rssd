@@ -5,7 +5,6 @@
 ### Purpose: Vector Signal Generator LTE Functions
 ### Author : Martin C Lim
 ### Date   : 2019.03.05
-### Requird: python -m pip install rssd
 ### Options: K54  802.11 a/b/g/n
 ###          K86  802.11 ac
 ###          K141 802.11 ad
@@ -23,6 +22,7 @@
 from rssd.SMW_Common import VSG     #pylint: disable=E0611,E0401
 
 class VSG(VSG):                     #pylint: disable=E0102
+    """ Rohde & Schwarz Vector Signal Generator 802.11 Object """
     def __init__(self):
         super(VSG,self).__init__()    #Python2/3
         self.Model = "SMW"

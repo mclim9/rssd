@@ -27,6 +27,7 @@ from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
 import time
 
 class OTA(jaVisa):
+    """ Rohde & Schwarz Over The Air Chamber Object """
     def __init__(self):
         super(OTA, self).__init__()
         self.Model = "OTA"

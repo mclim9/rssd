@@ -25,6 +25,7 @@ from rssd.OTA_Common     import OTA           #pylint: disable=E0611,E0401
 import time
 
 class OTA(OTA):
+    """ Rohde & Schwarz ATS1800 Object """
     def __init__(self):
         super(OTA, self).__init__()
 
