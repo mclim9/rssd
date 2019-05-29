@@ -21,6 +21,7 @@
 from rssd.yaVISA import jaVisa
 
 class AAA(jaVisa):
+    """ Rohde & Schwarz AAA Object """
     def __init__(self):
         super(AAA, self).__init__()
         self.Model = "AAA"

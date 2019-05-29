@@ -21,6 +21,7 @@ Description:
 #TODO: errorhandling
 
 class IQ(object):
+    """ Util IQ Converting Object """
     def __init__(self):
         self.iqData = [complex(1,1)]                #Complex IQ Data
         self.iiqqList = []

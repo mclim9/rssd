@@ -7,6 +7,7 @@
 ### Date    : 2018.05.18
 ### Requird : python -m pip install pyvisa
 ### 
+<<<<<<< HEAD
 ### VISAFmt : USB0::0x0AAD::0x0138::100961::INSTR
 ###           <VS>::<Manu>::<Modl>::<SerN>::INSTR
 ###           TCPIP0::NRPM3-900105::inst0
@@ -19,6 +20,20 @@
 ### NRP18SN   0x0139        NRP50S    0x0161
 ### NRP33S    0x0145        NRP50SN   0x0162
 ### NRP33SN   0x0146        NRPM      0x0195
+=======
+### VISAFmt: USB0::0x0AAD::0x0138::100961::INSTR
+###             <VS>::<Manu>::<Modl>::<SerN>::INSTR
+###             TCPIP0::NRPM3-900105::inst0
+### 
+###    Product  |USB ID          Product  |USB ID
+###    ---------|------          ---------|------
+###    NRP8S      0x00E2          NRP33SN-V 0x0168
+###    NRP8SN     0x0137          NRP40S     0x015F
+###    NRP18S     0x0138          NRP40SN    0x0160
+###    NRP18SN    0x0139          NRP50S     0x0161
+###    NRP33S     0x0145          NRP50SN    0x0162
+###    NRP33SN    0x0146          NRPM        0x0195
+>>>>>>> 1c37deb37bf6afd202539d32084f9d9e9f801d83
 #####################################################################
 from rssd.yaVISA import jaVisa
 
@@ -150,7 +165,16 @@ if __name__ == "__main__":
     NRP = PMr()
     NRP.Get_AvailableNRP()
     NRP.jav_openvisa("USB0::0x0AAD::0x0196::900105::INSTR")
+<<<<<<< HEAD
     NRP.jav_logscpi()
     NRP.Set_Freq(24e9)  
     NRP.Get_Power()
     NRP.jav_ClrErr()
+=======
+#    NRP.jav_logscpi()
+#    NRP.jav_Reset()
+#    NRP.Set_Freq(24e9)  
+#    NRP.Get_Power()
+    print("asdf")
+#    NRP.jav_ClrErr()
+>>>>>>> 1c37deb37bf6afd202539d32084f9d9e9f801d83

@@ -1,6 +1,4 @@
-"""
-   Rohde&Schwarz Python FSW; SMW; NRP; NRQ; OSP; VSA; VSG; VST; driver example code
-"""
+""" Rohde&Schwarz Python FSW; SMW; NRP; NRQ; OSP; VSA; VSG; VST; driver example code """
 
 __author__ = "Martin C Lim <martin.lim@rsa.rohde-schwarz.com>"
 __all__ = ['BSE', 'FileIO', 'VSA', 'IQ', 'PMr', 'NRQ', 'OSP', 'VSG', 'VNA', 'VSE', 'jaVisa']

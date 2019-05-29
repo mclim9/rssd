@@ -1,11 +1,9 @@
 # -*- coding: future_fstrings -*-
 #####################################################################
 ### Rohde & Schwarz Automation for demonstration use.
-###
 ### Purpose: Vector Signal Analyzer Common Functions
 ### Author:  Martin C Lim
 ### Date:    2018.02.01
-### Strctr : pyvisa-->yavisa-->FSW_Common.py
 #####################################################################
 from rssd.yaVISA import jaVisa              # pylint: disable=E0611,E0401
 try:

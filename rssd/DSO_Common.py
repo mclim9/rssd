@@ -21,6 +21,10 @@
 from rssd.yaVISA import jaVisa
 
 class DSO(jaVisa):
+<<<<<<< HEAD
+=======
+    """ Rohde & Schwarz Digital Storage Oscilloscope Object """
+>>>>>>> 1c37deb37bf6afd202539d32084f9d9e9f801d83
     def __init__(self):
         super(DSO, self).__init__()
         self.Model = "DSO"

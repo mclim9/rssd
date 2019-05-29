@@ -1,15 +1,25 @@
 # -*- coding: future_fstrings -*-
 #####################################################################
 ### Rohde & Schwarz Automation for demonstration use.
+<<<<<<< HEAD
 ###
 ### Purpose : CMW100 General Purpose RF Functions
 ### Author  : Martin C Lim
 ### Date    : 2018.05.29
 ### Strctr  : pyvisa-->yavisa-->CMW_GPRF.py
+=======
+### Purpose : CMW100 General Purpose RF Functions
+### Author  : Martin C Lim
+### Date    : 2018.05.29
+>>>>>>> 1c37deb37bf6afd202539d32084f9d9e9f801d83
 #####################################################################
 from rssd.yaVISA import jaVisa
 
 class BSE(jaVisa):
+<<<<<<< HEAD
+=======
+     """ Rohde & Schwarz Base Station Emulator Object """
+>>>>>>> 1c37deb37bf6afd202539d32084f9d9e9f801d83
     def __init__(self):
         super(BSE, self).__init__()
         self.Model = "CMW-GPRF"

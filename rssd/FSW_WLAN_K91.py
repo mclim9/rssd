@@ -19,6 +19,7 @@
 from rssd.FSW_Common import VSA        #pylint: disable=E0611,E0401
 
 class VSA(VSA):                        #pylint: disable=E0102
+    """ Rohde & Schwarz Vector Signal Analyzer 802.11 Object """
     def __init__(self):
         super(VSA, self).__init__()
         self.WLAN_Std  = 'N'

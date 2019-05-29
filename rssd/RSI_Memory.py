@@ -21,6 +21,7 @@
 from rssd.yaVISA import jaVisa
 
 class RSI(jaVisa):
+    """ Rohde & Schwarz Instrument Memory Object """
     def __init__(self):
         super(RSI, self).__init__()
         self.Model = "AAA"

@@ -11,6 +11,7 @@
 from rssd.yaVISA import jaVisa            # pylint: disable=E0611,E0401
 
 class VNA(jaVisa):
+    """ Rohde & Schwarz Vector Network Analyzer Object """
     def __init__(self):
         super(VNA,self).__init__()     #Python2/3
         self.Model = "VNA"
