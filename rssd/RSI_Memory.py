@@ -19,6 +19,7 @@
 ###
 ###############################################################################
 from rssd.yaVISA import jaVisa
+import timeit
 
 class RSI(jaVisa):
     """ Rohde & Schwarz Instrument Memory Object """
@@ -26,9 +27,9 @@ class RSI(jaVisa):
         super(RSI, self).__init__()
         self.Model = "AAA"
 
-    #####################################################################
+    ##########################################################################
     ### AAA Get Functions
-    #####################################################################
+    ##########################################################################
     def Get_dirInfo(self):
         # FSW/FSVA uses ':MMEM:CAT:LONG?'
         # SMW/ZVA  uses ':MMEM:CAT?'
@@ -44,38 +45,70 @@ class RSI(jaVisa):
             self.files     = {}
             for i in range(0, len(dirInfo), 3):
                 if dirInfo[i+1] == 'DIR':
-                    self.dir.append(dirInfo[i])                             #Add directories to self.dir
+                    self.dir.append(dirInfo[i])                 #Add directories to self.dir
                 else:
-                    self.files[dirInfo[i]]= int(dirInfo[i+2])               #Add file to self.files
+                    self.files[dirInfo[i]]= int(dirInfo[i+2])   #Add file to self.files
         return dirInfo
 
-    def Get_File(self,filename):
+    def Get_File(self,filename):                                #MMM
+        """ Return File Data
+            Args:
+                param1: filename
+        """
         self.Get_dirInfo()
         self.write(f':MMEM:DATA? {filename}')
         size = self.files[filename]
-        rdStr = self.K2.read_raw(self.files[filename])
+        rdStr = self.jav_read_raw(self.files[filename])
         return rdStr
 
-    #####################################################################
+    ###########################################################################
     ### AAA Get Functions
-    #####################################################################
+    ###########################################################################
     def Set_Copy(self,fromLoc, toLoc):
-        self.write(f'MMEM:COPY {fromLoc},{toLoc}')
+        """ Copy files from <source> to <destination>
+            Ex: Set_Copy('temp.txt','temp2.txt')
+        """
+        self.write(f'MMEM:COPY "{fromLoc}","{toLoc}"')
 
     def Set_Dir(self,dir):
-        self.write(f'MMEM:CDIR {dir}')
+        """ Set_Dir('C:\\R_S\\Instr')
+            Set_Dir('C:\\R_S\\Instr\\')
+        """
+        self.write(f'MMEM:CDIR "{dir}"')
+
+    def Set_FileCreate(self,filename):
+        """Set_FileCreate('temp.txt')"""
+        self.Set_Filename(filename)
+        self.Set_FileWrite(filename)
+
+    def Set_FileDel(self,filename):
+        self.write(f"MMEM:DEL '{filename}'")
 
     def Set_Filename(self,filename):
-        self.write(f'MMEM:NAME {filename}')
+        self.write(f"MMEM:NAME '{filename}'")
+
+    def Set_FileWrite(self,filename):
+        self.write(f"MMEM:DATA '{filename}',#00")
 
     def Set_Move(self,fromLoc, toLoc):
-        self.write(f'MMEM:MOVE {fromLoc},{toLoc}')
-
+        self.write(f'MMEM:MOVE "{fromLoc}","{toLoc}"')
 
 ###############################################################################
 ### Debug Main.  Won't run when imported
 ###############################################################################
 if __name__ == "__main__":
     RSI = RSI().jav_Open("192.168.1.108")
-    asdf = RSI.Get_File('autolog.txt')
+    tick = timeit.default_timer()
+    RSI.Set_FileCreate
+    #####################################
+    ### Begin Timer
+    #####################################
+    RSI.Set_FileCreate('temp.txt')
+    # RSI.Set_FileDel('temp.txt')
+    RSI.Set_Copy('temp.txt','temp2.txt')
+    #####################################
+    ### End Timer
+    #####################################
+    a = timeit.default_timer() - tick
+    print(f'Time: {a:.6f}')
     RSI.jav_ClrErr()
