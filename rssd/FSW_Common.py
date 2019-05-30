@@ -138,6 +138,11 @@ class VSA(jaVisa):
         MkrFreq = self.queryFloat(':CALC%d:MARK%d:X?'%(iWind,iNum))
         return float(MkrFreq)
 
+    def Get_Mkr_Noise(self,iNum=1,iWind=1):
+        ValX = self.queryFloat(':CALC%d:MARK%d:X?'%(iWind,iNum))
+        ValY = self.queryFloat(':CALC%d:MARK%d:FUNC:NOIS:RES?'%(iWind,iNum))
+        return [ValX, ValY]
+
     def Get_Mkr_TimeDomain(self,iNum=1,iWind=1):
       # self.write(':CALC:MARK%d:FUNC:SUMM:STAT ON'%iNum)
         #MkrFreq = self.query(':CALC%d:MARK%d:X?'%(iWind,iNum)).strip()
@@ -499,6 +504,10 @@ class VSA(jaVisa):
     def Set_Mkr_Time(self,fSec,iNum=1):
         self.write(':CALC1:MARK%d:X %fS'%(iNum,fSec))
 
+    def Set_NoiseCorr(self,state):
+        """0 1 ON OFF"""
+        self.write(f':SENS:POW:NCOR {state}')
+
     def Set_Param_Couple_All(self):
         self.write("INST:COUP:CENT ALL")
         self.write("INST:COUP:RLEV ALL")
@@ -513,7 +522,6 @@ class VSA(jaVisa):
         # self.query(":INST:COUP:USER2:NEW? 'Level','All Windows','Attenuation','IQACP','All Windows','Attenuation',BID,ON")
         # self.query(":INST:COUP:USER3:NEW? 'Level','All Windows','Center Frequency','IQACP','All Windows','Center Frequency',BID,ON")
         # self.query(":INST:COUP:USER4:NEW? 'Level','All Windows','Preamplifier','IQACP','All Windows','Preamplifier',BID,ON")
-
 
     def Set_Preamp(self,sState):
         #ON|OFF|1|0
@@ -572,14 +580,14 @@ class VSA(jaVisa):
         self.write('DISP:TRAC%d:MODE WRIT'%(trace))
     
     def Set_Trace_Detector(self,sDetect,iWind=1):
-        #APE; NEG; POS; QPE; SAMP; RMS; CAV; CRMS
+        """APE; NEG; POS; QPE; SAMP; RMS; CAV; CRMS"""
         self.write('SENS:WIND%d:DET %s'%(iWind,sDetect))        #RMS|
 
     ####################################################################
     ### FSW Trigger
     #####################################################################
     def Set_Trig1_Source(self,sDetect):
-        #IMM; EXT; EXT2; EXT3; RFP; IFP; TIME; VID; PSEN 
+        """IMM; EXT; EXT2; EXT3; RFP; IFP; TIME; VID; PSEN""" 
         self.write('TRIG:SEQ:SOUR %s'%sDetect)        #RMS|
     
     def Set_Trig2_Dir(self,sDir):
