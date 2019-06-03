@@ -6,6 +6,7 @@
 /rssd/Unity/dist/
 /rssd/Unity/fixtures/
 /rssd/.vscode/
+/proto/
 
 ### IQ Waveform/Capture
 *.iqw
