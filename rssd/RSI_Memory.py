@@ -30,6 +30,10 @@ class RSI(jaVisa):
     ##########################################################################
     ### AAA Get Functions
     ##########################################################################
+    def Get_dir(self):
+        rdStr = self.query(f':MMEM:CDIR?')
+        return rdStr
+
     def Get_dirInfo(self):
         # FSW/FSVA uses ':MMEM:CAT:LONG?'
         # SMW/ZVA  uses ':MMEM:CAT?'
@@ -85,10 +89,10 @@ class RSI(jaVisa):
         self.write(f"MMEM:DEL '{filename}'")
 
     def Set_Filename(self,filename):
-        self.write(f"MMEM:NAME '{filename}'")
+        self.write(f'MMEM:NAME "{filename}"')
 
     def Set_FileWrite(self,filename):
-        self.write(f"MMEM:DATA '{filename}',#00")
+        self.write(f'MMEM:DATA "{filename}",#10')
 
     def Set_Move(self,fromLoc, toLoc):
         self.write(f'MMEM:MOVE "{fromLoc}","{toLoc}"')
@@ -104,8 +108,10 @@ if __name__ == "__main__":
     ### Begin Timer
     #####################################
     RSI.Set_FileCreate('temp.txt')
+    # RSI.Get_dirInfo
     # RSI.Set_FileDel('temp.txt')
-    RSI.Set_Copy('temp.txt','temp2.txt')
+    # RSI.Set_Copy('temp.txt','temp2.txt')
+    print(RSI.Get_dir())
     #####################################
     ### End Timer
     #####################################

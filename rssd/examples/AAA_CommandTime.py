@@ -29,7 +29,7 @@ for i in range(10):
     ### <\thing we are timing>
     if 1:
         instr.query('INIT:IMM;*OPC?')
-    # rdStr = instr.query(':SENS:ADJ:LEV;*OPC?')
+    # instr.write(':INST:COUP:RLEV ON')
     # rdStr = instr.query('FETC:SUMM:EVM:ALL?')
     ### <\thing we are timing>
     ALTime.append(timeit.default_timer() - tick)

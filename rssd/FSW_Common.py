@@ -569,6 +569,7 @@ class VSA(jaVisa):
         self.write(':SENS:SWE:POIN %f'%iNum)      #Number of trace points
 
     def Set_Trace_Avg(self,sType,trace=1):
+        """LIN VID POW"""
         self.write('DISP:TRAC%d:MODE AVER'%trace)
         self.write('SENS:DET1:FUNC AVER')
         self.write('SENS:AVER:TYPE %s'%sType)  #LIN|VID
