@@ -20,7 +20,7 @@ class OSP(jaVisa):
         return self.query('DIAG:SERV:HWIN?').split(',')
 
     def Get_SW_SPDT(self,slot=11,sw=1):
-        # ROUT:CLOS? (@F01A11(0161))
+        """ ROUT:CLOS? (@F01A11(0161)) """
         outstr = f'ROUT:CLOS? (@F01A{slot:02d}(01{sw:02d}))'
         print(outstr)
         state = self.queryInt(outstr)
@@ -28,7 +28,7 @@ class OSP(jaVisa):
         return int(state)
 
     def Get_SW_SP6T(self,slot=11,sw=1):
-        # ROUT:CLOS? (@F01A11(0161))
+        """ ROUT:CLOS? (@F01A11(0161)) """
         for pos in range(0,7):
             state = self.queryInt('ROUT:CLOS? (@F01A%02d(%02d%02d))'%(slot,pos,sw))[0]
             if state == 1:
@@ -37,6 +37,11 @@ class OSP(jaVisa):
         return CurrState
 
     def Set_CompatabilityMode(self,sState):
+        """ 
+            F01Mxx --> F01A1x nomenclature
+            M01 --> 
+            ON OFF 1 0 
+        """
         self.write(f'CONF:COMP {sState}')
 
     def Set_SW(self,slot=11,sw=1,pos=1):
