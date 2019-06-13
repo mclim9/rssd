@@ -75,6 +75,10 @@ class VSA(jaVisa):
         rdStr = self.queryFloat(':SENS:FREQ:CENT?')
         return rdStr
 
+    def Get_Harm(self):
+        rdStr = self.queryFloatArry(':CALC:MARK:FUNC:HARM:LIST?')
+        return rdStr
+
     def Get_IFOvld(self):
         self.Set_InitImm()
         rdStr = self.query("STAT:QUES:POW:COND?").strip()
@@ -225,6 +229,10 @@ class VSA(jaVisa):
         self.Set_Channel("Spectrum")
         self.write('CALC:STAT:CCDF ON;*WAI')
 
+    def Init_Harm(self):
+        self.Set_Channel("Spectrum")
+        self.write('CALC:MARK:FUNC:HARM ON')
+
     def Init_IQ(self):
         self.Set_Channel("IQ")
 
@@ -334,9 +342,8 @@ class VSA(jaVisa):
         self.write(f'CALC:STAT:NSAM {iSamples}')
 
     def Set_Channel(self,Chan,sName=""):
-        ##################################################################
-        ### SANALYZER, IQ, PNOISE, NOISE, Spur, ADEM, V5GT, LTE, OFDMVSA
-        ##################################################################
+        """ SAN, IQ, NR5G, LTE, WLAN, PNOISE, NOISE, SPUR, ADEM, DDEM, V5GT, AMPL """
+
         if sName == "":
             sName = Chan
         ChList = self.query('INST:LIST?').split(',')
@@ -373,6 +380,12 @@ class VSA(jaVisa):
     def Set_FreqStop(self,fFreq):
         self.write(':SENS:FREQ:STOP %f'%fFreq)    #RF Freq
 
+    def Set_Harm_num(self, num):
+        self.write(f':CALC1:MARK1:FUNC:HARM:NHAR {num}')
+
+    def Set_Harm_adjust(self):
+        """ Adjusts Ref Lvl, Attn, SwpTime """
+        self.write(':CALC1:MARK1:FUNC:HARM:PRE')
     #####################################################################
     ### FSW IQ Analyzer
     #####################################################################
