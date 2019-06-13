@@ -4,6 +4,7 @@ Release History
   - Testing VSA_Leveling.py 
   - SMW_5GNR Set_5GNR_BWP_SubSpace update.
   - Add RSI_Memory.py
+  - Add VSA Harmonics
 - RSSD 2019.5.3
   - Add Example links to readme.md
 - RSSD 2019.5.2

@@ -205,7 +205,7 @@ class jaVisa(object):
         self.jav_fileout(self.f, "%s,%s"%(self.Model,cmd))
 
 if __name__ == "__main__":
-    RS = jaVisa().jav_Open("192.168.1.109")
+    RS = jaVisa().jav_Open("192.168.1.108")
     print(RS.query("*IDN?"))
     print(RS.Device)
     print(RS.jav_Close())

@@ -10,7 +10,7 @@ instru_ip  = '192.168.1.108'
 ###############################################################################
 ### Code Overhead: Import and create objects
 ###############################################################################
-from rssd.FSW_Common     import VSA
+from rssd.FSW_Common        import VSA
 from rssd.FileIO            import FileIO
 import timeit
 
