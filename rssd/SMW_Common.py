@@ -7,7 +7,8 @@
 ### Date   : 2018.02.01
 ### Requird: python -m pip install pyvisa
 #####################################################################
-from rssd.yaVISA import jaVisa        #pylint: disable=E0611,E0401
+from rssd.yaVISA    import jaVisa        #pylint: disable=E0611,E0401
+from time           import sleep
 
 class VSG(jaVisa):
     """ Rohde & Schwarz Vector Signal Generator Object """
@@ -46,6 +47,14 @@ class VSG(jaVisa):
     def Get_Freq(self):
         rdStr = self.queryFloat(':SOUR1:FREQ:CW?')     #RF Freq
         return rdStr
+
+    def Get_ListMode_IndexCurr(self):
+        rdInt = self.queryInt('SOUR1:LIST:IND?')
+        return rdInt
+
+    def Get_ListMode_IndexStop(self):
+        rdInt = self.queryInt('SOUR1:LIST:IND:STOP?')
+        return rdInt
 
     def Get_NRPPower(self,NRP=2):
         self.write(':INIT%d:POW:CONT 1'%(NRP))
@@ -110,22 +119,52 @@ class VSG(jaVisa):
         self.write(':SOUR1:FREQ:CW %f'%freq)     #RF Freq
 
     def Set_IQMod(self,sState):
-        ### ON, OFF 
+        """input: ON, OFF """
         if (sState == 1) or (sState == 'ON'):
             self.query('SOUR:IQ:STAT ON;*OPC?')
         else:
-            self.query('SOUR:IQ:STAT OFF;*OPC?')            
+            self.query('SOUR:IQ:STAT OFF;*OPC?')
+
+    def Set_ListMode_Dwell(self, sec):
+        self.write(f'SOUR1:LIST:DWEL {sec}')
+
+    def Set_ListMode_File(self,sFile):
+        if sFile.find('.lsw') == -1:
+            sFile = sFile + '.lsw'
+        self.write(f'SOUR1:LIST:SEL "/var/user/{sFile}"')
+
+    def Set_ListMode(self,sState):
+        """input: LIST FREQ """
+        self.query(f':SOUR1:FREQ:MODE {sState};*OPC?')
+
+    def Set_ListMode_TrigExecute(self):
+        self.query(':SOUR1:LIST:TRIG:EXEC;*OPC?')
+
+    def Set_ListMode_TrigSource(self,sSource):
+        """input: SING AUTO EXT """
+        self.write(f'SOUR1:LIST:TRIG:SOUR {sSource}')
+
+    def Set_ListMode_TrigWait(self):
+        indx = 0
+        stop = self.Get_ListMode_IndexStop()
+        while indx != stop:
+            sleep(0.1)
+            indx = self.Get_ListMode_IndexCurr()
+
+    def Set_ListMode_RMode(self, sMode):
+        """input:  LIVE LEAR """
+        self.write(f'SOUR:LIST:RMOD {sMode}')
 
     def Set_PhaseDelta(self,fPhase):
         self.write(':SOUR1:PHASE %d'%(fPhase))
 
     def Set_RFDriveAmp(self,sState):
-        ### ON, OFF, AUTO, FIX, 
+        """input: ON, OFF, AUTO, FIX """
         self.query('SOUR:POW:ALC:DAMP %s;*OPC?'%sState)
-        
-    def Set_RFPwr(self,fPow):    #fPow
-        self.write('SOUR:POW %f'%fPow)             #RF Pwr
-        
+
+    def Set_RFPwr(self,fPow):
+        self.write('SOUR:POW %f'%fPow)
+
     def Set_RFState(self,sState):
         self.query('OUTP %s;*OPC?'%sState)
 
