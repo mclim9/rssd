@@ -141,8 +141,23 @@ class VSG(jaVisa):
         self.query(':SOUR1:LIST:TRIG:EXEC;*OPC?')
 
     def Set_ListMode_TrigSource(self,sSource):
-        """input: SING AUTO EXT """
-        self.write(f'SOUR1:LIST:TRIG:SOUR {sSource}')
+        """input: SING AUTO STEP ESTEP """
+        if 'AUTO' in sSource:
+            self.write(f'SOUR1:LIST:MODE AUTO')
+            self.write(f'SOUR1:LIST:TRIG:SOUR AUTO')
+        elif 'SING' in sSource:
+            self.write(f'SOUR1:LIST:MODE AUTO')
+            self.write(f'SOUR1:LIST:TRIG:SOUR SING')
+        elif 'STEP' in sSource:
+            self.write(f'SOUR1:LIST:MODE STEP')
+            self.write(f'SOUR1:LIST:TRIG:SOUR SING')
+        elif 'ESING' in sSource:
+            self.write(f'SOUR1:LIST:MODE AUTO')
+            self.write(f'SOUR1:LIST:TRIG:SOUR EXT')
+        elif 'ESTEP' in sSource:
+            self.write(f'SOUR1:LIST:MODE STEP')
+            self.write(f'SOUR1:LIST:TRIG:SOUR EXT')
+
 
     def Set_ListMode_TrigWait(self):
         indx = 0
