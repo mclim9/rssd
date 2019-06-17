@@ -1,14 +1,19 @@
 Release History
 =====================================================================
-- RSSD 2019.5.4
-  - Testing VSA_Leveling.py 
+- RSSD 2019.6.0
   - SMW_5GNR Set_5GNR_BWP_SubSpace update.
   - Add RSI_Memory.py
   - Add VSA Harmonics
+  - Add SMW list mode
+  - Add RTO_Common.py proto
+  - Del UnityK144
+  - Add Examples
+    - VSA_NoiseFloor
+    - VSA_Harmonics
 - RSSD 2019.5.3
   - Add Example links to readme.md
 - RSSD 2019.5.2
-  - Add rssd script
+  - Add rssd cmd line script
   - Fixed FSW_Common typo in 5.1
 - RSSD 2019.5.1
   - Administrative

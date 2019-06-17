@@ -12,7 +12,6 @@ host = '192.168.1.114'               #Get local machine name
 ### Code Start
 ##########################################################
 from rssd.SMW_Common import VSG
-import time
 
 SMW = VSG().jav_Open(host) 
 #SMW.jav_logSCPI()                  # Log SCPI commands

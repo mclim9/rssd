@@ -2,15 +2,15 @@
 ### Reference: https://python-packaging.readthedocs.io/en/latest/minimal.html
 ###
 ### python setup.py register #Reserve name in pypi
-### python setup.py --help-commands
-### python setup.py bdist    #Creates <pkg>.zip
-### python setup.py install  #Installs package
+### python setup.py --help-commands #Help
+### python setup.py bdist           #Creates <pkg>.zip
+### python setup.py install         #Installs package
 ### python setup.py install_scripts
-### pip install .            #Installs package in directory
-### pip install -e .         #Install editable package
+### pip install .                   #Installs package in directory
+### pip install -e .                #Install editable package
 ##########################################################
 ### Upload to PyPi
-### python setup.py sdist    #Creates <pkg>.tar.gz
+### python setup.py sdist           #Creates <pkg>.tar.gz
 ### twine upload .\dist\rssd-0.1.8.tar.gz 
 
 import os
@@ -20,7 +20,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='rssd',
-    version='2019.5.4',
+    version='2019.06.0',
     description='Rohde & Schwarz SCPI Driver',
     long_description=long_description,
     long_description_content_type='text/markdown',
