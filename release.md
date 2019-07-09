@@ -1,5 +1,6 @@
 Release History
 =====================================================================
+- RSSD 2019.6.1
 - RSSD 2019.6.0
   - SMW_5GNR Set_5GNR_BWP_SubSpace update.
   - Add RSI_Memory.py
