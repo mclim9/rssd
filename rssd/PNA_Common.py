@@ -26,9 +26,9 @@ class PNA(jaVisa):
         super(PNA, self).__init__()
         self.Model = "FSW"
         
-    #####################################################################
+    ############################################################################
     ### FSW Get
-    #####################################################################
+    ############################################################################
     def Get_AmpSettings(self):
         #,Attn,PreAmp,RefLvl,
         attn = self.Get_AttnMech()
@@ -47,7 +47,7 @@ class PNA(jaVisa):
         rdStr = self.queryFloat(':SENS:FREQ:CENT?')
         return rdStr
 
-    def Get_FreqLock(self):                                                       #done
+    def Get_FreqLock(self):                                                     #done
         rdstr = self.query(':STAT:QUES:PNO:COND?')
         return rdstr
 
@@ -76,6 +76,10 @@ class PNA(jaVisa):
         RF_Udld = Read & 2      # pylint: disable=W0612
         IF_Ovld = Read & 4      # pylint: disable=W0612
         return Read
+
+    def Get_Power(self):
+        rdStr = self.query('POW:RLEV?')
+        return rdStr
 
     def Get_RefLevel(self):
         RefLvl = self.queryFloat('DISP:TRAC:Y:RLEV?')
@@ -117,9 +121,9 @@ class PNA(jaVisa):
         DataX = self.query('TRAC%d:DATA:X? TRACE1'%trace)
         return [DataX.split(','),DataY.split(',')]
 
-    #####################################################################
+    ###########################################################################
     ### Measurement Init
-    #####################################################################
+    ###########################################################################
     def Init_Harm(self):
         self.Set_Channel("Spectrum")
         self.write('CALC:MARK:FUNC:HARM ON')
@@ -127,9 +131,9 @@ class PNA(jaVisa):
     def Init_IQ(self):
         self.Set_Channel("IQ")
 
-    #####################################################################
+    ###########################################################################
     ### Set Methods
-    #####################################################################
+    ###########################################################################
     def Set_AttnMech(self,fMAttn):
         #self.write('INP:EATT:STAT OFF')
         self.write('INP:ATT %.0f'%fMAttn)
@@ -203,6 +207,9 @@ class PNA(jaVisa):
         #ON|OFF|1|0
         self.write('INP:GAIN:STAT %s;*WAI'%sState)
 
+    def Set_PwrThreshold(self,dBm):
+        self.write(f'SENS:ADJ:CONF:LEV:THR {dBm}')
+
     def Set_RefLevel(self,fReflevel):
         self.write('DISP:WIND:TRAC:Y:SCAL:RLEV %fdBm'%fReflevel)
 
@@ -227,19 +234,20 @@ class PNA(jaVisa):
         self.write(f':SENS:SWE:OPT {sOpt}')
        
     def Set_SweepCont(self,iON):
+        ''' 0 1 '''
         if iON == 1:
-            self.write('INIT:CONT ON')                #Continuous Sweep
+            self.write('INIT:CONT ON')                  #Continuous Sweep
         else:
-            self.write('INIT:CONT OFF')              #Single Sweep
+            self.write('INIT:CONT OFF')                 #Single Sweep
 
     def Set_SweepPoints(self,iNum):
-        self.write(':SENS:SWE:POIN %f'%iNum)      #Number of trace points
+        self.write(':SENS:SWE:POIN %f'%iNum)            #Number of trace points
 
     def Set_Trace_Avg(self,sType,trace=1):
         """LIN VID POW"""
         self.write('DISP:TRAC%d:MODE AVER'%trace)
         self.write('SENS:DET1:FUNC AVER')
-        self.write('SENS:AVER:TYPE %s'%sType)  #LIN|VID
+        self.write('SENS:AVER:TYPE %s'%sType)           #LIN|VID
         
     def Set_Trace_AvgCount(self,iAvg,trace=1):
         self.write('SENS:SWE:COUN %d'%(iAvg))
@@ -268,7 +276,6 @@ if __name__ == "__main__":
     ### this won't be run when imported
     FSWP = PNA().jav_Open("192.168.1.108")
     print(FSWP.Get_Freq())
-    FSWP.Set_FreqStart(10e3)
-    FSWP.Set_FreqStop(100e6)
+    print(FSWP.Get_FreqLock())
     FSWP.jav_ClrErr()
     del FSWP

@@ -142,6 +142,9 @@ class VSG(jaVisa):
 
     def Set_ListMode_TrigSource(self,sSource):
         """input: SING AUTO STEP ESTEP """
+        # USER5 Valid Signal A
+        # USER6 Valid SIgnal B
+        
         if 'AUTO' in sSource:
             self.write(f'SOUR1:LIST:MODE AUTO')
             self.write(f'SOUR1:LIST:TRIG:SOUR AUTO')
@@ -181,6 +184,7 @@ class VSG(jaVisa):
         self.write('SOUR:POW %f'%fPow)
 
     def Set_RFState(self,sState):
+        ''' 0 1 '''
         self.query('OUTP %s;*OPC?'%sState)
 
 

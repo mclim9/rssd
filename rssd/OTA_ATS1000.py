@@ -73,31 +73,36 @@ class OTA(OTA):
     ### OTA Set Functions
     #####################################################################
     def Set_AzimuthAngle(self,angle):
-        self.write(f'LD 1 DV')
-        self.write(f'LD 72 SF')
+        self.write(f'LD 1 DV')                  #Set Azimuth
+        self.write(f'LD 72 SF')                 #Set Speed
         self.write(f'LD {angle:.2f} DG NP GO')
 
     def Set_AzimuthSpeed(self,speed):
         #Speed: 1-72 degree/sec
-        self.write(f'LD 1 DV')
+        self.write(f'LD 1 DV')                  #Set Azimuth
         self.write(f'LD {speed} SF')
 
     def Set_AzimuthStop(self):
-        self.write(f'LD 1 DV')
+        self.write(f'LD 1 DV')                  #Set Azimuth
         self.write(f'ST')
 
+    def Set_AzimuthTrigger(self,angle):
+        self.write(f'LD 1 DV')                  #Set Azimuth
+        self.write(f'TR 1 GO')                  #Trigger enable
+        self.write(f'LD {angle} DG TR')
+
     def Set_ElevateAngle(self,angle):
-        self.write(f'LD 3 DV')
-        self.write(f'LD 10 AF')
+        self.write(f'LD 3 DV')                  #Set Arm
+        self.write(f'LD 10 AF')                 #Set Speed
         self.write(f'LD {angle:.2f} DG NP GO')
-	
+
     def Set_ElevateSpeed(self,speed):
         #Speed: 1-20 degree/sec
-        self.write(f'LD 3 DV')
+        self.write(f'LD 3 DV')                  #Set Arm
         self.write(f'LD {speed} AF')
-	
+
     def Set_ElevateStop(self):
-        self.write(f'LD 3 DV')
+        self.write(f'LD 3 DV')                  #Set Arm
         self.write(f'ST')
 
 ###############################################################################
