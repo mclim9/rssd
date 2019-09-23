@@ -1,21 +1,19 @@
 # Rohde & Schwarz SCPI Driver [![](https://travis-ci.org/mclim9/rssd.svg?branch=master)](https://pypi.org/project/rssd/) ![Versioning](https://img.shields.io/badge/calver-YY.0M.MICRO-22bfda.svg)
 
 ## Description
-
 - Example python drivers
-  - FSW, Vector Spectrum Analyzer
-  - SMW, Vector Signal Generator
+  - VSA, Vector Spectrum Analyzer
+  - VSG, Vector Signal Generator
   - NRP, Power Sensor
   - VSE, Vector Signal Explorer
-  - VST, Vectro Signal Transciever (Calls to FSW & SMW)
-  - OSP, Switch Driver
+  - VST, Vectro Signal Transciever (Calls to VSA/VSG)
+  - OSP, Switch Platform
   - NRQ, Frequency Selective Power Sensor
 
 - Example code
   - Automated test examples (see below table)
   - Instrument speed/repeatability evaluation
   - Proof of concept/Demo code
-
 
 - RSSD is open source.
   - Package APIs *may*- change.
@@ -26,7 +24,6 @@
 ## Getting Started
 
 ### Installation
-
 ```python
 python -m pip install rssd
 ```
@@ -34,7 +31,6 @@ python -m pip install rssd
 ### Running
 
 #### Method 1
-
 - Goto Example directory
   - Open command prompt and type `rssd`
   - Example directory will be printed.
@@ -53,7 +49,6 @@ python -m pip install rssd
   - Run
 
 ### Example Code
-
 FileName                | Instrumnt | Description                        |
 ------------------------|-----------|------------------------------------|
 [AAA_CommandTime](https://github.com/mclim9/rssd/blob/master/rssd/examples/)         | Any       | Time command to instrument         |
@@ -77,29 +72,25 @@ FileName                | Instrumnt | Description                        |
 
 # [Documentation](https://github.com/mclim9/rssd/wiki/)
 
-
 ## Instrument Documentation
-
 Driver     | Description | User Manual | Models
 -----------|-------------|-------------|--------------
-SMW | Vector Signal Generator   | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=smw+vector+user+manual&sort=relevance) | [SMW](https://www.rohde-schwarz.com/us/product/smw200a); [SMBV](https://www.rohde-schwarz.com/us/product/smbv100b); [SGT](https://www.rohde-schwarz.com/us/product/sgt100A); [SGS](https://www.rohde-schwarz.com/us/product/sgs100A); [SMA-B](https://www.rohde-schwarz.com/us/product/sma100b); [SMB-B](https://www.rohde-schwarz.com/us/product/smb100b); [SMF](https://www.rohde-schwarz.com/us/product/smf100a) |
-FSW | Vector Signal Analyzer    | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=FSW+user+manual&sort=relevance) | [FSW](https://www.rohde-schwarz.com/us/product/fsw); [FSWP](https://www.rohde-schwarz.com/us/product/fswp); [FSVA](https://www.rohde-schwarz.com/us/product/fsva); [FPL](https://www.rohde-schwarz.com/us/product/fpl1000);
+VSG | Vector Signal Generator   | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=smw+vector+user+manual&sort=relevance) | [SMW](https://www.rohde-schwarz.com/us/product/smw200a); [SMBV](https://www.rohde-schwarz.com/us/product/smbv100b); [SGT](https://www.rohde-schwarz.com/us/product/sgt100A); [SGS](https://www.rohde-schwarz.com/us/product/sgs100A); [SMA-B](https://www.rohde-schwarz.com/us/product/sma100b); [SMB-B](https://www.rohde-schwarz.com/us/product/smb100b); [SMF](https://www.rohde-schwarz.com/us/product/smf100a) |
+VSA | Vector Signal Analyzer    | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=FSW+user+manual&sort=relevance) | [FSW](https://www.rohde-schwarz.com/us/product/fsw); [FSWP](https://www.rohde-schwarz.com/us/product/fswp); [FSVA](https://www.rohde-schwarz.com/us/product/fsva); [FPL](https://www.rohde-schwarz.com/us/product/fpl1000);
 VSE | Vector Analysis Software  | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=vse+base+user+manual) | [VSE](https://www.rohde-schwarz.com/us/product/vse)
-CMW | Basestation Emulator      | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=cmw+user+manual) | [CMW500](https://www.rohde-schwarz.com/us/product/CMW500); [CMW100](https://www.rohde-schwarz.com/us/product/CMW100); [CMP200](https://www.rohde-schwarz.com/us/product/CMP200)
-NRP | Three Path Power Sensor   | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=nrp_s_sn+user+manual) | [NRP](https://www.rohde-schwarz.com/us/product/nrp_s_sn); [NRPM](https://www.rohde-schwarz.com/us/product/nrpm)
+RCT | Radio Comm Tester         | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=cmw+user+manual) | [CMW500](https://www.rohde-schwarz.com/us/product/CMW500); [CMW100](https://www.rohde-schwarz.com/us/product/CMW100); [CMP200](https://www.rohde-schwarz.com/us/product/CMP200)
+NRP | Power Sensor   | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=nrp_s_sn+user+manual) | [NRP](https://www.rohde-schwarz.com/us/product/nrp_s_sn); [NRPM](https://www.rohde-schwarz.com/us/product/nrpm)
 NRQ | Freq Selective Pwr Sensor | [User Manual](https://www.rohde-schwarz.com/us/manual/nrq6/) | [NRQ](https://www.rohde-schwarz.com/us/product/nrq6)
 OSP | Switch Matrix             | [User Manual](https://www.rohde-schwarz.com/us/manual/osp/) | [OPS1xx](https://www.rohde-schwarz.com/us/product/osp); [OPS2xx](https://www.rohde-schwarz.com/us/product/osp-n)
 VNA | Network Analyzer          | [User Manual](https://www.rohde-schwarz.com/us/manual/zva/) | [ZVA](https://www.rohde-schwarz.com/us/product/zva); [ZNA](https://www.rohde-schwarz.com/us/product/zna); [ZNB](https://www.rohde-schwarz.com/us/product/ZNB)
-[N/A] | Digital Oscillocope       | [User Manual](https://www.rohde-schwarz.com/us/manual/rtp/) | [RTP](https://www.rohde-schwarz.com/us/product/RTP); [RTO](https://www.rohde-schwarz.com/us/product/RTO);
+DSO | Digital Oscillocope       | [User Manual](https://www.rohde-schwarz.com/us/manual/rtp/) | [RTP](https://www.rohde-schwarz.com/us/product/RTP); [RTO](https://www.rohde-schwarz.com/us/product/RTO);
 OTA | Radiated Chambers         | [User Manual](https://www.rohde-schwarz.com/us/manual/ATS1000/) |[ATS800](https://www.rohde-schwarz.com/us/product/ATS800); [ATS1000](https://www.rohde-schwarz.com/us/product/ATS1000); [ATS1800](https://www.rohde-schwarz.com/us/product/ATS1800); [CMQ](https://www.rohde-schwarz.com/us/product/CMQ100); [DST200](https://www.rohde-schwarz.com/us/product/DST200); [TS7124](https://www.rohde-schwarz.com/us/product/ts7124)
 
 # Project
-
 - Code Repository: [GitHub](https://github.com/mclim9/rssd)
 - Author: Martin C Lim
 - License: This project is licensed under the R&S License for Royalty-Free Products- see the [LICENSE](LICENSE.txt) file for details
 
 ## Acknowledgments
-
 - Thanx to [Nick Lalic](https://pypi.org/project/rohdeschwarz/) for all his help.
 - [Markdown reference](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
