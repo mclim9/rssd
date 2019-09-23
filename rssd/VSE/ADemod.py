@@ -4,7 +4,7 @@
 ### Purpose : Vector Signal Explorer Analog Demod Functions
 ### Author  : Martin C Lim
 ### Date    : 2018.04.27
-from rssd.VSE_Common import VSE
+from rssd.VSE.Common import VSE
 
 class VSE(VSE):
     """ Rohde & Schwarz Vector Signal Explorer Analog Demod Object """

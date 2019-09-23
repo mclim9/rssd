@@ -23,8 +23,8 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
-    def test_CMW_GPRF(self):
-        from rssd.CMW_GPRF import BSE               #pylint:disable=E0611,E0401
+    def test_RCT_GPRF(self):
+        from rssd.RCT.GPRF import BSE               #pylint:disable=E0611,E0401
         self.CMW = BSE()
         self.assertEqual(self.CMW.Model,"CMW-GPRF")
         
@@ -53,7 +53,7 @@ class TestGeneral(unittest.TestCase):
         self.assertEqual(self.FSW.Model,"FSW")
 
     def test_FSW_NoiseFigure(self):
-        from rssd.FSW_NoiseFigure_K30 import VSA   #pylint:disable=E0611,E0401
+        from rssd.FSW_NoiseFigure_K30 import VSA    #pylint:disable=E0611,E0401
         self.FSW = VSA()
         self.assertEqual(self.FSW.Model,"FSW")
 
@@ -68,17 +68,17 @@ class TestGeneral(unittest.TestCase):
         self.assertEqual(self.FSW.Model,"FSW")
 
     def test_NRP_Common(self):
-        from rssd.NRP_Common import PMr             #pylint:disable=E0611,E0401
+        from rssd.NRP.Common import PMr             #pylint:disable=E0611,E0401
         self.NRP = PMr()
         self.assertEqual(self.NRP.Model,"NRP")
 
     def test_NRQ_Common(self):
-        from rssd.NRQ_Common import NRQ             #pylint:disable=E0611,E0401
+        from rssd.NRQ.Common import NRQ             #pylint:disable=E0611,E0401
         self.NRQ = NRQ()
         self.assertEqual(self.NRQ.Model,"NRQ")
 
     def test_OSP_Common(self):
-        from rssd.OSP_Common import OSP             #pylint:disable=E0611,E0401
+        from rssd.OSP.Common import OSP             #pylint:disable=E0611,E0401
         self.OSP = OSP()
         self.assertEqual(self.OSP.Model,"OSP1x0")
 
@@ -103,22 +103,22 @@ class TestGeneral(unittest.TestCase):
         self.assertEqual(self.SMW.Model,"SMW")
 
     def test_VNA_Common(self):
-        from rssd.VNA_Common import VNA             #pylint:disable=E0611,E0401
+        from rssd.VNA.Common import VNA             #pylint:disable=E0611,E0401
         self.VNA = VNA()        
         self.assertEqual(self.VNA.Model,"VNA")
 
     def test_VSE_ADemod(self):
-        from rssd.VSE_ADemod import VSE             #pylint:disable=E0611,E0401
+        from rssd.VSE.ADemod import VSE             #pylint:disable=E0611,E0401
         self.VSE = VSE()        
         self.assertEqual(self.VSE.Model,"VSE")
 
     def test_VSE_Common(self):
-        from rssd.VSE_Common import VSE             #pylint:disable=E0611,E0401
+        from rssd.VSE.Common import VSE             #pylint:disable=E0611,E0401
         self.VSE = VSE()        
         self.assertEqual(self.VSE.Model,"VSE")
 
     def test_VSE_K96(self):
-        from rssd.VSE_Common import VSE             #pylint:disable=E0611,E0401
+        from rssd.VSE.K96 import VSE                #pylint:disable=E0611,E0401
         self.VSE = VSE()
         self.assertEqual(self.VSE.Model,"VSE")
 

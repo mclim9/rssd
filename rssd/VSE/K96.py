@@ -1,14 +1,13 @@
-﻿# -*- coding: future_fstrings -*-
-###############################################################################
+﻿###############################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ### Purpose: Vector Signal Explorer K96 Functions
 ### Author : Martin C Lim
 ### Date   : 2018.04.27
 ###############################################################################
-import rssd.VSE_Common
+from rssd.VSE.Common import VSE
 import time            #EVM Wait
 
-class VSE(VSE_Common.VSE):
+class VSE(VSE):
     """ Rohde & Schwarz VSE K96 Object """
     def __init__(self):
         super(VSE, self).__init__()
