@@ -23,49 +23,9 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
-    def test_RCT_GPRF(self):
-        from rssd.RCT.GPRF import BSE               #pylint:disable=E0611,E0401
-        self.CMW = BSE()
-        self.assertEqual(self.CMW.Model,"CMW-GPRF")
-        
     def test_FileIO(self):
         from rssd.FileIO import FileIO              #pylint:disable=E0611,E0401
         self.FileIO = FileIO()
-
-    def test_FSW_ADemod(self):
-        from rssd.VSA.ADemod_K7 import VSA          #pylint:disable=E0611,E0401
-        self.FSW = VSA()
-        self.assertEqual(self.FSW.Model,"FSW")
-
-    def test_FSW_Common(self):
-        from rssd.VSA.Common import VSA             #pylint:disable=E0611,E0401
-        self.FSW = VSA()
-        self.assertEqual(self.FSW.Model,"FSW")
-
-    def test_FSW_LTE(self):
-        from rssd.VSA.LTE_K100 import VSA           #pylint:disable=E0611,E0401
-        self.FSW = VSA()
-        self.assertEqual(self.FSW.Model,"FSW")
-
-    def test_FSW_NoiseFigure(self):
-        from rssd.VSA.NoiseFigure_K30 import VSA    #pylint:disable=E0611,E0401
-        self.FSW = VSA()
-        self.assertEqual(self.FSW.Model,"FSW")
-
-    def test_FSW_5GNR(self):
-        from rssd.VSA.NR5G_K144 import VSA          #pylint:disable=E0611,E0401
-        self.FSW = VSA()
-        self.assertEqual(self.FSW.Model,"FSW")
-
-    def test_FSW_Transient(self):
-        from rssd.VSA.Transient_K60 import VSA      #pylint:disable=E0611,E0401
-        self.FSW = VSA()
-        self.assertEqual(self.FSW.Model,"FSW")
-
-    def test_FSW_WLAN(self):
-        from rssd.VSA.WLAN_K91 import VSA           #pylint:disable=E0611,E0401
-        self.FSW = VSA()
-        self.assertEqual(self.FSW.Model,"FSW")
 
     def test_NRP_Common(self):
         from rssd.NRP.Common import PMr             #pylint:disable=E0611,E0401
@@ -82,30 +42,70 @@ class TestGeneral(unittest.TestCase):
         self.OSP = OSP()
         self.assertEqual(self.OSP.Model,"OSP1x0")
 
-    def test_SMW_Common(self):
-        from rssd.VSG.Common import VSG             #pylint:disable=E0611,E0401
-        self.SMW = VSG()        
-        self.assertEqual(self.SMW.Model,"SMW")
+    def test_OTA_Common(self):
+        from rssd.OTA.Common import OTA             #pylint:disable=E0611,E0401
+        self.OTA = OTA()
+        self.assertEqual(self.OTA.Model,"OTA")
 
-    def test_SMW_LTE_K55(self):
-        from rssd.VSG.LTE_K55 import VSG            #pylint:disable=E0611,E0401
-        self.SMW = VSG()        
-        self.assertEqual(self.SMW.Model,"SMW")
+    def test_OTA_ATS1000(self):
+        from rssd.OTA.ATS1000 import OTA             #pylint:disable=E0611,E0401
+        self.OTA = OTA()
+        self.assertEqual(self.OTA.Model,"ATS1000")
 
-    def test_SMW_5GNR(self):
-        from rssd.VSG.NR5G_K144 import VSG          #pylint:disable=E0611,E0401
-        self.SMW = VSG()
-        self.assertEqual(self.SMW.Model,"SMW")
+    def test_OTA_ATS1800(self):
+        from rssd.OTA.ATS1800 import OTA             #pylint:disable=E0611,E0401
+        self.OTA = OTA()
+        self.assertEqual(self.OTA.Model,"ATS1800")
 
-    def test_SMW_WLAN_K54(self):
-        from rssd.VSG.WLAN_K54 import VSG           #pylint:disable=E0611,E0401
-        self.SMW = VSG()        
-        self.assertEqual(self.SMW.Model,"SMW")
+    def test_PNA_Common(self):
+        from rssd.PNA.Common import PNA             #pylint:disable=E0611,E0401
+        self.PNA = PNA()
+        self.assertEqual(self.PNA.Model,"FSWP")
+
+    def test_RCT_GPRF(self):
+        from rssd.RCT.GPRF import BSE               #pylint:disable=E0611,E0401
+        self.CMW = BSE()
+        self.assertEqual(self.CMW.Model,"CMW-GPRF")
 
     def test_VNA_Common(self):
         from rssd.VNA.Common import VNA             #pylint:disable=E0611,E0401
         self.VNA = VNA()        
         self.assertEqual(self.VNA.Model,"VNA")
+
+    def test_VSA_ADemod(self):
+        from rssd.VSA.ADemod_K7 import VSA          #pylint:disable=E0611,E0401
+        self.FSW = VSA()
+        self.assertEqual(self.FSW.Model,"FSW")
+
+    def test_VSA_Common(self):
+        from rssd.VSA.Common import VSA             #pylint:disable=E0611,E0401
+        self.FSW = VSA()
+        self.assertEqual(self.FSW.Model,"FSW")
+
+    def test_VSA_LTE(self):
+        from rssd.VSA.LTE_K100 import VSA           #pylint:disable=E0611,E0401
+        self.FSW = VSA()
+        self.assertEqual(self.FSW.Model,"FSW")
+
+    def test_VSA_NoiseFigure(self):
+        from rssd.VSA.NoiseFigure_K30 import VSA    #pylint:disable=E0611,E0401
+        self.FSW = VSA()
+        self.assertEqual(self.FSW.Model,"FSW")
+
+    def test_VSA_5GNR(self):
+        from rssd.VSA.NR5G_K144 import VSA          #pylint:disable=E0611,E0401
+        self.FSW = VSA()
+        self.assertEqual(self.FSW.Model,"FSW")
+
+    def test_VSA_Transient(self):
+        from rssd.VSA.Transient_K60 import VSA      #pylint:disable=E0611,E0401
+        self.FSW = VSA()
+        self.assertEqual(self.FSW.Model,"FSW")
+
+    def test_VSA_WLAN(self):
+        from rssd.VSA.WLAN_K91 import VSA           #pylint:disable=E0611,E0401
+        self.FSW = VSA()
+        self.assertEqual(self.FSW.Model,"FSW")
 
     def test_VSE_ADemod(self):
         from rssd.VSE.ADemod import VSE             #pylint:disable=E0611,E0401
@@ -121,6 +121,26 @@ class TestGeneral(unittest.TestCase):
         from rssd.VSE.K96 import VSE                #pylint:disable=E0611,E0401
         self.VSE = VSE()
         self.assertEqual(self.VSE.Model,"VSE")
+
+    def test_VSG_Common(self):
+        from rssd.VSG.Common import VSG             #pylint:disable=E0611,E0401
+        self.SMW = VSG()        
+        self.assertEqual(self.SMW.Model,"SMW")
+
+    def test_VSG_LTE_K55(self):
+        from rssd.VSG.LTE_K55 import VSG            #pylint:disable=E0611,E0401
+        self.SMW = VSG()        
+        self.assertEqual(self.SMW.Model,"SMW")
+
+    def test_VSG_5GNR(self):
+        from rssd.VSG.NR5G_K144 import VSG          #pylint:disable=E0611,E0401
+        self.SMW = VSG()
+        self.assertEqual(self.SMW.Model,"SMW")
+
+    def test_VSG_WLAN_K54(self):
+        from rssd.VSG.WLAN_K54 import VSG           #pylint:disable=E0611,E0401
+        self.SMW = VSG()        
+        self.assertEqual(self.SMW.Model,"SMW")
 
     def test_VST_Common(self):
         from rssd.VST.Common import VST             #pylint:disable=E0611,E0401

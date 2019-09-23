@@ -18,16 +18,13 @@ MeasTim = 500e-6
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from rssd.FSW_Common    import VSA
-from rssd.SMW_Common    import VSG
-from rssd.VSE_K96       import VSE
+from rssd.VSA.Common    import VSA
+from rssd.SMW.Common    import VSG
 from rssd.FileIO        import FileIO
-from datetime           import datetime
 
 OFile = FileIO().makeFile(__file__)
 SMW = VSG().jav_Open(SMW_IP,OFile)  #Create SMW Object
 FSW = VSA().jav_Open(FSW_IP,OFile)  #Create FSW Object
-VSE = VSE().jav_Open(VSE_IP,OFile)  #Create FSW Object
 
 ##########################################################
 ### Code Start
@@ -59,5 +56,4 @@ for i in range(50):
 ##########################################################
 SMW.jav_Close()
 FSW.jav_Close()
-VSE.jav_Close()
 OFile.close()

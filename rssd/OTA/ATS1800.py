@@ -21,13 +21,14 @@
 ### OTA:    ATS1500     Az over El;
 ###         ATS1800     Az over El;
 ###############################################################################
-from rssd.OTA_Common     import OTA           #pylint: disable=E0611,E0401
+from rssd.OTA.Common     import OTA           #pylint: disable=E0611,E0401
 import time
 
 class OTA(OTA):
     """ Rohde & Schwarz ATS1800 Object """
     def __init__(self):
         super(OTA, self).__init__()
+        self.Model = "ATS1800"
 
     #####################################################################
     ### OTA Get Functions

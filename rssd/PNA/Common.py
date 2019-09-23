@@ -24,8 +24,8 @@ class PNA(jaVisa):
     """ Rohde & Schwarz Vector Signal Analyzer Object """
     def __init__(self):
         super(PNA, self).__init__()
-        self.Model = "FSW"
-        
+        self.Model = "FSWP"
+
     ############################################################################
     ### FSW Get
     ############################################################################

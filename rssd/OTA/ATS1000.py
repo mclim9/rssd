@@ -20,13 +20,14 @@
 ###         Elevation:  Φφ; Phi; ATS1000 Arm; 
 ### OTA:    ATS1000     Great Circle Cut; Turntable & Elevation Arm
 ###############################################################################
-from rssd.OTA_Common     import OTA           #pylint: disable=E0611,E0401
+from rssd.OTA.Common     import OTA           #pylint: disable=E0611,E0401
 import time
 
 class OTA(OTA):
     """ Rohde & Schwarz ATS1000 Object """
     def __init__(self):
         super(OTA, self).__init__()
+        self.Model = "ATS1000"
 
     #####################################################################
     ### OTA Get Functions

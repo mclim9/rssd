@@ -26,8 +26,6 @@ instr.write(":SENS:SWE:TIME 0.00251")
 
 instr.write(":SYST:PASS '894129'")              # Service Mode Password
 instr.query("DIAG:SERV:SFUN? '2.0.46.5.1'")     # Service Mode to activate
-#instr.query("DIAG:SERV:SFUN? '2.0.46.33'")     # Clear lookup table
-#2.0.46.3.Mode.Reserve_cdB.InputLevel_Preamp15_RF.InputLevel_Preamp30_RF.MaxMixLevel_Gain0_RF.MaxMixLevel_Gain15_RF.MaxMixLevel_Gain30_RF
 instr.query("DIAG:SERV:SFUN? '2.0.46.3.1.2.-10.-31.0.-20.-35'")
 
 tick = timeit.default_timer()
