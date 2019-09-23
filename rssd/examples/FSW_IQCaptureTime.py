@@ -17,7 +17,7 @@ MeasTim = 500e-6
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from rssd.FSW_Common    import VSA
+from rssd.VSA.Common    import VSA
 from rssd.FileIO        import FileIO
 from datetime          import datetime
 

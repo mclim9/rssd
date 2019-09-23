@@ -17,7 +17,7 @@ numMeas  = 10
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from rssd.FSW_5GNR_K144    import VSA
+from rssd.VSA.NR5G_K144    import VSA
 from datetime              import datetime
 from rssd.FileIO           import FileIO
 

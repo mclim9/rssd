@@ -15,7 +15,7 @@ ChBW     = 100
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from rssd.SMW_Common    import VSG
+from rssd.VSG.Common    import VSG
 from rssd.FileIO        import FileIO
 
 SMW = VSG().jav_Open(SMW_IP,OFile)  #Create SMW Object

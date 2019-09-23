@@ -9,8 +9,8 @@
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from rssd.SMW_WLAN_K54  import VSG  #pylint: disable=E0611,E0401
-from rssd.FSW_WLAN_K91  import VSA  #pylint: disable=E0611,E0401
+from rssd.VSG.WLAN_K54  import VSG  #pylint: disable=E0611,E0401
+from rssd.VSA.WLAN_K91  import VSA  #pylint: disable=E0611,E0401
 
 class VST(object):
     """ Rohde & Schwarz Vector Signal Transciever 802.11 Object """

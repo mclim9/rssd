@@ -25,8 +25,8 @@ SMW_IP = '192.168.1.114'
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from rssd.FSW_ADemod_K7 import VSA
-from rssd.SMW_Common    import VSG
+from rssd.VSA.ADemod_K7 import VSA
+from rssd.VSG.Common    import VSG
 from rssd.FileIO        import FileIO
 import time
 

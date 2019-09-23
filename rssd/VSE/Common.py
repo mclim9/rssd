@@ -8,7 +8,7 @@
 ### Descrip: Add VSE functionality to FSW_Common base code
 ### Strctr : pyvisa-->yavisa-->FSW_Common-->VSE_Common.py
 #####################################################################
-from rssd.FSW_Common import VSA
+from rssd.VSA.Common import VSA
 
 class VSE(VSA):
     """ Rohde & Schwarz Vector Signal Explorer Object """

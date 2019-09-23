@@ -22,7 +22,7 @@ SweepTime   = 0.002
 ##########################################################
 from datetime               import datetime     #pylint: disable=E0611,E0401
 from rssd.FileIO            import FileIO       #pylint: disable=E0611,E0401
-from rssd.VST_WLAN          import VST          #pylint: disable=E0611,E0401
+from rssd.VST.WLAN          import VST          #pylint: disable=E0611,E0401
 import time
 OFile = FileIO().makeFile(__file__)
 

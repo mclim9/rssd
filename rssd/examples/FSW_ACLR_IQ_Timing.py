@@ -32,7 +32,7 @@ meth = {
 ##########################################################
 ### Code Overhead
 ##########################################################
-from rssd.FSW_Common        import VSA              #pylint: disable=E0611,E0401
+from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
 from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
 from datetime               import datetime         
 from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401

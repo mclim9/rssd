@@ -7,7 +7,7 @@
 ### Date   : 2018.02.01
 ### Requird: python -m pip install rssd
 #####################################################################
-from rssd.SMW_Common import VSG             #pylint: disable=E0611,E0401
+from rssd.VSG.Common import VSG             #pylint: disable=E0611,E0401
 
 class VSG(VSG):                             #pylint: disable=E0102
     """ Rohde & Schwarz Vector Signal Generator 5GNR Object """

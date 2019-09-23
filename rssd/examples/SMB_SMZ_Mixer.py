@@ -24,7 +24,7 @@ Mixer = 1
 ##########################################################
 ### Code Start
 ##########################################################
-from rssd.SMW_Common import VSG
+from rssd.VSG.Common import VSG
 from rssd.FileIO     import FileIO
 import time
 

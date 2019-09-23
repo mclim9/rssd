@@ -19,7 +19,7 @@
 ### 802.11ac OFDM     5.4 MixM VHT 160 MIMO 1750Mbps
 ### 802.11ax OFDM 2.4 5.4 MixM  HE 160 MIMO   11Gbps
 #####################################################################
-from rssd.SMW_Common import VSG     #pylint: disable=E0611,E0401
+from rssd.VSG.Common import VSG     #pylint: disable=E0611,E0401
 
 class VSG(VSG):                     #pylint: disable=E0102
     """ Rohde & Schwarz Vector Signal Generator 802.11 Object """

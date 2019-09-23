@@ -1,9 +1,8 @@
-# # -*- coding: future_fstrings -*-
-# ###############################################################################
-### Rohde & Schwarz driver Test
-### Purpose: self.FSW_common test
+###############################################################################
+### Rohde & Schwarz Driver Test
+### Purpose: self.SMW_Common test
 ### Author:  mclim
-### Date:    2018.05.07
+### Date:    2018.06.13
 ###              _   ___        __  _____         _   
 ###             | | | \ \      / / |_   _|__  ___| |_ 
 ###             | |_| |\ \ /\ / /    | |/ _ \/ __| __|
@@ -13,55 +12,48 @@
 ###############################################################################
 ### User Entry
 ###############################################################################
-host = '192.168.1.109'                          #Get local machine name
+host = '192.168.1.114'              #Get local machine name
 
 ###############################################################################
 ### Code Start
 ###############################################################################
-from rssd.FSW_Common import VSA                 # pylint: disable=E0611,E0401
+from rssd.VSG.Common import VSG
 import unittest
 
 class TestGeneral(unittest.TestCase):
-    def setUp(self):                            #Run before each test
-        self.FSW = VSA()
+    def setUp(self):                      #run before each test
+        self.SMW = VSG()
         try:
-            self.FSW.jav_Open(host,prnt=0)
-            #self.FSW.jav_Reset()
-            self.FSW.jav_ClrErr()
-            self.FSW.dLastErr = ""
+            self.SMW.jav_Open(host,prnt=0)
+            self.SMW.jav_Reset()
+            self.SMW.jav_ClrErr()
+            self.SMW.dLastErr = ""
         except:
-            self.assertTrue(1)                  #FAIL
+            self.assertTrue(1)
 
     def tearDown(self):                         #Run after each test
-        self.FSW.jav_Close()
+        self.SMW.jav_Close()
 
 ###############################################################################
 ### <Test>
 ###############################################################################
-    def test_FSW_Connect(self):
-        self.FSW.jav_IDN(prnt=0)
-        self.assertEqual(self.FSW.Make,"Rohde&Schwarz")
+    def test_SMW_Connect(self):
+        self.SMW.jav_IDN(prnt=0)
+        self.assertEqual(self.SMW.Make,"Rohde&Schwarz")
 
-    def test_FSW_CommonSettings(self):
-        self.FSW.Init_ACLR()
-        self.FSW.Set_Freq(1e6)
-        self.FSW.Set_RefLevel(10)
-        self.FSW.Set_ResBW(1e6)
-        self.FSW.Set_VidBW(1e6)
-        self.FSW.Set_Span(100e6)
-        self.FSW.Get_AttnMech()
-        self.FSW.Get_RefLevel()
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
+    def test_SMW_Freq(self):
+        frq = 1e6
+        self.SMW.Set_Freq(frq)
+        rdFrq = self.SMW.Get_Freq()
+        self.assertEqual(self.SMW.jav_Error()[0],'0')
+        self.assertEqual(frq,rdFrq)
 
-    def test_FSW_Marker(self):
-        self.FSW.Set_Mkr_Peak()
-        asdf = self.FSW.Get_Mkr_Freq()
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
-
-    def test_FSW_ACLR(self):
-        self.FSW.Get_ACLR()
-        #var = input("Please enter something: ")
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
+    def test_SMW_Pwr(self):
+        pwr = -10
+        self.SMW.Set_RFPwr(pwr)
+        rdPwr = self.SMW.Get_PowerRMS()
+        self.assertEqual(self.SMW.jav_Error()[0],'0')
+        self.assertEqual(pwr,rdPwr)
 
 ###############################################################################
 ### </Test>

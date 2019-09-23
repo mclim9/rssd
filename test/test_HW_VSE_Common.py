@@ -18,7 +18,7 @@ port = 5025                                     #Reserve a port for your service
 ###############################################################################
 ### Code Start
 ###############################################################################
-from rssd.VSE_Common import VSE
+from rssd.VSE.Common import VSE
 import unittest
 
 class TestGeneral(unittest.TestCase):

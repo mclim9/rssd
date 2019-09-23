@@ -10,8 +10,8 @@
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from rssd.SMW_Common import VSG  #pylint: disable=E0611,E0401
-from rssd.FSW_Common import VSA  #pylint: disable=E0611,E0401
+from rssd.VSG.Common import VSG  #pylint: disable=E0611,E0401
+from rssd.VSA.Common import VSA  #pylint: disable=E0611,E0401
 
 class VST(object):
     """ Rohde & Schwarz Vector Signal Transceiver Object """

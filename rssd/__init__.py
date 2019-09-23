@@ -5,12 +5,12 @@ __all__ = ['BSE', 'FileIO', 'VSA', 'IQ', 'PMr', 'NRQ', 'OSP', 'VSG', 'VNA', 'VSE
 
 from .RCT.GPRF    import BSE
 from .FileIO      import FileIO
-from .FSW_Common  import VSA
 from .iqdata      import IQ
 from .NRP.Common  import PMr
 from .NRQ.Common  import NRQ
 from .OSP.Common  import OSP
-from .SMW_Common  import VSG
+from .VSA.Common  import VSA
+from .VSG.Common  import VSG
 from .VNA.Common  import VNA
 from .VSE.Common  import VSE
 from .yaVISA      import jaVisa

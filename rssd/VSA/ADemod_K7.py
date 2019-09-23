@@ -3,7 +3,7 @@
 ### Purpose : Vector Signal Explorer Analog Demod Functions
 ### Author  : Martin C Lim
 ### Date    : 2018.04.27
-from rssd.FSW_Common import VSA
+from rssd.VSA.Common import VSA
 
 class VSA(VSA):
     """ Rohde & Schwarz Vector Signal Analyzer Analog Demod Object """

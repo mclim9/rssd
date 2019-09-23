@@ -24,7 +24,7 @@ VSA_IP  = '192.168.1.108'
 ##########################################################
 ### Code Overhead
 ##########################################################
-from rssd.FSW_Common        import VSA              #pylint: disable=E0611,E0401
+from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
 from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
 VSA = VSA().jav_Open(VSA_IP)                  #Create VSA Object
 

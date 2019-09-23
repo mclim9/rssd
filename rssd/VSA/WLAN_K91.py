@@ -16,7 +16,7 @@
 ### 802.11ac OFDM     5.4 MixM  VHT 160 MIMO 1750Mbps
 ### 802.11ax OFDM 2.4 5.4 MixM   HE 160 MIMO   11Gbps
 #####################################################################
-from rssd.FSW_Common import VSA        #pylint: disable=E0611,E0401
+from rssd.VSA.Common import VSA        #pylint: disable=E0611,E0401
 
 class VSA(VSA):                        #pylint: disable=E0102
     """ Rohde & Schwarz Vector Signal Analyzer 802.11 Object """

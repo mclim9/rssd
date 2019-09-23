@@ -5,7 +5,7 @@
 ### Author  : Kevin Kishimoto
 ### Date    : 2018.10.01
 ###############################################################################
-from rssd.FSW_Common import VSA
+from rssd.VSA.Common import VSA
 
 class VSA(VSA):
     """ Rohde & Schwarz Vector Signal Analyzer Noise Figure Object """

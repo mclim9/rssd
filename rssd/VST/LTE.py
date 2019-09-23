@@ -10,8 +10,8 @@
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from rssd.SMW_LTE_K55    import VSG  #pylint: disable=E0611,E0401
-from rssd.FSW_LTE_K100   import VSA  #pylint: disable=E0611,E0401
+from rssd.VSG.LTE_K55    import VSG  #pylint: disable=E0611,E0401
+from rssd.VSA.LTE_K100   import VSA  #pylint: disable=E0611,E0401
 
 class VST(object):
     def __init__(self):

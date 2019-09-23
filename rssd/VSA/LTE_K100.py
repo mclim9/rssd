@@ -7,7 +7,7 @@
 ### Date:    2018.04.03
 ### Requird: python -m pip install pyvisa
 #####################################################################
-from rssd.FSW_Common    import VSA          #pylint: disable=E0611,E0401
+from rssd.VSA.Common    import VSA          #pylint: disable=E0611,E0401
 from datetime           import datetime     #pylint: disable=E0611,E0401
 
 class VSA(VSA):                        #pylint: disable=E0102

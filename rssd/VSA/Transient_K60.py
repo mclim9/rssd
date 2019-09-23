@@ -6,7 +6,7 @@ from __future__ import print_function
 ### Purpose : Vector Signal Analyzer Transient Analysis Functions
 ### Author  : Martin C Lim
 ### Date    : 2018.08.14
-from rssd.FSW_Common import VSA
+from rssd.VSA.Common import VSA
 
 class VSA(VSA):
     """ Rohde & Schwarz Vector Signal Analyzer Transient Object """

@@ -1,7 +1,7 @@
 # -*- coding: future_fstrings -*-
 ###############################################################################
 ### Rohde & Schwarz Automation for demonstration use.
-### Purpose : CMW100 General Purpose RF Functions
+### Purpose : Radio Communication Tester(RCT) General Purpose RF (GPRF) Functions
 ### Author  : Martin C Lim
 ### Date    : 2018.05.29
 ###############################################################################
