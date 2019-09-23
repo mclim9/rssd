@@ -34,7 +34,7 @@ Path = RF1ThruSA
 ########################################################################
 ### Code Start
 ########################################################################
-from rssd.OSP_Common import OSP
+from rssd.OSP.Common import OSP
 Rack3 = OSP()
 Rack3.jav_openvisa('TCPIP0::192.168.1.150::INSTR')
 #Rack3.Set_SW(11,49,0)

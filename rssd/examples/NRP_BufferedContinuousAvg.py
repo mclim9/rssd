@@ -15,7 +15,7 @@ numMeas = 17
 ##########################################################
 ### Code Start
 ##########################################################
-from rssd.NRP_Common import PMr 
+from rssd.NRP.Common import PMr 
 
 NRPxxS = PMr()
 NRPxxS.jav_openvisa('USB0::0x0AAD::0x0196::900105::INSTR')

@@ -32,7 +32,7 @@ MeasTim = 500e-6
 ##########################################################
 from rssd.SMW_Common import VSG
 from rssd.FSW_Common import VSA
-from rssd.VSE_K96    import VSE
+from rssd.VSE.K96    import VSE
 import rssd.FileIO
 import time
 

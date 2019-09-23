@@ -16,7 +16,7 @@ SwpPt       = 601
 ###############################################################################
 ### Code Overhead: Import and create objects
 ###############################################################################
-from rssd.VNA_Common    import VNA
+from rssd.VNA.Common    import VNA
 from rssd.FileIO        import FileIO
 
 OFile = FileIO().makeFile(__file__)

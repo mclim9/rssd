@@ -20,7 +20,7 @@ numMeas     = 1
 from datetime               import datetime     #pylint: disable=E0611,E0401
 from rssd.FileIO            import FileIO       #pylint: disable=E0611,E0401
 from rssd.SMW_Common        import VSG          #pylint: disable=E0611,E0401
-from rssd.PNA_Common        import PNA          #pylint: disable=E0611,E0401
+from rssd.PNA.Common        import PNA          #pylint: disable=E0611,E0401
 import time
 
 OFile = FileIO().makeFile(__file__)
