@@ -11,8 +11,8 @@ import os
 import tkMessageBox
 
 BaseDir = os.path.dirname(os.path.realpath(__file__))
-OutFile = BaseDir + "\\data\\" + __file__
-InpFile = BaseDir + "\\data\\" + __file__ + ".csv"
+OutFile = BaseDir +  __file__
+InpFile = BaseDir +  __file__ + ".csv"
 
 visa = '127.0.0.1'                    #Get local machine name
 repeat = 1
@@ -33,9 +33,9 @@ def CMW_Set(freq, pwr):
 ##########################################################
 ### Code Start
 ##########################################################
-from rssd.FileIO      import FileIO
-from rssd.CMW_GPRF    import BSE
-from datetime          import datetime
+from rssd.FileIO        import FileIO
+from rssd.RCT.GPRF      import BSE
+from datetime           import datetime
 
 f = FileIO()
 f.debug = 0 

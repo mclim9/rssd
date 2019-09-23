@@ -12,7 +12,7 @@ VSE_IP = '127.0.0.1'               #Get local machine name
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-from rssd.VSE_ADemod import VSE
+from rssd.VSE.ADemod import VSE
 VSE = VSE()
 VSE.jav_Open(VSE_IP) 
 #VSE.logSCPI()
