@@ -122,23 +122,23 @@ class TestGeneral(unittest.TestCase):
         self.VSE = VSE()
         self.assertEqual(self.VSE.Model,"VSE")
 
-    def test_VST_5GNR(self):
-        from rssd.VST_5GNR_K144 import VST          #pylint:disable=E0611,E0401
-        self.VST = VST()
-        self.assertEqual(self.VST.NR_TF,'OFF')
-
     def test_VST_Common(self):
-        from rssd.VST_Common import VST             #pylint:disable=E0611,E0401
+        from rssd.VST.Common import VST             #pylint:disable=E0611,E0401
         self.VST = VST()
         self.assertEqual(self.VST.Freq,19e9)
 
     def test_VST_LTE(self):
-        from rssd.VST_LTE import VST                #pylint:disable=E0611,E0401
+        from rssd.VST.LTE import VST                #pylint:disable=E0611,E0401
         self.VST = VST()
         self.assertEqual(self.VST.LTE_CC,1)
 
+    def test_VST_NR5G(self):
+        from rssd.VST.NR5G_K144 import VST          #pylint:disable=E0611,E0401
+        self.VST = VST()
+        self.assertEqual(self.VST.NR_TF,'OFF')
+
     def test_VST_WLAN(self):
-        from rssd.VST_WLAN import VST               #pylint:disable=E0611,E0401
+        from rssd.VST.WLAN import VST               #pylint:disable=E0611,E0401
         self.VST = VST()
         self.assertEqual(self.VST.WLAN_MCS,1)
 

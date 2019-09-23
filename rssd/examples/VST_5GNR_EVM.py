@@ -30,7 +30,7 @@ DFT_S_OFDM  = 'OFF'
 ##########################################################
 from datetime               import datetime     #pylint: disable=E0611,E0401
 from rssd.FileIO            import FileIO       #pylint: disable=E0611,E0401
-from rssd.VST_5GNR_K144     import VST          #pylint: disable=E0611,E0401
+from rssd.VST.NR5G_K144     import VST          #pylint: disable=E0611,E0401
 import time
 import ctypes  # An included library with Python install.   
 OFile = FileIO().makeFile(__file__)

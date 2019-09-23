@@ -15,7 +15,7 @@ FSW_IP   = '192.168.1.109'                    #IP Address
 ##########################################################
 ### Code Start
 ##########################################################
-from rssd.VST_5GNR_K144 import VST           #pylint: disable=E0611,E0401
+from rssd.VST.NR5G_K144 import VST           #pylint: disable=E0611,E0401
 
 if __name__ == "__main__":
    NR5G = VST().jav_Open(SMW_IP,FSW_IP)
