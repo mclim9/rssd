@@ -2,6 +2,9 @@ Release History
 =====================================================================
 - RSSD 2019.7.0
   - Add Proto PNA (phase noise analyzer)
+  - CODE BREAK
+    - Instrument drivers in separate directories
+    - Chg from Instr_Opt -> Instr.Opt format
 - RSSD 2019.6.0
   - SMW_5GNR Set_5GNR_BWP_SubSpace update.
   - Add RSI_Memory.py
