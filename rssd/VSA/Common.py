@@ -573,6 +573,7 @@ class VSA(jaVisa):
         self.write(f':SENS:SWE:OPT {sOpt}')
        
     def Set_SweepCont(self,iON):
+        """0 | 1 """
         if iON == 1:
             self.write('INIT:CONT ON')                #Continuous Sweep
         else:

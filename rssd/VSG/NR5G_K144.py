@@ -175,6 +175,10 @@ class VSG(VSG):                             #pylint: disable=E0102
         odata.append([120,int(rdStr)])
         return odata
 
+    def Get_5GNR_TM_Cat(self):
+        rdStr = self.query('SOUR1:BB:NR5G:SETT:TMOD:DL:CAT?').split(',')
+        return rdStr
+
     def Get_5GNR_TransPrecoding(self):
         # SC-FDMA or DFT-S-OFDM
         # 5GNR--> User/BWP --> UL BWP Config --> PUSCH --> TP
@@ -186,6 +190,7 @@ class VSG(VSG):                             #pylint: disable=E0102
     ### FSW 5GNR Settings
     #####################################################################
     def Set_5GNR_BBState(self,iEnable):
+        """ON OFF"""
         if (iEnable == 1) or (iEnable == 'ON'):
             self.jav_OPC_Wait(':SOUR1:BB:NR5G:STAT 1')
 #            self.query('*OPC?')          # Wait for calculation
@@ -260,7 +265,7 @@ class VSG(VSG):                             #pylint: disable=E0102
         self.write(':SOUR1:BB:NR5G:NODE:CELL0:CBW BW%d'%iBW)
 
     def Set_5GNR_Direction(self,sDirection):
-        ### UP| DOWN
+        """ UP| DOWN """
         if (sDirection == "UL") or (sDirection == "UP"):
             self.write(':SOUR1:BB:NR5G:LINK UP')
             self.sdir = "UL"
@@ -288,7 +293,11 @@ class VSG(VSG):                             #pylint: disable=E0102
     def Set_5GNR_SSB(self):
         #self.write(':SOUR1:BB:NR5G:NODE:CELL0:OFFS POIN')
         self.write(':SOUR1:BB:NR5G:NODE:CELL0:NSSP 1')
-        
+
+    def Set_5GNR_TM(self, file):
+        """NR-FR1-TM1_1__FDD_100MHz_30kHz """
+        self.query(f'SOUR1:BB:NR5G:SETT:TMOD:DL "{file}";*OPC?')
+
     def Set_5GNR_TransPrecoding(self, sState):
         # SC-FDMA or DFT-S-OFDM
         # 5GNR--> User/BWP --> UL BWP Config --> PUSCH --> TP
@@ -301,8 +310,8 @@ class VSG(VSG):                             #pylint: disable=E0102
 
     def Set_5GNR_savesetting(self, sName):
         self.query(f':SOUR:BB:NR5G:SETT:STOR "/var/user/{sName}";*OPC?')
-        self.query(f':SOUR:BB:NR5G:WAV:CRE "/var/user/{sName}";*OPC?')
-        self.delay(10)
+        # self.query(f':SOUR:BB:NR5G:WAV:CRE "/var/user/{sName}";*OPC?')
+        # self.delay(10)
 
 #####################################################################
 ### Run if Main

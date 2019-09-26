@@ -173,6 +173,10 @@ class VSA(VSA):                                #pylint: disable=E0102
         else:
             rdStr = '<UL n/a>'
         return rdStr
+    
+    def Get_5GNR_TM_Cat(self):
+        rdStr = self.query('MMEM:LOAD:TMOD:CC1:CAT?').split(',')
+        return rdStr
 
     def Get_5GNR_TransPrecoding(self):
         if self.sdir == 'UL':
@@ -244,7 +248,7 @@ class VSA(VSA):                                #pylint: disable=E0102
         self.write(':CONF:NR5G:%s:CC1:BW BW%d'%(self.sdir,iBW))
         
     def Set_5GNR_Direction(self,sDirection):
-        # sDirection = "UL" or "DL"
+        """UL | DL"""
         if (sDirection == "UL") or (sDirection == "UP"):
             self.write(':CONF:NR5G:LDIR UL')
             self.write(':CONF:NR5G:UL:CC1:IDC ON')
@@ -276,7 +280,7 @@ class VSA(VSA):                                #pylint: disable=E0102
         self.Set_5GNR_Direction(sDir)
     
     def Set_5GNR_savesetting(self, sName):
-        self.write(f":MMEM:STOR:DEM:CC1 'C:\\R_S\\Instr\\user\\NR5G\\AllocationFiles\\{sName}.allocation'")
+        self.query(f":MMEM:STOR:DEM:CC1 'C:\\R_S\\Instr\\user\\NR5G\\AllocationFiles\\{sName}.allocation';*OPC?")
         
     def Set_5GNR_SEM_Freq(self,fFreq,dSubBlock=1):
         self.write(':SENS:ESP%d:SCEN %f'%(dSubBlock,fFreq))
@@ -287,6 +291,9 @@ class VSA(VSA):                                #pylint: disable=E0102
     def Set_5GNR_SubFrameCount(self,dSubFrame):
         self.write(':SENS:NR5G:FRAM:COUN:STAT OFF')
         self.write(':SENS:NR5G:FRAM:SCO %d'%dSubFrame)
+
+    def Set_5GNR_TM(self, file):
+        self.query(f'MMEM:LOAD:TMOD:CC1 "{file}";*OPC?')
 
     def Set_5GNR_TransPrecoding(self,sState):
         if self.sdir == 'UL':
