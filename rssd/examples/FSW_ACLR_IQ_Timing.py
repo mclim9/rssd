@@ -1,13 +1,12 @@
-##########################################################
+###############################################################################
 ### Rohde & Schwarz Automation for demonstration use.
-###
 ### Title  : Timing SCPI Commands Example
 ### Author : mclim
 ### Date   : 2018.05.24
 ###
-##########################################################
+###############################################################################
 ### User Entry
-##########################################################
+###############################################################################
 VSA_IP  = '192.168.1.108'
 VSG_IP  = '192.168.1.114' 
 MeasTim = 100e-6
@@ -29,9 +28,9 @@ meth = {
         1:'VSA.Set_Mkr_BandSetRef()'
         }
 
-##########################################################
+###############################################################################
 ### Code Overhead
-##########################################################
+###############################################################################
 from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
 from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
 from datetime               import datetime         
@@ -40,9 +39,9 @@ from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
 OFile = FileIO().makeFile(__file__)
 VSA = VSA().jav_Open(VSA_IP,OFile)                  #Create VSA Object
 VSG = jaVisa().jav_Open(VSG_IP,OFile)               #Create Object
-##########################################################
+###############################################################################
 ### Code Start
-##########################################################
+###############################################################################
 #VSA.jav_Reset()
 VSA.Init_IQ()                                       #FSW ACLR Channel
 if 1:
@@ -58,9 +57,9 @@ VSA.Set_YIG('OFF')
 if 0:
     VSA.Set_Trig1_Source('Ext')
 
-##########################################################
+###############################################################################
 ### Measure Time
-##########################################################
+###############################################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
 OFile.write('Model    ,Iter,Freq,RBW,SwpTime,SMWPwr,ALType,ALTime,TotTime,Attn,PreAmp,RefLvl,SwpTime,SwpPts,SwpType,SwpOpt,TxPwr,Adj-,Adj+,Alt-,Alt+,ChSpace')
 for i in range(Repeat):
@@ -88,8 +87,8 @@ for i in range(Repeat):
             OutStr = f'{VSA.Model},{i},{Freq},{RBW},{MeasTim},{-50+pwr},{meth[autoMeth]},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{TotTime.seconds:3d}.{TotTime.microseconds:06d},{AmpSet},{SwpParam},{ACLR},{ChSpace}'
             OFile.write (OutStr)
 
-##########################################################
+###############################################################################
 ### Cleanup Automation
-##########################################################
+###############################################################################
 OFile.write("\n")
 VSA.jav_Close()
