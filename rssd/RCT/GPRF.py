@@ -1,11 +1,11 @@
 # -*- coding: future_fstrings -*-
 ###############################################################################
 ### Rohde & Schwarz Automation for demonstration use.
-### Purpose : Radio Communication Tester(RCT) General Purpose RF (GPRF) Functions
-### Author  : Martin C Lim
-### Date    : 2018.05.29
+### Purpose: Radio Communication Tester(RCT) General Purpose RF(GPRF) Functions
+### Author : Martin C Lim
+### Date   : 2018.05.29
 ###############################################################################
-from rssd.yaVISA import jaVisa
+from rssd.yaVISA import jaVisa              #pylint: disable=E0611,E0401
 
 class BSE(jaVisa):
     """ Rohde & Schwarz Base Station Emulator Object """
@@ -20,11 +20,13 @@ class BSE(jaVisa):
         ACLR = self.query('FETC:NRS:MEAS:MEV:ACLR:AVER?').split(',')
         return ACLR
 
-    def Get_Meas_ChPwr(self):                                               #Val
-        out = self.queryFloat('FETC:GPRF:MEAS:POW:CURR?')
+    def Get_Meas_ChPwr_RMS(self):                                           #Val
+        # out = self.queryFloat('FETC:GPRF:MEAS:POW:CURR?')
+        # out = self.queryFloat('FETC:GPRF:MEAS:FFTS:POW:AVER?')
+        out = self.query('FETC:GPRF:MEAS:POW:CURR?')
         return out 
 
-    def Get_VSG_ArbWv(self):
+    def Get_Gen_ArbWv(self):
         SCPI = self.query('SOUR:GPRF:GEN:ARB:FILE?')
         return SCPI
 
@@ -32,7 +34,7 @@ class BSE(jaVisa):
     ### CMW Init Functions
     ###########################################################################
     def Init_Gen(self,port=1):                                              #Val
-        self.write('ROUTe:GPRF:GEN:SCENario:SALone R118, TX11')
+        self.write('ROUT:GPRF:GEN:SCENario:SALone R118, TX11')
         self.write('CONF:GPRF:GEN:CMWS:USAGe:TX:ALL R118, OFF, OFF,OFF, OFF, OFF, OFF, OFF, OFF')
 
     def Init_MeasFFT(self,port=1):                                          #Val
@@ -50,8 +52,8 @@ class BSE(jaVisa):
     ###########################################################################
     ### CMW Init Functions
     ###########################################################################
-    def Set_Gen_ArbMode(self):
-        self.query('SOUR:GPRF:GEN:BBM ARB;*OPC?')
+    def Set_Gen_ArbExec(self):
+        self.query('TRIG:GPRF:GEN:ARB:MAN:EXEC')
 
     def Set_Gen_ArbWv(self,sName):
         #self.write(':SOUR:GPRF:GEN:ARB:FILE 'C:\ProgramData\Rohde-Schwarz\CMW\Data\waveform\NRsub6G_ARB_Waveforms\NR_CP_SCS30kHz_BW20MHz_16-QAM_cellID3.wv')
@@ -66,14 +68,22 @@ class BSE(jaVisa):
         else:
             self.query('SOUR:GPRF:GEN:LIST OFF;*OPC?')
 
-    def Set_Gen_PortOFF(self,port=1):
+    def Set_Gen_Mode(self, mode):
+        """ 'CW', 'ARB' or 'DTONE' """
+        self.write(f'SOUR:GPRF:GEN:BBM {mode}')
+
+    def Set_Gen_Port_State(self,port=1,state='ON'):
+        """ 'ON' 'OFF' """
+        if state == 'ON':
+            self.write(f'CONFigure:GPRF:GEN:CMWS:USAGe:TX R1{port}, ON')
+        else:
+            self.write(f'CONFigure:GPRF:GEN:CMWS:USAGe:TX R1{port}, OFF')
+
+    def Set_Gen_Port(self,port):
         self.write(f'CONFigure:GPRF:GEN:CMWS:USAGe:TX R1{port}, OFF')
-        
-    def Set_Gen_PortON(self,port=1):
-        self.write(f'CONFigure:GPRF:GEN:CMWS:USAGe:TX R1{port}, ON')
 
     def Set_Gen_RFPwr(self,fPwr):                                           #Val
-        self.write('SOUR:GPRF:GEN:RFS:LEV %f'%(fPwr))
+        self.write(f'SOUR:GPRF:GEN:RFS:LEV {fPwr}')
 
     def Set_Gen_RFState(self,sState):                                       #Val
         """ ON | OFF """
@@ -139,5 +149,9 @@ if __name__ == "__main__":
     ### this won't be run when imported
     CMW = BSE()
     CMW.jav_Open("192.168.1.160")
-    print(CMW.Get_Meas_ACLR())
+    CMW.Set_Gen_Freq(12345e6)
+    CMW.Set_Gen_RFPwr(-12)
+    CMW.Set_Gen_RFState('ON')
+    print(CMW.Get_Meas_ChPwr_RMS())
+    print(CMW.Model)
     CMW.jav_Close()
