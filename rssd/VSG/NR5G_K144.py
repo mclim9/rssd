@@ -308,8 +308,8 @@ class VSG(VSG):                             #pylint: disable=E0102
             print("Set_5GNR_Direction must be UP or DOWN")
 
     def Set_5GNR_FreqRange(self,iRange):
-        ### 0:<3GHz 1:3-6GHz 2:>6GHz
-        ### LOW; MIDD; HIGH
+        """ 0:<3GHz 1:3-6GHz 2:>6GHz """ 
+        """ LOW; MIDD; HIGH """ 
         if (iRange==0) or (iRange == 'LOW'):
             self.write(':SOUR1:BB:NR5G:NODE:CELL0:CARD LT3')
         elif (iRange==1) or (iRange == 'MIDD'):
@@ -319,6 +319,13 @@ class VSG(VSG):                             #pylint: disable=E0102
             
     def Set_5GNR_Parameters(self,sDir):
         self.Set_5GNR_Direction(sDir)
+
+    def Set_5GNR_PhaseCompensate(self,state):
+        """ 'ON' | 'OFF' """
+        if (state == "ON") or (state == 1):
+            self.write(':SOUR:BB:NR5G:NODE:RFPH:STAT ON')
+        else:
+            self.write(':SOUR:BB:NR5G:NODE:RFPH:STAT OFF')
 
     def Set_5GNR_SSB(self):
         #self.write(':SOUR1:BB:NR5G:NODE:CELL0:OFFS POIN')

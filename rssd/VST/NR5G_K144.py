@@ -19,7 +19,8 @@ class VST(object):
         self.Freq      = 19e9
         self.SWM_Out   = 0
         self.NR_Dir    = 'DL'
-        self.NR_Deploy = 'HIGH'     #LOW:MIDD:HIGH
+        self.NR_Deploy = 'HIGH'     #LOW|MIDD|HIGH
+        self.NR_PhaseC = 'OFF'      #ON|OFF
         self.NR_ChBW   = 100        #MHz
         self.NR_SubSp  = 120        #kHz
         self.NR_RB     = 66         #RB
@@ -192,6 +193,7 @@ class VST(object):
             self.SMW.Set_5GNR_BBState('OFF')
             self.SMW.Set_5GNR_Direction(self.NR_Dir)
             self.SMW.Set_5GNR_TransPrecoding(self.NR_TF)
+            self.SMW.Set_5GNR_PhaseCompensate(self.NR_PhaseC)
             self.SMW.Set_5GNR_FreqRange(self.NR_Deploy)
             self.SMW.Set_5GNR_ChannelBW(self.NR_ChBW)
             self.SMW.Set_5GNR_BWP_SubSpace(self.NR_SubSp)
@@ -214,6 +216,7 @@ class VST(object):
             self.FSW.Set_Freq(self.Freq)
             self.FSW.Set_5GNR_Direction(self.NR_Dir)
             self.FSW.Set_5GNR_TransPrecoding(self.NR_TF)
+            self.FSW.Set_5GNR_PhaseCompensate(self.NR_PhaseC)
             self.FSW.Set_5GNR_FreqRange(self.NR_Deploy)
             self.FSW.Set_5GNR_ChannelBW(self.NR_ChBW)
             self.FSW.Set_5GNR_BWP_SubSpace(self.NR_SubSp)
@@ -235,6 +238,5 @@ class VST(object):
 ##########################################################
 if __name__ == "__main__":
     NR5G = VST().jav_Open('192.168.1.114','192.168.1.109')
-    NR5G.NR_ChBW = 200
     NR5G.Get_5GNR_All_print()
     NR5G.jav_Close()

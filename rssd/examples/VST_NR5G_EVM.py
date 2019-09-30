@@ -10,20 +10,20 @@
 ##########################################################
 SMW_IP      = '192.168.1.114'
 FSW_IP      = '192.168.1.109'
-FreqArry    = [26.55e9]
-pwrArry     = [-5]
-pwrArry     = range(-50,8,1)        #Power Array
+FreqArry    = [26.55e9, 28.6e9, 29.45e9, 37.05e9, 38.5e9, 39.95e9]
+pwrArry     = range(-50,8,2)        #Power Array
 NR_Dir      = 'UL'
-waveparam   =[[100,60,128],         #ChBW, SubSp, RB
-              [100,120,66]]         #ChBW, SubSp, RB
+waveparam   =[[100,60,128]]         #ChBW, SubSp, RB
+
+            #   [100,120,66]]         #ChBW, SubSp, RB
             #   [200,60,264],       #ChBW, SubSp, RB
             #   [200,120,132],      #ChBW, SubSp, RB
             #   [400,120,264]]      #ChBW, SubSp, RB
 subFArry    = [1]
-modArry     = ['QPSK']     #QPSK; QAM16; QAM64; QAM256; PITB
+modArry     = ['QPSK','QAM64']     #QPSK; QAM16; QAM64; QAM256; PITB
 numMeas     = 1
 AutoLvl     = 1                     #0:AutoEVM 1:AutoLevel
-DFT_S_OFDM  = 'OFF'
+DFT_S_OFDM  = 'ON'
 
 ##########################################################
 ### Code Overhead: Import and create objects
@@ -53,13 +53,14 @@ OFile.write(Header)
 NR5G.FSW.Init_5GNR()
 NR5G.FSW.Set_5GNR_EVMUnit('DB')
 NR5G.FSW.Set_Trig1_Source('EXT')
+NR5G.FSW.Set_5GNR_Direction(NR_Dir)
 NR5G.FSW.Set_SweepCont(0)
-NR5G.FSW.Init_CCDF()
-NR5G.FSW.Set_YIG(0)
-NR5G.FSW.Set_CCDF_BW(120e6)
-NR5G.FSW.Set_CCDF_Samples(2e6)
-NR5G.FSW.Set_Trig1_Source('IMM')
-NR5G.FSW.Set_AttnAuto()
+# NR5G.FSW.Init_CCDF()
+# NR5G.FSW.Set_YIG(0)
+# NR5G.FSW.Set_CCDF_BW(120e6)
+# NR5G.FSW.Set_CCDF_Samples(2e6)
+# NR5G.FSW.Set_Trig1_Source('IMM')
+# NR5G.FSW.Set_AttnAuto()
 NR5G.FSW.Set_SweepCont(0)
 
 for i in range(numMeas):                                            #Loop: Measurements
@@ -72,10 +73,11 @@ for i in range(numMeas):                                            #Loop: Measu
             for freq  in FreqArry:                                  #Loop: Frequency
                 NR5G.Freq     = FreqArry[0]
                 NR5G.Set_5GNR_All()                                 #[[[Make Waveform]]]
-                NR5G.FSW.Init_CCDF()
-                NR5G.FSW.Set_InitImm()
-                ccdf = NR5G.FSW.Get_CCDF()
-                print(f'Freq:{freq} RFBW:{NR5G.NR_ChBW} SubC:{NR5G.NR_SubSp} Mod:{NR5G.NR_Mod}')
+                # NR5G.FSW.Init_CCDF()
+                # NR5G.FSW.Set_InitImm()
+                # ccdf = NR5G.FSW.Get_CCDF()
+                ccdf = '<tbd>,<tbd>,<tbd>,<tbd>,<tbd>'
+                print(f'Freq:{freq:.0f} RFBW:{NR5G.NR_ChBW} SubC:{NR5G.NR_SubSp} Mod:{NR5G.NR_Mod}')
                 print(Header)
                 #ctypes.windll.user32.MessageBoxW(0, "Verify", "Please Verify Waveform", 1)
                 for pwr in pwrArry:                                 #Loop: Power
@@ -98,7 +100,7 @@ for i in range(numMeas):                                            #Loop: Measu
                         Attn = NR5G.FSW.Get_AmpSettings()
                         d = datetime.now() - tick                   #Measurement only test time
                         s = datetime.now() - tickA                  #Total test time
-                        OutStr = f'{i},{NR5G.FSW.Model},{freq},{EVM},{NR5G.NR_ChBW},{NR5G.NR_TF},{NR5G.NR_SubSp},{NR5G.NR_Mod},{pwr:3d},{subFram},{Attn},{AutoLvl},{ALTime.seconds:3d}.{ALTime.microseconds:06d},cf:{ccdf},{d.seconds:3d}.{d.microseconds:06d},{s.seconds:3d}.{s.microseconds:06d}'
+                        OutStr = f'{i},{NR5G.FSW.Model},{freq:.0f},{EVM},{NR5G.NR_ChBW},{NR5G.NR_TF},{NR5G.NR_SubSp},{NR5G.NR_Mod},{pwr:3d},{subFram},{Attn},{AutoLvl},{ALTime.seconds:3d}.{ALTime.microseconds:06d},cf:{ccdf},{d.seconds:3d}.{d.microseconds:06d},{s.seconds:3d}.{s.microseconds:06d}'
                         OFile.write (OutStr)
 
 ##########################################################

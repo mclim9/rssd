@@ -290,7 +290,8 @@ class VSA(VSA):                                #pylint: disable=E0102
         """UL | DL"""
         if (sDirection == "UL") or (sDirection == "UP"):
             self.write(':CONF:NR5G:LDIR UL')
-            self.write(':CONF:NR5G:UL:CC1:IDC ON')
+            if self.Get_5GNR_TransPrecoding() == '0':
+                self.write(':CONF:NR5G:UL:CC1:IDC ON')
             self.sdir = "UL"
         elif (sDirection == "DL") or (sDirection == "DOWN"):
             self.write(':CONF:NR5G:LDIR DL')
@@ -317,7 +318,14 @@ class VSA(VSA):                                #pylint: disable=E0102
 
     def Set_5GNR_Parameters(self,sDir):
         self.Set_5GNR_Direction(sDir)
-    
+
+    def Set_5GNR_PhaseCompensate(self,state):
+        """ 'ON' | 'OFF' """
+        if (state == "ON") or (state == 1):
+            self.write(f':CONF:NR5G:{self.sdir}:CC1:RFUC:STAT ON')
+        else:
+            self.write(f':CONF:NR5G:{self.sdir}:CC1:RFUC:STAT OFF')
+
     def Set_5GNR_savesetting(self, sName):
         self.query(f":MMEM:STOR:DEM:CC1 'C:\\R_S\\Instr\\user\\NR5G\\AllocationFiles\\{sName}.allocation';*OPC?")
         
