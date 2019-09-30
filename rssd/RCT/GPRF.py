@@ -5,17 +5,25 @@
 ### Author : Martin C Lim
 ### Date   : 2018.05.29
 ###############################################################################
-from rssd.yaVISA import jaVisa              #pylint: disable=E0611,E0401
+from rssd.RCT.Common import RCT              #pylint: disable=E0611,E0401
 
-class BSE(jaVisa):
+class RCT(RCT):
     """ Rohde & Schwarz Base Station Emulator Object """
     def __init__(self):
-        super(BSE, self).__init__()
+        super(RCT, self).__init__()
         self.Model = "CMW-GPRF"
 
     ###########################################################################
-    ### CMW Get Functions
+    ### RCT Get Functions
     ###########################################################################
+    def Get_Gen_ArbWv(self):
+        rdStr = self.query('SOUR:GPRF:GEN:ARB:FILE?')
+        return rdStr
+
+    def Get_Gen_Port(self):
+        rdStr = self.query('ROUT:GPRF:GEN:SPAT?')
+        return rdStr
+
     def Get_Meas_ACLR(self):
         ACLR = self.query('FETC:NRS:MEAS:MEV:ACLR:AVER?').split(',')
         return ACLR
@@ -26,12 +34,12 @@ class BSE(jaVisa):
         out = self.query('FETC:GPRF:MEAS:POW:CURR?')
         return out 
 
-    def Get_Gen_ArbWv(self):
-        SCPI = self.query('SOUR:GPRF:GEN:ARB:FILE?')
-        return SCPI
+    def Get_Meas_Port(self):
+        rdStr = self.query('ROUT:GPRF:MEAS:SPAT?')
+        return rdStr
 
     ###########################################################################
-    ### CMW Init Functions
+    ### RCT Init Functions
     ###########################################################################
     def Init_Gen(self,port=1):                                              #Val
         self.write('ROUT:GPRF:GEN:SCENario:SALone R118, TX11')
@@ -50,16 +58,16 @@ class BSE(jaVisa):
         self.write(f'ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1')
         
     ###########################################################################
-    ### CMW Init Functions
+    ### RCT INIT Functions
     ###########################################################################
     def Set_Gen_ArbExec(self):
         self.query('TRIG:GPRF:GEN:ARB:MAN:EXEC')
 
     def Set_Gen_ArbWv(self,sName):
         #self.write(':SOUR:GPRF:GEN:ARB:FILE 'C:\ProgramData\Rohde-Schwarz\CMW\Data\waveform\NRsub6G_ARB_Waveforms\NR_CP_SCS30kHz_BW20MHz_16-QAM_cellID3.wv')
-        self.write(f":SOUR:GPRF:GEN:ARB:FILE '{sName}'")
+        self.write(f":SOUR:GPRF:GEN:ARB:FILE '@Waveform\{sName}'")
 
-    def Set_Gen_Freq(self,freq):                                            #Val
+    def Set_Gen_Freq(self,freq):
         self.write(f'SOUR:GPRF:GEN:RFS:FREQ {freq}')
 
     def Set_Gen_ListMode(self,sState):
@@ -72,15 +80,17 @@ class BSE(jaVisa):
         """ 'CW', 'ARB' or 'DTONE' """
         self.write(f'SOUR:GPRF:GEN:BBM {mode}')
 
+    def Set_Gen_Port(self, port):
+        """ CMP: 'P<x>.IFOut' | 'P<x>.RRH.RF<y>'"""
+        rdStr = self.write(f'ROUT:GPRF:GEN:SPAT "{port}"')
+        return rdStr
+
     def Set_Gen_Port_State(self,port=1,state='ON'):
         """ 'ON' 'OFF' """
         if state == 'ON':
             self.write(f'CONFigure:GPRF:GEN:CMWS:USAGe:TX R1{port}, ON')
         else:
             self.write(f'CONFigure:GPRF:GEN:CMWS:USAGe:TX R1{port}, OFF')
-
-    def Set_Gen_Port(self,port):
-        self.write(f'CONFigure:GPRF:GEN:CMWS:USAGe:TX R1{port}, OFF')
 
     def Set_Gen_RFPwr(self,fPwr):                                           #Val
         self.write(f'SOUR:GPRF:GEN:RFS:LEV {fPwr}')
@@ -94,12 +104,17 @@ class BSE(jaVisa):
 
     def Set_Meas_Freq(self,fFreq):                                          #Val
         # self.write('CONF:GPRF:MEAS:SPEC:FREQ:CENT %d'%fFreq)
-        self.write('CONF:GPRF:MEAS:RFS:FREQ %d'%fFreq)
+        self.write(f'CONF:GPRF:MEAS:RFS:FREQ {freq}')
 
     def Set_Meas_InitImm(self):
         #self.query('INIT:GPRF:MEAS:SPEC;*OPC?')
         self.query('INIT:GPRF:MEAS:;*OPC?')
-    
+
+    def Set_Meas_Port(self, port):
+        """ CMP: 'P<x>.IFIn' | 'P<x>.RRH.RF<y>'"""
+        rdStr = self.write(f'ROUT:GPRF:MEAS:SPAT "{port}"')
+        return rdStr
+
     def Set_Meas_RefLevl(self,fRefLvl):                                     #Val
         ### ENP = Expected Nominal Power
         self.write('CONF:GPRF:MEAS:RFS:ENP %f'%fRefLvl)
@@ -125,33 +140,16 @@ class BSE(jaVisa):
         else:
             self.write('CONF:GPRF:MEAS:SPEC:FSW:VBW:AUTO ON')
 
-    ###########################################################################
-    ### CMW Generator
-    ###########################################################################
-    def Set_Sys_DisplayUpdate(self,state):
-        self.write('SYST:DISP:UPD %s'%state)      #Display Update State
-
-    def Set_Sys_RxPortLoss(self,port=1,fLoss=0):                           #Val
-        self.write(f"CONF:CMWS:FDC:DEAC:RX R1{port}")
-        self.write(f"CONF:BASE:FDC:CTAB:CRE 'In{port}',70.0e6,{fLoss},6000.e6,{fLoss}")
-        self.write(f"CONF:CMWS:FDC:ACT:RX R1{port},'In{port}'")
-
-    def Set_Sys_TxPortLoss(self,port=1,fLoss=0):                           #Val
-        #CONF:BASE:FDC:CTAB:CRE 'downlink', 500.0e6,0.5, 1000e6,1.0, 1800.e6,1.5, 2300.e6,1.8, 5000.e6,2.5,  6000.e6,2.8
-        self.write(f"CONF:CMWS:FDC:DEAC:TX R1{port}")
-        self.write(f"CONF:BASE:FDC:CTAB:CRE 'Out{port}',70.0e6,{fLoss},6000.e6,{fLoss}")
-        self.write(f"CONF:CMWS:FDC:ACT:TX R1{port},'Out{port}'")
-
 ###############################################################################
 ### Run if Main
 ###############################################################################
 if __name__ == "__main__":
     ### this won't be run when imported
-    CMW = BSE()
+    CMW = RCT()
     CMW.jav_Open("192.168.1.160")
-    CMW.Set_Gen_Freq(12345e6)
-    CMW.Set_Gen_RFPwr(-12)
-    CMW.Set_Gen_RFState('ON')
+    CMW.Set_Gen_Port('P1.RRH.RF1')
+    CMW.Set_Meas_Port('P2.IFIn')
     print(CMW.Get_Meas_ChPwr_RMS())
+    CMW.Set_Gen_RFState('ON')
     print(CMW.Model)
     CMW.jav_Close()
