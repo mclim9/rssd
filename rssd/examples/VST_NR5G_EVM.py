@@ -3,24 +3,24 @@
 ###
 ### Title  : Timing SCPI Commands Example
 ### Author : mclim
-### Date    : 2018.05.24
+### Date   : 2018.05.24
 ###
 ##########################################################
 ### User Entry
 ##########################################################
 SMW_IP      = '192.168.1.114'
-FSW_IP      = '192.168.1.108'
-FreqArry    = [28e9]
+FSW_IP      = '192.168.1.109'
+FreqArry    = [26.55e9]
 pwrArry     = [-5]
 pwrArry     = range(-50,8,1)        #Power Array
 NR_Dir      = 'UL'
-waveparam   =[[100,60,132],         #ChBW, SubSp, RB
+waveparam   =[[100,60,128],         #ChBW, SubSp, RB
               [100,120,66]]         #ChBW, SubSp, RB
             #   [200,60,264],       #ChBW, SubSp, RB
             #   [200,120,132],      #ChBW, SubSp, RB
             #   [400,120,264]]      #ChBW, SubSp, RB
 subFArry    = [1]
-modArry     = ['QPSK', 'QAM64']     #QPSK; QAM16; QAM64; QAM256; PITB
+modArry     = ['QPSK']     #QPSK; QAM16; QAM64; QAM256; PITB
 numMeas     = 1
 AutoLvl     = 1                     #0:AutoEVM 1:AutoLevel
 DFT_S_OFDM  = 'OFF'
@@ -32,7 +32,7 @@ from datetime               import datetime     #pylint: disable=E0611,E0401
 from rssd.FileIO            import FileIO       #pylint: disable=E0611,E0401
 from rssd.VST.NR5G_K144     import VST          #pylint: disable=E0611,E0401
 import time
-import ctypes  # An included library with Python install.   
+import ctypes                                   # An included library with Python install
 OFile = FileIO().makeFile(__file__)
 
 ##########################################################
@@ -62,42 +62,42 @@ NR5G.FSW.Set_Trig1_Source('IMM')
 NR5G.FSW.Set_AttnAuto()
 NR5G.FSW.Set_SweepCont(0)
 
-for i in range(numMeas):                                        #Loop: Measurements
-    for mod in modArry:                                         #Loop: Modulation
-        for param in waveparam:                                 #Loop: Waveform Parameters
+for i in range(numMeas):                                            #Loop: Measurements
+    for mod in modArry:                                             #Loop: Modulation
+        for param in waveparam:                                     #Loop: Waveform Parameters
             NR5G.NR_ChBW    = param[0]
             NR5G.NR_SubSp   = param[1]
             NR5G.NR_Mod     = mod
             NR5G.NR_RB      = param[2]
-            for freq  in FreqArry:                              #Loop: Frequency
+            for freq  in FreqArry:                                  #Loop: Frequency
                 NR5G.Freq     = FreqArry[0]
-                NR5G.Set_5GNR_All()                             #[[[Make Waveform]]]
+                NR5G.Set_5GNR_All()                                 #[[[Make Waveform]]]
                 NR5G.FSW.Init_CCDF()
                 NR5G.FSW.Set_InitImm()
                 ccdf = NR5G.FSW.Get_CCDF()
                 print(f'Freq:{freq} RFBW:{NR5G.NR_ChBW} SubC:{NR5G.NR_SubSp} Mod:{NR5G.NR_Mod}')
                 print(Header)
                 #ctypes.windll.user32.MessageBoxW(0, "Verify", "Please Verify Waveform", 1)
-                for pwr in pwrArry:                             #Loop: Power
+                for pwr in pwrArry:                                 #Loop: Power
                     NR5G.FSW.Init_5GNR()
                     NR5G.SMW.Set_RFPwr(pwr)
-                    tickA = datetime.now()                      #TickA
+                    tickA = datetime.now()                          #TickA
                     if AutoLvl == 1:
                         NR5G.FSW.Set_Autolevel()
                     else:
                         NR5G.FSW.Set_5GNR_AutoEVM()
                     ALTime = datetime.now() - tickA
-                    for subFram in subFArry:                    #Loop: Subframe
+                    for subFram in subFArry:                        #Loop: Subframe
                         NR5G.FSW.Set_SweepTime((subFram)*1.1e-3)
                         NR5G.FSW.Set_5GNR_SubFrameCount(subFram)
-                        tick = datetime.now()                   #Tick
+                        tick = datetime.now()                       #Tick
                         NR5G.FSW.Init_5GNR()
                         NR5G.FSW.Set_SweepCont(0)
                         NR5G.FSW.Set_InitImm()
-                        EVM = NR5G.FSW.Get_5GNR_EVMParams()
+                        EVM  = NR5G.FSW.Get_5GNR_EVMParams()
                         Attn = NR5G.FSW.Get_AmpSettings()
-                        d = datetime.now() - tick               #Measurement only test time
-                        s = datetime.now() - tickA              #Total test time
+                        d = datetime.now() - tick                   #Measurement only test time
+                        s = datetime.now() - tickA                  #Total test time
                         OutStr = f'{i},{NR5G.FSW.Model},{freq},{EVM},{NR5G.NR_ChBW},{NR5G.NR_TF},{NR5G.NR_SubSp},{NR5G.NR_Mod},{pwr:3d},{subFram},{Attn},{AutoLvl},{ALTime.seconds:3d}.{ALTime.microseconds:06d},cf:{ccdf},{d.seconds:3d}.{d.microseconds:06d},{s.seconds:3d}.{s.microseconds:06d}'
                         OFile.write (OutStr)
 

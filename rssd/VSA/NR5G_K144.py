@@ -62,19 +62,54 @@ class VSA(VSA):                                #pylint: disable=E0102
     def Get_5GNR_BWP_Ch_DMRS_SeqGenMeth(self):
         rdStr = self.query(':CONF:NR5G:%s:CC1:FRAM1:BWP0:SLOT0:ALL0:DMRS:SGEN?'%(self.sdir))
         return rdStr
-        
+
     def Get_5GNR_BWP_Ch_DMRS_SeqGenSeed(self):
         #Only for SeqGenMeth NICP.  Not Valid for NIDC
         if self.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth() == 'NIDP':
             rdStr = self.query(':CONF:NR5G:%s:CC1:FRAM1:BWP0:SLOT0:ALL0:DMRS:NID?'%(self.sdir))
         else:
-            rdStr = '<NICP only>'
+            rdStr = '<!CELL>'
         return rdStr
-  
+
     def Get_5GNR_BWP_Ch_Modulation(self):
         rdStr = self.query(':CONF:NR5G:%s:CC1:FRAM1:BWP0:SLOT0:ALL0:MOD?'%(self.sdir))
         return rdStr
-        
+
+    def Get_5GNR_BWP_Ch_PTRS_K(self):
+        """ Freq Density in RB """
+        if self.Get_5GNR_BWP_Ch_PTRS_State() == '1':
+            rdStr = self.query(':CONF:NR5G:%s:CC1:FRAM1:BWP0:SLOT0:ALL0:PTRS:K?'%(self.sdir))
+        else:
+            rdStr = "PTRS Off"
+        return rdStr
+
+    def Get_5GNR_BWP_Ch_PTRS_L(self):
+        """ Time Density in OFDM Sym Freq """
+        if self.Get_5GNR_BWP_Ch_PTRS_State() == '1':
+            rdStr = self.query(':CONF:NR5G:%s:CC1:FRAM1:BWP0:SLOT0:ALL0:PTRS:L?'%(self.sdir))
+        else:
+            rdStr = "PTRS Off"
+        return rdStr
+
+    def Get_5GNR_BWP_Ch_PTRS_Pow(self):
+        if self.Get_5GNR_BWP_Ch_PTRS_State() == '1':
+            rdStr = self.query(':CONF:NR5G:%s:CC1:FRAM1:BWP0:SLOT0:ALL0:PTRS:POW?'%(self.sdir))
+        else:
+            rdStr = "PTRS Off"
+        return rdStr
+
+    def Get_5GNR_BWP_Ch_PTRS_RE_Offset(self):
+        """ PTRS freq (RE) offset """
+        if self.Get_5GNR_BWP_Ch_PTRS_State() == '1':
+            rdStr = self.query(':CONF:NR5G:%s:CC1:FRAM1:BWP0:SLOT0:ALL0:PTRS:REOF?'%(self.sdir))
+        else:
+            rdStr = "PTRS Off"
+        return rdStr
+
+    def Get_5GNR_BWP_Ch_PTRS_State(self):
+        rdStr = self.query(':CONF:NR5G:%s:CC1:FRAM1:BWP0:SLOT0:ALL0:PTRS:STAT?'%(self.sdir))
+        return rdStr
+
     def Get_5GNR_BWP_Ch_ResBlock(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
         rdStr = self.query(':CONF:NR5G:%s:CC1:FRAM1:BWP0:SLOT0:ALL0:RBC?'%(self.sdir))
@@ -157,6 +192,10 @@ class VSA(VSA):                                #pylint: disable=E0102
 
     def Get_5GNR_RefA(self):
         rdStr = self.queryInt(':CONF:NR5G:%s:CC1:RPA:RTCF?'%(self.sdir))
+        return rdStr
+
+    def Get_5GNR_PhaseCompensate(self):
+        rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC1:RFUC:STAT?')
         return rdStr
 
     def Get_5GNR_SEM(self):

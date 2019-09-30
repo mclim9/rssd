@@ -51,8 +51,8 @@ class VSG(VSG):                             #pylint: disable=E0102
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_Mapping(self):
-        #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSC:DMRS:MAPT?'%(self.alloc))
-        rdStr = "<TBD>"
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:MAPT?')
+        # rdStr = "<TBD>"
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_MSymbLen(self):
@@ -68,19 +68,45 @@ class VSG(VSG):                             #pylint: disable=E0102
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_SeqGenMeth(self):
-        #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSC:DMRS:APOS?')
-        rdStr = "<TBD>"
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:SEQG?')
+        # rdStr = "<TBD>"
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_SeqGenSeed(self):
-        #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSC:DMRS:APOS?')
-        rdStr = "<TBD>"
+        #Only for SeqGenMeth NICP.  Not Valid for NIDC
+        if self.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth() == 'DMRS':
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:NSID?')
+        else:
+            rdStr = '<!CELL>'
         return rdStr
 
     def Get_5GNR_BWP_Ch_Modulation(self):
         rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:MOD?'%(self.alloc))
         return rdStr
-        
+
+    def Get_5GNR_BWP_Ch_PTRS_K(self):
+        """ Freq Density in RB """
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:FRQD?')
+        return rdStr
+
+    def Get_5GNR_BWP_Ch_PTRS_L(self):
+        """ Time Density in OFDM Sym Freq """
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:TMD?')
+        return rdStr
+
+    def Get_5GNR_BWP_Ch_PTRS_Pow(self):
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:POW?')
+        return rdStr
+
+    def Get_5GNR_BWP_Ch_PTRS_RE_Offset(self):
+        """ PTRS freq (RE) offset """
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:REOF?')
+        return rdStr
+
+    def Get_5GNR_BWP_Ch_PTRS_State(self):
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:STAT?')
+        return rdStr
+
     def Get_5GNR_BWP_Ch_ResBlock(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
         rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:RBN?'%(self.alloc))
@@ -174,6 +200,10 @@ class VSG(VSG):                             #pylint: disable=E0102
         rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:NRB?')
         odata.append([120,int(rdStr)])
         return odata
+
+    def Get_5GNR_PhaseCompensate(self):
+        rdStr = self.query(f':SOUR:BB:NR5G:NODE:RFPH:STAT?')
+        return rdStr
 
     def Get_5GNR_TM_Cat(self):
         rdStr = self.query('SOUR1:BB:NR5G:SETT:TMOD:DL:CAT?').split(',')

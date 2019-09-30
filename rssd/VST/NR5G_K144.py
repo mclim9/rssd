@@ -28,7 +28,8 @@ class VST(object):
         self.NR_TF     = 'OFF'
 
     def Get_5GNR_All(self):
-        DMRS = 0
+        DMRS = 1
+        PTRS = 1
 
         odata =  [[] for i in range(3)]
         odata[0].append("[[Parameter]]  ")
@@ -37,6 +38,7 @@ class VST(object):
         odata[0].append("RefA,MHz       ")
         odata[0].append("Ch BW          ")
         odata[0].append("TransPrecoding ")
+        odata[0].append("Phase Compensat")
         odata[0].append("====SS/PBCH====")
         odata[0].append("SubSpacing     ")
         odata[0].append("===User/BWP====")
@@ -61,6 +63,13 @@ class VST(object):
             odata[0].append("DMRS SeqGenMeth")
             odata[0].append("DMRS SeqGenSeed")
             odata[0].append("DMRS Rel Power ")
+        if PTRS:
+            odata[0].append("=====PTRS======")
+            odata[0].append("PTRS State     ")
+            odata[0].append("Time L_PTRS    ")
+            odata[0].append("Freq K_PTRS    ")
+            odata[0].append("PTRS Rel Power ")
+            odata[0].append("UL-PTRS-RE-offs")
 
         try:
             # self.SMW.Set_5GNR_Parameters(self.NR_Dir)
@@ -70,6 +79,7 @@ class VST(object):
             odata[1].append(self.SMW.Get_5GNR_RefA()/1e6)
             odata[1].append(self.SMW.Get_5GNR_ChannelBW()) 
             odata[1].append(self.SMW.Get_5GNR_TransPrecoding())
+            odata[1].append(self.SMW.Get_5GNR_PhaseCompensate())
             odata[1].append("=SSB==")
             odata[1].append(self.SMW.Get_5GNR_SSB_SubSpace())
             odata[1].append("=User=")
@@ -94,6 +104,13 @@ class VST(object):
                 odata[1].append(self.SMW.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth())
                 odata[1].append(self.SMW.Get_5GNR_BWP_Ch_DMRS_SeqGenSeed())
                 odata[1].append(self.SMW.Get_5GNR_BWP_Ch_DMRS_RelPwr())
+            if PTRS:
+                odata[1].append("=PTRS=")
+                odata[1].append(self.SMW.Get_5GNR_BWP_Ch_PTRS_State())
+                odata[1].append(self.SMW.Get_5GNR_BWP_Ch_PTRS_L())
+                odata[1].append(self.SMW.Get_5GNR_BWP_Ch_PTRS_K())
+                odata[1].append(self.SMW.Get_5GNR_BWP_Ch_PTRS_Pow())
+                odata[1].append(self.SMW.Get_5GNR_BWP_Ch_PTRS_RE_Offset())
         except:
             pass
             
@@ -105,6 +122,7 @@ class VST(object):
             odata[2].append(self.FSW.Get_5GNR_RefA()/1e6)
             odata[2].append(self.FSW.Get_5GNR_ChannelBW())
             odata[2].append(self.FSW.Get_5GNR_TransPrecoding())
+            odata[2].append(self.FSW.Get_5GNR_PhaseCompensate())
             odata[2].append("=SSB==")
             odata[2].append(self.FSW.Get_5GNR_SSB_SubSpace())
             odata[2].append("=User=")
@@ -129,6 +147,13 @@ class VST(object):
                 odata[2].append(self.FSW.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth())
                 odata[2].append(self.FSW.Get_5GNR_BWP_Ch_DMRS_SeqGenSeed())
                 odata[2].append(self.FSW.Get_5GNR_BWP_Ch_DMRS_RelPwr())
+            if PTRS:
+                odata[2].append("=PTRS=")
+                odata[2].append(self.FSW.Get_5GNR_BWP_Ch_PTRS_State())
+                odata[2].append(self.FSW.Get_5GNR_BWP_Ch_PTRS_L())
+                odata[2].append(self.FSW.Get_5GNR_BWP_Ch_PTRS_K())
+                odata[2].append(self.FSW.Get_5GNR_BWP_Ch_PTRS_Pow())
+                odata[2].append(self.FSW.Get_5GNR_BWP_Ch_PTRS_RE_Offset())
         except:
             pass
         print('SMW/FSW Values: %d %d'%(len(odata[2]),len(odata[2]))) 
