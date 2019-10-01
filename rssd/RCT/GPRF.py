@@ -8,7 +8,7 @@
 from rssd.RCT.Common import RCT              #pylint: disable=E0611,E0401
 
 class RCT(RCT):
-    """ Rohde & Schwarz Base Station Emulator Object """
+    """ Rohde & Schwarz Radio Comm Tester Object """
     def __init__(self):
         super(RCT, self).__init__()
         self.Model = "CMW-GPRF"
@@ -16,17 +16,13 @@ class RCT(RCT):
     ###########################################################################
     ### RCT Get Functions
     ###########################################################################
-    def Get_Gen_ArbWv(self):
+    def Get_Gen_ArbWv(self):                                                #val
         rdStr = self.query('SOUR:GPRF:GEN:ARB:FILE?')
         return rdStr
 
-    def Get_Gen_Port(self):
+    def Get_Gen_Port(self):                                                 #val
         rdStr = self.query('ROUT:GPRF:GEN:SPAT?')
         return rdStr
-
-    def Get_Meas_ACLR(self):
-        ACLR = self.query('FETC:NRS:MEAS:MEV:ACLR:AVER?').split(',')
-        return ACLR
 
     def Get_Meas_ChPwr_RMS(self):                                           #Val
         # out = self.queryFloat('FETC:GPRF:MEAS:POW:CURR?')
@@ -34,7 +30,7 @@ class RCT(RCT):
         out = self.query('FETC:GPRF:MEAS:POW:CURR?')
         return out 
 
-    def Get_Meas_Port(self):
+    def Get_Meas_Port(self):                                                #Val
         rdStr = self.query('ROUT:GPRF:MEAS:SPAT?')
         return rdStr
 
@@ -45,18 +41,15 @@ class RCT(RCT):
         self.write('ROUT:GPRF:GEN:SCENario:SALone R118, TX11')
         self.write('CONF:GPRF:GEN:CMWS:USAGe:TX:ALL R118, OFF, OFF,OFF, OFF, OFF, OFF, OFF, OFF')
 
-    def Init_MeasFFT(self,port=1):                                          #Val
+    def Init_Meas_FFT(self,port=1):                                          #Val
         self.write('ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1'%port)
         self.write('INIT:GPRF:MEAS:FFTS')
 
-    def Init_MeasPower(self,port=1):                                        #Val
+    def Init_Meas_Power(self,port=1):                                        #Val
         self.write('ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1'%port)
         self.write('INIT:GPRF:MEAS:POW')
         self.write('CONF:GPRF:MEAS:POW:MODE POW')      #POW|STAT
 
-    def Init_MeasVSA(self,port=1):                                          #Val
-        self.write(f'ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1')
-        
     ###########################################################################
     ### RCT INIT Functions
     ###########################################################################
@@ -80,12 +73,12 @@ class RCT(RCT):
         """ 'CW', 'ARB' or 'DTONE' """
         self.write(f'SOUR:GPRF:GEN:BBM {mode}')
 
-    def Set_Gen_Port(self, port):
+    def Set_Gen_Port(self, port):                                           #Val
         """ CMP: 'P<x>.IFOut' | 'P<x>.RRH.RF<y>'"""
         rdStr = self.write(f'ROUT:GPRF:GEN:SPAT "{port}"')
         return rdStr
 
-    def Set_Gen_Port_State(self,port=1,state='ON'):
+    def Set_Gen_Port_State(self,port=1,state='ON'):                         #val
         """ 'ON' 'OFF' """
         if state == 'ON':
             self.write(f'CONFigure:GPRF:GEN:CMWS:USAGe:TX R1{port}, ON')
@@ -119,14 +112,15 @@ class RCT(RCT):
         ### ENP = Expected Nominal Power
         self.write('CONF:GPRF:MEAS:RFS:ENP %f'%fRefLvl)
 
-    def Set_Meas_ResBW(self,fFreq):
-        if fFreq > 0:
-            self.write('CONF:GPRF:MEAS:SPEC:FSW:RBW %f'%fFreq)
-        else:
-            self.write('CONF:GPRF:MEAS:SPEC:FSW:RBW:AUTO ON')
+    # def Set_Meas_ResBW(self,fFreq):
+    #     if fFreq > 0:
+    #         self.write('CONF:GPRF:MEAS:SPEC:FSW:RBW %f'%fFreq)
+    #     else:
+    #         self.write('CONF:GPRF:MEAS:SPEC:FSW:RBW:AUTO ON')
             
     def Set_Meas_Span(self,fFreq):
-        self.write('CONF:GPRF:MEAS:SPEC:FREQ:SPAN %f'%fFreq)
+        """ 10; 20; 40; 80; 160; 250; 500; 1000 MHz allowed """
+        self.write('CONF:GPRF:MEAS:FFTS:FSP %f'%fFreq)
 
     def Set_Meas_SweepTime(self,fTime):
         if fTime > 0:
@@ -147,9 +141,5 @@ if __name__ == "__main__":
     ### this won't be run when imported
     CMW = RCT()
     CMW.jav_Open("192.168.1.160")
-    CMW.Set_Gen_Port('P1.RRH.RF1')
-    CMW.Set_Meas_Port('P2.IFIn')
     print(CMW.Get_Meas_ChPwr_RMS())
-    CMW.Set_Gen_RFState('ON')
-    print(CMW.Model)
     CMW.jav_Close()
