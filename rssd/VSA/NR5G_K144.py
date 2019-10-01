@@ -292,9 +292,11 @@ class VSA(VSA):                                #pylint: disable=E0102
             self.write(':CONF:NR5G:LDIR UL')
             if self.Get_5GNR_TransPrecoding() == '0':
                 self.write(':CONF:NR5G:UL:CC1:IDC ON')
+            self.write(':CONF:NR5G:UL:CC1:FRAM1:BWP0:SLOT0:FORM 1')     #All UL
             self.sdir = "UL"
         elif (sDirection == "DL") or (sDirection == "DOWN"):
             self.write(':CONF:NR5G:LDIR DL')
+            self.write(':CONF:NR5G:DL:CC1:FRAM1:BWP0:SLOT0:FORM 0')     #All DL
             self.write(':CONF:NR5G:DL:CC1:IDC ON')
             self.sdir = "DL"
         else:
