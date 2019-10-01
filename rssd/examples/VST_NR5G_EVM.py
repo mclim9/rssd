@@ -71,7 +71,7 @@ for i in range(numMeas):                                            #Loop: Measu
             NR5G.NR_Mod     = mod
             NR5G.NR_RB      = param[2]
             for freq  in FreqArry:                                  #Loop: Frequency
-                NR5G.Freq     = FreqArry[0]
+                NR5G.Freq     = freq
                 NR5G.Set_5GNR_All()                                 #[[[Make Waveform]]]
                 # NR5G.FSW.Init_CCDF()
                 # NR5G.FSW.Set_InitImm()
