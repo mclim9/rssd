@@ -13,7 +13,7 @@ FSW_IP      = '192.168.1.109'
 FreqArry    = [26.55e9, 28.6e9, 29.45e9, 37.05e9, 38.5e9, 39.95e9]
 pwrArry     = range(-50,8,2)        #Power Array
 NR_Dir      = 'UL'
-waveparam   =[[100,60,128]]         #ChBW, SubSp, RB
+waveparam   = [[100,60,128]]         #ChBW, SubSp, RB
 
             #   [100,120,66]]         #ChBW, SubSp, RB
             #   [200,60,264],       #ChBW, SubSp, RB
@@ -68,8 +68,8 @@ for i in range(numMeas):                                            #Loop: Measu
         for param in waveparam:                                     #Loop: Waveform Parameters
             NR5G.NR_ChBW    = param[0]
             NR5G.NR_SubSp   = param[1]
-            NR5G.NR_Mod     = mod
             NR5G.NR_RB      = param[2]
+            NR5G.NR_Mod     = mod
             for freq  in FreqArry:                                  #Loop: Frequency
                 NR5G.Freq     = freq
                 NR5G.Set_5GNR_All()                                 #[[[Make Waveform]]]
