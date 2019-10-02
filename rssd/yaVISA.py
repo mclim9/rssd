@@ -195,7 +195,8 @@ class jaVisa(object):
     def queryInt(self,cmd):
         try:
             strArry = self.query(cmd).split(',')
-            return [int(i) for i in strArry][0]
+            return int([float(i) for i in strArry][0])
+            # Float for scientific 'e' notation 
         except:
             return -9999
 
