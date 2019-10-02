@@ -328,6 +328,7 @@ class VSG(VSG):                             #pylint: disable=E0102
             self.write(':SOUR:BB:NR5G:NODE:RFPH:STAT OFF')
 
     def Set_5GNR_SSB(self):
+        """Num DL SS/PBCH Patterns"""
         #self.write(':SOUR1:BB:NR5G:NODE:CELL0:OFFS POIN')
         self.write(':SOUR1:BB:NR5G:NODE:CELL0:NSSP 1')
 

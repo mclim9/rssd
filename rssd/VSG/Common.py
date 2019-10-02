@@ -110,12 +110,14 @@ class VSG(jaVisa):
          self.query('BB:ARB:WAV:SEL "%s"; *OPC?'%InWv)
 
     def Set_BBState(self,sState):
+        """'ON' 'OFF' 1 or 0"""
         if (sState == "ON") or (sState == 1):
             self.query(':SOUR1:BB:ARB:STAT 1;*OPC?')
         elif (sState == "OFF") or (sState == 0):
             self.query(':SOUR1:BB:ARB:STAT 0;*OPC?')
 
     def Set_Freq(self,freq):
+        """Unit: Hz"""
         self.write(':SOUR1:FREQ:CW %f'%freq)     #RF Freq
 
     def Set_IQMod(self,sState):
