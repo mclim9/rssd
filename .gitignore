@@ -24,6 +24,7 @@
 *.csv
 *.xls
 *.xlsx
+*.xlsm
 *.pdf
 *.ppt
 *.pptx
