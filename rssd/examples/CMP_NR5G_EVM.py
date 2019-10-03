@@ -75,7 +75,7 @@ CMP.write('CONF:NRMM:MEAS:MEV:SCO:SPEC:ACLR 1')
 ### Measure Time
 ##########################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-Header = '\nIter,Model,Freq,EVM,TxPwr,PeakPwr,FreqErr,EVMdB,ChBW,UL-TP,SubSp,Mod,SMWPwr,ExpPwr,UserMargin,ExtAttn,MixerLevel,StepTime'
+Header = 'Iter,Model,Freq,EVM,TxPwr,PeakPwr,FreqErr,EVMdB,ChBW,UL-TP,SubSp,Mod,SMWPwr,ExpPwr,UserMargin,ExtAttn,MixerLevel,StepTime'
 OFile.write(Header)
 
 for i in range(numMeas):                                            #Loop: Repeatability
