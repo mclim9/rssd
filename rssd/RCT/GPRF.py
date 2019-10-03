@@ -97,7 +97,7 @@ class RCT(RCT):
 
     def Set_Meas_Freq(self,fFreq):                                          #Val
         # self.write('CONF:GPRF:MEAS:SPEC:FREQ:CENT %d'%fFreq)
-        self.write(f'CONF:GPRF:MEAS:RFS:FREQ {freq}')
+        self.write(f'CONF:GPRF:MEAS:RFS:FREQ {fFreq}')
 
     def Set_Meas_InitImm(self):
         #self.query('INIT:GPRF:MEAS:SPEC;*OPC?')
@@ -141,5 +141,6 @@ if __name__ == "__main__":
     ### this won't be run when imported
     CMW = RCT()
     CMW.jav_Open("192.168.1.160")
+    CMW.Set_Gen_Freq(6000)
     print(CMW.Get_Meas_ChPwr_RMS())
     CMW.jav_Close()
