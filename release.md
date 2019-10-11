@@ -1,6 +1,6 @@
 Release History
 =====================================================================
-- RSSD 2019.7.0 **Code Break**
+- RSSD 2019.10.0 **Code Break**
   - Add 5GNR
     - PTRS settings to FSW/SMW
     - Improved DMRS settings
@@ -39,14 +39,14 @@ Release History
     - Add Get_Mkr_BandACLR
     - Add Get_Freq
     - Chg Get_Mkr_Band output to Float
-    - Add Set_IQ_ACLR 
+    - Add Set_IQ_ACLR
     - Add Set_IQ_Adv_* methods
     - Chg Set_IQ_SpectrumWindow
     - Add Set_Mkr_BandDelta
     - Add Set_Param_Couple_All
     - Add Set_AutoOpt_FSx_Level
 - RSSD 0.1.13
-  - ALCR 
+  - ALCR
     - Chg methods in WLAN; FSW_Common; FSW_ACLR_Timing;
     - Add to examples/FSW_ACLR_IQ_Timing & FSW_ACLR_Timing
       - Power sweep; sweep modes; Alt; test times added.
@@ -56,7 +56,7 @@ Release History
     - add except in jav_ClrErr
     - add except in jav_IDN
     - add port number to jav_Open
-  - FSW_Common.py: 
+  - FSW_Common.py:
     - Chg Alphebetized methods
     - Add Set_AttnAuto()
     - Fix Set_ACLR_NumAdj()
@@ -112,32 +112,32 @@ Release History
     - Add FSW_ACLR_Timing.py
     - Add FSW_ACLR_IQ_Timing.py
 - RSSD 0.1.6
-   - Fix Import references to rssd.- 
-   - Fix SMW/FSW 5G NR methods.  Added methods.
-   - Add Test_rssd.py to validate drivers
-   - Add NRP_Common.py
- - RSSD 0.1.5 
-   - Add AAA_Common.py instrument template
-   - Add FSW/SMW_5GNR_144 read functions
-   - Add FSW_Transient_K60.py
-   - Add NRQ_Common.py
-   - Fix OSP_Common.Get_SW_SPDT
-   - Chg README.md
- - RSSD 0.1.4 
-   - Chg FSW_Common.py Bug fix
-   - Add test_RSSD.py
-   - Add test_SMW_Basic.py
-   - Add OSP_Common.py
-   - Examples
-     - Add SMW_FSW_Sweep.py
-     - Add SMB_SMZ_Mixer.py
-     - Chg CMW_GPRF_Loopback.py
- - RSSD 0.1.3
-    - Chg yaVISA_GUI.py
-    - Chg yaVISA.py method names
-    - Chg __init__ function in class definition
-    - Add CMW_GPRF.py
- - RSSD 0.1.2
- - RSSD 0.1.1
- - RSSD 0.1
-    - Initial release
+  - Fix Import references to rssd.
+  - Fix SMW/FSW 5G NR methods.  Added methods.
+  - Add Test_rssd.py to validate drivers
+  - Add NRP_Common.py
+- RSSD 0.1.5
+  - Add AAA_Common.py instrument template
+  - Add FSW/SMW_5GNR_144 read functions
+  - Add FSW_Transient_K60.py
+  - Add NRQ_Common.py
+  - Fix OSP_Common.Get_SW_SPDT
+  - Chg README.md
+- RSSD 0.1.4
+  - Chg FSW_Common.py Bug fix
+  - Add test_RSSD.py
+  - Add test_SMW_Basic.py
+  - Add OSP_Common.py
+  - Examples
+    - Add SMW_FSW_Sweep.py
+    - Add SMB_SMZ_Mixer.py
+    - Chg CMW_GPRF_Loopback.py
+- RSSD 0.1.3
+  - Chg yaVISA_GUI.py
+  - Chg yaVISA.py method names
+  - Chg __init__ function in class definition
+  - Add CMW_GPRF.py
+- RSSD 0.1.2
+- RSSD 0.1.1
+- RSSD 0.1
+  - Initial release
