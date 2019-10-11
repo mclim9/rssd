@@ -125,7 +125,8 @@ class VSA(VSA):                        #pylint: disable=E0102
     def Set_WLAN_Autolvl(self):
         ## Supports B40; B80;  
         ## B2001 not supported.
-        self.query('ADJ:LEV;*OPC?')
+        #self.query('ADJ:LEV;*OPC?')
+        self.write(':CONF:POW:AUTO ONCE;*WAI')      #FSVA
 
     def Set_WLAN_ChBW(self,iBW):
         # iBW of 0 sets VSA to auto detect

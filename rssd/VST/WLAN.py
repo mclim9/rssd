@@ -89,7 +89,6 @@ class VST(object):
             self.SMW.Set_WLAN_MCS(self.WLAN_MCS)
             self.SMW.Set_WLAN_BBState('ON')
             self.SMW.Set_RFState('ON')                      #Turn RF Output on
-            self.SMW.Set_RFPwr(self.SWM_Out)                #Output Power
         except:
             print("WLAN_SetSettings: SMW Error")
 
@@ -100,8 +99,6 @@ class VST(object):
             self.FSW.Set_WLAN_Standard(self.WLAN_Std)
             self.FSW.Set_WLAN_ChBW(self.WLAN_ChBW)
             self.FSW.Set_WLAN_MCS(self.WLAN_MCS)
-            self.FSW.Set_SweepCont(1)
-            self.FSW.Set_InitImm()
         except:
             print("WLAN_SetSettings: FSW Error")
         return 0

@@ -10,11 +10,11 @@
 ##########################################################
 SMW_IP      = '192.168.1.114'
 FSW_IP      = '192.168.1.109'
-FreqArry    = [2.1e9,2.2e9]
+FreqArry    = [5.25e9,5.57e9]
 pwrArry     = [-20, -10, -5]
-StdArry     = ['AC','N']
-CHBWArry    = [20,40]
-MCSArry     = [1,3,5] 
+pwrArry     = range(-50,10,3)       #Power Array
+ModArry     = [['AC', 80,11],       #Std,BW,MCS
+                ['AC',160,11]]      #Std,BW,MCS
 SweepTime   = 0.002
 
 ##########################################################
@@ -41,36 +41,36 @@ WLAN.FSW.Init_WLAN()
 WLAN.FSW.Set_Trig1_Source('EXT')
 WLAN.FSW.Set_SweepCont(0)
 
-for std in StdArry:                                             #Loop: Standard
-    for chbw in CHBWArry:                                       #Loop: Ch Bandwidth
-        for MCS in MCSArry:                                     #Loop: Modulation
-            WLAN.WLAN_Std   = std
-            WLAN.WLAN_MCS   = MCS
-            WLAN.WLAN_ChBW  = chbw
-            WLAN.Set_WLAN_All()                                 ### Make Waveform ###
-            print(f'802.11{std} RFBW:{WLAN.WLAN_ChBW} MCS:{MCS}')
-            WLAN.FSW.Set_SweepTime(SweepTime)
-            WLAN.FSW.write(':TRAC:IQ:SRAT 160e6')
+for mod in ModArry:                                             #Loop: Standard
+    WLAN.WLAN_Std   = mod[0]
+    WLAN.WLAN_ChBW  = mod[1]
+    WLAN.WLAN_MCS   = mod[2]
+    WLAN.Set_WLAN_All()                                 ### Make Waveform ###
+    print(f'802.11{WLAN.WLAN_Std} RFBW:{WLAN.WLAN_ChBW} MCS:{WLAN.WLAN_MCS}')
+    WLAN.FSW.Set_SweepTime(SweepTime)
+#   WLAN.FSW.write(':TRAC:IQ:SRAT 160e6')
 
-            for freq  in FreqArry:                              #Loop: Frequency
-                WLAN.FSW.Set_Freq(freq)
-                WLAN.SMW.Set_Freq(freq)
-                for pwr in pwrArry:                             #Loop: Power
-                    WLAN.SMW.Set_RFPwr(pwr)
-                    #Autolevel Timing
-                    tick = datetime.now()
-                    WLAN.FSW.Set_WLAN_Autolvl()
-                    WLAN.FSW.Set_SweepCont(0)
-                    ALTime = datetime.now() - tick
+    for freq  in FreqArry:                              #Loop: Frequency
+        WLAN.FSW.Set_Freq(freq)
+        WLAN.SMW.Set_Freq(freq)
+        WLAN.Freq = freq
+        for pwr in pwrArry:                             #Loop: Power
+            WLAN.SMW.Set_RFPwr(pwr)
+            #Autolevel Timing
+            tick = datetime.now()
+            WLAN.FSW.Set_WLAN_Autolvl()
+            WLAN.FSW.Set_SweepCont(0)
+            ALTime = datetime.now() - tick
 
-                    # Measure EVM
-                    tick = datetime.now()
-                    WLAN.FSW.Set_InitImm()
-                    EVM = WLAN.FSW.Get_WLAN_EVMParams()
-                    Attn = WLAN.FSW.Get_AmpSettings()
-                    d = datetime.now() - tick
-                    OutStr = f'{freq},{pwr:3d},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{WLAN.WLAN_Std},{WLAN.WLAN_ChBW},{WLAN.WLAN_MCS},{Attn},{EVM},{d.seconds:3d}.{d.microseconds:06d}'
-                    OFile.write (OutStr)
+            # Measure EVM
+            tick = datetime.now()
+            WLAN.FSW.Set_InitImm()
+            WLAN.FSW.Set_InitImm()
+            EVM = WLAN.FSW.Get_WLAN_EVMParams()
+            Attn = WLAN.FSW.Get_AmpSettings()
+            d = datetime.now() - tick
+            OutStr = f'{freq},{pwr:3d},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{WLAN.WLAN_Std},{WLAN.WLAN_ChBW},{WLAN.WLAN_MCS},{Attn},{EVM},{d.seconds:3d}.{d.microseconds:06d}'
+            OFile.write (OutStr)
 
 ##########################################################
 ### Cleanup Automation
