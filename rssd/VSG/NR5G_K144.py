@@ -329,16 +329,16 @@ class VSG(VSG):                             #pylint: disable=E0102
 
     def Set_5GNR_SSB(self):
         """Num DL SS/PBCH Patterns"""
-        #self.write(':SOUR1:BB:NR5G:NODE:CELL0:OFFS POIN')
-        self.write(':SOUR1:BB:NR5G:NODE:CELL0:NSSP 1')
+        if self.sdir == 'DL':
+            self.write(':SOUR1:BB:NR5G:NODE:CELL0:NSSP 1')
 
     def Set_5GNR_TM(self, file):
         """NR-FR1-TM1_1__FDD_100MHz_30kHz """
         self.query(f'SOUR1:BB:NR5G:SETT:TMOD:DL "{file}";*OPC?')
 
     def Set_5GNR_TransPrecoding(self, sState):
-        # SC-FDMA or DFT-S-OFDM
-        # 5GNR--> User/BWP --> UL BWP Config --> PUSCH --> TP
+        """ SC-FDMA or DFT-S-OFDM
+        5GNR--> User/BWP --> UL BWP Config --> PUSCH --> TP  """
         if sState == 'ON':
             # self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST ON') #4.30SP2?
             self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:PUSC:TPST ON') #4.50
