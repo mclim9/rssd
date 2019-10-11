@@ -1,7 +1,12 @@
 Release History
 =====================================================================
 - RSSD 2019.7.0 **Code Break**
-  - Add Proto PNA (phase noise analyzer)
+  - Add 5GNR
+    - PTRS settings to FSW/SMW
+    - Improved DMRS settings
+  - Add Proto Drivers
+    - PNA (phase noise analyzer)
+    - RCT (Radio Comm Tester:CMW; CMP)
   - CODE BREAK
     - Instrument drivers in separate directories
     - Chg from Instr_Opt -> Instr.Opt format
