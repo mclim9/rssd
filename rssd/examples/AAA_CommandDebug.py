@@ -5,13 +5,13 @@
 ###############################################################################
 ### User Entry
 ###############################################################################
-instru_ip  = '192.168.1.108'
+instru_ip  = '127.0.0.1'
 
 ###############################################################################
 ### Code Overhead: Import and create objects
 ###############################################################################
-from rssd.yaVISA_socket     import jaVisa
-from rssd.FileIO            import FileIO
+from rssd.yaVISA_socket     import jaVisa                       #pylint: disable=E0611,E0401
+from rssd.FileIO            import FileIO                       #pylint: disable=E0611,E0401
 import timeit
 
 instr = jaVisa().jav_Open(instru_ip,port=5025)                  #Create Object
@@ -19,17 +19,8 @@ instr = jaVisa().jav_Open(instru_ip,port=5025)                  #Create Object
 ###############################################################################
 ### Code Start
 ###############################################################################
-# instr.write("INST:DEL 'Spectrum'")
-instr.write(":TRIG:SEQ:SOUR IMM")               # Trigger Immediate
-instr.write(":SENS:LTE:FRAM:SSUB ON")
-instr.write(":SENS:SWE:TIME 0.00251")
-
-instr.write(":SYST:PASS '894129'")              # Service Mode Password
-instr.query("DIAG:SERV:SFUN? '2.0.46.5.1'")     # Service Mode to activate
-instr.query("DIAG:SERV:SFUN? '2.0.46.3.1.2.-10.-31.0.-20.-35'")
-
 tick = timeit.default_timer()
-rdStr = instr.query('INIT:IMM;*OPC?')
+rdStr = instr.query('*IDN?;*OPC?')
 TotTime = timeit.default_timer() - tick
 print( f'{TotTime:.6f},{rdStr}')
 
