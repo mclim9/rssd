@@ -5,9 +5,9 @@
 ### Author : Martin C Lim
 ### Date   : 2018.05.29
 ###############################################################################
-from rssd.RCT.Common import RCT              #pylint: disable=E0611,E0401
+from rssd.RCT.Common import RCT                 #pylint: disable=E0611,E0401
 
-class RCT(RCT):
+class RCT(RCT):                                 #pylint: disable=E0102
     """ Rohde & Schwarz Radio Comm Tester Object """
     def __init__(self):
         super(RCT, self).__init__()
@@ -62,7 +62,7 @@ class RCT(RCT):
 
     def Set_Gen_ArbWv(self,sName):
         #self.write(':SOUR:GPRF:GEN:ARB:FILE 'C:\ProgramData\Rohde-Schwarz\CMW\Data\waveform\NRsub6G_ARB_Waveforms\NR_CP_SCS30kHz_BW20MHz_16-QAM_cellID3.wv')
-        self.write(f":SOUR:GPRF:GEN:ARB:FILE '@Waveform\{sName}'")
+        self.write(f":SOUR:GPRF:GEN:ARB:FILE '@Waveform\\{sName}'")
 
     def Set_Gen_Freq(self,freq):
         self.write(f'SOUR:GPRF:GEN:RFS:FREQ {freq}')
