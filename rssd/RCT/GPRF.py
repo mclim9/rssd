@@ -45,6 +45,10 @@ class RCT(RCT):
         self.write('ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1'%port)
         self.write('INIT:GPRF:MEAS:FFTS')
 
+
+    def Init_Meas_IQCapture(self,port=1):
+        self.write('')
+
     def Init_Meas_Power(self,port=1):                                        #Val
         self.write('ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1'%port)
         self.write('INIT:GPRF:MEAS:POW')
