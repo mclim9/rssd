@@ -290,8 +290,8 @@ class VSG(VSG):                             #pylint: disable=E0102
         self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:SCSP N%d'%(self.sdir,iSubSp))
 
     def Set_5GNR_ChannelBW(self,iBW):
-        ### BW in MHz
-        ### 5GNR-->NODE-->Carriers-->Channel BW
+        """ BW in MHz
+         5GNR-->NODE-->Carriers-->Channel BW"""
         self.write(':SOUR1:BB:NR5G:NODE:CELL0:CBW BW%d'%iBW)
 
     def Set_5GNR_Direction(self,sDirection):
@@ -306,6 +306,13 @@ class VSG(VSG):                             #pylint: disable=E0102
             self.alloc = 1         #Alloc 0:Coreset 1:PDSCH
         else:
             print("Set_5GNR_Direction must be UP or DOWN")
+
+    def Set_5GNR_FRC_State(self,state):
+        """ 'ON' | 'OFF' """
+        if (state == "ON") or (state == 1):
+            self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:STAT ON')
+        else:
+            self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:STAT OFF')
 
     def Set_5GNR_FreqRange(self,iRange):
         """ 0:<3GHz 1:3-6GHz 2:>6GHz """ 
