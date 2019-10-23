@@ -24,11 +24,11 @@ class RCT(RCT):                                 #pylint: disable=E0102
         rdStr = self.query('ROUT:GPRF:GEN:SPAT?')
         return rdStr
 
-    def Get_Meas_ChPwr_RMS(self):                                           #Val
-        # out = self.queryFloat('FETC:GPRF:MEAS:POW:CURR?')
-        # out = self.queryFloat('FETC:GPRF:MEAS:FFTS:POW:AVER?')
-        out = self.query('FETC:GPRF:MEAS:POW:CURR?')
-        return out 
+    def Get_Meas_FFT_Power(self):                                           #Val
+        rdStr = self.queryFloatArry('FETC:GPRF:MEAS:POW:AVER?')[1]  # Doesnt Clr Memory
+        # rdStr = self.query('READ:GPRF:MEAS:POW:AVER?')  # Clears Memory
+        # rdStr = self.query('CALC:GPRF:MEAS:POW:AVER?')  # Chk Limits
+        return rdStr
 
     def Get_Meas_Port(self):                                                #Val
         rdStr = self.query('ROUT:GPRF:MEAS:SPAT?')
@@ -45,12 +45,9 @@ class RCT(RCT):                                 #pylint: disable=E0102
         self.write('ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1'%port)
         self.write('INIT:GPRF:MEAS:FFTS')
 
-
-    def Init_Meas_IQCapture(self,port=1):
-        self.write('')
-
     def Init_Meas_Power(self,port=1):                                        #Val
-        self.write('ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1'%port)
+        # self.write('ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1'%port)
+        self.write('FORMAT:BASE:DATA ASCII')
         self.write('INIT:GPRF:MEAS:POW')
         self.write('CONF:GPRF:MEAS:POW:MODE POW')      #POW|STAT
 
@@ -99,13 +96,25 @@ class RCT(RCT):                                 #pylint: disable=E0102
         else:
             self.query('SOUR:GPRF:GEN:STAT OFF;*OPC?')
 
+    def Set_Meas_Autolevel(self):
+        self.Init_Meas_Power()
+        self.Set_Meas_UserMargin(0)
+        self.Set_Meas_Expected_Nom_Power(40)
+        pwr = self.Get_Meas_FFT_Power()
+        print(pwr)
+        self.Set_Meas_Expected_Nom_Power(pwr + 2)
+
+    def Set_Meas_Expected_Nom_Power(self,fPwr):
+        """Expected Nominal Power (RMS)"""
+        self.write(f'CONFigure:GPRF:MEAS:RFSettings:ENPower {fPwr}')
+
     def Set_Meas_Freq(self,fFreq):                                          #Val
         # self.write('CONF:GPRF:MEAS:SPEC:FREQ:CENT %d'%fFreq)
         self.write(f'CONF:GPRF:MEAS:RFS:FREQ {fFreq}')
 
-    def Set_Meas_InitImm(self):
-        #self.query('INIT:GPRF:MEAS:SPEC;*OPC?')
-        self.query('INIT:GPRF:MEAS:;*OPC?')
+    # def Set_Meas_InitImm(self):
+    #     #self.query('INIT:GPRF:MEAS:SPEC;*OPC?')
+    #     self.query('INIT:GPRF:MEAS:;*OPC?')
 
     def Set_Meas_Port(self, port):
         """ CMP: 'P<x>.IFIn' | 'P<x>.RRH.RF<y>'"""
@@ -114,29 +123,21 @@ class RCT(RCT):                                 #pylint: disable=E0102
 
     def Set_Meas_RefLevl(self,fRefLvl):                                     #Val
         ### ENP = Expected Nominal Power
-        self.write('CONF:GPRF:MEAS:RFS:ENP %f'%fRefLvl)
+        self.write(f'CONF:GPRF:MEAS:RFS:ENP {fRefLvl}')
 
-    # def Set_Meas_ResBW(self,fFreq):
-    #     if fFreq > 0:
-    #         self.write('CONF:GPRF:MEAS:SPEC:FSW:RBW %f'%fFreq)
-    #     else:
-    #         self.write('CONF:GPRF:MEAS:SPEC:FSW:RBW:AUTO ON')
-            
     def Set_Meas_Span(self,fFreq):
         """ 10; 20; 40; 80; 160; 250; 500; 1000 MHz allowed """
-        self.write('CONF:GPRF:MEAS:FFTS:FSP %f'%fFreq)
+        self.write(f'CONF:GPRF:MEAS:FFTS:FSP {fFreq}')
 
     def Set_Meas_SweepTime(self,fTime):
         if fTime > 0:
-            self.write('CONF:GPRF:MEAS:SPEC:FSW:SWT %f'%fTime)
+            self.write(f'CONF:GPRF:MEAS:SPEC:FSW:SWT {fTime}')
         else:
-            self.write('CONF:GPRF:MEAS:SPEC:FSW:SWT:AUTO ON')
-            
-    def Set_Meas_VidBW(self,fFreq):
-        if fFreq > 0:
-            self.write('CONF:GPRF:MEAS:SPEC:FSW:VBW %f'%fFreq)
-        else:
-            self.write('CONF:GPRF:MEAS:SPEC:FSW:VBW:AUTO ON')
+            self.write(f'CONF:GPRF:MEAS:SPEC:FSW:SWT:AUTO ON')
+
+    def Set_Meas_UserMargin(self,fPwr):
+        """User Margin (Crest Factor)"""
+        self.write(f'CONFigure:GPRF:MEAS:RFSettings:UMARgin {fPwr}')
 
 ###############################################################################
 ### Run if Main
@@ -145,6 +146,7 @@ if __name__ == "__main__":
     ### this won't be run when imported
     CMW = RCT()
     CMW.jav_Open("192.168.1.160")
-    CMW.Set_Gen_Freq(6000)
-    print(CMW.Get_Meas_ChPwr_RMS())
+    pwr = CMW.Get_Meas_FFT_Power()
+    print(pwr)
+    # CMW.Set_Meas_Autolevel()
     CMW.jav_Close()
