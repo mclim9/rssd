@@ -2,15 +2,21 @@ import pysftp
 cnopts = pysftp.CnOpts()
 cnopts.hostkeys = None 
 
-myHostname = "yourserverdomainorip.com"
+myHostname = "192.168.1.160"
 myUsername = "root"
-myPassword = "12345"
+myPassword = "iluvr0hde"
+remotePath = '/home/instrument/fw/data/iqrecorder/'
+localPath  = 'C:\\Users\\lim_m\\Desktop\\CMPTEstData\\'
+filename   = 'IQFile.iqw'
 
-srv = pysftp.Connection(host="192.168.1.160", username="root",password="iluvr0hde",cnopts=cnopts)
-srv.cwd('/home/instrument/fw/data')
-data = srv.listdir()            # Get the directory and file listing
-srv.
-srv.close()                     # Closes the connection
-for i in data:                  # Prints out the directories and files, line by line
+with pysftp.Connection(host=myHostname, username=myUsername, password=myPassword,cnopts=cnopts) as sftp:
+    print("Connection succesfully established ... ")
 
-    print(i)
+    sftp.get(remotePath+filename, localPath+filename)
+    # sftp.cwd(remotePath)
+    # data = sftp.listdir_attr()            # Get the directory and file listing
+
+
+# for i in data:                  # Prints out the directories and files, line by line
+#     print(f'{i.filename} {i.st_size}')
+
