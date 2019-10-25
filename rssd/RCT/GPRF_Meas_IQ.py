@@ -17,7 +17,7 @@ class RCT(RCT):                                 #pylint: disable=E0102
     ### RCT Get Functions
     ###########################################################################
     def Get_IQR_srate(self):
-        rdStr = self.query('FETCh:GPRF:MEAS:IQRecorder:SRATe?')
+        rdStr = self.queryFloat('FETCh:GPRF:MEAS:IQRecorder:SRATe?')
         return rdStr
 
     def Get_IQR_data(self):
@@ -39,19 +39,9 @@ class RCT(RCT):                                 #pylint: disable=E0102
     def Set_Meas_Freq(self,fFreq):                                          #Val
         self.write(f'CONF:GPRF:MEAS:RFS:FREQ {fFreq}')
 
-    def Set_IQR_InitImm(self):
-        self.query('STOP:GPRF:MEAS:IQRecorder;*OPC?')
-        self.query('INIT:GPRF:MEAS:IQRecorder;*OPC?')
-
-    def Set_Meas_SweepTime(self,fTime):
-        if fTime > 0:
-            self.write('CONF:GPRF:MEAS:SPEC:FSW:SWT %f'%fTime)
-        else:
-            self.write('CONF:GPRF:MEAS:SPEC:FSW:SWT:AUTO ON')
-
-    def Set_IQR_timeout(self,fTime):
-        """Timeout, sec"""
-        self.write(f'CONFigure:GPRF:MEAS:IQRecorder:TOUT {fTime}')
+    def Set_IQR_Bandwidth(self,iBW):
+        """1000:1250 | 500:625 | 250:312.5 160/40/10:Unsupported"""
+        self.write(f'CONFigure:GPRF:MEAS:IQRecorder:FILTer:BANDpass:BWIDth {iBW} MHz')
 
     def Set_IQR_filename(self,sFile):
         """IQ Output Filename"""
@@ -62,21 +52,50 @@ class RCT(RCT):                                 #pylint: disable=E0102
         """OFF | ON | ONLY"""
         self.write(f'CONFigure:GPRF:MEAS:IQRecorder:WTFile {sState}')
 
+    def Set_IQR_InitImm(self):
+        self.query('STOP:GPRF:MEAS:IQR;*OPC?')
+        self.query('INIT:GPRF:MEAS:IQR;*OPC?')
+        self.Set_IQR_filename_state('OFF')
+        # self.query('ABOR:GPRF:MEAS:IQR;*OPC?')
+
     def Set_IQR_Length(self,iLength):
         self.write(f'CONFigure:GPRF:MEAS:IQRecorder:CAPTure 1, {iLength}')
         # self.write(f'CONFigure:GPRF:MEAS:IQRecorder:FILTer:TYPe GAUSs')
 
-    def Set_IQR_Bandwidth(self,iBW):
-        """1000:1250 | 500:625 | 250/160/40/10:312.5 """
-        self.write(f'CONFigure:GPRF:MEAS:IQRecorder:FILTer:GAUSs:BWIDth iBW')
+    def Set_IQR_SamplingRate(self,fFreq):
+        """Sampling Rate, MHz"""
+        # 10/40/160 BW ->  Unsupported
+        fFreq = float(fFreq)
+        if fFreq < 156.25:
+            print('Set_IQR_SamplingRate Frequency below 156.25 not supported')
+        elif fFreq < 312.5:             #  250 MHz BW -->  312.5 MHz
+            self.Set_IQR_Bandwidth(250)
+            ratio = fFreq/312.5
+            self.Set_IQR_SamplingRate_Ratio(ratio)
+        elif fFreq < 625:               #  500 MHz BW -->  625 MHz
+            self.Set_IQR_Bandwidth(500)
+            ratio = fFreq/625
+            self.Set_IQR_SamplingRate_Ratio(ratio)
+        elif fFreq < 1250:              # 1000 MHz BW --> 1250 MHz
+            self.Set_IQR_Bandwidth(1000)
+            ratio = fFreq/1250
+            self.Set_IQR_SamplingRate_Ratio(ratio)
+        else:
+            print('Frequency too high')
 
     def Set_IQR_SamplingRate_Ratio(self,fRatio):
         """Fs = BP Filt BW * Ratio"""
         self.write(f'CONFigure:GPRF:MEAS:IQRecorder:RATio {fRatio}')
 
-    def Set_IQR_Units(self,sUnit):
-        """VOLT | RAW"""
-        self.write(f'CONFigure:GPRF:MEAS:IQRecorder:MUNit {sUnit}')
+    def Set_IQR_timeout(self,fTime):
+        """Timeout, sec"""
+        self.write(f'CONFigure:GPRF:MEAS:IQRecorder:TOUT {fTime}')
+
+    def Set_IQR_Time(self,fTime):
+        """Capture Time, sec"""
+        Fs     = self.Get_IQR_srate()
+        numIQ  = int(Fs * fTime)
+        self.Set_IQR_Length(numIQ)
 
     def Set_IQR_Trig_Slope(self,sSlope):
         """Trigger Slope: REDG | FEDGe"""
@@ -98,6 +117,10 @@ class RCT(RCT):                                 #pylint: disable=E0102
         """Trigger Timeout, sec"""
         self.write(f'TRIGger:GPRF:MEAS:IQRecorder:MGAP {iTime}')
 
+    def Set_IQR_Units(self,sUnit):
+        """VOLT (Float32) | RAW"""
+        self.write(f'CONFigure:GPRF:MEAS:IQRecorder:MUNit {sUnit}')
+
 ###############################################################################
 ### Run if Main
 ###############################################################################
@@ -107,13 +130,11 @@ if __name__ == "__main__":
     CMP.jav_Open("192.168.1.160")
     CMP.Set_IQR_timeout(1)
     CMP.Init_Meas_IQCapture()
-    CMP.Set_IQR_Bandwidth(160)
-    CMP.Set_IQR_SamplingRate_Ratio(0.786432)
-    # CMP.Set_IQR_Length(3686400)       #15.00 msec  29 MB
-    CMP.Set_IQR_Length(30720)           #0.125 uSec 246 kB
-    print(CMP.Get_IQR_srate())
-    CMP.Set_IQR_filename('tesasdft')
+    CMP.Set_IQR_Time(0.0125)
+    CMP.Set_IQR_SamplingRate(245.76)
+    CMP.Set_IQR_filename('IQFile')
     CMP.Set_IQR_filename_state('ON')
     CMP.Set_IQR_InitImm()
     CMP.jav_ClrErr()
     CMP.jav_Close()
+    import rssd.RSI.ftp
