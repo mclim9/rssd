@@ -4,18 +4,6 @@
 ### Purpose: Phase Noise Analyzer Common Functions
 ### Author:  Martin C Lim
 ### Date:    2019.07.02
-###  _____  _____   ____ _______ ____ _________     _______  ______ 
-### |  __ \|  __ \ / __ \__   __/ __ \__   __\ \   / /  __ \|  ____|
-### | |__) | |__) | |  | | | | | |  | | | |   \ \_/ /| |__) | |__    
-### |  ___/|  _  /| |  | | | | | |  | | | |    \   / |  ___/|  __|  
-### | |    | | \ \| |__| | | | | |__| | | |     | |  | |    | |____ 
-### |_|    |_|  \_\\____/  |_|  \____/  |_|     |_|  |_|    |______|
-###                         _            _           _ 
-###                        | |          | |         | |
-###             _   _ _ __ | |_ ___  ___| |_ ___  __| |
-###            | | | | '_ \| __/ _ \/ __| __/ _ \/ _` |
-###            | |_| | | | | ||  __/\__ \ ||  __/ (_| |
-###             \__,_|_| |_|\__\___||___/\__\___|\__,_|
 ###
 ###############################################################################
 from rssd.yaVISA import jaVisa              # pylint: disable=E0611,E0401
@@ -79,6 +67,20 @@ class PNA(jaVisa):
 
     def Get_Power(self):
         rdStr = self.query('POW:RLEV?')
+        return rdStr
+
+    def Get_PN_Decade(self):
+        """Phase Noise per decade (Spot Noise)"""
+        rdStr = self.query('CALC:SNO:DEC:Y?')
+        return rdStr
+
+    def Get_PN_Int(self):
+        """Integrated Phase Noise
+        :FETC<n>:RANG<j>:PNO<t>:IPN?
+        <n>   : Window
+        <j>   : Integration Range
+        <t>   : Trace """
+        rdStr = self.query(':FETC:RANG:PNO:IPN?')
         return rdStr
 
     def Get_RefLevel(self):
@@ -276,6 +278,6 @@ if __name__ == "__main__":
     ### this won't be run when imported
     FSWP = PNA().jav_Open("192.168.1.108")
     print(FSWP.Get_Freq())
-    print(FSWP.Get_FreqLock())
+    print(FSWP.Get_PN_Int())
     FSWP.jav_ClrErr()
     del FSWP
