@@ -1,4 +1,3 @@
-# -*- coding: future_fstrings -*-
 # -*- coding: utf-8 -*-
 """
 Created on Fri Feb 22 22:01:25 2019
@@ -208,8 +207,8 @@ class IQ(object):
         self.NumberOfSamples = int(res.group("NumberOfSamples"))
         res = re.search("CLOCK[ ]*:[ ]*(?P<SamplingRate>[0-9]*)",tags)
         self.fSamplingRate = float(res.group("SamplingRate"))
-        data = list(struct.unpack("h"*self.NumberOfSamples*2, data[binaryStart:-1]))
-        data = list(map( lambda x: x/32767.0, data ))
+        data = list(struct.unpack("h"*self.NumberOfSamples*2, data[binaryStart:-1]))    #MMM data: IQ arry
+        data = list(map( lambda x: x/32767.0, data ))                                   #MMM consumes a lot of time
         self.__iqiq2complex__(data)
 
     def writeXml(self, filenameiqw, filenamexml):
@@ -244,8 +243,6 @@ class IQ(object):
         
         return
 
-
-
     def writeIqTar(self, FileName):
         """writes an iq.tar file. Complex self.iqData values are interpreted as Volts.
         self.iqData can be a list of complex or list of floats (iqiqiq format).
@@ -259,7 +256,7 @@ class IQ(object):
         
         #Create binary file
         binaryfile = re.sub("iq.tar", "complex.1ch.float32", filename, flags=re.IGNORECASE)
-        self.writeIqw(binaryfile)
+        self.writeIqw(os.path.join(path, binaryfile))
         if self.NumberOfSamples == 0:
             return 0
         #xsltfilename = "open_IqTar_xml_file_in_web_browser.xslt"
@@ -368,7 +365,7 @@ class IQ(object):
 
     def main(self):
         #for testing only
-        filename = "C:\\Users\\lim_m\\ownCloud\\ATE\\AA_Code\\RSSD\\rssd\\Test64.wv"
+        filename = "C:\\Users\\lim_m\\Desktop\\CMPTEstData\\IQFile_resample.wv"
 
         ### Read data
         if '.wv' in filename: 
@@ -383,8 +380,8 @@ class IQ(object):
         import time
         start = time.time()
         self.writeIqTar(filename + '.iq.tar')
-        self.writeWv(filename + '.wv')
-        self.writeIqw(filename + '.iqw')
+        # self.writeWv(filename + '.wv')
+        # self.writeIqw(filename + '.iqw')
         duration = time.time() - start
         print(f"Total: {self.NumberOfSamples} samples in {duration*1e3:2.2f} ms. writeSpeed: {self.NumberOfSamples/1e6/duration:3.0f} MSamples/s")
 
