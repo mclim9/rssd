@@ -112,9 +112,13 @@ class jaVisa(object):
         return self
 
     def jav_openvisa(self, sVISAStr, fily='',prnt=1):
-        #*****************************************************************
-        #*** Open VISA Connection
-        #*****************************************************************
+        """ 
+        TCPIP0::<IP_Address>::inst0::INSTR
+        TCPIP0::<IP_Address>::hislip0::INSTR
+        TCPIP0::<IP_Address>::5025::SOCKET
+        GPIB::<Addr>::INSTR
+        ASRL1::INSTR
+        """
         rm = visa.ResourceManager()                         #Create Resource Manager
         #rmList = rm.list_resources()                       #List VISA Resources
         try:
@@ -216,10 +220,15 @@ class jaVisa(object):
 
 if __name__ == "__main__":
     RS = jaVisa()
-    RS.debug = 0
-    RS.jav_Open("192.168.1.108")
+    ipaddress   = '192.168.1.109'
+    port        = 5025
+    RS.debug    = 1
     # RS.jav_logscpi()
-    RS.jav_OPC_Wait('INIT:IMM')
+
+    # RS.jav_Open(ipaddress)                                    #Default HiSlip
+    # RS.jav_openvisa(f'TCPIP::{ipaddress}::hislip0::INSTR')    #hislip
+    # RS.jav_openvisa(f'TCPIP::{ipaddress}::instr0::INSTR')     #VXI11
+    RS.jav_openvisa(f'TCPIP::{ipaddress}::{port}::SOCKET')    #Socket
+
     print(RS.query("*IDN?"))
-    print(RS.Device)
-    print(RS.jav_Close())
+    RS.jav_Close()
