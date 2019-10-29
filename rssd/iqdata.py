@@ -383,7 +383,8 @@ class IQ(object):
         # self.writeWv(filename + '.wv')
         # self.writeIqw(filename + '.iqw')
         duration = time.time() - start
-        print(f"Total: {self.NumberOfSamples} samples in {duration*1e3:2.2f} ms. writeSpeed: {self.NumberOfSamples/1e6/duration:3.0f} MSamples/s")
+        speed = self.NumberOfSamples/1e6/duration
+        print("Total: %d samples in %2.2f ms. writeSpeed: %f MSamples/s"%(self.NumberOfSamples,duration*1e3,speed))
 
         #import matplotlib
         #mag = [abs(iq) for iq in data]
