@@ -100,7 +100,7 @@ class jaVisa(object):
                 break
         if self.debug: print('jav_OPCWai: %0.2fsec'%(delta))
         return delta
-    
+
     def jav_Open(self, sIPAddr,fily='',port=5025):
         #*****************************************************************
         #*** Open raw socket Connection
@@ -112,6 +112,20 @@ class jaVisa(object):
             self.jav_IDN()
             self.jav_fileout(fily, self.dataIDN)
             self.jav_ClrErr()
+        except:
+            if self.debug: print ('jav_OpnErr: ' + sIPAddr)
+            self.K2 = 'NoSOCKET'
+        return self
+
+    def jav_Open_Basic(self, sIPAddr,fily='',port=5025):
+        """ Open raw socket Connection 
+            No IDN or Error checking"""
+        self.K2 = socket.socket()
+        try:
+            self.K2.settimeout(1)
+            self.K2.connect((sIPAddr,port))
+            self.dataIDN = 'jav_Open_Basic'
+            self.jav_fileout(fily, self.dataIDN)
         except:
             if self.debug: print ('jav_OpnErr: ' + sIPAddr)
             self.K2 = 'NoSOCKET'
