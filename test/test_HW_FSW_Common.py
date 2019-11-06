@@ -38,6 +38,17 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
+    def test_FSW_ACLR(self):
+        self.FSW.Get_ACLR()
+        #var = input("Please enter something: ")
+        self.assertEqual(self.FSW.jav_Error()[0],'0')
+
+    def test_FSW_Freq(self):
+        self.FSW.Set_Freq(100e6)
+        rdStr = self.FSW.Get_Freq()
+        #var = input("Please enter something: ")
+        self.assertEqual(100e6,rdStr)
+
     def test_FSW_Connect(self):
         self.FSW.jav_IDN(prnt=0)
         self.assertEqual(self.FSW.Make,"Rohde&Schwarz")
@@ -58,11 +69,6 @@ class TestGeneral(unittest.TestCase):
         asdf = self.FSW.Get_Mkr_Freq()
         self.assertEqual(self.FSW.jav_Error()[0],'0')
 
-    def test_FSW_ACLR(self):
-        self.FSW.Get_ACLR()
-        #var = input("Please enter something: ")
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
-
 ###############################################################################
 ### </Test>
 ###############################################################################
@@ -71,4 +77,4 @@ if __name__ == '__main__':
         unittest.main()
     else:                   #Verbose run
         suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
-        unittest.TextTestRunner(verbosity=2).run(suite)
+        unittest.TextTestRunner(verbosity=1).run(suite)
