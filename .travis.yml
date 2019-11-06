@@ -29,4 +29,3 @@ script:
   - python -m unittest -v test.test_RSSD
   - python -m unittest -v test.test_FileIO
   - python -m unittest -v test.test_yaVISA
-
