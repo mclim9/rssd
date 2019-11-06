@@ -6,6 +6,7 @@
 ### Date   : 2018.05.29
 ###############################################################################
 from rssd.RCT.Common import RCT                 #pylint: disable=E0611,E0401
+import struct                                   # For IQ Manipulation
 
 class RCT(RCT):                                 #pylint: disable=E0102
     """ Rohde & Schwarz Radio Comm Tester Object """
@@ -20,9 +21,19 @@ class RCT(RCT):                                 #pylint: disable=E0102
         rdStr = self.queryFloat('FETCh:GPRF:MEAS:IQRecorder:SRATe?')
         return rdStr
 
-    def Get_IQR_data(self):
-        self.write('FORMAT:BASE:DATA REAL, 32')
-        rdStr = self.query('FETCh:GPRF:MEAS:IQRecorder?')
+    def Get_IQR_data_ASCII(self):
+        self.write('FORMAT:BASE:DATA ASCII')
+        rdStr = self.query('FETC:GPRF:MEAS:IQR?')
+        return rdStr
+
+    def Get_IQR_data_Bin(self):
+        self.write('FORMAT:BASE:DATA REAL,32')
+        self.write('FETC:GPRF:MEAS:IQR?')
+        rdStr = self.K2.read_raw()
+        numBytes = int(chr(rdStr[3]))
+        IQStart  = numBytes + 4
+        IQBytes = rdStr[(numBytes+4):]
+        data = struct.unpack('<f',IQBytes)
         self.write('FORMAT:BASE:DATA ASCII')
         return rdStr
 
@@ -128,13 +139,12 @@ if __name__ == "__main__":
     ### this won't be run when imported
     CMP = RCT()
     CMP.jav_Open("192.168.1.160")
-    CMP.Set_IQR_timeout(1)
-    CMP.Init_Meas_IQCapture()
-    CMP.Set_IQR_Time(0.0125)
-    CMP.Set_IQR_SamplingRate(245.76)
-    CMP.Set_IQR_filename('IQFile')
-    CMP.Set_IQR_filename_state('ON')
-    CMP.Set_IQR_InitImm()
+    # CMP.Set_IQR_timeout(1)
+    # CMP.Init_Meas_IQCapture()
+    # CMP.Set_IQR_Time(0.0125)
+    # CMP.Set_IQR_SamplingRate(245.76)
+    print(CMP.Get_IQR_data_ASCII()[0:50])
+    rd = (CMP.Get_IQR_data_Bin())
+    print(rd)
     CMP.jav_ClrErr()
     CMP.jav_Close()
-    import rssd.RSI.ftp
