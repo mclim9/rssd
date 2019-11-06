@@ -23,7 +23,7 @@
 ###         ATS1500     Az over El;
 ###         ATS1800     Az over El;
 ###############################################################################
-from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
+from rssd.yaVISA     import jaVisa           #pylint: disable=E0611,E0401
 import time
 
 class OTA(jaVisa):
@@ -35,10 +35,16 @@ class OTA(jaVisa):
         self.cmdWait = 0.05     #Seconds
 
     def query(self,cmd):
-        self.write(cmd)
-        time.sleep(self.cmdWait)
-        rdStr = self.K2.recv(2048).strip().decode()
-        return rdStr
+        cmd = cmd + self.EOL
+        self.K2.sendall(cmd.encode())               #Write if connected
+        sOut = self.K2.recv(2048).strip()           #read socket
+        read = sOut.decode()
+        return read
+
+        # self.write(cmd)
+        # time.sleep(self.cmdWait)
+        # rdStr = self.K2.recv(2048).strip().decode()
+        # return rdStr
 
     #####################################################################
     ### OTA Get Functions
