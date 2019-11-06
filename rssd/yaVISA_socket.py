@@ -219,7 +219,11 @@ class jaVisa(object):
         self.jav_fileout(self.f, "%s,%s"%(self.Model,cmd))
 
 if __name__ == "__main__":
-    RS = jaVisa().jav_Open("192.168.1.108")
+    if 0:
+        RS = jaVisa().jav_Open_Basic("192.168.1.30",5025)
+        RS.EOL = '\r\n'
+    else:
+        RS = jaVisa().jav_Open_Basic("192.168.1.50",200)
+        RS.EOL = '\x00'
     print(RS.query("*IDN?"))
-    print(RS.Device)
-    print(RS.jav_Close())
+    RS.jav_Close()
