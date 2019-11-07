@@ -389,7 +389,20 @@ class IQ(object):
         #import matplotlib
         #mag = [abs(iq) for iq in data]
         #matplotlib.pyplot.plot(mag)
-    
+
+def dataConvert():
+    ''' Show binary to float32 conversion '''
+    import struct
+    import array
+
+    # numpy.frombuffer dtype=float32()
+    sampledata = b'\x0E\x78\x94\xB7'
+    print('Data %s %d'%(sampledata,len(sampledata)))
+    print("Float=",struct.unpack("<f",sampledata)) #Little Endian
+    print("Float=",struct.unpack("<f",sampledata)) #Little Endian
+    print("Float=",array.frombytes(sampledata)) #Little Endian
+
 if __name__ == "__main__":
     # execute only if run as a script
-    IQ().main()
+    # IQ().main()
+    dataConvert()
