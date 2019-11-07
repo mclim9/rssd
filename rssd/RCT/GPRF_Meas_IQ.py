@@ -27,15 +27,16 @@ class RCT(RCT):                                 #pylint: disable=E0102
         return rdStr
 
     def Get_IQR_data_Bin(self):
+        import struct
         self.write('FORMAT:BASE:DATA REAL,32')
         self.write('FETC:GPRF:MEAS:IQR?')
         rdStr = self.K2.read_raw()
-        numBytes = int(chr(rdStr[3]))
-        IQStart  = numBytes + 4
-        IQBytes = rdStr[(numBytes+4):]
-        data = struct.unpack('<f',IQBytes)
+        numBytes = int(chr(rdStr[3]))           # Number of Bytes
+        numIQ    = int(rdStr[2:2+numBytes])
+        IQBytes  = rdStr[(numBytes+4):-1]       # Remove Header
+        IQAscii  = struct.unpack("<" + 'f' * int(numIQ/4),IQBytes)
         self.write('FORMAT:BASE:DATA ASCII')
-        return rdStr
+        return IQBytes
 
     ###########################################################################
     ### RCT Init Functions

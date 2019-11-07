@@ -118,16 +118,35 @@ class VSA(jaVisa):
         
     def Get_IQ_Data_Ascii(self,MLEN=1e3):
         CSVd = ""
-        self.write('TRAC:DATA ASCII')        
+        self.write('Format:DATA ASCII')        
         self.write('TRAC:IQ:DATA:FORM IQP')
         RLEN = self.Get_IQ_RecLength()                  #Sweep Points
         numLoops  = int(round(RLEN/MLEN))+1
-        for i in xrange(numLoops):                      # pylint: disable=E0602
-            
+        for i in range(numLoops):                      # pylint: disable=E0602
             SCPI = "TRAC:IQ:DATA:MEM? %d,%d"%((i * MLEN),MLEN)  #TRAC:IQ:DATA:MEM? <MemStrt>,<MLEN>
             CSVd = CSVd + self.query(SCPI)                #IQ Dump
         print("Memory Done Reading %d"%len(CSVd.split(',')))
         return CSVd
+
+    def Get_IQ_Data_Ascii2(self,MLEN=1e3):
+        CSVd = ""
+        self.write('FORMAT:DATA ASCII')        
+        self.write('TRAC:IQ:DATA:FORM IQP')
+        CSVd = self.query("TRAC:IQ:DATA:MEM?")
+        print("Memory Done Reading %d"%len(CSVd.split(',')))
+        return CSVd
+
+    def Get_IQ_Data_Bin(self):
+        import struct
+        self.write('FORMAT:DATA REAL,32')
+        self.write('TRAC:IQ:DATA:FORM IQP')
+        self.write('TRAC:IQ:DATA:MEM?')
+        rdStr = self.K2.read_raw()
+        numBytes = int(chr(rdStr[1]))       # Number of Bytes
+        numIQ    = int(rdStr[2:2+numBytes])
+        IQBytes  = rdStr[(numBytes+2):-1]    # Remove Header
+        IQAscii  = struct.unpack("<" + 'f' * int(numIQ/4),IQBytes)
+        return IQBytes
 
     def Get_IQ_RecLength(self):
         RLEN = self.queryInt('TRAC:IQ:RLEN?')	        #Record(Samples) Length
@@ -632,7 +651,10 @@ class VSA(jaVisa):
 #####################################################################
 if __name__ == "__main__":
     ### this won't be run when imported
-    FSW = VSA().jav_Open("192.168.1.108")
-    FSW.Get_Screenshot('asdf')
+    import struct
+    FSW = VSA().jav_Open("192.168.1.109")
+    print(FSW.Get_IQ_Data_Ascii2()[:50])
+    asdf = FSW.Get_IQ_Data_Bin()
+    print("Float=",struct.unpack("<f",asdf[0:4])) #Little Endian
     FSW.jav_ClrErr()
     del FSW
