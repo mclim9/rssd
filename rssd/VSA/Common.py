@@ -130,7 +130,7 @@ class VSA(jaVisa):
 
     def Get_IQ_Data_Ascii2(self,MLEN=1e3):
         CSVd = ""
-        self.write('FORMAT:DATA ASCII')        
+        self.write('FORMAT:DATA ASCII')
         self.write('TRAC:IQ:DATA:FORM IQP')
         CSVd = self.query("TRAC:IQ:DATA:MEM?")
         print("Memory Done Reading %d"%len(CSVd.split(',')))
@@ -651,10 +651,16 @@ class VSA(jaVisa):
 #####################################################################
 if __name__ == "__main__":
     ### this won't be run when imported
-    import struct
+    import timeit
     FSW = VSA().jav_Open("192.168.1.109")
-    print(FSW.Get_IQ_Data_Ascii2()[:50])
-    asdf = FSW.Get_IQ_Data_Bin()
-    print("Float=",struct.unpack("<f",asdf[0:4])) #Little Endian
+    tick1 = timeit.default_timer()
+
+    FSW.Get_IQ_Data_Ascii2()[:100]
+    tick2 = timeit.default_timer()
+    print(tick2-tick1)
+
+    (FSW.Get_IQ_Data_Bin()[:5])
+    tick3 = timeit.default_timer()
+    print(tick3-tick2)
     FSW.jav_ClrErr()
     del FSW
