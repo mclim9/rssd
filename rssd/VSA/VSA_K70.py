@@ -21,12 +21,12 @@ class VSA(VSA):
     ### VSA Init Functions
     ###########################################################################
     def Init_VSA(self):
-        self.Set_Channel("VSA")
+        self.Set_Channel("DDEM")
 
     ###########################################################################
     ### VSA Set Functions
     ###########################################################################
-    def Set_VSA_capture_length(self,length):
+    def Set_VSA_Capture_Length(self,length):
         """Number of symbols"""
         if length == 0:
             self.write(f':SENS:DDEM:RLEN:AUTO ON')
@@ -34,8 +34,28 @@ class VSA(VSA):
             self.write(f':SENS:DDEM:RLEN:AUTO OFF')
             self.write(f':SENS:DDEM:RLEN:VAL {length} SYM')
 
-    def Set_VSA_symbol_rate(self,rate):
-        """Symbol Rate"""
+    def Set_VSA_Filter_Alpha(self,alpha):
+        """  """
+        self.write(f':SENS:DDEM:TFIL:ALPH {alpha}')
+
+    def Set_VSA_Filter_Type(self,sName):
+        """RC | RRC | Gauss | GMSK | None """
+        self.write(f':SENS:DDEM:TFIL:NAME "{sName}"')
+
+    def Set_VSA_Mod_PSK(self,iState):
+        """2 | 8"""
+        self.write(f':SENS:DDEM:PSK:NST {iState}')
+
+    def Set_VSA_Mod_QAM(self,iState):
+        """16 | 32 | 64 | 128 | 256 | 512 | 1024"""
+        self.write(f':SENS:DDEM:QAM:NST {iState}')
+
+    def Set_VSA_Mod_Type(self,sMod):
+        """PSK|MSK|QAM|QPSK|FSK|ASK|APSK"""
+        self.write(f':SENS:DDEM:FORM {sMod}')
+
+    def Set_VSA_Symbol_Rate(self,rate):
+        """Symbol Rate, Hz"""
         self.write(f':SENS:DDEM:SRAT {rate}')
 
 #####################################################################
