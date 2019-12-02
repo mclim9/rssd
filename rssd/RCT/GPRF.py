@@ -59,7 +59,7 @@ class RCT(RCT):                                 #pylint: disable=E0102
 
     def Set_Gen_ArbWv(self,sName):
         #self.write(':SOUR:GPRF:GEN:ARB:FILE 'C:\ProgramData\Rohde-Schwarz\CMW\Data\waveform\NRsub6G_ARB_Waveforms\NR_CP_SCS30kHz_BW20MHz_16-QAM_cellID3.wv')
-        self.write(f":SOUR:GPRF:GEN:ARB:FILE '@Waveform\\{sName}'")
+        self.write(f":SOUR:GPRF:GEN:ARB:FILE '@Waveform/{sName}'")
 
     def Set_Gen_Freq(self,freq):
         self.write(f'SOUR:GPRF:GEN:RFS:FREQ {freq}')
@@ -146,7 +146,7 @@ if __name__ == "__main__":
     ### this won't be run when imported
     CMW = RCT()
     CMW.jav_Open("192.168.1.160")
-    pwr = CMW.Get_Meas_FFT_Power()
+    pwr = CMW.Set_Gen_ArbWv('OneTone.mat.wv')
     print(pwr)
     # CMW.Set_Meas_Autolevel()
     CMW.jav_Close()
