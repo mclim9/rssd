@@ -252,7 +252,10 @@ class VSA(VSA):                                #pylint: disable=E0102
     def Set_5GNR_AllocFile(self,sFilename):
         # \Instr\user\V5GTF\AllocationFiles\UL
         self.write('MMEM:LOAD:DEM "%s"'%sFilename)
-        
+
+    def Set_5GNR_AllocFileSave(self,sFilename):
+        self.write(f'MMEM:STOR:DEM:CC1 "C:\\R_S\\Instr\\user\\{sFilename}.allocation"')
+
     def Set_5GNR_BWP_Ch_Modulation(self,sMod):
         # QPSK; QAM16; QAM64; QAM256; PITB
         self.write(':CONF:NR5G:%s:FRAM1:BWP0:SLOT0:ALL0:MOD %s'%(self.sdir, sMod))

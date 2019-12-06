@@ -115,7 +115,7 @@ class VSA(jaVisa):
         iqfile = open (sFilename, "wb")
         iqfile.write(data[2 + int(digits):])
         iqfile.close()
-        
+
     def Get_IQ_Data_Ascii(self,MLEN=1e3):
         CSVd = ""
         self.write('Format:DATA ASCII')        
@@ -388,15 +388,19 @@ class VSA(jaVisa):
         self.write('SENS:CORR:FRES:Input1:USER:STATe %s'%sState)
 
     def Set_Freq(self,fFreq):
+        """Hz"""
         self.write(':SENS:FREQ:CENT %.0f HZ'%fFreq)            #RF Freq
 
     def Set_FreqStart(self,fFreq):
+        """Hz"""
         self.write(':SENS:FREQ:STAR %f'%fFreq)    #RF Freq
 
     def Set_FreqStep(self,fFreq):
+        """Hz"""
         self.write(':SENS:FREQ:STEP %f'%fFreq)    #RF Freq
 
     def Set_FreqStop(self,fFreq):
+        """Hz"""
         self.write(':SENS:FREQ:STOP %f'%fFreq)    #RF Freq
 
     def Set_Harm_num(self, num):
@@ -478,13 +482,16 @@ class VSA(jaVisa):
         self.Set_SweepTime(fSwpTime)
 
     def Set_IQ_WideBandMax(self,fFreq):
+        """Hz"""
         self.write('TRAC:IQ:WBAN:STAT ON')         #Wideband reduction activated
         self.write('TRAC:IQ:WBAN:MBW %f; *WAI'%fFreq)
 
     def Set_In_HPFilter(self,sState):                    #Filter for 1-3GHz meas
+        """ ON|OFF|0|1 """
         self.write('INP:FILT:HPASs:STATe %s'%sState) #ON|OFF|0|1
         
     def Set_In_YIG(self,sState):
+        """ ON|OFF|0|1 """
         self.write('INP:FILT:YIG:STATe %s'%sState)  #ON|OFF|0|1
 
     def Set_InitImm(self):
@@ -576,6 +583,9 @@ class VSA(jaVisa):
 
     def Set_SamplingRate(self,fFreq):
         self.write('TRAC:IQ:SRAT %f'%fFreq)
+
+    def Set_Savestate(self,sFilename):
+        self.write(f':MMEM:STOR:STAT 1,"C:\\R_S\\Instr\\user\\{sFilename}"')
 
     def Set_Span(self,fFreq):
         self.write('SENS:FREQ:SPAN %f'%fFreq)
