@@ -13,8 +13,56 @@ class VSA(VSA):
     ###########################################################################
     ### VSA Get Functions
     ###########################################################################
+    def Get_VSA_EVM(self):
+        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:EVM?')
+        return rdStr
+
+    def Get_VSA_CarrierFreqError(self):
+        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:CFER?')
+        return rdStr
+
+    def Get_VSA_IQImbalance(self):
+        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:IQIM?')
+        return rdStr
+
+    def Get_VSA_GainImbalance(self):
+        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:GIMB?')
+        return rdStr
+
+    def Get_VSA_IQOffset(self):
+        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:OOFF?')
+        return rdStr
+
+    def Get_VSA_IQSkew(self):
+        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:IQSK?')
+        return rdStr
+
+    def Get_VSA_MagnitudeError(self):
+        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:MERR?')
+        return rdStr
+
+    def Get_VSA_MER(self):
+        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:SNR?')
+        return rdStr
+
+    def Get_VSA_PhaseError(self):
+        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:PERR?')
+        return rdStr
+
+    def Get_VSA_ResultSumamry(self):
+        rdStr = self.query(':TRACE2:DATA? TRACE1')
+        return rdStr
+
+    def Get_VSA_Rho(self):
+        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:RHO?')
+        return rdStr
+
     def Get_VSA_symbol_rate(self):
         rdStr = self.query(':SENS:DDEM:SRAT?')
+        return rdStr
+
+    def Get_VSA_SymbolRateError(self):
+        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:SRER?')
         return rdStr
 
     ###########################################################################

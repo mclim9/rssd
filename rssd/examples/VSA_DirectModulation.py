@@ -32,6 +32,20 @@ FSW.Set_VSA_Mod_Type('QAM')
 FSW.Set_VSA_Mod_QAM(64)
 FSW.Set_VSA_Capture_Length(4000)
 
+print(FSW.Get_VSA_EVM())
+print(FSW.Get_VSA_MER())
+print(FSW.Get_VSA_PhaseError())
+print(FSW.Get_VSA_MagnitudeError())
+print(FSW.Get_VSA_CarrierFreqError())
+# print(FSW.Get_VSA_SymbolRateError())
+# print(FSW.Get_VSA_IQSkew())
+print(FSW.Get_VSA_Rho())
+print(FSW.Get_VSA_IQOffset())
+print(FSW.Get_VSA_IQImbalance())
+
+print(FSW.Get_VSA_ResultSumamry())
+
+
 ##########################################################
 ### Cleanup Automation
 ##########################################################
