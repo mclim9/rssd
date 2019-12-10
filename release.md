@@ -1,5 +1,7 @@
 Release History
 =====================================================================
+- RSSD 2019.12.0
+- RSSD 2019.11.0
 - RSSD 2019.10.0 **Code Break**
   - Add 5GNR
     - PTRS settings to FSW/SMW

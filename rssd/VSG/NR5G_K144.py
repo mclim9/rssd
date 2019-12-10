@@ -20,7 +20,7 @@ class VSG(VSG):                             #pylint: disable=E0102
         self.alloc = 0
 
     #####################################################################
-    ### SMW 5GNR Get Methods
+    ### 5GNR Get Methods
     #####################################################################
     def Get_5GNR_BWP_Center(self):
         rdStr = self.queryInt(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:DFR?'%(self.sdir))
@@ -217,7 +217,7 @@ class VSG(VSG):                             #pylint: disable=E0102
         return rdStr
 
     #####################################################################
-    ### FSW 5GNR Settings
+    ### 5GNR Settings
     #####################################################################
     def Set_5GNR_BBState(self,iEnable):
         """ON OFF"""

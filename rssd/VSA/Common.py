@@ -54,11 +54,15 @@ class VSA(jaVisa):
     def Get_ChPwr(self):
         out = self.queryFloat('FETC:SUMM:POW?')
         return out 
-        
+
+    def Get_ChannelName(self):
+        rdStr = self.query('INST:LIST?')
+        return(rdStr)
+
     def Get_Channels(self):
         ChList = self.query('INST:LIST?').split(',')
         return(ChList)
-        
+
     def Get_EVM(self):
         #EVM = self.query('FETC:SUMM:EVM:ALL:AVER?')
         out = self.queryFloat('FETC:SUMM:EVM?;*WAI').strip()
@@ -372,7 +376,11 @@ class VSA(jaVisa):
         else:
             self.query(":INST:CRE %s,'%s';*OPC?"%(Chan,sName))
         self.query(":INST:SEL '%s';*OPC?"%sName)
-        
+
+    def Set_ChannelName(seld,sName):
+        currCh = self.Get_ChannelName()
+        self.write(f":INST:REN '{currCh}', '{sName}'")
+
     def Set_DisplayUpdate(self,state):
         self.write('SYST:DISP:UPD %s'%state)      #Display Update State
          

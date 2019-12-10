@@ -16,9 +16,9 @@ class VSA(VSA):                                #pylint: disable=E0102
     #####################################################################
     ### FSW 5GNR Get
     #####################################################################
-    def Get_5GNR_ACLR(self): 
-        ACLR = self.query(':CALC:MARK:FUNC:POW:RES? MCAC')
-        return float(ACLR)
+    def Get_5GNR_ACLR(self):
+        rdStr = self.query(':CALC:MARK:FUNC:POW:RES? MCAC')
+        return rdStr
 
     def Get_5GNR_BWP_Center(self):
         SS = self.Get_5GNR_BWP_SubSpace()
@@ -190,6 +190,10 @@ class VSA(VSA):                                #pylint: disable=E0102
         rdStr = self.query(':CONF:NR5G:%s:CC1:DFR?'%(self.sdir))
         return rdStr
 
+    def Get_5GNR_Meas_ACLR(self):
+        rdStr = self.query(':CALC:MARK:FUNC:POW:RES? MCAC')
+        return rdStr
+
     def Get_5GNR_RefA(self):
         rdStr = self.queryInt(':CONF:NR5G:%s:CC1:RPA:RTCF?'%(self.sdir))
         return rdStr
@@ -231,7 +235,7 @@ class VSA(VSA):                                #pylint: disable=E0102
         self.Set_Channel('NR5G')
         
     def Init_5GNR_Meas(self,sMeas):
-        ### EMV; ESPectrum; ACLR; MCAClr; CACLr; MCESpectrum
+        """ EVM; ESPectrum; ACLR; TAER"""
         self.write('CONF:NR5G:MEAS %s'%sMeas)
 
     def Init_5GNR_SEM(self):
