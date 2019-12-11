@@ -77,7 +77,7 @@ class VSA(jaVisa):
         RefLvl  = self.Get_RefLevel()
         Power   = self.Get_ChPwr()
         EVM     = self.Get_EVM()
-        return ("%.2f,%.2f,%6.2f,%.2f"%(MAttn,RefLvl,Power,EVM))
+        return f"{MAttn:.2f},{RefLvl:.2f},{Power:6.2f},{EVM:.2f}"
 
     def Get_Freq(self):
         rdStr = self.queryFloat(':SENS:FREQ:CENT?')
@@ -250,7 +250,7 @@ class VSA(jaVisa):
     #####################################################################
     def Init_ACLR(self, sName=""):
         self.Set_Channel("SAN",sName)
-        self.Set_ChannelName("Spectrum",sName)
+        # self.Set_ChannelName("Spectrum",sName)
         self.write('CALC:MARK:FUNC:POW:SEL ACP')
 
     def Init_CCDF(self, sName=""):
