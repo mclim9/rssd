@@ -56,12 +56,16 @@ class VSA(jaVisa):
         return out 
 
     def Get_ChannelName(self):
-        rdStr = self.query('INST:LIST?')
-        return(rdStr)
+        ChList  = self.Get_Channels()
+        CurrApp = self.query('INST?')
+        match   = [x for x in ChList if CurrApp in x]
+        index   = ChList.index(match[0])
+        CurrCh  = ChList[index+1]
+        return(CurrCh)
 
     def Get_Channels(self):
-        ChList = self.query('INST:LIST?').split(',')
-        return(ChList)
+        ChList  = self.query('INST:LIST?').replace("\'","").split(',')
+        return ChList
 
     def Get_EVM(self):
         #EVM = self.query('FETC:SUMM:EVM:ALL:AVER?')
@@ -69,10 +73,10 @@ class VSA(jaVisa):
         return out
 
     def Get_EVM_Params(self):
-        MAttn    = self.Get_AttnMech()
+        MAttn   = self.Get_AttnMech()
         RefLvl  = self.Get_RefLevel()
-        Power    = self.Get_ChPwr()
-        EVM      = self.Get_EVM()
+        Power   = self.Get_ChPwr()
+        EVM     = self.Get_EVM()
         return ("%.2f,%.2f,%6.2f,%.2f"%(MAttn,RefLvl,Power,EVM))
 
     def Get_Freq(self):
@@ -244,20 +248,21 @@ class VSA(jaVisa):
     #####################################################################
     ### Measurement Init
     #####################################################################
-    def Init_ACLR(self):
-        self.Set_Channel("Spectrum")
+    def Init_ACLR(self, sName=""):
+        self.Set_Channel("SAN",sName)
+        self.Set_ChannelName("Spectrum",sName)
         self.write('CALC:MARK:FUNC:POW:SEL ACP')
 
-    def Init_CCDF(self):
-        self.Set_Channel("Spectrum")
+    def Init_CCDF(self, sName=""):
+        self.Set_Channel("Spectrum",sName)
         self.write('CALC:STAT:CCDF ON;*WAI')
 
-    def Init_Harm(self):
-        self.Set_Channel("Spectrum")
+    def Init_Harm(self, sName=""):
+        self.Set_Channel("Spectrum",sName)
         self.write('CALC:MARK:FUNC:HARM ON')
 
-    def Init_IQ(self):
-        self.Set_Channel("IQ")
+    def Init_IQ(self, sName=""):
+        self.Set_Channel("IQ",sName)
 
     #####################################################################
     ### Set Methods
@@ -366,7 +371,6 @@ class VSA(jaVisa):
 
     def Set_Channel(self,Chan,sName=""):
         """ SAN, IQ, NR5G, LTE, WLAN, PNOISE, NOISE, SPUR, ADEM, DDEM, V5GT, AMPL """
-
         if sName == "":
             sName = Chan
         ChList = self.query('INST:LIST?').split(',')
@@ -377,9 +381,11 @@ class VSA(jaVisa):
             self.query(":INST:CRE %s,'%s';*OPC?"%(Chan,sName))
         self.query(":INST:SEL '%s';*OPC?"%sName)
 
-    def Set_ChannelName(seld,sName):
-        currCh = self.Get_ChannelName()
-        self.write(f":INST:REN '{currCh}', '{sName}'")
+    def Set_ChannelName(self,newName,oldName):
+        self.write(f":INST:REN '{newName}', '{oldName}'")
+
+    def Set_ChannelSelect(self,sName):
+        self.query(":INST:SEL '%s';*OPC?"%sName)
 
     def Set_DisplayUpdate(self,state):
         self.write('SYST:DISP:UPD %s'%state)      #Display Update State
