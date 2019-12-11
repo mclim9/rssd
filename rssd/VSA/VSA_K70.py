@@ -98,6 +98,13 @@ class VSA(VSA):
             self.write(f':SENS:DDEM:RLEN:AUTO OFF')
             self.write(f':SENS:DDEM:RLEN:VAL {time} S')
 
+    def Set_VSA_EqualizerState(self,sState):
+        """ ON; OFF"""
+        if (sState == 'ON') or (sState == 1):
+            self.write(f':SENS:DDEM:EQU:STAT ON')
+        else:
+            self.write(f':SENS:DDEM:EQU:STAT ON')
+
     def Set_VSA_Filter_Alpha(self,alpha):
         """  """
         self.write(f':SENS:DDEM:TFIL:ALPH {alpha}')
