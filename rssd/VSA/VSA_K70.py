@@ -42,12 +42,12 @@ class VSA(VSA):
         return rdStr
 
     def Get_VSA_Meas_Params(self):
-        EVM     = self.Get_VSA_EVM()
-        PhaseEr = self.Get_VSA_PhaseError()
-        MagEr   = self.Get_VSA_MagnitudeError()
-        FreqEr  = self.Get_VSA_CarrierFreqError()
-        IQOff   = self.Get_VSA_IQOffset()
-        return f"{EVM},{PhaseEr},{MagEr},{FreqEr},{IQOff}"
+        EVM     = float(self.Get_VSA_EVM())
+        PhaseEr = float(self.Get_VSA_PhaseError())
+        MagEr   = float(self.Get_VSA_MagnitudeError())
+        FreqEr  = float(self.Get_VSA_CarrierFreqError())
+        IQOff   = float(self.Get_VSA_IQOffset())
+        return f"{EVM:.4f},{PhaseEr:.4f},{MagEr:.4f},{FreqEr:.4f},{IQOff:.4f}"
 
     def Get_VSA_MER(self):
         rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:SNR?')
@@ -89,6 +89,14 @@ class VSA(VSA):
         else:
             self.write(f':SENS:DDEM:RLEN:AUTO OFF')
             self.write(f':SENS:DDEM:RLEN:VAL {length} SYM')
+
+    def Set_VSA_Capture_Time(self,time):
+        """secs"""
+        if time == 0:
+            self.write(f':SENS:DDEM:RLEN:AUTO ON')
+        else:
+            self.write(f':SENS:DDEM:RLEN:AUTO OFF')
+            self.write(f':SENS:DDEM:RLEN:VAL {time} S')
 
     def Set_VSA_Filter_Alpha(self,alpha):
         """  """
