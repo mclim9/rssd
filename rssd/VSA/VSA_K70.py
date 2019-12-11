@@ -41,6 +41,14 @@ class VSA(VSA):
         rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:MERR?')
         return rdStr
 
+    def Get_VSA_Meas_Params(self):
+        EVM     = self.Get_VSA_EVM()
+        PhaseEr = self.Get_VSA_PhaseError()
+        MagEr   = self.Get_VSA_MagnitudeError()
+        FreqEr  = self.Get_VSA_CarrierFreqError()
+        IQOff   = self.Get_VSA_IQOffset()
+        return f"{EVM},{PhaseEr},{MagEr},{FreqEr},{IQOff}"
+
     def Get_VSA_MER(self):
         rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:SNR?')
         return rdStr
@@ -68,8 +76,8 @@ class VSA(VSA):
     ###########################################################################
     ### VSA Init Functions
     ###########################################################################
-    def Init_VSA(self):
-        self.Set_Channel("DDEM")
+    def Init_VSA(self,sName=""):
+        self.Set_Channel("DDEM",sName)
 
     ###########################################################################
     ### VSA Set Functions
@@ -89,6 +97,22 @@ class VSA(VSA):
     def Set_VSA_Filter_Type(self,sName):
         """RC | RRC | Gauss | GMSK | None """
         self.write(f':SENS:DDEM:TFIL:NAME "{sName}"')
+
+    def Set_VSA_Mod(self,sMod):
+        """ QPSK | 8PSK | 16APSK | 32APSK """
+        if sMod == 'QPSK':
+            self.Set_VSA_Mod_Type('QPSK')
+            self.write(':SENS:DDEM:QPSK:FORM NORM')
+        elif sMod == '8PSK':
+            self.Set_VSA_Mod_Type('PSK')
+            self.write(':SENS:DDEM:PSK:FORM NORM')
+            self.write(':SENS:DDEM:PSK:NST 8')
+        elif sMod == '16APSK':
+            self.Set_VSA_Mod_Type('APSK')
+            self.write(':SENS:DDEM:APSK:NST 16')
+        elif sMod == '32APSK':
+            self.Set_VSA_Mod_Type('APSK')
+            self.write(':SENS:DDEM:APSK:NST 32')
 
     def Set_VSA_Mod_PSK(self,iState):
         """2 | 8"""

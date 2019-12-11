@@ -1,6 +1,20 @@
 Release History
 =====================================================================
 - RSSD 2019.12.0
+  - VSA
+    - Common 
+      - Get/Set Ch Name
+      - Update Init_mmm w/ name input
+      - add Set_ChannelSelect()
+    - VSA_K70
+      - Add Set_VSA_Mod()
+      - Add Get_VSA_Meas_Params()
+    - 5GNR fix typos
+  - VSG
+    - Add CustomDigMod.py
+    - 5GNR fix typos
+  - Examples
+    - Add VSA_5GNR.py
 - RSSD 2019.11.0
 - RSSD 2019.10.0 **Code Break**
   - Add 5GNR

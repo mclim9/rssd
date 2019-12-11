@@ -101,10 +101,10 @@ class VSG(jaVisa):
 
     def Set_ArbSeg(self,Seg):
          self.write('SOUR:BB:ARB:WSEG:NEXT %d'%Seg)
-         self.write('SOUR:BB:ARB:WSEG:NEXT:EXEC')
+        #  self.write('SOUR:BB:ARB:WSEG:NEXT:EXEC')
 
     def Set_ArbState(self,sState):
-        self.query('BB:ARB:STATE %s;*OPC?'%sState)
+        self.query(':SOUR:BB:ARB:STATE %s;*OPC?'%sState)
 
     def Set_ArbWv(self,InWv):
          self.query('BB:ARB:WAV:SEL "%s"; *OPC?'%InWv)
