@@ -141,7 +141,7 @@ class VSA(jaVisa):
         self.write('FORMAT:DATA ASCII')
         self.write('TRAC:IQ:DATA:FORM IQP')
         CSVd = self.query("TRAC:IQ:DATA:MEM?")
-        print("Memory Done Reading %d"%len(CSVd.split(',')))
+        #print("Memory Done Reading %d"%len(CSVd.split(',')))
         return CSVd
 
     def Get_IQ_Data_Bin(self):
