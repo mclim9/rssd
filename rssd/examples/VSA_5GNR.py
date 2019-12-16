@@ -7,6 +7,7 @@
 ###############################################################################
 instru_ip   = '192.168.1.109'
 freq        = 15    #GHz
+SEMFreqmax  = 2.345e9
 
 ###############################################################################
 ### Code Overhead: Import and create objects
@@ -42,6 +43,8 @@ FSW.Set_InitImm()
 ACLR = FSW.Get_5GNR_ACLR()
 
 FSW.Init_5GNR_Meas('ESP')
+FSW.write(f':SENS:ESP1:RANG1:FREQ:STAR -{SEMFreqmax}')
+FSW.write(f':SENS:ESP1:RANG5:FREQ:STOP {SEMFreqmax}')
 FSW.Set_InitImm()
 SEM  = FSW.Get_5GNR_SEM()
 
