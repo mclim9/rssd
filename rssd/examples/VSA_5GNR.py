@@ -30,6 +30,7 @@ FSW.Set_SweepCont(0)
 ###########################
 ### EVM
 ###########################
+FSW.Init_5GNR()
 FSW.Init_5GNR_Meas('EVM')
 FSW.Set_InitImm()
 EVM = FSW.query(':FETC:CC1:ISRC:FRAM:SUMM:EVM:ALL:AVER?')
@@ -45,6 +46,7 @@ ACLR = FSW.Get_5GNR_ACLR()
 FSW.Init_5GNR_Meas('ESP')
 FSW.write(f':SENS:ESP1:RANG1:FREQ:STAR -{SEMFreqmax}')
 FSW.write(f':SENS:ESP1:RANG5:FREQ:STOP {SEMFreqmax}')
+FSW.Set_Span(SEMFreqmax*2)
 FSW.Set_InitImm()
 SEM  = FSW.Get_5GNR_SEM()
 
