@@ -128,6 +128,14 @@ class VSA(VSA):
         elif sMod == '32APSK':
             self.Set_VSA_Mod_Type('APSK')
             self.write(':SENS:DDEM:APSK:NST 32')
+        elif sMod == '64APSK':
+            self.Set_VSA_Mod_Type('UQAM')
+            self.query(':INIT:IMM;*OPC?')
+            self.write(':SENS:DDEM:USER:NAME "C:\\R_S\\instr\\user\\VSA\\Constellation\\DVB-S2X\\64APSK_8_16_20_20_4_5.vam"')
+        elif sMod == '256APSK':
+            self.Set_VSA_Mod_Type('UQAM')
+            self.query(':INIT:IMM;*OPC?')
+            self.write(':SENS:DDEM:USER:NAME "C:\\R_S\\instr\\user\\VSA\\Constellation\\DVB-S2X\\256APSK_135_180.vam"')
 
     def Set_VSA_Mod_PSK(self,iState):
         """2 | 8"""
@@ -144,6 +152,14 @@ class VSA(VSA):
     def Set_VSA_Symbol_Rate(self,rate):
         """Symbol Rate, Hz"""
         self.write(f':SENS:DDEM:SRAT {rate}')
+    
+    def Set_VSA_Result_Length(self,dLength):
+        """integer length or 'MAX' """
+        if dLength == 'MAX':
+            self.write(':SENS:DDEM:TIME 64000')                     # Result Length
+            self.write(':CALC:ELIN:STAT ON')                        # Full Evaluation Range
+        else:
+            self.write(f':SENS:DDEM:TIME {int(dLength)}')           # Result Length
 
 #####################################################################
 ### Run if Main
