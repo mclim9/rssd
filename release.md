@@ -1,5 +1,12 @@
 Release History
 =====================================================================
+- RSSD 2020.01.0
+  - Add Proto VSG.CustomDigMod.py
+  - VSA
+    - Add NR5G_K144 ACLR & SEM measurements
+    - Add VSA_5GNR Example
+    - Chg Init_xxx methods ability to name ch at creation
+    - Add VSA_K70 functions
 - RSSD 2019.12.0
   - VSA
     - Common 
