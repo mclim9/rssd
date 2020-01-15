@@ -29,19 +29,16 @@ class IQ(object):
         self.fSamplingRate = 0
 
     def __iqiq2complex__(self, iqiq):
-        """Returns a complex list of I/Q samples from a single list containing IQIQIQ values
-        complexList = __iqiq2complex__(iqiqiqList)"""
+        """iqiq list --> complex list, self.iqData """
         
         if len(iqiq) % 2 > 0:
             print("Expecting IQIQIQ order, input vector has odd number of samples!")
             return
         self.NumberOfSamples = len(iqiq) // 2
         self.iqData = [ complex(iqiq[2*n], iqiq[2*n+1]) for n in range(self.NumberOfSamples)]   
-        pass
 
     def __iiqq2complex__(self, iiqq):
-        """Returns a complex list of I/Q samples from a single list containing IIIQQQ values
-        complexList = __iiqq2complex__(iiiqqqList)"""
+        """Returns a complex list of I/Q samples from a single list containing IIIQQQ values"""
         
         if len(iiqq) % 2 > 0:
             print("Expecting IIIQQQ order, input vector has odd number of samples!")
@@ -91,15 +88,13 @@ class IQ(object):
         
         return self.NumberOfSamples
     
-    def ReadIqw(self, FileName, iqiq = True):   # Verified 2020.0115
-        """Reads an IQW (iiqq or iqiq) file. Returns complex samples.
-        If iqiq is True:
-            samples are read pairwise (IQIQIQ)
-        else
-            read, i first then q (IIIQQQ)
-        Note: IIIQQQ is a deprecated format, don't use it for new files.
-        iqList = ReadIqw("MyFile.iqw", iqiq = True)
-        """
+    def readIqw(self, FileName, iqiq = True):   # Verified 2020.0115
+        """Reads an IQW (iiqq or iqiq) file--> self.__iXXq2complex__ --> self.iqData
+         - If iqiq is True, samples are read pairwise (IQIQIQ)
+         - else, samples are read, i first then q (IIIQQQ)
+
+        Note: IIIQQQ is a deprecated format, don't use it for new files. """
+
         print("*.IQW file does not have sampling rate.  Please add to output")
         import struct
             
@@ -120,8 +115,7 @@ class IQ(object):
 
     def writeWv(self, FileName):                # Verified 2020.0115
         """writes a WV file.
-        self.iqData can be a list of complex or list of floats (iqiqiq format).
-        writtenSamples = writeWv("MyFile.wv",complexList, fs)"""
+        self.iqData can be a list of complex or list of floats (iqiqiq format)."""
         
         import struct
         from datetime import date
@@ -172,9 +166,8 @@ class IQ(object):
             
         return self.NumberOfSamples
         
-    def ReadWv(self,FileName):                  # Verified 2020.0115
-        """Reads a WV file. Returns a list containing IQIQIQ values and the sampling rate
-        iqiqiqList,fs = ReadWv("MyFile.wv")"""
+    def readWv(self,FileName):                  # Verified 2020.0115
+        """Reads a WV file --> self.__iqiq2complex__ --> self.iqData"""
         
         import re
         import struct
@@ -194,7 +187,6 @@ class IQ(object):
         while (binaryStart == 0) & (Counter < len(data)):
             tags += data[Counter:Counter+ConverterSize].decode("ASCII","ignore")
             Counter += ConverterSize
-            #{WAVEFORM-20001: #
             res = re.search("WAVEFORM.{0,20}:.{0,3}#",tags)
             if res != None:
                 binaryStart = res.span()[1]
@@ -212,8 +204,7 @@ class IQ(object):
         self.__iqiq2complex__(data)
 
     def writeXml(self, filenameiqw, filenamexml):               # Verified  2020.0115
-        """Function to write the xml part of the iq.tar
-        writeXml(samplingrate, self.NumberOfSamples, filenameiqw, filenamexml)"""
+        """Function to write the xml part of the iq.tar"""
         
         from datetime import datetime
         
@@ -240,8 +231,7 @@ class IQ(object):
 
     def writeIqTar(self, FileName):             # Verified 2020.0115
         """writes an iq.tar file. Complex self.iqData values are interpreted as Volts.
-        self.iqData can be a list of complex or list of floats (iqiqiq format).
-        writtenSamples = writeIqTar(iqList,fs,"MyFile.iq.tar")"""
+        self.iqData can be a list of complex or list of floats (iqiqiq format)."""
         
         import tarfile
         import os
@@ -254,10 +244,8 @@ class IQ(object):
         self.writeIqw(os.path.join(path, binaryfile))
         if self.NumberOfSamples == 0:
             return 0
-        # xsltfilename = "open_IqTar_xml_file_in_web_browser.xslt"
-        # xmlfilename = re.sub("iq.tar", "xml", filename, flags=re.IGNORECASE)
+        # xsltfilename = "open_IqTar_xml_file_in_web_browser.xslt"                  #xslt is optional
         xmlfilename = binaryfile + '.xml'
-        # self.writeXml(os.path.join(path, binaryfile), os.path.join(path, xmlfilename))
         self.writeXml(binaryfile, os.path.join(path, xmlfilename))
         
         try:
@@ -272,9 +260,8 @@ class IQ(object):
             print("IqTar (" + FileName +") write error!" )
             return 0
 
-    def ReadIqTar(self,FileName):               # Verified 2020.0115
-        """Reads an iq.tar file. 
-        data,fs = ReadIqTar("MyFile.iq.tar")"""
+    def readIqTar(self,FileName):               # Verified 2020.0115
+        """Reads an iq.tar file --> self.iqData"""
         
         import tarfile
         import os
@@ -306,14 +293,14 @@ class IQ(object):
             del root
             tar.extract(binaryfilename)
             tar.close()
-            self.ReadIqw(binaryfilename)
+            self.readIqw(binaryfilename)
             os.remove(binaryfilename)
             
         except:
             print("IqTar (" + FileName +") read error!" )
-        
-        #Apply scaling factor
-        self.iqData = [sample * scaling for sample in self.iqData]
+
+        self.iqData = [sample * scaling for sample in self.iqData]                      #Apply scaling factor
+
 
     def main(self):
         #for testing only
@@ -321,29 +308,25 @@ class IQ(object):
 
         ### Read data
         if '.wv' in filename: 
-            self.ReadWv(filename)
+            self.readWv(filename)
         elif '.iq.tar' in filename:
-            self.ReadIqTar(filename)
+            self.readIqTar(filename)
         elif '.iqw' in filename:
-            self.ReadIqw(filename)
+            self.readIqw(filename)
         else:
             print('Filetype not supported')
 
         import time
         start = time.time()
         self.writeIqTar(filename + '.iq.tar')
-        self.writeWv(filename + '.wv')
-        self.writeIqw(filename + '.iqw')
+        self.writeWv(   filename + '.wv')
+        self.writeIqw(  filename + '.iqw')
         duration = time.time() - start
         speed = self.NumberOfSamples/1e6/duration
         print("Total: %d samples in %2.2f ms. writeSpeed: %f MSamples/s"%(self.NumberOfSamples,duration*1e3,speed))
 
-        #import matplotlib
-        #mag = [abs(iq) for iq in data]
-        #matplotlib.pyplot.plot(mag)
-
 def dataConvert():
-    ''' Show binary to float32 conversion '''
+    ''' binary to float32 conversion '''
     import struct
     import array
 
