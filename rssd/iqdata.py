@@ -59,16 +59,15 @@ class IQ(object):
 
         return self.iqiqList
 
-    def __complex2iiqq__(self):
-        """Returns a list of I/Q samples from a complex list.
-        iiqqList = __complex2iiqq__(complexList)"""
+    # def __complex2iiqq__(self):
+    #     """Returns a list of I/Q samples from a complex list.
+    #     iiqqList = __complex2iiqq__(complexList)"""
         
-        self.iiqqList = [ iq.real for iq in self.iqData]
-        self.iiqqList.append([ iq.imag for iq in self.iqData])        
+    #     self.iiqqList = [ iq.real for iq in self.iqData]
+    #     self.iiqqList.append([ iq.imag for iq in self.iqData])        
+    #     return self.iiqqList
 
-        return self.iiqqList
-
-    def writeIqw(self, FileName):
+    def writeIqw(self, FileName):               # Verified 2020.0115
         """writes an IQW file (file of binary floats).
         self.iqData can be a list of complex or list of floats.
         Note: IIIQQQ is a deprecated format, don't use it for new files.
@@ -92,17 +91,19 @@ class IQ(object):
         
         return self.NumberOfSamples
     
-    def ReadIqw(self, FileName, iqiq = True):
-        """Reads an IQW (can be iiqq or iqiq) file. Returns complex samples.
-        If iqiq is True, samples are read pairwise (IQIQIQ),
-        otherwise in blocks, i first then q (IIIQQQ)
+    def ReadIqw(self, FileName, iqiq = True):   # Verified 2020.0115
+        """Reads an IQW (iiqq or iqiq) file. Returns complex samples.
+        If iqiq is True:
+            samples are read pairwise (IQIQIQ)
+        else
+            read, i first then q (IIIQQQ)
         Note: IIIQQQ is a deprecated format, don't use it for new files.
-        iqList = ReadIqw("MyFile.iqw", iqiq = True)"""
-        
+        iqList = ReadIqw("MyFile.iqw", iqiq = True)
+        """
+        print("*.IQW file does not have sampling rate.  Please add to output")
         import struct
             
         BytesPerValue = 4
-        
         try:
             file = open(FileName, "rb")
             data = file.read()
@@ -117,7 +118,7 @@ class IQ(object):
         else:
             self.__iiqq2complex__(data)
 
-    def writeWv(self, FileName):
+    def writeWv(self, FileName):                # Verified 2020.0115
         """writes a WV file.
         self.iqData can be a list of complex or list of floats (iqiqiq format).
         writtenSamples = writeWv("MyFile.wv",complexList, fs)"""
@@ -171,8 +172,7 @@ class IQ(object):
             
         return self.NumberOfSamples
         
-        
-    def ReadWv(self,FileName):
+    def ReadWv(self,FileName):                  # Verified 2020.0115
         """Reads a WV file. Returns a list containing IQIQIQ values and the sampling rate
         iqiqiqList,fs = ReadWv("MyFile.wv")"""
         
@@ -211,7 +211,7 @@ class IQ(object):
         data = list(map( lambda x: x/32767.0, data ))                                   #MMM consumes a lot of time
         self.__iqiq2complex__(data)
 
-    def writeXml(self, filenameiqw, filenamexml):
+    def writeXml(self, filenameiqw, filenamexml):               # Verified  2020.0115
         """Function to write the xml part of the iq.tar
         writeXml(samplingrate, self.NumberOfSamples, filenameiqw, filenamexml)"""
         
@@ -222,28 +222,23 @@ class IQ(object):
         xmlfile.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
         xmlfile.write("<?xml-stylesheet type=\"text/xsl\" href=\"open_IqTar_xml_file_in_web_browser.xslt\"?>\n")
         xmlfile.write("<RS_IQ_TAR_FileFormat fileFormatVersion=\"2\" xsi:noNamespaceSchemaLocation=\"http://www.rohde-schwarz.com/file/RsIqTar.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n")
-        #Optional
-        xmlfile.write("<Name>Python iq.tar writer (self.iqData.py)</Name>\n")
-        #Optional
-        xmlfile.write("<Comment>RS WaveForm, TheAE-RA</Comment>\n")
+        xmlfile.write("<Name>Python iq.tar writer (self.iqData.py)</Name>\n")       #Optional
+        xmlfile.write("<Comment>RS WaveForm, TheAE-RA</Comment>\n")                 #Optional
         xmlfile.write("<DateTime>"+ datetime.now(None).isoformat() +"</DateTime>\n")
         xmlfile.write("<Samples>" + str(self.NumberOfSamples) + "</Samples>\n")
         xmlfile.write("<Clock unit=\"Hz\">" + str(self.fSamplingRate) + "</Clock>\n")
         xmlfile.write("<Format>complex</Format>\n")
         xmlfile.write("<DataType>float32</DataType>\n")
-        #Optional
-        xmlfile.write("<ScalingFactor unit=\"V\">1</ScalingFactor>\n")
-        #Optional
-        #xmlfile.write("<NumberOfChannels>1</NumberOfChannels>\n")
+        xmlfile.write("<ScalingFactor unit=\"V\">1</ScalingFactor>\n")              #Optional
+        xmlfile.write("<NumberOfChannels>1</NumberOfChannels>\n")                   #Optional
         xmlfile.write("<DataFilename>" + filenameiqw+ "</DataFilename>\n")
-        #Optional
-        #xmlfile.write("<UserData></UserData>\n")
+        # xmlfile.write("<UserData></UserData>\n")                                   #Optional
         xmlfile.write("</RS_IQ_TAR_FileFormat>\n")
         xmlfile.close()
         
         return
 
-    def writeIqTar(self, FileName):
+    def writeIqTar(self, FileName):             # Verified 2020.0115
         """writes an iq.tar file. Complex self.iqData values are interpreted as Volts.
         self.iqData can be a list of complex or list of floats (iqiqiq format).
         writtenSamples = writeIqTar(iqList,fs,"MyFile.iq.tar")"""
@@ -259,16 +254,16 @@ class IQ(object):
         self.writeIqw(os.path.join(path, binaryfile))
         if self.NumberOfSamples == 0:
             return 0
-        #xsltfilename = "open_IqTar_xml_file_in_web_browser.xslt"
-        
-        xmlfilename = re.sub("iq.tar", "xml", filename, flags=re.IGNORECASE)
-        self.writeXml(os.path.join(path, binaryfile), os.path.join(path, xmlfilename))
+        # xsltfilename = "open_IqTar_xml_file_in_web_browser.xslt"
+        # xmlfilename = re.sub("iq.tar", "xml", filename, flags=re.IGNORECASE)
+        xmlfilename = binaryfile + '.xml'
+        # self.writeXml(os.path.join(path, binaryfile), os.path.join(path, xmlfilename))
+        self.writeXml(binaryfile, os.path.join(path, xmlfilename))
         
         try:
             tar = tarfile.open(FileName, "w")
             tar.add(os.path.join(path, binaryfile), arcname=binaryfile)
-            #xslt is optional
-            #tar.add(os.path.join(path, xsltfilename), arcname=xsltfilename)
+            #tar.add(os.path.join(path, xsltfilename), arcname=xsltfilename)         #xslt is optional
             tar.add(os.path.join(path, xmlfilename), arcname=xmlfilename)
             tar.close()
             os.remove(os.path.join(path, binaryfile))
@@ -277,7 +272,7 @@ class IQ(object):
             print("IqTar (" + FileName +") write error!" )
             return 0
 
-    def ReadIqTar(self,FileName):
+    def ReadIqTar(self,FileName):               # Verified 2020.0115
         """Reads an iq.tar file. 
         data,fs = ReadIqTar("MyFile.iq.tar")"""
         
@@ -286,7 +281,6 @@ class IQ(object):
         import xml.etree.ElementTree as ET
         
         path,filename = os.path.split(FileName)
-        data=[]
         self.fSamplingRate = 0
 
         try:
@@ -321,51 +315,9 @@ class IQ(object):
         #Apply scaling factor
         self.iqData = [sample * scaling for sample in self.iqData]
 
-    def Iqw2Iqtar(self,FileName):
-        """Converts an iqw file into iq.tar. Suggested to use after directly reading
-        binary data from instrument into file (iqw).
-        Note: iqw must be in iqiqiq format
-        writtenSamples = writeIqTar(iqList,fs,"MyFile.iq.tar")"""
-
-        import os
-        import tarfile
-        import re
-        
-        self.NumberOfSamples = 0
-        
-        if os.path.isfile(FileName):
-            self.NumberOfSamples = os.stat(FileName).st_size // 8
-        else:
-            print("File "+ FileName+" does not exist!")
-            return 0
-        
-        path,filename = os.path.split(FileName)
-        iqtarfile = re.sub("iqw", "iq.tar", filename, flags=re.IGNORECASE)
-        xmlfile = re.sub("iqw", "xml", filename, flags=re.IGNORECASE)
-        binaryfile = re.sub("iqw", "complex.1ch.float32", filename, flags=re.IGNORECASE)
-        os.rename(FileName, os.path.join(path, binaryfile))
-        
-        self.writeXml(binaryfile, os.path.join(path, xmlfile))
-                            
-        try:
-            tar = tarfile.open(os.path.join(path, iqtarfile), "w")
-            tar.add(os.path.join(path, binaryfile), arcname=binaryfile)
-            #xslt is optional
-            #tar.add(os.path.join(path, xsltfilename), arcname=xsltfilename)
-            tar.add(os.path.join(path, xmlfile), arcname=xmlfile)
-            tar.close()
-            os.remove(os.path.join(path, binaryfile))
-            os.remove(os.path.join(path, xmlfile))
-        except:
-            print("IqTar (" + FileName +") write error!" )
-            return 0
-        
-        return
-        
-
     def main(self):
         #for testing only
-        filename = "C:\\Users\\lim_m\\Desktop\\CMPTEstData\\IQFile_resample.wv"
+        filename = "C:\\Users\\lim_m\\ownCloud\\ATE\\AA_Code\\DSP_python\\DSP_python\\SampleWv\\CW_10tones_32MHz_100usec.iq.tar"
 
         ### Read data
         if '.wv' in filename: 
@@ -380,8 +332,8 @@ class IQ(object):
         import time
         start = time.time()
         self.writeIqTar(filename + '.iq.tar')
-        # self.writeWv(filename + '.wv')
-        # self.writeIqw(filename + '.iqw')
+        self.writeWv(filename + '.wv')
+        self.writeIqw(filename + '.iqw')
         duration = time.time() - start
         speed = self.NumberOfSamples/1e6/duration
         print("Total: %d samples in %2.2f ms. writeSpeed: %f MSamples/s"%(self.NumberOfSamples,duration*1e3,speed))
@@ -404,5 +356,5 @@ def dataConvert():
 
 if __name__ == "__main__":
     # execute only if run as a script
-    # IQ().main()
-    dataConvert()
+    IQ().main()
+    # dataConvert()
