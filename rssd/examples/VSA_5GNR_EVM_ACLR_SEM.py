@@ -6,8 +6,9 @@
 ### User Entry
 ###############################################################################
 instru_ip   = '192.168.1.109'
-freq        = 15    #GHz
+centerFreq  = 15e9    #GHz
 SEMFreqmax  = 2.345e9
+SEMFreqmin  = 2.900e9
 
 ###############################################################################
 ### Code Overhead: Import and create objects
@@ -24,7 +25,7 @@ FSW   = VSA().jav_Open(instru_ip,OFile)                     #Create Object
 ###############################################################################
 OFile.write('EVM,FreqError,ChPwr,Adj-,Adj+,SEM')            #Data Header
 
-FSW.Set_Freq(freq * 1e9)
+FSW.Set_Freq(centerFreq)
 FSW.Set_SweepCont(0)
 
 ###########################
@@ -44,9 +45,12 @@ FSW.Set_InitImm()
 ACLR = FSW.Get_5GNR_ACLR()
 
 FSW.Init_5GNR_Meas('ESP')
-FSW.write(f':SENS:ESP1:RANG1:FREQ:STAR -{SEMFreqmax}')
+FSW.Set_Span(SEMFreqmax+SEMFreqmin)
+print(centerFreq - SEMFreqmin)
+print(centerFreq + SEMFreqmax)
+
+FSW.write(f':SENS:ESP1:RANG1:FREQ:STAR -{SEMFreqmin}')
 FSW.write(f':SENS:ESP1:RANG5:FREQ:STOP {SEMFreqmax}')
-FSW.Set_Span(SEMFreqmax*2)
 FSW.Set_InitImm()
 SEM  = FSW.Get_5GNR_SEM()
 
