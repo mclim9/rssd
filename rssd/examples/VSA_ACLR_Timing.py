@@ -1,14 +1,14 @@
-##########################################################
+################################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ###
 ### Title  : Timing SCPI Commands Example
 ### Author : mclim
-### Date    : 2018.05.24
+### Date   : 2018.05.24
 ### Steps  : 
 ###
-##########################################################
+################################################################################
 ### User Entry
-##########################################################
+################################################################################
 VSA_IP  = '192.168.1.108'
 VSG_IP  = '192.168.1.114' 
 MeasTim = 10e-3
@@ -24,22 +24,22 @@ SweType = 'AUTO'           #AUTO | SWE | FFT
 Repeat  = 1
 PwrSweep = 59
 
-##########################################################
+################################################################################
 ### Code Overhead
-##########################################################
+################################################################################
 from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
 from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
 from datetime               import datetime
 from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
-import rssd.VSA_Leveling    as VSAL                 # pylint: disable=E0611,E0401
+import rssd.VSA_Leveling    as VSAL                 #pylint: disable=E0611,E0401
 import timeit
 
 OFile = FileIO().makeFile(__file__)
 VSA = VSA().jav_Open(VSA_IP,OFile)                  #Create VSA Object
 VSG = jaVisa().jav_Open(VSG_IP,OFile)               #Create Object
-##########################################################
+################################################################################
 ### Code Start
-##########################################################
+################################################################################
 # VSA.jav_Reset()
 VSA.Set_Freq(Freq)
 VSA.Set_Param_Couple_All()
@@ -50,7 +50,6 @@ VSA.Set_ACLR_AdjSpace(ChSpace)
 VSA.Set_ACLR_NumAdj(2)
 
 VSA.Set_ResBW(RBW)
-#VSA.Set_DisplayUpdate("OFF")
 VSA.Set_SweepTime(MeasTim)
 VSA.Set_Trace_Avg('LIN')
 VSA.Set_Trace_AvgCount(Avg)
@@ -61,9 +60,9 @@ VSA.Set_YIG('OFF')
 if 0:
     VSA.Set_Trig1_Source('Ext')
 
-##########################################################
+################################################################################
 ### Measure Time
-##########################################################
+################################################################################
 #sDate = timeit.default_timer().strftime("%y%m%d-%H:%M:%S.%f") #Date String
 OFile.write('Iter,RBW,SwpTime,SMWPwr,AL Time,TotalTime,Attn,PreAmp,RefLvl,SwpTime,SwpPts,SwpType,SwpOpt,TxPwr,Adj-,Adj+,Alt-,Alt+')
 table = VSAL.ReadLevellingTables(Freq)
@@ -97,8 +96,8 @@ for i in range(Repeat):
         OFile.write (OutStr)
 VSAL.WriteLevellingTables(Freq, table)
 
-##########################################################
+################################################################################
 ### Cleanup Automation
-##########################################################
+################################################################################
 OFile.write("\n")
 VSA.jav_Close()
