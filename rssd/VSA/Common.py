@@ -32,12 +32,16 @@ class VSA(jaVisa):
                 ACLR = f'{ACLR},{self.Get_Mkr_Band(i)[1]}'
         return ACLR
 
-    def Get_AmpSettings(self):
+    def Get_AmpSettings(self,header=0):
         #,Attn,PreAmp,RefLvl,
-        attn = self.Get_AttnMech()
-        prea = self.Get_Preamp()
-        refl = self.Get_RefLevel()
-        return f'{attn:2d},{prea},{refl:7.3f}'
+        if header != 1:
+            attn    = self.Get_AttnMech()
+            prea    = self.Get_Preamp()
+            refl    = self.Get_RefLevel()
+            outStr  = f'{attn:2d},{prea},{refl:7.3f}'
+        else:
+            outStr = 'Attn,PreAmp,RefLvl'
+        return outStr
 
     def Get_AttnMech(self):
         out = self.queryInt('INP:ATT?')
@@ -231,19 +235,45 @@ class VSA(jaVisa):
         rdStr = self.query(':SENS:SWE:TYPE?')
         return rdStr
        
-    def Get_SweepParams(self):
-        # ,SwpTime,SwpPts,SwpType,SwpOpt,
-        Opt = self.Get_SweepOpt()
-        Pts = self.Get_SweepPoints()
-        Tim = self.Get_SweepTime()
-        Typ = self.Get_SweepType()
-        return f'{Tim},{Pts},{Typ},{Opt}'
+    def Get_SweepParams(self,header=0):
+        # SwpTime,SwpPts,SwpType,SwpOpt,
+        if header != 1:
+            Time    = self.Get_SweepTime()
+            Points  = self.Get_SweepPoints()
+            Type    = self.Get_SweepType()
+            Opt     = self.Get_SweepOpt()
+            outStr  = f'{Time:5.3f},{Points},{Type},{Opt}'
+        else:
+            outStr  = 'SwpTimeM,SwpPts,SwpType,SwpOpt'
+        return outStr
 
     def Get_Trace_Data(self,trace=1):
         self.write('FORM ASCII ')
         DataY = self.query('TRAC%d:DATA? TRACE1'%trace)
         DataX = self.query('TRAC%d:DATA:X? TRACE1'%trace)
         return [DataX.split(','),DataY.split(',')]
+
+    def Get_Trace_Detector(self,trace=1):
+        rdStr = self.query(f'SENS:WIND1:DET{trace}?')
+        return rdStr
+
+    def Get_Trace_Mode(self,trace=1):
+        rdStr = self.query(f'DISP:TRAC{trace}:MODE?')
+        return rdStr
+
+    def Get_TraceSettings(self,header=0,trace=1):
+        if header != 1:
+            mode    = self.Get_Trace_Mode(trace)
+            detect  = self.Get_Trace_Detector(trace)
+            avgtype = self.Get_Trace_AvgType()
+            outStr  = f'{mode},{detect},{avgtype}'
+        else:
+            outStr  = 'TrcMode,TrcDet,AvgMode'
+        return outStr
+
+    def Get_Trace_AvgType(self):
+        rdStr   = self.query('SENS:AVER:TYPE?')
+        return rdStr
 
     #####################################################################
     ### Measurement Init
@@ -403,19 +433,19 @@ class VSA(jaVisa):
 
     def Set_Freq(self,fFreq):
         """Hz"""
-        self.write(':SENS:FREQ:CENT %.0f HZ'%fFreq)            #RF Freq
+        self.write(':SENS:FREQ:CENT %.0f HZ'%fFreq)
 
     def Set_FreqStart(self,fFreq):
         """Hz"""
-        self.write(':SENS:FREQ:STAR %f'%fFreq)    #RF Freq
+        self.write(':SENS:FREQ:STAR %f'%fFreq)
 
     def Set_FreqStep(self,fFreq):
         """Hz"""
-        self.write(':SENS:FREQ:STEP %f'%fFreq)    #RF Freq
+        self.write(':SENS:FREQ:STEP %f'%fFreq)
 
     def Set_FreqStop(self,fFreq):
         """Hz"""
-        self.write(':SENS:FREQ:STOP %f'%fFreq)    #RF Freq
+        self.write(':SENS:FREQ:STOP %f'%fFreq)
 
     def Set_Harm_num(self, num):
         self.write(f':CALC1:MARK1:FUNC:HARM:NHAR {num}')
@@ -497,22 +527,23 @@ class VSA(jaVisa):
 
     def Set_IQ_WideBandMax(self,fFreq):
         """Hz"""
-        self.write('TRAC:IQ:WBAN:STAT ON')         #Wideband reduction activated
+        self.write('TRAC:IQ:WBAN:STAT ON')                  #Wideband reduction activated
         self.write('TRAC:IQ:WBAN:MBW %f; *WAI'%fFreq)
 
-    def Set_In_HPFilter(self,sState):                    #Filter for 1-3GHz meas
-        """ ON|OFF|0|1 """
-        self.write('INP:FILT:HPASs:STATe %s'%sState) #ON|OFF|0|1
-        
+    def Set_In_HPFilter(self,sState):                       #Filter for 1-3GHz meas
+        """0 1 ON OFF"""
+        self.write('INP:FILT:HPASs:STATe %s'%sState)
+
     def Set_In_YIG(self,sState):
-        """ ON|OFF|0|1 """
-        self.write('INP:FILT:YIG:STATe %s'%sState)  #ON|OFF|0|1
+        """0 1 ON OFF"""
+        self.write('INP:FILT:YIG:STATe %s'%sState)
 
     def Set_InitImm(self):
         self.query('INIT:IMM;*OPC?')
             
     def Set_Input(self,sType):
-        self.write('INP:SEL %s'%sType)                  #RF|AIQ|DIQ|FILE
+        """ RF|AIQ|DIQ|FILE """
+        self.write('INP:SEL %s'%sType)
 
     #####################################################################
     ### FSW marker
@@ -577,7 +608,7 @@ class VSA(jaVisa):
         # self.query(":INST:COUP:USER4:NEW? 'Level','All Windows','Preamplifier','IQACP','All Windows','Preamplifier',BID,ON")
 
     def Set_Preamp(self,sState):
-        #ON|OFF|1|0
+        """0 1 ON OFF"""
         self.write('INP:GAIN:STAT %s;*WAI'%sState)
 
     def Set_PreampToggle(self,ChPwr,fToggle):
@@ -605,7 +636,7 @@ class VSA(jaVisa):
         self.write('SENS:FREQ:SPAN %f'%fFreq)
         
     def Set_SweepTime(self,fSwpTime):
-        self.write('SENS:SWE:TIME %f'%fSwpTime)  #Sweep/Capture Time
+        self.write('SENS:SWE:TIME %f'%fSwpTime)             #Sweep/Capture Time
 
     def Set_SweepType(self,sType):
         #AUTO | SWE | FFT
@@ -618,35 +649,43 @@ class VSA(jaVisa):
     def Set_SweepCont(self,iON):
         """0 | 1 """
         if iON == 1:
-            self.write('INIT:CONT ON')                #Continuous Sweep
+            self.write('INIT:CONT ON')                      #Continuous Sweep
         else:
-            self.write('INIT:CONT OFF')              #Single Sweep
+            self.write('INIT:CONT OFF')                     #Single Sweep
 
     def Set_SweepPoints(self,iNum):
-        self.write(':SENS:SWE:POIN %f'%iNum)      #Number of trace points
+        self.write(':SENS:SWE:POIN %f'%iNum)                #Number of trace points
 
     def Set_Trace_Avg(self,sType,trace=1):
         """LIN VID POW"""
-        self.write('DISP:TRAC%d:MODE AVER'%trace)
-        self.write('SENS:DET1:FUNC AVER')
-        self.write('SENS:AVER:TYPE %s'%sType)  #LIN|VID
-        
+        self.Set_Trace_Mode('AVER',trace)
+        self.Set_Trace_Detector('AVER')
+        self.Set_Trace_AvgType(sType)
+
     def Set_Trace_AvgCount(self,iAvg,trace=1):
         self.write('SENS:SWE:COUN %d'%(iAvg))
-        
+
     def Set_Trace_AvgOff(self,trace=1):
         self.write('DISP:TRAC%d:MODE WRIT'%(trace))
-    
+
+    def Set_Trace_AvgType(self,sType):
+        """LIN VID POW"""
+        self.write(f'SENS:AVER:TYPE {sType}')
+
     def Set_Trace_Detector(self,sDetect,iWind=1):
-        """APE; NEG; POS; QPE; SAMP; RMS; CAV; CRMS"""
-        self.write('SENS:WIND%d:DET %s'%(iWind,sDetect))        #RMS|
+        """APE; NEG; POS; QPE; SAMP; RMS; AVER; CAV; CRMS"""
+        self.write('SENS:WIND%d:DET %s'%(iWind,sDetect))
+
+    def Set_Trace_Mode(self,sMode,trace=1):
+        """WRIT AVER MAXH MINH VIEW BLAN"""
+        self.write(f'DISP:TRAC{trace}:MODE {sMode}')
 
     ####################################################################
     ### FSW Trigger
     #####################################################################
     def Set_Trig1_Source(self,sDetect):
         """IMM; EXT; EXT2; EXT3; RFP; IFP; TIME; VID; PSEN""" 
-        self.write('TRIG:SEQ:SOUR %s'%sDetect)        #RMS|
+        self.write('TRIG:SEQ:SOUR %s'%sDetect)
     
     def Set_Trig2_Dir(self,sDir):
         if (sDir == 'OUT'):
@@ -667,7 +706,8 @@ class VSA(jaVisa):
             self.write(':SENS:BAND:VID %f'%fFreq)
 
     def Set_YIG(self,sState):
-        self.write('INP:FILT:YIG:STAT %s;*WAI'%sState) #ON|OFF|1|0
+        """ON|OFF|1|0"""
+        self.write('INP:FILT:YIG:STAT %s;*WAI'%sState)
 
 
 #####################################################################
