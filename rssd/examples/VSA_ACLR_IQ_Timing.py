@@ -7,24 +7,21 @@
 ###############################################################################
 ### User Entry
 ###############################################################################
-VSA_IP  = '192.168.1.108'
+VSA_IP  = '192.168.1.109'
 VSG_IP  = '192.168.1.114' 
 MeasTim = 100e-6
-Freq    = 3e9
-RBW     = 20e3
+Freq    = 9e9
 ChBW    = 95e6
 ChSpace = 100e6
 Avg     = 0
-SweMode = 'NA'
-SweType = 'NA'
 
 ### Loops
-Repeat  = 10
+Repeat  = 1
 PwrSweep = 59
 
 meth = {
-        0:'VSA.Set_AutoOpt_FSx_Level()',
-        # 1:'VSA.Set_Autolevel()',
+        # 0:'VSA.Set_AutoOpt_FSx_Level()',
+        0:'VSA.Set_Autolevel()',
         1:'VSA.Set_Mkr_BandSetRef()'
         }
 
@@ -33,7 +30,7 @@ meth = {
 ###############################################################################
 from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
 from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
-from datetime               import datetime         
+import timeit
 from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
 
 OFile = FileIO().makeFile(__file__)
@@ -53,6 +50,7 @@ VSA.Set_Param_Couple_All()
 VSA.Set_SweepTime(MeasTim)
 VSA.Set_Trace_Avg('LIN')
 VSA.Set_Trace_AvgCount(Avg)
+VSA.Set_Trace_Detector('RMS')
 VSA.Set_YIG('OFF')
 if 0:
     VSA.Set_Trig1_Source('Ext')
@@ -61,17 +59,27 @@ if 0:
 ### Measure Time
 ###############################################################################
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-OFile.write('Model    ,Iter,Freq,RBW,SwpTime,SMWPwr,ALType,ALTime,TotTime,Attn,PreAmp,RefLvl,SwpTime,SwpPts,SwpType,SwpOpt,TxPwr,Adj-,Adj+,Alt-,Alt+,ChSpace')
+LoopParam   = 'Iter,ALMeth,Pwr'
+TimeParam   = 'AlTime,MeasTime,TotalTIme'
+SwpParam    = VSA.Get_SweepParams(1)
+AmpParam    = VSA.Get_AmpParams(1)
+TrcParam    = VSA.Get_TraceParams(1)
+SysParam    = VSA.Get_System_Params(1)
+MeasData    = 'TxPwr,Adj-,Adj+,Alt-,Alt+'
+OFile.write(f'{LoopParam},{TimeParam},{AmpParam},{SwpParam},{TrcParam},{SysParam},{MeasData}')
+
+# OFile.write('Model    ,Iter,Freq,RBW,SwpTime,SMWPwr,ALType,ALTime,TotTime,Attn,PreAmp,RefLvl,SwpTime,SwpPts,SwpType,SwpOpt,TxPwr,Adj-,Adj+,Alt-,Alt+,ChSpace')
+tick0 = timeit.default_timer()
 for i in range(Repeat):
     for autoMeth in range(len(meth)):
-        for pwr in range(PwrSweep):
+        for VSApwr in range(PwrSweep):
             ### <\thing we are timing>
-            VSG.write(f':POW:AMPL {-50 + pwr}dbm')                  ### VSG Power
-            tick = datetime.now()
+            VSG.write(f':POW:AMPL {-50 + VSApwr}dbm')                  ### VSG Power
+            tick = timeit.default_timer()
 
             ### <AUTOLEVEL> ###
             eval(meth[autoMeth])                                    # Dynamically call
-            tockA =  datetime.now()
+            tockA = timeit.default_timer()
             ### <AUTOLEVEL> ###
 
             VSA.write(':INIT:CONT OFF')                             # Single Sweep
@@ -79,13 +87,25 @@ for i in range(Repeat):
             ACLR = VSA.Get_Mkr_BandACLR()
             ### <\thing we are timing>
 
-            tockB = datetime.now()
-            SwpParam = VSA.Get_SweepParams()
-            AmpSet  = VSA.Get_AmpSettings()
+            tockB = timeit.default_timer()
             ALTime = tockA - tick
             TotTime = tockB - tick
-            OutStr = f'{VSA.Model},{i},{Freq},{RBW},{MeasTim},{-50+pwr},{meth[autoMeth]},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{TotTime.seconds:3d}.{TotTime.microseconds:06d},{AmpSet},{SwpParam},{ACLR},{ChSpace}'
+            TestTime = TotTime - ALTime
+
+            LoopParam   = f'{i},{autoMeth},{VSApwr:5.2f}'
+            SwpParam    = VSA.Get_SweepParams()
+            AmpParam    = VSA.Get_AmpParams()
+            TrcParam    = VSA.Get_TraceParams()
+            SysParam    = VSA.Get_System_Params()
+            TotTime     = f'{ALTime:2,.6f},{TestTime:2,.6f},{TotTime:2,.6f}'
+            MeasData    = ACLR
+            OutStr      = f'{LoopParam},{TotTime},{AmpParam},{SwpParam},{TrcParam},{SysParam},{MeasData}'
+
+            # OutStr = f'{VSA.Model},{i},{Freq},{RBW},{MeasTim},{-50+pwr},{meth[autoMeth]},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{TotTime.seconds:3d}.{TotTime.microseconds:06d},{AmpSet},{SwpParam},{ACLR},{ChSpace}'
             OFile.write (OutStr)
+SuiteTime = timeit.default_timer() - tick0
+print(f'Total Test time : {SuiteTime:2,.6f}')
+print(f'Time/Measurement: {SuiteTime/(Repeat*PwrSweep):2,.6f}')
 
 ###############################################################################
 ### Cleanup Automation

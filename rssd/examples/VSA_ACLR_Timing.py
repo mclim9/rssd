@@ -9,16 +9,17 @@
 ################################################################################
 ### User Entry
 ################################################################################
-VSA_IP  = '192.168.1.108'
+VSA_IP  = '192.168.1.109'
 VSG_IP  = '192.168.1.114' 
-MeasTim = 10e-3
-Freq    = 2.3e9
-RBW     = 20e3
-ChBW    = 18e6
-ChSpace = 20e6
+MeasTim = 0
+Freq    = 9.0e9
+RBW     = 200e3
+ChBW    = 90e6
+ChSpace = 100e6
+DUTGain = 50
 Avg     = 0
 SweMode = 'AUTO'            #AUTO | SPEed | DYN
-SweType = 'AUTO'           #AUTO | SWE | FFT
+SweType = 'AUTO'            #AUTO | SWE | FFT
 
 ### Loops
 Repeat  = 1
@@ -31,7 +32,7 @@ from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
 from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
 from datetime               import datetime
 from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
-import rssd.VSA_Leveling    as VSAL                 #pylint: disable=E0611,E0401
+# import rssd.VSA_Leveling    as VSAL                 #pylint: disable=E0611,E0401
 import timeit
 
 OFile = FileIO().makeFile(__file__)
@@ -47,7 +48,7 @@ VSA.Init_ACLR()                                     #VSA ACLR Channel
 VSA.Set_ACLR_CHBW(ChBW)
 VSA.Set_ACLR_AdjBW(ChBW)
 VSA.Set_ACLR_AdjSpace(ChSpace)
-VSA.Set_ACLR_NumAdj(2)
+VSA.Set_ACLR_NumAdj(1)
 
 VSA.Set_ResBW(RBW)
 VSA.Set_SweepTime(MeasTim)
@@ -64,37 +65,57 @@ if 0:
 ### Measure Time
 ################################################################################
 #sDate = timeit.default_timer().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-OFile.write('Iter,RBW,SwpTime,SMWPwr,AL Time,TotalTime,Attn,PreAmp,RefLvl,SwpTime,SwpPts,SwpType,SwpOpt,TxPwr,Adj-,Adj+,Alt-,Alt+')
-table = VSAL.ReadLevellingTables(Freq)
+LoopParam   = 'Iter,Pwr'
+TimeParam   = 'AlTime,MeasTime,TotalTIme'
+SwpParam    = VSA.Get_SweepParams(1)
+AmpParam    = VSA.Get_AmpParams(1)
+TrcParam    = VSA.Get_TraceParams(1)
+SysParam    = VSA.Get_System_Params(1)
+MeasData    = 'TxPwr,Adj-,Adj+,Alt-,Alt+'
+OFile.write(f'{LoopParam},{TimeParam},{AmpParam},{SwpParam},{TrcParam},{SysParam},{MeasData}')
+# table = VSAL.ReadLevellingTables(Freq)
 
+tick0 = timeit.default_timer()
 for i in range(Repeat):
-    for pwr in range(PwrSweep):
+    for VSApwr in range(PwrSweep):
         tick = timeit.default_timer()
 
         ### <\thing we are timing>
-        VSG.write(f':POW:AMPL {-50 + pwr}dbm')                  ### VSG Power
+        VSG.write(f':POW:AMPL {VSApwr - DUTGain}dbm')                  ### VSG Power
         #################
         ### AUTOLEVEL ###
         #################
-        if 0:
-            VSA.write(':INIT:CONT ON')                          # Sweep Continuous
-            VSA.query(':SENS:ADJ:LEV;*OPC?')                    # Auto-Tune
+        if 1:
+            VSA.Set_SweepCont(0)                                # Sweep Continuous
+            VSA.Set_Autolevel()
         else:
             lvlTable = VSA.Set_Autolevel_IQIF(table)
         tockA =  timeit.default_timer()
-        VSA.Set_Channel('Spectrum')
-        VSA.write(':INIT:CONT OFF')                             # Single Sweep
-        VSA.query(':INIT:IMM;*OPC?')                            # Take Sweep
+        VSA.Set_Channel('SAN')
+        VSA.Set_SweepCont(0)                                    # Single Sweep
+        VSA.Set_InitImm()                                       # Take Sweep
         ACLR = VSA.query(':CALC:MARK:FUNC:POW:RES? MCAC')
         ### <\thing we are timing>
         tockB    = timeit.default_timer()
-        SwpParam = VSA.Get_SweepParams()
-        AmpSet   = VSA.Get_AmpSettings()
-        ALTime   = f'{(tockA-tick):2,.6f}'
-        TotTime  = f'{(tockB-tick):2,.6f}'
-        OutStr   = f'{i},{RBW},{MeasTim},{-50+pwr},{ALTime},{TotTime},{AmpSet},{SwpParam},{ACLR}'
+        ALTime   = (tockA-tick)
+        TotTime  = (tockB-tick)
+        TestTime = TotTime - ALTime
+        # OutStr   = f'{i},{RBW},{MeasTim},{-50+pwr},{ALTime},{TotTime},{AmpSet},{SwpParam},{ACLR}'
+
+        LoopParam   = f'{i},{VSApwr:5.2f}'
+        SwpParam    = VSA.Get_SweepParams()
+        AmpParam    = VSA.Get_AmpParams()
+        TrcParam    = VSA.Get_TraceParams()
+        SysParam    = VSA.Get_System_Params()
+        TotTime     = f'{ALTime:2,.6f},{TestTime:2,.6f},{TotTime:2,.6f}'
+        MeasData    = ACLR
+        OutStr      = f'{LoopParam},{TotTime},{AmpParam},{SwpParam},{TrcParam},{SysParam},{MeasData}'
         OFile.write (OutStr)
-VSAL.WriteLevellingTables(Freq, table)
+
+# VSAL.WriteLevellingTables(Freq, table)
+SuiteTime = timeit.default_timer() - tick0
+print(f'Total Test time : {SuiteTime:2,.6f}')
+print(f'Time/Measurement: {SuiteTime/(Repeat*PwrSweep):2,.6f}')
 
 ################################################################################
 ### Cleanup Automation
