@@ -27,13 +27,13 @@ class VSA(jaVisa):
     def Get_Mkr_BandACLR(self):
         for i in range(1,3+1):
             if i == 1:
-                ACLR = f'{self.Get_Mkr_Band(i)[1]}'
+                ACLR = f'{self.Get_Mkr_Band(i)[1]:7.3f}'
             else:
-                ACLR = f'{ACLR},{self.Get_Mkr_Band(i)[1]}'
+                ACLR = f'{ACLR},{self.Get_Mkr_Band(i)[1]:7.3f}'
         return ACLR
 
-    def Get_AmpSettings(self,header=0):
-        #,Attn,PreAmp,RefLvl,
+    def Get_AmpParams(self,header=0):
+        """Retrieve Parameters for test logs"""
         if header != 1:
             attn    = self.Get_AttnMech()
             prea    = self.Get_Preamp()
@@ -234,7 +234,7 @@ class VSA(jaVisa):
         #AUTO | SWE | FFT
         rdStr = self.query(':SENS:SWE:TYPE?')
         return rdStr
-       
+
     def Get_SweepParams(self,header=0):
         # SwpTime,SwpPts,SwpType,SwpOpt,
         if header != 1:
@@ -245,6 +245,19 @@ class VSA(jaVisa):
             outStr  = f'{Time:5.3f},{Points},{Type},{Opt}'
         else:
             outStr  = 'SwpTimeM,SwpPts,SwpType,SwpOpt'
+        return outStr
+
+    def Get_System_ErrorExt(self):
+        rdStr = self.query(':SYST:ERR:EXT? ALL')
+        return rdStr
+
+    def Get_System_Params(self,header=0):
+        if header != 1:
+            error  = self.jav_Error()
+            ext    = self.Get_System_ErrorExt().replace('"','')
+            outStr = f'{error[0]:>4},{error[1]:10.10},{ext:10.10}'
+        else:
+            outStr  = 'ErrNo,ErrMsg,ExtError'
         return outStr
 
     def Get_Trace_Data(self,trace=1):
@@ -261,7 +274,7 @@ class VSA(jaVisa):
         rdStr = self.query(f'DISP:TRAC{trace}:MODE?')
         return rdStr
 
-    def Get_TraceSettings(self,header=0,trace=1):
+    def Get_TraceParams(self,header=0,trace=1):
         if header != 1:
             mode    = self.Get_Trace_Mode(trace)
             detect  = self.Get_Trace_Detector(trace)
@@ -636,7 +649,11 @@ class VSA(jaVisa):
         self.write('SENS:FREQ:SPAN %f'%fFreq)
         
     def Set_SweepTime(self,fSwpTime):
-        self.write('SENS:SWE:TIME %f'%fSwpTime)             #Sweep/Capture Time
+        """Auto if fSwpTime == 0"""
+        if fSwpTime == 0:
+            self.write(':SENS:SWE:TIME:AUTO ON')
+        else:
+            self.write('SENS:SWE:TIME %f'%fSwpTime)             #Sweep/Capture Time
 
     def Set_SweepType(self,sType):
         #AUTO | SWE | FFT
