@@ -1,12 +1,20 @@
 Release History
 =====================================================================
-- RSSD 2020.01.0
+- RSSD 2020.02.0
   - Add Proto VSG.CustomDigMod.py
   - VSA
     - Add NR5G_K144 ACLR & SEM measurements
     - Add VSA_5GNR Example
     - Chg Init_xxx methods ability to name ch at creation
     - Add VSA_K70 functions
+    - Common
+      - add Set/Get_Trace_ methods
+      - add Header output to Get_AmpSettings; Get_SweepParams; Get_TraceSettings
+      - chg comments
+      - add Get_System_Params
+      - chg Set_SweepTime to chg to auto if 0
+      - add Set_Trace_Mode
+  - Examples chg FSW_ to VSA_
 - RSSD 2019.12.0
   - VSA
     - Common 

@@ -20,7 +20,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='rssd',
-    version='2020.01.0',
+    version='2020.02.0',
     description='Rohde & Schwarz SCPI Driver',
     long_description=long_description,
     long_description_content_type='text/markdown',
