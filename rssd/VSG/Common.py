@@ -77,6 +77,26 @@ class VSG(jaVisa):
         CRS = PEP - RMS
         return f'{PEP},{RMS},{CRS}'
 
+    def Get_SysC_All(self):
+        BBSour  = self.Get_SysC_BBSource()
+        Fading  = self.Get_SysC_Fading()
+        Mode    = self.Get_SysC_Mode()
+        rdStr = f'{Mode},{Fading},{BBSour}'
+        print(rdStr)
+        return rdStr
+
+    def Get_SysC_BBSource(self):
+        rdStr = self.query('SCON:BAS:SOUR?')
+        return rdStr
+
+    def Get_SysC_Fading(self):
+        rdStr = self.query('SCON:FAD?')
+        return rdStr
+
+    def Get_SysC_Mode(self):
+        rdStr = self.query('SCON:MODE?')
+        return rdStr
+
     #####################################################################
     ### SMW INIT
     #####################################################################
