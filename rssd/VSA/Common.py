@@ -32,7 +32,7 @@ class VSA(jaVisa):
                 ACLR = f'{ACLR},{self.Get_Mkr_Band(i)[1]:7.3f}'
         return ACLR
 
-    def Get_AmpParams(self,header=0):
+    def Get_Params_Amp(self,header=0):
         """Retrieve Parameters for test logs"""
         if header != 1:
             attn    = self.Get_AttnMech()
@@ -76,7 +76,7 @@ class VSA(jaVisa):
         out = self.queryFloat('FETC:SUMM:EVM?;*WAI').strip()
         return out
 
-    def Get_EVM_Params(self):
+    def Get_Params_EVM(self):
         MAttn   = self.Get_AttnMech()
         RefLvl  = self.Get_RefLevel()
         Power   = self.Get_ChPwr()
@@ -235,7 +235,7 @@ class VSA(jaVisa):
         rdStr = self.query(':SENS:SWE:TYPE?')
         return rdStr
 
-    def Get_SweepParams(self,header=0):
+    def Get_Params_Sweep(self,header=0):
         # SwpTime,SwpPts,SwpType,SwpOpt,
         if header != 1:
             Time    = self.Get_SweepTime()
@@ -251,7 +251,7 @@ class VSA(jaVisa):
         rdStr = self.query(':SYST:ERR:EXT? ALL')
         return rdStr
 
-    def Get_System_Params(self,header=0):
+    def Get_Params_System(self,header=0):
         if header != 1:
             error  = self.jav_Error()
             ext    = self.Get_System_ErrorExt().replace('"','')
@@ -274,7 +274,7 @@ class VSA(jaVisa):
         rdStr = self.query(f'DISP:TRAC{trace}:MODE?')
         return rdStr
 
-    def Get_TraceParams(self,header=0,trace=1):
+    def Get_Params_Trace(self,header=0,trace=1):
         if header != 1:
             mode    = self.Get_Trace_Mode(trace)
             detect  = self.Get_Trace_Detector(trace)
