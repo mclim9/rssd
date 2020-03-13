@@ -1,5 +1,10 @@
 Release History
 =====================================================================
+- RSSD 2020.03.0
+  - VSG
+    - Common add System Config Read cmds
+  - VSA
+    - NR5G_K144 Add self.cc; chg methods to use self.cc
 - RSSD 2020.02.0
   - Add Proto VSG.CustomDigMod.py
   - VSA
