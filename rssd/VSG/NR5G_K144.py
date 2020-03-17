@@ -18,158 +18,159 @@ class VSG(VSG):                             #pylint: disable=E0102
         self.BWP = 0
         self.User = 0
         self.alloc = 0
+        self.cc = 0
 
     #####################################################################
     ### 5GNR Get Methods
     #####################################################################
     def Get_5GNR_BWP_Center(self):
-        rdStr = self.queryInt(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:DFR?'%(self.sdir))
+        rdStr = self.queryInt(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:DFR?')
         return rdStr
         
     def Get_5GNR_BWP_Ch_DMRS_1stDMRSSym(self):
-        #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSC:DMRS:APOS?'%(self.alloc))
+        #rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:APOS?')
         rdStr = "<TBD>"
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_AddPosition(self):
-        #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSC:DMRS:IND?'%(self.alloc))
+        #rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:IND?')
         if self.sdir == 'UL':
             # User/BWP-->ULBWP COnfig
-            rdStr = self.query(':SOUR:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:PUSCH:DMTA:APIN?')
+            rdStr = self.query(f':SOUR:BB:NR5G:UBWP:USER0:CELL{self.cc}:UL:BWP0:PUSCH:DMTA:APIN?')
         else:
-            rdStr = self.query(':SOUR:BB:NR5G:UBWP:USER0:CELL0:DL:BWP0:PDSCH:DMTA:APIN?')
+            rdStr = self.query(f':SOUR:BB:NR5G:UBWP:USER0:CELL{self.cc}:DL:BWP0:PDSCH:DMTA:APIN?')
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_Config(self):
         rdStr = "<TBD>"
-        #rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSC:DMRS:CONF?'%(self.alloc))
+        #rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:CONF?')
         if self.sdir == 'UL':
             # User/BWP-->ULBWP COnfig
-            rdStr = self.query(':SOUR:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:PUSCH:DMTA:CTYP?')
+            rdStr = self.query(f':SOUR:BB:NR5G:UBWP:USER0:CELL{self.cc}:UL:BWP0:PUSCH:DMTA:CTYP?')
         else:
-            rdStr = self.query(':SOUR:BB:NR5G:UBWP:USER0:CELL0:DL:BWP0:PDSCH:DMTA:CTYP?')
+            rdStr = self.query(f':SOUR:BB:NR5G:UBWP:USER0:CELL{self.cc}:DL:BWP0:PDSCH:DMTA:CTYP?')
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_Mapping(self):
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:MAPT?')
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:MAPT?')
         # rdStr = "<TBD>"
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_MSymbLen(self):
-        rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSC:DMRS:LENG?'%(self.alloc))
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:LENG?')
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_RelPwr(self):
         if self.sdir == 'DL':
-            rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PDSCH:DMRS:POW?'%(self.alloc))
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PDSCH:DMRS:POW?')
         else:
-            rdStr = self.query(':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:PUSCH:DMRS:POW?'%(self.alloc))            
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSCH:DMRS:POW?')
         #rdStr = "<TBD>"
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_SeqGenMeth(self):
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:SEQG?')
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:SEQG?')
         # rdStr = "<TBD>"
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_SeqGenSeed(self):
         #Only for SeqGenMeth NICP.  Not Valid for NIDC
         if self.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth() == 'DMRS':
-            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:NSID?')
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:NSID?')
         else:
             rdStr = '<!CELL>'
         return rdStr
 
     def Get_5GNR_BWP_Ch_Modulation(self):
-        rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:MOD?'%(self.alloc))
+        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:MOD?')
         return rdStr
 
     def Get_5GNR_BWP_Ch_PTRS_K(self):
         """ Freq Density in RB """
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:FRQD?')
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:FRQD?')
         return rdStr
 
     def Get_5GNR_BWP_Ch_PTRS_L(self):
         """ Time Density in OFDM Sym Freq """
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:TMD?')
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:TMD?')
         return rdStr
 
     def Get_5GNR_BWP_Ch_PTRS_Pow(self):
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:POW?')
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:POW?')
         return rdStr
 
     def Get_5GNR_BWP_Ch_PTRS_RE_Offset(self):
         """ PTRS freq (RE) offset """
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:REOF?')
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:REOF?')
         return rdStr
 
     def Get_5GNR_BWP_Ch_PTRS_State(self):
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:STAT?')
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:STAT?')
         return rdStr
 
     def Get_5GNR_BWP_Ch_ResBlock(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:RBN?'%(self.alloc))
+        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:RBN?')
         return rdStr
         
     def Get_5GNR_BWP_Ch_ResBlockOffset(self):
-        rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:RBOF?'%(self.alloc))
+        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:RBOF?')
         return rdStr
         
     def Get_5GNR_BWP_Ch_SymbNum(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:SYMN?'%(self.alloc))
+        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:SYMN?')
         return rdStr
         
     def Get_5GNR_BWP_Ch_SymbOff(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:SYM?'%(self.alloc))
+        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:SYM?')
         return rdStr
         
     def Get_5GNR_BWP_Count(self):
-        rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:NBWP?'%(self.sdir))
+        rdStr = self.query(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:NBWP?')
         return rdStr        
 
     def Get_5GNR_BWP_ResBlock(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:RBN?'%(self.sdir))
+        rdStr = self.query(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:RBN?')
         return rdStr
 
     def Get_5GNR_BWP_ResBlockOffset(self):
-        rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:RBOF?'%(self.sdir))
+        rdStr = self.query(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:RBOF?')
         return rdStr        
         
     def Get_5GNR_BWP_SlotNum(self):
         ### Number of slots
-        rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:SLOT?'%(self.alloc))
+        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:SLOT?')
         return rdStr
         
     def Get_5GNR_BWP_SubSpace(self):
-        rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:SCSP?'%(self.sdir))
+        rdStr = self.query(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:SCSP?')
         return rdStr
 
     def Get_5GNR_SSB_SubSpace(self):
         if self.sdir == 'DL':
-            rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:SSPB0:SCSP?')
+            rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:SSPB0:SCSP?')
         else:
             rdStr = '<UL n/a>'
         return rdStr
 
     def Get_5GNR_BWP_SubSpaceTotal(self):
         rdStr = []
-        rdStr.append(self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:NRB?'))
-        rdStr.append(self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:NRB?'))
-        rdStr.append(self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:NRB?'))
-        rdStr.append(self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:NRB?'))
+        rdStr.append(self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S15K:NRB?'))
+        rdStr.append(self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S30K:NRB?'))
+        rdStr.append(self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S60K:NRB?'))
+        rdStr.append(self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S120K:NRB?'))
         return rdStr
         
     def Get_5GNR_ChannelBW(self):
         ### 5;10;15;20;25;30;40;50;60;70;80;90;100;200;400
-        rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:CBW?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CBW?')
         return rdStr
 
     def Get_5GNR_Direction(self):
-        rdStr = self.query(':SOUR1:BB:NR5G:LINK?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:LINK?')
         if rdStr == 'DOWN':
             self.sdir = "DL"
             self.alloc = 1         #Alloc 0:CORSET
@@ -181,23 +182,23 @@ class VSG(VSG):                             #pylint: disable=E0102
         return rdStr
 
     def Get_5GNR_FreqRange(self):
-        rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:CARD?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD?')
         return rdStr
         
     def Get_5GNR_RefA(self):
-        rdStr = self.queryInt(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:POIN?')
+        rdStr = self.queryInt(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:POIN?')
         return rdStr
 
     def Get_5GNR_RBMax(self):
         odata = []
-        rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:NRB?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S15K:NRB?')
         odata.append([15,int(rdStr)])
         
-        rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:NRB?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S30K:NRB?')
         odata.append([30,int(rdStr)])
-        rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:NRB?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S60K:NRB?')
         odata.append([60,int(rdStr)])
-        rdStr = self.query(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:NRB?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S120K:NRB?')
         odata.append([120,int(rdStr)])
         return odata
 
@@ -206,14 +207,14 @@ class VSG(VSG):                             #pylint: disable=E0102
         return rdStr
 
     def Get_5GNR_TM_Cat(self):
-        rdStr = self.query('SOUR1:BB:NR5G:SETT:TMOD:DL:CAT?').split(',')
+        rdStr = self.query(f'SOUR1:BB:NR5G:SETT:TMOD:DL:CAT?').split(',')
         return rdStr
 
     def Get_5GNR_TransPrecoding(self):
         # SC-FDMA or DFT-S-OFDM
         # 5GNR--> User/BWP --> UL BWP Config --> PUSCH --> TP
-        # rdStr = self.query(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST?')
-        rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:PUSC:TPST?') #4.50
+        # rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL0:TPST?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:UL:BWP0:PUSC:TPST?') #4.50
         return rdStr
 
     #####################################################################
@@ -223,85 +224,85 @@ class VSG(VSG):                             #pylint: disable=E0102
         """ON OFF"""
         if (iEnable == 1) or (iEnable == 'ON'):
             self.jav_OPC_Wait(':SOUR1:BB:NR5G:STAT 1')
-#            self.query('*OPC?')          # Wait for calculation
+#            self.query(f'*OPC?')          # Wait for calculation
         else:
-            self.write(':SOUR1:BB:NR5G:STAT 0')
+            self.write(f':SOUR1:BB:NR5G:STAT 0')
 
     def Set_5GNR_BWP_Ch_Modulation(self,sMod):
-        self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:MOD %s'%(self.alloc,sMod))
+        self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:MOD {sMod}')
         
     def Set_5GNR_BWP_Ch_ResBlock(self,iRB):
         ### 5GNR-->Scheduling-->PUSCH-->No. RBs
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        #self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:RBN %d'%iRB)
-        self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:RBN %d'%(self.alloc,iRB))
+        #self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:RBN %d'%iRB)
+        self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:RBN {iRB}')
 
     def Set_5GNR_BWP_Ch_ResBlockOffset(self,iRBO):
         ### 5GNR-->Scheduling-->PUSCH-->No. RBs
-        #self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:RBOF %d'%%(self.alloc,iRBO))
-        self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:RBOF 0'%(self.alloc))
+        #self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:RBOF %d'%%(self.alloc,iRBO))
+        self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:RBOF 0')
 
     def Set_5GNR_BWP_Corset_ResBlock(self, iRB):
         if self.sdir == 'DL':
-            self.write(f':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:RBN {iRB}')
+            self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL0:RBN {iRB}')
 
     def Set_5GNR_BWP_Corset_ResBlockOffset(self,iRBO):
         if self.sdir == 'DL':
         ### 5GNR-->Scheduling-->PUSCH-->No. RBs
-            self.write(f':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:RBOF {iRBO}')
+            self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL0:RBOF {iRBO}')
 
     def Set_5GNR_BWP_ResBlock(self,iRB):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:RBN %d'%(self.sdir,iRB))
+        self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:RBN {iRB}')
 
     def Set_5GNR_BWP_ResBlockMax(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
         MaxRB =  20
-        rdStr = self.query(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:RBN %d'%(self.sdir,MaxRB))
+        rdStr = self.query(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:RBN {MaxRB}')
         return rdStr
         
     def Set_5GNR_BWP_ResBlockOffset(self,iRBO):
-        self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:RBOF %d'%(self.sdir,iRBO))
+        self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:RBOF {iRBO}')
 
     def Set_5GNR_BWP_SubSpace(self,iSubSp):
         if iSubSp == 15:
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:USE 1')
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:USE 0')
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:USE 0')
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:USE 0')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S15K:USE 1')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S30K:USE 0')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S60K:USE 0')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S120K:USE 0')
         elif iSubSp == 30:
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:USE 1')
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:USE 0')
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:USE 0')
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:USE 0')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S30K:USE 1')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S15K:USE 0')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S60K:USE 0')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S120K:USE 0')
         elif iSubSp == 60:
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:USE 1')
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:USE 0')
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:USE 0')
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:USE 0')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S60K:USE 1')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S15K:USE 0')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S30K:USE 0')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S120K:USE 0')
         elif iSubSp == 120:
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S120K:USE 1')
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S15K:USE 0')
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S30K:USE 0')
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:S60K:USE 0')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S120K:USE 1')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S15K:USE 0')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S30K:USE 0')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S60K:USE 0')
         else:
             print('Subcarrier spacing not supported')
-        self.write(':SOUR1:BB:NR5G:NODE:CELL0:TXBW:RES')
-        self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:SCSP N%d'%(self.sdir,iSubSp))
+        self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:RES')
+        self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:SCSP N{iSubSp}')
 
     def Set_5GNR_ChannelBW(self,iBW):
         """ BW in MHz
          5GNR-->NODE-->Carriers-->Channel BW"""
-        self.write(':SOUR1:BB:NR5G:NODE:CELL0:CBW BW%d'%iBW)
+        self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CBW BW{iBW}')
 
     def Set_5GNR_Direction(self,sDirection):
         """ UP| DOWN """
         if (sDirection == "UL") or (sDirection == "UP"):
-            self.write(':SOUR1:BB:NR5G:LINK UP')
+            self.write(f':SOUR1:BB:NR5G:LINK UP')
             self.sdir = "UL"
             self.alloc = 0         #Alloc 0:PUSCH
         elif (sDirection == "DL") or (sDirection == "DOWN"):
-            self.write(':SOUR1:BB:NR5G:LINK DOWN')
+            self.write(f':SOUR1:BB:NR5G:LINK DOWN')
             self.sdir = "DL"
             self.alloc = 1         #Alloc 0:Coreset 1:PDSCH
         else:
@@ -310,19 +311,19 @@ class VSG(VSG):                             #pylint: disable=E0102
     def Set_5GNR_FRC_State(self,state):
         """ 'ON' | 'OFF' """
         if (state == "ON") or (state == 1):
-            self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:STAT ON')
+            self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:UL:BWP0:FRC:STAT ON')
         else:
-            self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:STAT OFF')
+            self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:UL:BWP0:FRC:STAT OFF')
 
     def Set_5GNR_FreqRange(self,iRange):
         """ 0:<3GHz 1:3-6GHz 2:>6GHz """ 
         """ LOW; MIDD; HIGH """ 
         if (iRange==0) or (iRange == 'LOW'):
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:CARD LT3')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD LT3')
         elif (iRange==1) or (iRange == 'MIDD'):
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:CARD BT36')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD BT36')
         elif (iRange==2) or (iRange == 'HIGH'):
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:CARD GT6')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD GT6')
             
     def Set_5GNR_Parameters(self,sDir):
         self.Set_5GNR_Direction(sDir)
@@ -330,14 +331,14 @@ class VSG(VSG):                             #pylint: disable=E0102
     def Set_5GNR_PhaseCompensate(self,state):
         """ 'ON' | 'OFF' """
         if (state == "ON") or (state == 1):
-            self.write(':SOUR:BB:NR5G:NODE:RFPH:STAT ON')
+            self.write(f':SOUR:BB:NR5G:NODE:RFPH:STAT ON')
         else:
-            self.write(':SOUR:BB:NR5G:NODE:RFPH:STAT OFF')
+            self.write(f':SOUR:BB:NR5G:NODE:RFPH:STAT OFF')
 
     def Set_5GNR_SSB(self):
         """Num DL SS/PBCH Patterns"""
         if self.sdir == 'DL':
-            self.write(':SOUR1:BB:NR5G:NODE:CELL0:NSSP 1')
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:NSSP 1')
 
     def Set_5GNR_TM(self, file):
         """NR-FR1-TM1_1__FDD_100MHz_30kHz """
@@ -347,11 +348,11 @@ class VSG(VSG):                             #pylint: disable=E0102
         """ SC-FDMA or DFT-S-OFDM
         5GNR--> User/BWP --> UL BWP Config --> PUSCH --> TP  """
         if sState == 'ON':
-            # self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST ON') #4.30SP2?
-            self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:PUSC:TPST ON') #4.50
+            # self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL0:TPST ON') #4.30SP2?
+            self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:UL:BWP0:PUSC:TPST ON') #4.50
         else:
-            # self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL0:TPST OFF') #4.30SP2?
-            self.write(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:PUSC:TPST OFF') #4.50
+            # self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL0:TPST OFF') #4.30SP2?
+            self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:UL:BWP0:PUSC:TPST OFF') #4.50
 
     def Set_5GNR_savesetting(self, sName):
         self.query(f':SOUR:BB:NR5G:SETT:STOR "/var/user/{sName}";*OPC?')
@@ -365,5 +366,5 @@ if __name__ == "__main__":
     # this won't be run when imported 
     SMW = VSG()
     SMW.jav_Open("192.168.1.114")
-    SMW.Set_5GNR_savesetting('asdfasdf')
+    # SMW.Set_5GNR_savesetting('asdfasdf')
     SMW.jav_Close()
