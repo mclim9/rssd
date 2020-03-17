@@ -114,10 +114,13 @@ class VSA(VSA):
         self.write(f':SENS:DDEM:TFIL:NAME "{sName}"')
 
     def Set_VSA_Mod(self,sMod):
-        """ QPSK | 8PSK | 16APSK | 32APSK """
+        """ QPSK | OQPSK | 8PSK | 16APSK | 32APSK """
         if sMod == 'QPSK':
             self.Set_VSA_Mod_Type('QPSK')
             self.write(':SENS:DDEM:QPSK:FORM NORM')
+        elif sMod == 'OQPSK':
+            self.Set_VSA_Mod_Type('QPSK')
+            self.write(':SENS:DDEM:QPSK:FORM OFFS')
         elif sMod == '8PSK':
             self.Set_VSA_Mod_Type('PSK')
             self.write(':SENS:DDEM:PSK:FORM NORM')
