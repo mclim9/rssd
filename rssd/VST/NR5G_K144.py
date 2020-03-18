@@ -26,14 +26,18 @@ class VST(object):
         self.NR_RB     = 66         #RB
         self.NR_RBO    = 0          #RB Offset
         self.NR_Mod    = 'QAM64'    #QPSK; QAM16; QAM64; QAM256; PITB
+        self.NR_CC     = 1
         self.NR_TF     = 'OFF'
 
     def Get_5GNR_All(self):
         DMRS = 1
         PTRS = 1
+        self.SMW.cc     = self.NR_CC - 1
+        self.FSW.cc     = self.NR_CC
 
         odata =  [[] for i in range(3)]
         odata[0].append("[[Parameter]]  ")
+        odata[0].append("Center Freq    ")
         odata[0].append("Direction      ")
         odata[0].append("FreqRange      ")
         odata[0].append("RefA,MHz       ")
@@ -75,6 +79,7 @@ class VST(object):
         try:
             # self.SMW.Set_5GNR_Parameters(self.NR_Dir)
             odata[1].append("[-SMW-]")
+            odata[1].append(self.SMW.Get_5GNR_CC_Freq())
             odata[1].append(self.SMW.Get_5GNR_Direction())
             odata[1].append(self.SMW.Get_5GNR_FreqRange())
             odata[1].append(self.SMW.Get_5GNR_RefA()/1e6)
@@ -118,6 +123,7 @@ class VST(object):
         try:
             self.FSW.Init_5GNR()
             odata[2].append("[-FSW-]")
+            odata[2].append(self.FSW.Get_5GNR_CC_Freq())
             odata[2].append(self.FSW.Get_5GNR_Direction())
             odata[2].append(self.FSW.Get_5GNR_FreqRange())
             odata[2].append(self.FSW.Get_5GNR_RefA()/1e6)
@@ -165,7 +171,7 @@ class VST(object):
         data = self.Get_5GNR_All()
         for i in range(len(data[0])):
             try:
-                print("%s\t%s\t%s"%(data[0][i],data[1][i],data[2][i]))
+                print(f"{data[0][i]}\t{data[1][i]}\t{data[2][i]}")
             except: 
             #     try:
             #         print("%s\t%s\t%s"%(data[0][i],data[1][i],'<notRead>'))
@@ -189,6 +195,7 @@ class VST(object):
     def Set_5GNR_All(self):
         try:
             ### SMW Settings
+            self.SMW.cc     = self.NR_CC - 1
             self.SMW.Set_Freq(self.Freq)
             self.SMW.Set_5GNR_BBState('OFF')
             self.SMW.Set_5GNR_Direction(self.NR_Dir)
@@ -212,6 +219,7 @@ class VST(object):
 
         try:
             ### FSW Setting
+            self.cc         = self.NR_CC
             self.FSW.Init_5GNR()
             self.FSW.Set_Freq(self.Freq)
             self.FSW.Set_5GNR_Direction(self.NR_Dir)
