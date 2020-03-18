@@ -5,14 +5,14 @@
 ### Purpose: Vector Signal Analyzer 5GNR Functions
 ### Author : Martin C Lim
 ### Date   : 2018.04.03
-from rssd.VSA.Common import VSA          #pylint: disable=E0611,E0401
+from rssd.VSA.Common import VSA                 #pylint: disable=E0611,E0401
 
-class VSA(VSA):                                #pylint: disable=E0102
+class VSA(VSA):                                 #pylint: disable=E0102
     """ Rohde & Schwarz Vector Signal Analyzer 5GNR Object """
     def __init__(self):
-        super(VSA, self).__init__()        #Python 2/3
+        super(VSA, self).__init__()             #Python 2/3
         self.sdir   = "UL"
-        self.cc     = 1
+        self.cc     = 1                         #1 Start
 
     #####################################################################
     ### FSW 5GNR Get
@@ -152,6 +152,14 @@ class VSA(VSA):                                #pylint: disable=E0102
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SSP?')
         return rdStr
 
+    def Get_5GNR_CC_Freq(self):
+        rdStr = self.query(f'SENS:FREQ:CENT:CC{self.cc}?')
+        return rdStr
+
+    def Get_5GNR_CC_Offset(self):
+        rdStr = self.query(f'SENS:FREQ:CENT:CC{self.cc}:OFFS?')
+        return rdStr
+
     def Get_5GNR_ChPwr(self):
         Power = self.queryFloat(f'FETC:CC{self.cc}:ISRC:FRAM:SUMM:POW:AVER?')
         return Power
@@ -178,7 +186,7 @@ class VSA(VSA):                                #pylint: disable=E0102
         return rdStr
 
     def Get_5GNR_EVM(self):
-        EVM = self.queryFloat(f':FETC:CC{self.cc}:ISRC:FRAM:SUMM:EVM:ALL:AVER?')
+        EVM = self.queryFloat(f':FETC:CC{self.cc}:SUMM:EVM:ALL:AVER?')
         return EVM
 
     def Get_5GNR_Params_EVM(self,header=0):
@@ -381,8 +389,9 @@ class VSA(VSA):                                #pylint: disable=E0102
 #####################################################################
 if __name__ == "__main__":
     ### this won't be run when imported
-    FSW = VSA().jav_Open("172.24.225.232")
+    FSW = VSA().jav_Open("192.168.1.109")
     FSW.cc = 2
-    print(FSW.Get_5GNR_Params_EVM())
+    print(FSW.Get_5GNR_CC_Freq())
+    print(FSW.Get_5GNR_CC_Offset())
     FSW.jav_ClrErr()
     FSW.jav_Close()
