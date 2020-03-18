@@ -13,12 +13,12 @@ class VSG(VSG):                             #pylint: disable=E0102
     """ Rohde & Schwarz Vector Signal Generator 5GNR Object """
     def __init__(self):
         super(VSG,self).__init__()          #Python2/3
-        self.Model = "SMW"
-        self.sdir = "UL"
-        self.BWP = 0
-        self.User = 0
-        self.alloc = 0
-        self.cc = 0
+        self.Model  = "SMW"
+        self.sdir   = "UL"
+        self.BWP    = 0
+        self.User   = 0
+        self.alloc  = 0
+        self.cc     = 0         # 0 Start
 
     #####################################################################
     ### 5GNR Get Methods
@@ -147,6 +147,15 @@ class VSG(VSG):                             #pylint: disable=E0102
         
     def Get_5GNR_BWP_SubSpace(self):
         rdStr = self.query(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:SCSP?')
+        return rdStr
+
+    def Get_5GNR_CC_Freq(self):
+        offset = self.Get_5GNR_CC_Offset()
+        freq    = self.Get_Freq()
+        return (offset + freq)
+
+    def Get_5GNR_CC_Offset(self):
+        rdStr = self.queryFloat(f'SOUR1:BB:NR5G:NODE:CARM:DFREQ:ROW{self.cc}?')
         return rdStr
 
     def Get_5GNR_SSB_SubSpace(self):
@@ -290,6 +299,16 @@ class VSG(VSG):                             #pylint: disable=E0102
         self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:RES')
         self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:SCSP N{iSubSp}')
 
+    def Set_5GNR_CC_Num(self,iCC):
+        """ iCC, 0 start """
+        self.cc = iCC
+        self.write(f'SOUR1:BB:NR5G:NODE:NCAR {iCC}')
+
+    def Set_5GNR_CC_Offset(self,Freq):
+        """ freq, Hz """
+        self.write(f':SOUR1:BB:NR5G:NODE:CARM:DFR:ROW{self.cc} {Freq}')
+
+
     def Set_5GNR_ChannelBW(self,iBW):
         """ BW in MHz
          5GNR-->NODE-->Carriers-->Channel BW"""
@@ -366,5 +385,6 @@ if __name__ == "__main__":
     # this won't be run when imported 
     SMW = VSG()
     SMW.jav_Open("192.168.1.114")
-    # SMW.Set_5GNR_savesetting('asdfasdf')
+    SMW.cc = 1
+    print(SMW.Get_5GNR_CC_Freq())
     SMW.jav_Close()
