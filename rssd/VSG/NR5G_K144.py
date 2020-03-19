@@ -354,6 +354,9 @@ class VSG(VSG):                             #pylint: disable=E0102
         else:
             self.write(f':SOUR:BB:NR5G:NODE:RFPH:STAT OFF')
 
+    def Set_5GNR_PhaseCompensate_Freq(self,Freq):
+        self.write(f':SOUR:BB:NR5G:NODE:CELL{self.cc}:PCFR {Freq}')
+
     def Set_5GNR_SSB(self):
         """Num DL SS/PBCH Patterns"""
         if self.sdir == 'DL':
