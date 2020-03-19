@@ -36,7 +36,7 @@ SMW.Set_Freq(Freq)                                  # SMW Freq --> BB Center
 SMW.Set_5GNR_BBState('OFF')
 SMW.Set_5GNR_Direction(NR_Dir)
 SMW.Set_5GNR_CC_Num(NumCC)
-SMW.Set_5GNR_PhaseCompensate('OFF')
+SMW.Set_5GNR_PhaseCompensate('ON')
 SMW.Set_RFPwr(Pwr)
 SMW.Set_RFState(1)
 
@@ -46,16 +46,22 @@ FSW.Set_5GNR_EVMUnit('DB')
 FSW.Set_5GNR_Direction(NR_Dir)
 FSW.Set_5GNR_FreqRange(2)
 FSW.Set_SweepCont(1)
-FSW.Set_5GNR_CA_Num(NumCC)
+FSW.Set_5GNR_CC_Num(NumCC)
+FSW.Set_5GNR_CC_Capture('SING')
 FSW.Set_Freq(Freq + CCStart)                        # FSW Freq --> 1st CC
 
 for i in range(NumCC):
+    Freq_CC = Freq + CCStart + (i * CCSpace)
     SMW.cc = i
     SMW.Set_5GNR_FreqRange(2)
     SMW.Set_5GNR_CC_Offset(CCStart + (i * CCSpace))
+    SMW.Set_5GNR_TransPrecoding('ON')
+    SMW.Set_5GNR_PhaseCompensate_Freq(Freq_CC)
     FSW.cc = i+1
-    FSW.Set_5GNR_CA_Offset(i+1,i*CCSpace)
-    FSW.Set_5GNR_PhaseCompensate('OFF')
+    FSW.Set_5GNR_CC_Offset(i+1,i*CCSpace)
+    FSW.Set_5GNR_TransPrecoding('ON')
+    FSW.Set_5GNR_PhaseCompensate('ON')
+    FSW.Set_5GNR_PhaseCompensate_Freq(Freq_CC)
     FSW.Set_5GNR_CellID(i)
     FSW.Set_5GNR_BWP_SubSpace(120)
 
