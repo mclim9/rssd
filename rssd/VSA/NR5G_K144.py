@@ -153,11 +153,11 @@ class VSA(VSA):                                 #pylint: disable=E0102
         return rdStr
 
     def Get_5GNR_CC_Freq(self):
-        rdStr = self.query(f'SENS:FREQ:CENT:CC{self.cc}?')
+        rdStr = self.queryFloat(f'SENS:FREQ:CENT:CC{self.cc}?')
         return rdStr
 
     def Get_5GNR_CC_Offset(self):
-        rdStr = self.query(f'SENS:FREQ:CENT:CC{self.cc}:OFFS?')
+        rdStr = self.queryFloat(f'SENS:FREQ:CENT:CC{self.cc}:OFFS?')
         return rdStr
 
     def Get_5GNR_ChPwr(self):
@@ -302,12 +302,16 @@ class VSA(VSA):                                 #pylint: disable=E0102
     def Set_5GNR_BWP_SubSpace(self,iSubSp):
         self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SSP SS{iSubSp}')
 
-    def Set_5GNR_CA_Num(self,iNumCC):
+    def Set_5GNR_CC_Num(self,iNumCC):
         self.write(f'CONF:NR5G:NOCC {iNumCC}')
 
-    def Set_5GNR_CA_Offset(self,iCC, fFreq):
+    def Set_5GNR_CC_Offset(self,iCC, fFreq):
         if iCC > 1:
             self.write(f':SENS:FREQ:CENT:CC{iCC}:OFFS {fFreq}')
+
+    def Set_5GNR_CC_Capture(self,sCapture):
+        """SING AUTO"""
+        self.write(f':CONF:NR5G:CSC {sCapture}')
 
     def Set_5GNR_CellID(self,iCellID):
         self.write(f'CONF:NR5G:{self.sdir}:CC{self.cc}:PLC:CID {iCellID}')
@@ -358,6 +362,10 @@ class VSA(VSA):                                 #pylint: disable=E0102
         else:
             self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:RFUC:STAT OFF')
 
+    def Set_5GNR_PhaseCompensate_Freq(self,Freq):
+        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:RFUC:FZER:MODE MAN')
+        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:RFUC:FZER:FREQ {Freq}')
+
     def Set_5GNR_Result_View(self, sMode):
         """ALL | VIEW """
         self.query(f':SENS:NR5G:RSUM:CCR {sMode}')
@@ -379,6 +387,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
         self.query(f'MMEM:LOAD:TMOD:CC{self.cc} "{file}";*OPC?')
 
     def Set_5GNR_TransPrecoding(self,sState):
+        """ON | OFF """
         if self.sdir == 'UL':
             self.write(f':CONF:NR5G:UL:CC{self.cc}:TPR {sState}')
         else:
