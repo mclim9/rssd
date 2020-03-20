@@ -240,7 +240,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
         return rdStr
 
     def Get_5GNR_TransPrecoding(self):
-    """UL Only"""
+        """UL Only"""
         if self.sdir == 'UL':
             rdStr = self.query(f':CONF:NR5G:UL:CC{self.cc}:TPR?')
         else:
