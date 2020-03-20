@@ -48,12 +48,12 @@ class TestGeneral(unittest.TestCase):
         self.assertEqual(self.OTA.Model,"OTA")
 
     def test_OTA_ATS1000(self):
-        from rssd.OTA.ATS1000 import OTA             #pylint:disable=E0611,E0401
+        from rssd.OTA.ATS1000 import OTA            #pylint:disable=E0611,E0401
         self.OTA = OTA()
         self.assertEqual(self.OTA.Model,"ATS1000")
 
     def test_OTA_ATS1800(self):
-        from rssd.OTA.ATS1800 import OTA             #pylint:disable=E0611,E0401
+        from rssd.OTA.ATS1800 import OTA            #pylint:disable=E0611,E0401
         self.OTA = OTA()
         self.assertEqual(self.OTA.Model,"ATS1800")
 
@@ -63,7 +63,7 @@ class TestGeneral(unittest.TestCase):
         self.assertEqual(self.PNA.Model,"FSWP")
 
     def test_RCT_Common(self):
-        from rssd.RCT.Common import RCT               #pylint:disable=E0611,E0401
+        from rssd.RCT.Common import RCT             #pylint:disable=E0611,E0401
         self.CMW = RCT()
         self.assertEqual(self.CMW.Model,"CMW-GPRF")
 
@@ -107,6 +107,11 @@ class TestGeneral(unittest.TestCase):
         self.FSW = VSA()
         self.assertEqual(self.FSW.Model,"FSW")
 
+    def test_VSA_VectorDemod(self):
+        from rssd.VSA.VSA_K70 import VSA            #pylint:disable=E0611,E0401
+        self.FSW = VSA()
+        self.assertEqual(self.FSW.Model,"FSW")
+
     def test_VSA_WLAN(self):
         from rssd.VSA.WLAN_K91 import VSA           #pylint:disable=E0611,E0401
         self.FSW = VSA()
@@ -129,6 +134,16 @@ class TestGeneral(unittest.TestCase):
 
     def test_VSG_Common(self):
         from rssd.VSG.Common import VSG             #pylint:disable=E0611,E0401
+        self.SMW = VSG()        
+        self.assertEqual(self.SMW.Model,"SMW")
+
+    def test_VSG_CDM(self):
+        from rssd.VSG.CustomDigMod import VSG       #pylint:disable=E0611,E0401
+        self.SMW = VSG()        
+        self.assertEqual(self.SMW.Model,"SMW")
+
+    def test_VSG_Fading(self):
+        from rssd.VSG.Fading import VSG             #pylint:disable=E0611,E0401
         self.SMW = VSG()        
         self.assertEqual(self.SMW.Model,"SMW")
 
