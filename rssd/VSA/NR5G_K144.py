@@ -189,14 +189,19 @@ class VSA(VSA):                                 #pylint: disable=E0102
         EVM = self.queryFloat(f':FETC:CC{self.cc}:SUMM:EVM:ALL:AVER?')
         return EVM
 
+    def Get_5GNR_EVM_DMRS(self):
+        EVM = self.queryFloat(f':FETC:CC{self.cc}:SUMM:EVM:ALL:AVER?')
+        return EVM
+
     def Get_5GNR_Params_EVM(self,header=0):
         if header != 1:
             Crest   = self.Get_5GNR_CrestFactor()
             Power   = self.Get_5GNR_ChPwr()
             EVM     = self.Get_5GNR_EVM()
-            outStr  = f"{Crest:6.3f},{Power:6.3f},{EVM:.2f}"
+            EVMdmrs = self.Get_5GNR_EVM_DMRS()
+            outStr  = f"{Crest:6.3f},{Power:6.3f},{EVM:.2f},{EVMdmrs:.2f}"
         else:
-            outStr  = 'K144_Cres,K144Pwr,5GEVM'
+            outStr  = 'K144_Cres,K144Pwr,5GEVM,EVM_DMRS'
         return outStr
 
     def Get_5GNR_FreqRange(self):
@@ -212,7 +217,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
         return rdStr
 
     def Get_5GNR_PhaseCompensate(self):
-        rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC1:RFUC:STAT?')
+        rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:RFUC:STAT?')
         return rdStr
 
     def Get_5GNR_SEM(self):
@@ -221,9 +226,9 @@ class VSA(VSA):                                 #pylint: disable=E0102
 
     def Get_5GNR_SSB_SubSpace(self):
         if self.sdir == 'DL':
-            SyncDetStat = self.query(':CONF:NR5G:DL:SSBL1:DET?')
+            SyncDetStat = self.query(f':CONF:NR5G:DL:SSBL1:DET?')
             if SyncDetStat == 'MAN':
-                rdStr = self.query(':CONF:NR5G:DL:CC1:SSBL1:SSP?')
+                rdStr = self.query(f':CONF:NR5G:DL:CC{self.cc}:SSBL1:SSP?')
             else:
                 rdStr = '<Scanng>'
         else:
@@ -231,12 +236,13 @@ class VSA(VSA):                                 #pylint: disable=E0102
         return rdStr
     
     def Get_5GNR_TM_Cat(self):
-        rdStr = self.query('MMEM:LOAD:TMOD:CC1:CAT?').split(',')
+        rdStr = self.query(f'MMEM:LOAD:TMOD:CC{self.cc}:CAT?').split(',')
         return rdStr
 
     def Get_5GNR_TransPrecoding(self):
+    """UL Only"""
         if self.sdir == 'UL':
-            rdStr = self.query(':CONF:NR5G:UL:CC1:TPR?')
+            rdStr = self.query(f':CONF:NR5G:UL:CC{self.cc}:TPR?')
         else:
             rdStr = '<DL N/A>'
         return rdStr
@@ -249,7 +255,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
         
     def Init_5GNR_Meas(self,sMeas):
         """ EVM; ESPectrum; ACLR; TAER"""
-        self.write('CONF:NR5G:MEAS %s'%sMeas)
+        self.write(f'CONF:NR5G:MEAS {sMeas}')
 
     def Init_5GNR_SEM(self):
         self.Set_Channel('NR5G')
@@ -268,29 +274,29 @@ class VSA(VSA):                                 #pylint: disable=E0102
 
     def Set_5GNR_AllocFile(self,sFilename):
         # \Instr\user\V5GTF\AllocationFiles\UL
-        self.write('MMEM:LOAD:DEM "%s"'%sFilename)
+        self.write(f'MMEM:LOAD:DEM "{sFilename}"')
 
     def Set_5GNR_AllocFileSave(self,sFilename):
-        self.write(f'MMEM:STOR:DEM:CC1 "C:\\R_S\\Instr\\user\\{sFilename}.allocation"')
+        self.write(f'MMEM:STOR:DEM:CC{self.cc} "C:\\R_S\\Instr\\user\\{sFilename}.allocation"')
 
     def Set_5GNR_BWP_Ch_Modulation(self,sMod):
         # QPSK; QAM16; QAM64; QAM256; PITB
-        self.write(':CONF:NR5G:%s:FRAM1:BWP0:SLOT0:ALL0:MOD %s'%(self.sdir, sMod))
+        self.write(f':CONF:NR5G:{self.sdir}:FRAM1:BWP0:SLOT0:ALL0:MOD {sMod}')
 
     def Set_5GNR_BWP_Ch_ResBlock(self,iRB):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:RBC %d'%(self.sdir,iRB))
+        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:RBC {iRB}')
 
     def Set_5GNR_BWP_Ch_ResBlockOffset(self,iRBO):
-        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:RBOF %d'%(self.sdir,iRBO))
+        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:RBOF {iRBO}')
 
     def Set_5GNR_BWP_Corset_ResBlock(self, iRB):
         if self.sdir == 'DL':
-            self.write(f':CONF:NR5G:DL:CC1:FRAM1:BWP0:SLOT0:COR0:RBC {iRB}')
+            self.write(f':CONF:NR5G:DL:CC{self.cc}:FRAM1:BWP0:SLOT0:COR0:RBC {iRB}')
 
     def Set_5GNR_BWP_Corset_ResBlockOffset(self,iRBO):
         if self.sdir == 'DL':
-            self.write(f':CONF:NR5G:DL:CC1:FRAM1:BWP0:SLOT0:COR0:RBOF {iRBO}')
+            self.write(f':CONF:NR5G:DL:CC{self.cc}:FRAM1:BWP0:SLOT0:COR0:RBOF {iRBO}')
     
     def Set_5GNR_BWP_ResBlock(self,iRB):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
@@ -325,20 +331,20 @@ class VSA(VSA):                                 #pylint: disable=E0102
         if (sDirection == "UL") or (sDirection == "UP"):
             self.write(':CONF:NR5G:LDIR UL')
             if self.Get_5GNR_TransPrecoding() == '0':
-                self.write(':CONF:NR5G:UL:CC1:IDC ON')
-            self.write(':CONF:NR5G:UL:CC1:FRAM1:BWP0:SLOT0:FORM 1')     #All UL
+                self.write(f':CONF:NR5G:UL:CC{self.cc}:IDC ON')
+            self.write(f':CONF:NR5G:UL:CC{self.cc}:FRAM1:BWP0:SLOT0:FORM 1')     #All UL
             self.sdir = "UL"
         elif (sDirection == "DL") or (sDirection == "DOWN"):
-            self.write(':CONF:NR5G:LDIR DL')
-            self.write(':CONF:NR5G:DL:CC1:FRAM1:BWP0:SLOT0:FORM 0')     #All DL
-            self.write(':CONF:NR5G:DL:CC1:IDC ON')
+            self.write(f':CONF:NR5G:LDIR DL')
+            self.write(f':CONF:NR5G:DL:CC{self.cc}:FRAM1:BWP0:SLOT0:FORM 0')     #All DL
+            self.write(f':CONF:NR5G:DL:CC{self.cc}:IDC ON')
             self.sdir = "DL"
         else:
             print("Set_5GNR_UL_Direction must be UL or DL")
     
     def Set_5GNR_EVMUnit(self,sUnit):
         #DB or PCT
-        self.write('UNIT:EVM %s'%sUnit)
+        self.write(f'UNIT:EVM {sUnit}')
 
     def Set_5GNR_FreqRange(self,iRange):
         """ 0:<3GHz 1:3-6GHz 2:>6GHz """
@@ -374,20 +380,20 @@ class VSA(VSA):                                 #pylint: disable=E0102
         self.query(f":MMEM:STOR:DEM:CC{self.cc} 'C:\\R_S\\Instr\\user\\NR5G\\AllocationFiles\\{sName}.allocation';*OPC?")
         
     def Set_5GNR_SEM_Freq(self,fFreq,dSubBlock=1):
-        self.write(':SENS:ESP%d:SCEN %f'%(dSubBlock,fFreq))
+        self.write(f':SENS:ESP{dSubBlock}:SCEN {fFreq}')
 
     def Set_5GNR_SEM_SubBlockNum(self,dSubBlock):
-        self.write(':SENS:ESP:SCO %d'%(dSubBlock))
+        self.write(f':SENS:ESP:SCO {dSubBlock}')
 
     def Set_5GNR_SubFrameCount(self,dSubFrame):
-        self.write(':SENS:NR5G:FRAM:COUN:STAT OFF')
-        self.write(':SENS:NR5G:FRAM:SLOT %d'%dSubFrame)
+        self.write(f':SENS:NR5G:FRAM:COUN:STAT OFF')
+        self.write(f':SENS:NR5G:FRAM:SLOT {dSubFrame}')
 
     def Set_5GNR_TM(self, file):
         self.query(f'MMEM:LOAD:TMOD:CC{self.cc} "{file}";*OPC?')
 
     def Set_5GNR_TransPrecoding(self,sState):
-        """ON | OFF """
+        """UL only: ON | OFF """
         if self.sdir == 'UL':
             self.write(f':CONF:NR5G:UL:CC{self.cc}:TPR {sState}')
         else:
