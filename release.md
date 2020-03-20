@@ -1,10 +1,20 @@
 Release History
 =====================================================================
+- RSSD 2020.03.1
+  - VSA
+    - Chg all SCPI to f-String
+    - Chg mssing :CC1: to :CC{self.cc}:
 - RSSD 2020.03.0
   - VSG
     - Common add System Config Read cmds
+    - NR5G_K144
+      - Add self.cc; chg methods to use self.cc
+      - Chg all string to f-strings
   - VSA
-    - NR5G_K144 Add self.cc; chg methods to use self.cc
+    - NR5G_K144
+      - Add self.cc; chg methods to use self.cc
+    - Common chg from Get_xxxParams to Get_Params_xxx
+    - VSA_K70 add 'OQPSK' support.
 - RSSD 2020.02.0
   - Add Proto VSG.CustomDigMod.py
   - VSA
@@ -22,7 +32,7 @@ Release History
   - Examples chg FSW_ to VSA_
 - RSSD 2019.12.0
   - VSA
-    - Common 
+    - Common
       - Get/Set Ch Name
       - Update Init_mmm w/ name input
       - add Set_ChannelSelect()
