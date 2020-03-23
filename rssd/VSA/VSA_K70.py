@@ -1,4 +1,5 @@
-﻿#####################################################################
+# -*- coding: future_fstrings -*-
+# #####################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ### Purpose : Vector Signal Demod Functions
 ### Author  : Martin C Lim
