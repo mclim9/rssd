@@ -17,7 +17,7 @@ python:
 os:
   - linux
   # - osx         #Not working 19.04.23
-  - windows     #Windows does not support python
+  # - windows     #Windows does not support python
   
 # command to install dependencies
 install:
