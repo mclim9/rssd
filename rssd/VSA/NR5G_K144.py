@@ -1,10 +1,11 @@
 # -*- coding: future_fstrings -*-
-#####################################################################
+###############################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ###
 ### Purpose: Vector Signal Analyzer 5GNR Functions
 ### Author : Martin C Lim
 ### Date   : 2018.04.03
+###############################################################################
 from rssd.VSA.Common import VSA                 #pylint: disable=E0611,E0401
 
 class VSA(VSA):                                 #pylint: disable=E0102

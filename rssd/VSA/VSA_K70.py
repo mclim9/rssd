@@ -1,15 +1,15 @@
-﻿# -*- coding: future_fstrings -*-
-#####################################################################
+﻿#####################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ### Purpose : Vector Signal Demod Functions
 ### Author  : Martin C Lim
 ### Date    : 2019.10.23
-from rssd.VSA.Common import VSA
+#####################################################################
+from rssd.VSA.Common import VSA                 #pylint: disable=E0611,E0401
 
-class VSA(VSA):
-    """ Rohde & Schwarz Vector Signal Analyzer Analog Demod Object """
+class VSA(VSA):                                 #pylint: disable=E0102
+    """ Rohde & Schwarz Vector Signal Analyzer Object """
     def __init__(self):
-        super(VSA,self).__init__()     #Python2
+        super(VSA, self).__init__()             #Python 2/3
 
     ###########################################################################
     ### VSA Get Functions
@@ -48,7 +48,7 @@ class VSA(VSA):
         MagEr   = float(self.Get_VSA_MagnitudeError())
         FreqEr  = float(self.Get_VSA_CarrierFreqError())
         IQOff   = float(self.Get_VSA_IQOffset())
-        return f"{EVM:.4f},{PhaseEr:.4f},{MagEr:.4f},{FreqEr:.4f},{IQOff:.4f}"
+        return f'{EVM:.4f},{PhaseEr:.4f},{MagEr:.4f},{FreqEr:.4f},{IQOff:.4f}'
 
     def Get_VSA_MER(self):
         rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:SNR?')
@@ -107,7 +107,7 @@ class VSA(VSA):
             self.write(f':SENS:DDEM:EQU:STAT ON')
 
     def Set_VSA_Filter_Alpha(self,alpha):
-        """  """
+        """ Alpha Value """
         self.write(f':SENS:DDEM:TFIL:ALPH {alpha}')
 
     def Set_VSA_Filter_Type(self,sName):
