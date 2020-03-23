@@ -185,23 +185,28 @@ class VSA(VSA):                                 #pylint: disable=E0102
             print('Get_5GNR_Direction Error')
         return rdStr
 
-    def Get_5GNR_EVM(self):
+    def Get_5GNR_EVM_All(self):
         EVM = self.queryFloat(f':FETC:CC{self.cc}:SUMM:EVM:ALL:AVER?')
         return EVM
 
-    def Get_5GNR_EVM_DMRS(self):
-        EVM = self.queryFloat(f':FETC:CC{self.cc}:SUMM:EVM:ALL:AVER?')
+    def Get_5GNR_EVM_PhysCh(self):
+        EVM = self.queryFloat(f':FETC:CC{self.cc}:SUMM:EVM:PCH:AVER?')
+        return EVM
+
+    def Get_5GNR_EVM_PhysSig(self):
+        EVM = self.queryFloat(f':FETC:CC{self.cc}:SUMM:EVM:PSIG:AVER?')
         return EVM
 
     def Get_5GNR_Params_EVM(self,header=0):
         if header != 1:
             Crest   = self.Get_5GNR_CrestFactor()
             Power   = self.Get_5GNR_ChPwr()
-            EVM     = self.Get_5GNR_EVM()
-            EVMdmrs = self.Get_5GNR_EVM_DMRS()
-            outStr  = f"{Crest:6.3f},{Power:6.3f},{EVM:.2f},{EVMdmrs:.2f}"
+            EVMAll  = self.Get_5GNR_EVM_All()
+            EVMPhyC = self.Get_5GNR_EVM_PhysCh()
+            EVMPhyS = self.Get_5GNR_EVM_PhysSig()
+            outStr  = f"{Crest:6.3f},{Power:6.3f},{EVMAll:.2f},{EVMPhyC:.2f},{EVMPhyS:.2f}"
         else:
-            outStr  = 'K144_Cres,K144Pwr,5GEVM,EVM_DMRS'
+            outStr  = 'K144_Cres,K144Pwr,5GEVM_All,EVM_PhyCh,EVM_PhySig'
         return outStr
 
     def Get_5GNR_FreqRange(self):
@@ -343,7 +348,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
             print("Set_5GNR_UL_Direction must be UL or DL")
     
     def Set_5GNR_EVMUnit(self,sUnit):
-        #DB or PCT
+        """ DB | PCT """
         self.write(f'UNIT:EVM {sUnit}')
 
     def Set_5GNR_FreqRange(self,iRange):
@@ -406,7 +411,6 @@ if __name__ == "__main__":
     ### this won't be run when imported
     FSW = VSA().jav_Open("192.168.1.109")
     FSW.cc = 2
-    print(FSW.Get_5GNR_CC_Freq())
-    print(FSW.Get_5GNR_CC_Offset())
+    print(FSW.Get_5GNR_Params_EVM())
     FSW.jav_ClrErr()
     FSW.jav_Close()
