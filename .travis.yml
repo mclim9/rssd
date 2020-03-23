@@ -12,11 +12,12 @@ python:
   - "2.7"
   - "3.6"
   - "3.7"
+  - "3.8"
 
 os:
   - linux
   # - osx         #Not working 19.04.23
-  # - windows     #Windows does not support python
+  - windows     #Windows does not support python
   
 # command to install dependencies
 install:
