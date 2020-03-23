@@ -9,11 +9,11 @@
 ###############################################################################
 SMW_IP      = '192.168.1.114'
 FSW_IP      = '192.168.1.109'
-FreqArry    = [28e9, 20e9]
-pwrArry     = range(-10,0,1)                        #Power Array
+FreqArry    = [10e9, 20e9, 28e9, 39e9]
+pwrArry     = range(-40,10,1)                        #Power Array
 NR_Dir      = 'UL'
 waveparam   = [[100,120,66,'QPSK']]                 #ChBW, SubSp, RB, Mod
-NumCC       = 4
+NumCC       = 8
 CCSpace     = 99.96e6
 CCStart     = (1 - NumCC) * (CCSpace/2)
 numMeas     = 1
@@ -40,7 +40,7 @@ NR5G.Freq       = FreqArry[0]
 ###############################################################################
 ### Measure Time
 ###############################################################################
-LoopParam   = 'Iter,Model,Freq_GHz,SMW_Pwr,CC'
+LoopParam   = 'Iter,Model,SMW_Fre,CCFreq_GHz,SMW_Pwr,CC'
 WaveParam   = 'ChBW,SubSp,RB,Mod,TF'
 SwpParam    = NR5G.FSW.Get_Params_Sweep(1)
 AttnParam   = NR5G.FSW.Get_Params_Amp(1)
@@ -55,7 +55,7 @@ NR5G.FSW.Set_Trig1_Source('IMM')
 NR5G.FSW.Set_5GNR_Direction(NR_Dir)
 NR5G.FSW.Set_SweepCont(0)
 NR5G.FSW.Set_5GNR_FreqRange(2)
-NR5G.FSW.Set_5GNR_CA_Num(NumCC)
+NR5G.FSW.Set_5GNR_CC_Num(NumCC)
 NR5G.FSW.Set_5GNR_SubFrameCount(1)
 NR5G.FSW.Set_SweepTime(10.1e-3)
 NR5G.FSW.Set_5GNR_Result_View('ALL')
@@ -74,7 +74,7 @@ for i in range(numMeas):                                            #LOOP: Measu
             print(Header)
             for CC in range(NumCC):
                 NR5G.FSW.cc = CC+1
-                NR5G.FSW.Set_5GNR_CA_Offset(CC+1,CC*CCSpace)
+                NR5G.FSW.Set_5GNR_CC_Offset(CC+1,CC*CCSpace)
             #ctypes.windll.user32.MessageBoxW(0, "Verify", "Please Verify Waveform", 1)
             for pwr in pwrArry:                                     #LOOP: Power
                 tick = timeit.default_timer()                       #Tick Begin meas
@@ -95,7 +95,7 @@ for i in range(numMeas):                                            #LOOP: Measu
                 for CC in range(NumCC):                             #LOOP: CC
                     NR5G.FSW.cc = CC+1
                     CurrFreq    = NR5G.FSW.Get_5GNR_CC_Freq()
-                    LoopParam   = f'{i},{NR5G.FSW.Model},{CurrFreq/1e9:9.6f},{pwr:3d},{NR5G.FSW.cc}'
+                    LoopParam   = f'{i},{NR5G.FSW.Model},{freq},{CurrFreq/1e9:9.6f},{pwr:3d},{NR5G.FSW.cc}'
                     NR5GParam   = f'{NR5G.NR_ChBW},{NR5G.NR_RB},{NR5G.NR_SubSp},{NR5G.NR_Mod},{NR5G.NR_TF}'
                     AttnParam   = NR5G.FSW.Get_Params_Amp()
                     EVM         = NR5G.FSW.Get_5GNR_Params_EVM()
