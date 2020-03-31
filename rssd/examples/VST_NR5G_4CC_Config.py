@@ -10,9 +10,9 @@
 SMW_IP  = '172.24.225.230'
 SMW_IP  = '192.168.1.114'
 FSW_IP  = '192.168.1.109'
-Freq    = 28e9
+Freq    = 10e9
 Pwr     = -10
-NumCC   = 4
+NumCC   = 8
 NR_Dir  = 'UP'
 CCSpace = 99.96e6
 CCStart = (1 - NumCC) * (CCSpace/2)
@@ -36,7 +36,7 @@ SMW.Set_Freq(Freq)                                  # SMW Freq --> BB Center
 SMW.Set_5GNR_BBState('OFF')
 SMW.Set_5GNR_Direction(NR_Dir)
 SMW.Set_5GNR_CC_Num(NumCC)
-SMW.Set_5GNR_PhaseCompensate('ON')
+SMW.Set_5GNR_PhaseCompensate('OFF')
 SMW.Set_RFPwr(Pwr)
 SMW.Set_RFState(1)
 
@@ -60,7 +60,7 @@ for i in range(NumCC):
     FSW.cc = i+1
     FSW.Set_5GNR_CC_Offset(i+1,i*CCSpace)
     FSW.Set_5GNR_TransPrecoding('ON')
-    FSW.Set_5GNR_PhaseCompensate('ON')
+    FSW.Set_5GNR_PhaseCompensate('OFF')
     FSW.Set_5GNR_PhaseCompensate_Freq(Freq_CC)
     FSW.Set_5GNR_CellID(i)
     FSW.Set_5GNR_BWP_SubSpace(120)
