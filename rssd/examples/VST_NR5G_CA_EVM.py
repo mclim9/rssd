@@ -13,11 +13,11 @@ FreqArry    = [10e9, 20e9, 28e9, 39e9]
 pwrArry     = range(-40,10,1)                        #Power Array
 NR_Dir      = 'UL'
 waveparam   = [[100,120,66,'QPSK']]                 #ChBW, SubSp, RB, Mod
-NumCC       = 8
+NumCC       = 1
 CCSpace     = 99.96e6
 CCStart     = (1 - NumCC) * (CCSpace/2)
 numMeas     = 1
-DFT_S_OFDM  = 'OFF'
+DFT_S_OFDM  = 'ON'
 
 ###############################################################################
 ### Code Overhead: Import and create objects
@@ -40,7 +40,7 @@ NR5G.Freq       = FreqArry[0]
 ###############################################################################
 ### Measure Time
 ###############################################################################
-LoopParam   = 'Iter,Model,SMW_Fre,CCFreq_GHz,SMW_Pwr,CC'
+LoopParam   = 'Iter,Model,SMW_Fre,CCFreq_GHz,SMW_Pwr,CC,NumCC'
 WaveParam   = 'ChBW,SubSp,RB,Mod,TF'
 SwpParam    = NR5G.FSW.Get_Params_Sweep(1)
 AttnParam   = NR5G.FSW.Get_Params_Amp(1)
@@ -79,8 +79,10 @@ for i in range(numMeas):                                            #LOOP: Measu
             for pwr in pwrArry:                                     #LOOP: Power
                 tick = timeit.default_timer()                       #Tick Begin meas
                 NR5G.SMW.Set_RFPwr(pwr)
+                NR5G.FSW.Set_5GNR_CC_Capture('AUTO')
                 NR5G.FSW.Set_SweepCont(1)
                 NR5G.FSW.Set_Autolevel()
+                NR5G.FSW.Set_5GNR_CC_Capture('SING')
                 tockA = timeit.default_timer()                      #Tick Auto Lev
                 NR5G.FSW.Set_SweepCont(0)
                 NR5G.FSW.Set_InitImm()
@@ -95,7 +97,7 @@ for i in range(numMeas):                                            #LOOP: Measu
                 for CC in range(NumCC):                             #LOOP: CC
                     NR5G.FSW.cc = CC+1
                     CurrFreq    = NR5G.FSW.Get_5GNR_CC_Freq()
-                    LoopParam   = f'{i},{NR5G.FSW.Model},{freq},{CurrFreq/1e9:9.6f},{pwr:3d},{NR5G.FSW.cc}'
+                    LoopParam   = f'{i},{NR5G.FSW.Model},{freq},{CurrFreq/1e9:9.6f},{pwr:3d},{NR5G.FSW.cc},{NumCC}'
                     NR5GParam   = f'{NR5G.NR_ChBW},{NR5G.NR_RB},{NR5G.NR_SubSp},{NR5G.NR_Mod},{NR5G.NR_TF}'
                     AttnParam   = NR5G.FSW.Get_Params_Amp()
                     EVM         = NR5G.FSW.Get_5GNR_Params_EVM()
