@@ -19,38 +19,43 @@ class VNA(jaVisa):
     #####################################################################
     ### VNA GET Functions Alphabetical
     #####################################################################
-    def Get_Trace_Names(self,dChan=1):
-        rdStr = self.query(":CALC%d:PAR:CAT?"%(dChan))
+    def Get_Pwrcal_Rx_State(self):
+        rdStr = self.query(f":SENS:CORR:STAT?")
         return rdStr
 
     def Get_Pwrcal_State(self):
         rdStr = self.query(f":SOUR:POW:CORR:STAT?")
         return rdStr
 
-    def Get_Pwrcal_Rx_State(self):
-        rdStr = self.query(f":SENS:CORR:STAT?")
+    def Get_Trace_Names(self,dChan=1):
+        rdStr = self.query(":CALC%d:PAR:CAT?"%(dChan))
         return rdStr
 
+    #####################################################################
+    ### VNA SAVE Functions Alphabetical
+    #####################################################################
     def Save_Cal(self, sFName, dChan=1):
-        #Save calibration to cal manager.
+        """ Save calibration to cal manager """
         if not sFName.lower().endswith(".cal"):
             sFName += ".cal"
         self.write(f":MMEM:STOR:CORR {dChan},'{sFName}'")
 
     def Save_Screen(self,sFName):
+        """ Save Sceen to BMP """
         self.write('HCOP:DEV:LANG BMP')
         self.write("MMEM:NAME '%s.BMP'"%(sFName))
         self.write('HCOP:DEST "MMEM"; :HCOP')
 
     def Save_State(self,sFName):
+        """ Save State """
         self.write("MMEM:STOR:STAT 1,'%s'"%(sFName))
+
+    def Save_Trace_CSV(self,sFName,dChan=1):
+        self.write("MMEM:STOR:TRAC:CHAN %d,'%s.csv'"%(dChan,sFName))
 
     def Save_Trace_SxP(self,sFName,dChan=1):                        #MMM
         self.write("MMEM:STOR:TRAC:CHAN %d,'%s.s2p'"%(dChan,sFName))
         #self.write(":MMEM:STOR:TRAC:PORT %d,'%s.s2p',COMP,1,2"%(dChan,sFName))
-
-    def Save_Trace_CSV(self,sFName,dChan=1):
-        self.write("MMEM:STOR:TRAC:CHAN %d,'%s.csv'"%(dChan,sFName))
 
     #####################################################################
     ### VNA SET Functions Alphabetical
@@ -92,14 +97,14 @@ class VNA(jaVisa):
     def Set_Pwrcal_Measure(self,iPort,dChan=1):
         self.write(f":SOUR{dChan}:POW:CORR:ACQ PORT,{iPort}")
     
-    def Set_Pwrcal_Tolerance(self,fTol,dChan=1):
-        self.write(f":SOUR:POW:CORR:COLL:AVER:NTOL {fTol}")
-    
     def Set_Pwrcal_Rx(self,Source,Port,dChan=1):
         # CORR:POW:ACQ <What to Cal> <Port>,<SourceTYpe>,<Port#>,<AWAV/NOM>
         self.write(f":CORR:POW:ACQ BWAV,{Port},PORT,{Source},AWAV")
         self.query('CORR:POW:AWAV?')
-    
+
+    def Set_Pwrcal_Tolerance(self,fTol,dChan=1):
+        self.write(f":SOUR:POW:CORR:COLL:AVER:NTOL {fTol}")
+
     def Set_SweepCont(self,iON):
         if iON == 1:
             self.write("INIT:CONT ON")                          #Continuous Sweep
@@ -143,16 +148,16 @@ class VNA(jaVisa):
     def Set_Trace_MeasAdd_BWave(self,BPort,GenPort,dChan=1):
         self.Set_Trace_MeasAdd(f'B{BPort}D{GenPort}RMS')
 
+    # def Set_Trace_MeasAdd_IMD3(self,dChan=1):                         #mmm
+    #     self.write("SENS%d:FREQ:IMOD:ORD3 ON"%(dChan))
+    #     self.Set_Trace_MeasAdd("IP3UI")
+    #     self.Set_Trace_MeasAdd("IP3LI")
+
     def Set_Trace_MeasAdd_SParam(self,Port1,Port2,dChan=1):
         self.Set_Trace_MeasAdd(f'S{Port1}{Port2}')
 
     def Set_Trace_MeasAdd_PwrMtr(self,GenPort,dChan=1):
         self.Set_Trace_MeasAdd(f'Pmtr{1}D{GenPort}')
-
-    # def Set_Trace_MeasAdd_IMD3(self,dChan=1):                         #mmm
-    #     self.write("SENS%d:FREQ:IMOD:ORD3 ON"%(dChan))
-    #     self.Set_Trace_MeasAdd("IP3UI")
-    #     self.Set_Trace_MeasAdd("IP3LI")
 
     def Set_Trace_MeasDel(self,sTrcName,dChan=1):
         self.write("CALC%d:PAR:DEL '%s'"%(dChan,sTrcName))
@@ -172,7 +177,7 @@ class VNA(jaVisa):
 #####################################################################
 if __name__ == "__main__":
     # this won't be run when imported
-    ZVA = VNA().jav_openvisa('TCPIP0::192.168.1.30::inst0')
+    ZVA = VNA().jav_openvisa('TCPIP0::192.168.1.30::INSTR')
     #ZVA.Test_PwrCal()
     print(ZVA.Get_Pwrcal_State())
     ZVA.jav_Close()

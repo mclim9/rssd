@@ -1,6 +1,5 @@
 ###############################################################################
 ### Rohde & Schwarz Automation for demonstration use.
-###
 ### Title  : SCPI Commands Example
 ### Author : mclim
 ### Date   : 2018.10.26
