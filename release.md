@@ -1,6 +1,13 @@
 Release History
 =====================================================================
-- RSSD 2020.03.1
+- RSSD 2020.04.0
+  - VSA
+    - Common alphebetize and cleanup
+- RSSD 2020.03.2
+  - DSO
+    - Add DSO_example.py
+    - Add DSO.Spectrum_K18.py
+    - Add DSO.Common comments
   - VSA
     - Chg all SCPI to f-String
     - Chg mssing :CC1: to :CC{self.cc}:
