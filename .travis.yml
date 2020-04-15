@@ -1,5 +1,6 @@
 language: python
 cache: pip
+after_success: "sbt coveralls"
 
 notifications:
   email:
