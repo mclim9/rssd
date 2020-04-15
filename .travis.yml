@@ -28,9 +28,12 @@ install:
 
 # command to run tests
 script:
-  - python -m unittest -v test.test_RSSD
-  - python -m unittest -v test.test_FileIO
-  - python -m unittest -v test.test_yaVISA
+  # - python -m unittest -v test.test_RSSD
+  # - python -m unittest -v test.test_FileIO
+  # - python -m unittest -v test.test_yaVISA
+  - coverage run -m unittest -v test.test_RSSD
+  - coverage run -m unittest -v test.test_FileIO
+  - coverage run -m unittest -v test.test_yaVISA
 
 after_success:
   - coveralls
