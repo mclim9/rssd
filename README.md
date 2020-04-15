@@ -1,4 +1,4 @@
-# Rohde & Schwarz SCPI Driver [![](https://travis-ci.org/mclim9/rssd.svg?branch=master)](https://pypi.org/project/rssd/) ![Versioning](https://img.shields.io/badge/calver-YY.0M.MICRO-22bfda.svg)[![PyPI version](https://badge.fury.io/py/rssd.svg)](https://badge.fury.io/py/rssd)
+# Rohde & Schwarz SCPI Driver [![](https://travis-ci.org/mclim9/rssd.svg?branch=master)](https://pypi.org/project/rssd/) [![PyPI version](https://badge.fury.io/py/rssd.svg)](https://badge.fury.io/py/rssd) ![Versioning](https://img.shields.io/badge/calver-YY.0M.MICRO-22bfda.svg)
 
 
 ## Description
