@@ -1,5 +1,7 @@
 language: python
 cache: pip
+after_success: "sbt coveralls"
+script: "sbt clean coverage test"
 
 notifications:
   email:
