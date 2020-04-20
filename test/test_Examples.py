@@ -25,7 +25,6 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
     def test_EX_helloworld(self):
         import rssd.examples.AAA_CommandTime as example
-        execfile(example)        #pylint:disable=E0611,E0401
         self.assertTrue(1)
 
 ###############################################################################
