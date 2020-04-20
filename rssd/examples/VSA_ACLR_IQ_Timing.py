@@ -61,10 +61,10 @@ if 0:
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
 LoopParam   = 'Iter,ALMeth,Pwr'
 TimeParam   = 'AlTime,MeasTime,TotalTIme'
-SwpParam    = VSA.Get_SweepParams(1)
-AmpParam    = VSA.Get_AmpParams(1)
-TrcParam    = VSA.Get_TraceParams(1)
-SysParam    = VSA.Get_System_Params(1)
+SwpParam    = VSA.Get_Params_Sweep(1)
+AmpParam    = VSA.Get_Params_Amp(1)
+TrcParam    = VSA.Get_Params_Trace(1)
+SysParam    = VSA.Get_Params_System(1)
 MeasData    = 'TxPwr,Adj-,Adj+,Alt-,Alt+'
 OFile.write(f'{LoopParam},{TimeParam},{AmpParam},{SwpParam},{TrcParam},{SysParam},{MeasData}')
 
@@ -93,10 +93,10 @@ for i in range(Repeat):
             TestTime = TotTime - ALTime
 
             LoopParam   = f'{i},{autoMeth},{VSApwr:5.2f}'
-            SwpParam    = VSA.Get_SweepParams()
-            AmpParam    = VSA.Get_AmpParams()
-            TrcParam    = VSA.Get_TraceParams()
-            SysParam    = VSA.Get_System_Params()
+            SwpParam    = VSA.Get_Params_Sweep()
+            AmpParam    = VSA.Get_Params_Amp()
+            TrcParam    = VSA.Get_Params_Trace()
+            SysParam    = VSA.Get_Params_System()
             TotTime     = f'{ALTime:2,.6f},{TestTime:2,.6f},{TotTime:2,.6f}'
             MeasData    = ACLR
             OutStr      = f'{LoopParam},{TotTime},{AmpParam},{SwpParam},{TrcParam},{SysParam},{MeasData}'
