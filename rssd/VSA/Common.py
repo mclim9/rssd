@@ -64,8 +64,8 @@ class VSA(jaVisa):
         CurrApp = self.query('INST?')
         match   = [x for x in ChList if CurrApp in x]
         index   = ChList.index(match[0])
-        CurrCh  = ChList[index+1]
-        return(CurrCh)
+        self.CurrCh  = ChList[index+1]
+        return(self.CurrCh)
 
     def Get_Channels(self):
         ChList  = self.query('INST:LIST?').replace("\'","").split(',')
@@ -163,6 +163,11 @@ class VSA(jaVisa):
     def Get_IQ_RecLength(self):
         RLEN = self.queryInt('TRAC:IQ:RLEN?')	        #Record(Samples) Length
         return RLEN
+
+    def Get_IQ_SamplingRate(self):
+        # SamplingRate = IQ_BW / 0.8
+        rdStr = self.queryFloat('TRAC:IQ:SRAT?')        #Sampling Rate
+        return rdStr
 
     def Get_Mkr_Band(self,iNum=1,iWind=1):
         ValX = self.queryFloat(':CALC%d:MARK%d:X?'%(iWind,iNum))
@@ -734,14 +739,6 @@ if __name__ == "__main__":
     ### this won't be run when imported
     import timeit
     FSW = VSA().jav_Open("192.168.1.109")
-    tick1 = timeit.default_timer()
-
-    FSW.Get_IQ_Data_Ascii2()[:100]
-    tick2 = timeit.default_timer()
-    print(tick2-tick1)
-
-    (FSW.Get_IQ_Data_Bin()[:5])
-    tick3 = timeit.default_timer()
-    print(tick3-tick2)
+    print(FSW.Get_ChannelName())
     FSW.jav_ClrErr()
     del FSW

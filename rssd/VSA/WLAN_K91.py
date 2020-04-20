@@ -33,10 +33,15 @@ class VSA(VSA):                        #pylint: disable=E0102
         ACLR = self.queryFloatArry(':CALC:MARK:FUNC:POW:RES? MCAC')
         return ACLR
 
-    def Get_WLAN_EVMParams(self):
-        Power = self.Get_WLAN_PPDUPwr()
-        EVM   = self.Get_WLAN_EVM()
-        return (f"{Power:6.3f},{EVM:.2f}")
+    def Get_Params_WLAN_EVM(self,header=0):
+        """Retrieve Parameters for test logs"""
+        if header != 1:
+            Power = self.Get_WLAN_PPDUPwr()
+            EVM   = self.Get_WLAN_EVM()
+            outStr = f"{Power:6.3f},{EVM:.2f}"
+        else:
+            outStr = 'PPDUPwr,EVM'
+        return outStr
 
     def Get_WLAN_BurstCount(self):
         rdStr = self.query(f'FETC:BURS:COUN:ALL?')
@@ -128,6 +133,9 @@ class VSA(VSA):                        #pylint: disable=E0102
         #self.query('ADJ:LEV;*OPC?')
         self.write(':CONF:POW:AUTO ONCE;*WAI')      #FSVA
 
+    def Set_WLAN_CaptureTime(self, swpTime):
+        self.Set_SweepTime(swpTime)
+
     def Set_WLAN_ChBW(self,iBW):
         # iBW of 0 sets VSA to auto detect
         if iBW == 0:  # Auto
@@ -150,6 +158,7 @@ class VSA(VSA):                        #pylint: disable=E0102
             self.write(f'SENS:DEM:FORM:MCS {iMCS}')
 
     def Set_WLAN_Standard(self,sStd):
+        """AC N AX"""
         #0:A 1:B 2/3:J 4:G 6:N 7:N-MIMO 8:AC 9:P 10:AX
         sStd.upper()
         if sStd == 'N':

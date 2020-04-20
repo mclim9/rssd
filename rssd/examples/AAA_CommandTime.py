@@ -12,7 +12,7 @@ instru_ip  = '192.168.1.107'
 ###############################################################################
 from rssd.yaVISA_socket     import jaVisa
 from rssd.FileIO            import FileIO
-import  datetime
+import  timeit
 
 OFile = FileIO().makeFile(__file__)
 instr = jaVisa().jav_Open(instru_ip,OFile)                  #Create Object
