@@ -37,6 +37,7 @@ class OTA(jaVisa):
     def query(self,cmd):
         cmd = cmd + self.EOL
         self.K2.read_termination = '\x00'
+        self.K2.write_termination = '\x00'
         self.K2.sendall(cmd.encode())               #Write if connected
         sOut = self.K2.recv(2048).strip()           #read socket
         read = sOut.decode()
