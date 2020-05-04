@@ -8,7 +8,7 @@
 ### User Entry
 ##########################################################
 import os
-import tkMessageBox
+# import tkMessageBox
 
 BaseDir = os.path.dirname(os.path.realpath(__file__))
 OutFile = BaseDir +  __file__
@@ -34,7 +34,7 @@ def CMW_Set(freq, pwr):
 ### Code Start
 ##########################################################
 from rssd.FileIO        import FileIO
-from rssd.RCT.GPRF      import BSE
+from rssd.RCT.GPRF      import RCT
 from datetime           import datetime
 
 f = FileIO()
@@ -42,7 +42,7 @@ f.debug = 0
 IArry = f.initread(InpFile).readcsv()
 OFile = f.Init(OutFile)
 
-CMW = BSE()
+CMW = RCT()
 CMW.jav_Open("127.0.0.1")
 
 for port in ports:
