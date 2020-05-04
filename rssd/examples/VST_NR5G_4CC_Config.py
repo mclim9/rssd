@@ -7,12 +7,13 @@
 ###############################################################################
 ### User Entry
 ###############################################################################
-SMW_IP  = '172.24.225.230'
+# SMW_IP  = '172.24.225.230'
 SMW_IP  = '192.168.1.114'
 FSW_IP  = '192.168.1.109'
-Freq    = 10e9
+VSG_ON  = 0
+Freq    = 39e9
 Pwr     = -10
-NumCC   = 8
+NumCC   = 4
 NR_Dir  = 'UP'
 CCSpace = 99.96e6
 CCStart = (1 - NumCC) * (CCSpace/2)
@@ -25,20 +26,21 @@ from rssd.VSA.NR5G_K144     import VSA              #pylint: disable=E0611,E0401
 from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
 import timeit
 
-SMW = VSG().jav_Open(SMW_IP)                        #Create SMW Object
+if VSG_ON: SMW = VSG().jav_Open(SMW_IP)             #Create SMW Object
 FSW = VSA().jav_Open(FSW_IP)                        #Create FSW Object
 
 ###############################################################################
 ### Code Start
 ###############################################################################
-SMW.Get_SysC_All()
-SMW.Set_Freq(Freq)                                  # SMW Freq --> BB Center
-SMW.Set_5GNR_BBState('OFF')
-SMW.Set_5GNR_Direction(NR_Dir)
-SMW.Set_5GNR_CC_Num(NumCC)
-SMW.Set_5GNR_PhaseCompensate('OFF')
-SMW.Set_RFPwr(Pwr)
-SMW.Set_RFState(1)
+if VSG_ON:
+    SMW.Get_SysC_All()
+    SMW.Set_Freq(Freq)                                  # SMW Freq --> BB Center
+    SMW.Set_5GNR_BBState('OFF')
+    SMW.Set_5GNR_Direction(NR_Dir)
+    SMW.Set_5GNR_CC_Num(NumCC)
+    SMW.Set_5GNR_PhaseCompensate('OFF')
+    SMW.Set_RFPwr(Pwr)
+    SMW.Set_RFState(1)
 
 FSW.Init_5GNR()
 FSW.Set_5GNR_Result_View('ALL')
@@ -52,11 +54,12 @@ FSW.Set_Freq(Freq + CCStart)                        # FSW Freq --> 1st CC
 
 for i in range(NumCC):
     Freq_CC = Freq + CCStart + (i * CCSpace)
-    SMW.cc = i
-    SMW.Set_5GNR_FreqRange(2)
-    SMW.Set_5GNR_CC_Offset(CCStart + (i * CCSpace))
-    SMW.Set_5GNR_TransPrecoding('ON')
-    SMW.Set_5GNR_PhaseCompensate_Freq(Freq_CC)
+    if VSG_ON:
+        SMW.cc = i
+        SMW.Set_5GNR_FreqRange(2)
+        SMW.Set_5GNR_CC_Offset(CCStart + (i * CCSpace))
+        SMW.Set_5GNR_TransPrecoding('ON')
+        SMW.Set_5GNR_PhaseCompensate_Freq(Freq_CC)
     FSW.cc = i+1
     FSW.Set_5GNR_CC_Offset(i+1,i*CCSpace)
     FSW.Set_5GNR_TransPrecoding('ON')
@@ -66,7 +69,7 @@ for i in range(NumCC):
     FSW.Set_5GNR_BWP_SubSpace(120)
 
 tick    = timeit.default_timer()
-SMW.Set_5GNR_BBState('ON')
+if VSG_ON: SMW.Set_5GNR_BBState('ON')
 tockA   = timeit.default_timer()
 print(f'{(tockA-tick):2,.6f}')
 FSW.Set_Autolevel()
@@ -74,4 +77,4 @@ FSW.Set_Autolevel()
 ###############################################################################
 ### Close Nicely
 ###############################################################################
-SMW.jav_Close()
+if VSG_ON: SMW.jav_Close() 
