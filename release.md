@@ -1,5 +1,11 @@
 Release History
 =====================================================================
+- RSSD 2020.05.0
+  - Examples
+    - Add VSA_IQAutolevel.py
+    - Add VSA_On flag for VST_NR5G_4CC_Config
+  - Alpha Examples directory test
+    - Created mock classes in rssd.test
 - RSSD 2020.04.0
   - VSA
     - Common alphebetize and cleanup

@@ -114,7 +114,7 @@ class v2(object):
         pass
 
 if __name__ == "__main__":
-    RS = jaVisa()
+    RS = v2()
     ipaddress   = '192.168.1.109'
     port        = 5025
     RS.debug    = 1
