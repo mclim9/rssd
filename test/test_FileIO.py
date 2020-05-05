@@ -23,12 +23,10 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### </Test>
 ###############################################################################
-    def test_write(self):
-        try:
-            self.FileIO.write("test_write,write")           #Append Date
-            self.FileIO.write_raw("test_write,write_raw")   #No Date
-        except:
-            self.assertTrue(1)                  #FAIL
+    def test_makeFile(self):
+        newName = 'makeFile'
+        self.FileIO.makeFile(newName)           #Append Date
+        self.assertNotEqual(self.FileIO.sFName.find(newName),-1)
 
     def test_readcsv(self):
         self.FileIO.write('testreadcsv,spam,ham,eggs')
@@ -44,12 +42,15 @@ class TestGeneral(unittest.TestCase):
         # self.assertTrue('FOO'.isupper())
         # self.assertFalse('Foo'.isupper())
 
+    def test_write(self):
+        self.FileIO.write("test_write,write")           #Append Date
+        self.FileIO.write_raw("test_write,write_raw")   #No Date
+        # self.assertTrue(1)                  #FAIL
+
 ###############################################################################
 ### </Test>
 ###############################################################################
 if __name__ == '__main__':
-    if 0:     #Run w/o test names
-        unittest.main()
-    else:     #Verbose run
-        suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
-        unittest.TextTestRunner(verbosity=2).run(suite)
+    # unittest.main()     #Run w/o test names
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
+    unittest.TextTestRunner(verbosity=2).run(suite)

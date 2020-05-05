@@ -40,8 +40,7 @@ class TestGeneral(unittest.TestCase):
 ### </Test>
 ###############################################################################
 if __name__ == '__main__':
-    if 0:     #Run w/o test names
-        unittest.main()
-    else:     #Verbose run
-        suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
-        unittest.TextTestRunner(verbosity=2).run(suite)
+    # unittest.main()     #Run w/o test names
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
+    unittest.TextTestRunner(verbosity=2).run(suite)
+
