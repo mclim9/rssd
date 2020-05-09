@@ -10,13 +10,14 @@ from __future__ import print_function
 ### User Settings
 ###############################################################################
 IPAddr = '192.168.1.109'
-IPAddr = 'localhost'
+IPAddr = '169.254.2.20'
+IPAddr = '10.0.0.7'
 
 ###############################################################################
 ### Code Start
 ###############################################################################
 import unittest
-from rssd.yaVISA import jaVisa       #pylint:disable=E0611,E0401
+from rssd.yaVISA import jaVisa                      #pylint:disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                #Run before each test
@@ -32,6 +33,9 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
+    def test_Clear(self):
+        self.instr.jav_Clear()
+
     def test_OpenIDN(self):
         #Validates VISA Open; Query; jav_ClrErr
         self.assertNotEqual(self.instr.Make,"")
@@ -48,13 +52,13 @@ class TestGeneral(unittest.TestCase):
         rd = self.instr.queryInt("*OPC?")
         self.assertEqual(rd,1)
 
-    def test_queryintarry(self):
-        rd = self.instr.queryIntArry("*OPT?")
-        self.assertEqual(rd,1)
+    # def test_queryintarry(self):
+    #     rd = self.instr.queryIntArry("*OPT?")
+    #     self.assertEqual(rd,1)
 
 ###############################################################################
 ### </Test>
 ###############################################################################
-if __name__ == '__main__':
+if __name__ == '__main__':                                  # pragma: no cover
     suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
     unittest.TextTestRunner(verbosity=2).run(suite)
