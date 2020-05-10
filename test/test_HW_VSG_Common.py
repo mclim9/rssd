@@ -2,7 +2,7 @@
 ### Rohde & Schwarz Driver Test
 ### Purpose: self.SMW_Common test
 ### Author:  mclim
-### Date:    2018.06.13
+### Date:    2020.05.08
 ###              _   ___        __  _____         _   
 ###             | | | \ \      / / |_   _|__  ___| |_ 
 ###             | |_| |\ \ /\ / /    | |/ _ \/ __| __|
@@ -25,15 +25,12 @@ import unittest
 class TestGeneral(unittest.TestCase):
     def setUp(self):                      #run before each test
         self.SMW = VSG()
-        try:
-            self.SMW.debug = 0
-            self.SMW.jav_Open(host)
-            self.SMW.K2.timeout = 5000
-            # self.SMW.jav_Reset()
-            self.SMW.jav_ClrErr()
-            self.SMW.dLastErr = ""
-        except:
-            self.assertTrue(1)
+        self.SMW.debug = 0
+        self.SMW.jav_Open(host)
+        self.SMW.K2.timeout = 5000
+        # self.SMW.jav_Reset()
+        self.SMW.jav_ClrErr()
+        self.SMW.dLastErr = ""
 
     def tearDown(self):                         #Run after each test
         self.SMW.jav_Close()

@@ -25,15 +25,12 @@ import unittest
 class TestGeneral(unittest.TestCase):
     def setUp(self):                      #run before each test
         self.SMW = VSG()
-        try:
-            self.SMW.debug = 0
-            self.SMW.jav_Open(host)
-            self.SMW.K2.timeout = 5000
-            # self.SMW.jav_Reset()
-            self.SMW.jav_ClrErr()
-            self.SMW.dLastErr = ""
-        except:
-            self.assertTrue(1)
+        self.SMW.debug = 0
+        self.SMW.jav_Open(host)
+        self.SMW.K2.timeout = 5000
+        # self.SMW.jav_Reset()
+        self.SMW.jav_ClrErr()
+        self.SMW.dLastErr = ""
 
     def tearDown(self):                         #Run after each test
         self.SMW.jav_Close()
@@ -66,15 +63,23 @@ class TestGeneral(unittest.TestCase):
         self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_LTE_CC(self):
+        self.SMW.Set_LTE_CC(1)
         self.SMW.Get_LTE_CC()
+        self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_LTE_Direction(self):
+        self.SMW.Set_LTE_Direction('BAD')
         self.SMW.Set_LTE_Direction('UL')
         getVal = self.SMW.Get_LTE_Direction()
         self.assertEqual(getVal,'UL')
         self.SMW.Set_LTE_Direction('DL')
         getVal = self.SMW.Get_LTE_Direction()
         self.assertEqual(getVal,'DL')
+
+    def test_SMW_LTE_Direction(self):
+        self.SMW.Set_LTE_Duplex('TDD')
+        self.SMW.Set_LTE_Duplex('TDD')
+        self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_LTE_Set_UL(self):
         self.SMW.Set_Freq(2e9)

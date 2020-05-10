@@ -1,8 +1,8 @@
 ###############################################################################
 ### Rohde & Schwarz Driver Test
-### Purpose: self.SMW_Common test
+### Purpose: VSG.NR5G_K144 test
 ### Author:  mclim
-### Date:    2018.06.13
+### Date:    2020.05.08
 ###              _   ___        __  _____         _   
 ###             | | | \ \      / / |_   _|__  ___| |_ 
 ###             | |_| |\ \ /\ / /    | |/ _ \/ __| __|
@@ -25,15 +25,12 @@ import unittest
 class TestGeneral(unittest.TestCase):
     def setUp(self):                      #run before each test
         self.SMW = VSG()
-        try:
-            self.SMW.debug = 0
-            self.SMW.jav_Open(host)
-            self.SMW.K2.timeout = 5000
-            # self.SMW.jav_Reset()
-            self.SMW.jav_ClrErr()
-            self.SMW.dLastErr = ""
-        except:
-            self.assertTrue(1)
+        self.SMW.debug = 0
+        self.SMW.jav_Open(host)
+        self.SMW.K2.timeout = 5000
+        # self.SMW.jav_Reset()
+        self.SMW.jav_ClrErr()
+        self.SMW.dLastErr = ""
 
     def tearDown(self):                         #Run after each test
         self.SMW.jav_Close()
@@ -41,6 +38,10 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
+    def test_SMW_5GNR_BWP_Sub(self):
+        self.SMW.Get_5GNR_BWP_SubSpaceTotal()
+        self.assertEqual(self.SMW.jav_Error()[0],'0')
+
     def test_SMW_5GNR_Direction(self):
         self.SMW.Set_5GNR_Direction('UL')
         getVal = self.SMW.Get_5GNR_Direction()
@@ -146,6 +147,11 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.SMW.Get_5GNR_BWP_Ch_PTRS_RE_Offset()
         self.assertEqual(self.SMW.jav_Error()[0],'0')
 
+    def test_SMW_5GNR_Set_CC(self):
+        self.SMW.Set_5GNR_CC_Num(2)
+        self.SMW.Set_5GNR_CC_Offset(100e6)
+        self.assertEqual(self.SMW.jav_Error()[0],'0')
+
     def test_SMW_5GNR_Set_DL(self):
         self.SMW.Set_5GNR_BBState('OFF')                     # Baseband OFF
         self.SMW.Set_5GNR_Direction('DL')
@@ -167,8 +173,11 @@ class TestGeneral(unittest.TestCase):
         self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_5GNR_Set_SubSpace(self):
+        self.SMW.Set_5GNR_FreqRange('LOW')
+        self.SMW.Set_5GNR_ChannelBW(20)
+        self.SMW.Set_5GNR_BWP_SubSpace(15)
+        self.SMW.Set_5GNR_ChannelBW(100)
         self.SMW.Set_5GNR_FreqRange('MIDD')
-        # self.SMW.Set_5GNR_BWP_SubSpace(15)
         self.SMW.Set_5GNR_BWP_SubSpace(30)
         self.SMW.Set_5GNR_FreqRange('HIGH')
         self.SMW.Set_5GNR_BWP_SubSpace(60)
@@ -202,6 +211,6 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### </Test>
 ###############################################################################
-if __name__ == '__main__':              # pragma: no cover
+if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
     unittest.TextTestRunner(verbosity=2).run(suite)

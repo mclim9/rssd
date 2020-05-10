@@ -23,9 +23,12 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### </Test>
 ###############################################################################
+    def test_init(self):
+        self.FileIO.initread("stuff")
+
     def test_makeFile(self):
         newName = 'makeFile'
-        self.FileIO.makeFile(newName)           #Append Date
+        self.FileIO.makeFile(newName)
         self.assertNotEqual(self.FileIO.sFName.find(newName),-1)
 
     def test_readcsv(self):
