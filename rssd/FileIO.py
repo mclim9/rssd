@@ -18,27 +18,25 @@ class FileIO(object):
         pass
 
     def makeFile(self,sFilepath):
+        """"Create file in same directory as sFilepath."""
         BaseDir  = os.path.dirname(os.path.realpath(sFilepath))
         BaseFile = os.path.basename(sFilepath)
         OutFile  = f'{BaseDir}\\{BaseFile}'
-        self.Init(OutFile)
+        self.init(OutFile)
         return self
 
-    def Init(self,sName="Datalog"):
+    def openFile(self,sFilepath):
+        pass
+
+    def init(self,sName="Datalog"):
+        """Append to sName file"""
         self.sFName = "%s-%s.csv"%(sName,datetime.now().strftime("%y%m%d"))
         self.Outfile = open(self.sFName, 'a')              #Open File
         return self
 
-    def write(self,inStr):
-        if self.debug: print("FileOut    : %s"%inStr)
-        sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
-        with open(self.sFName, 'a') as csv_file:
-            csv_file.write(f'{sDate},{inStr}\n')
-
-    def write_raw(self,inStr):
-        if self.debug: print("FileOut_raw : %s"%inStr)
-        with open(self.sFName, 'a') as csv_file:
-            csv_file.write(f'{inStr}\n')
+    def set_filename(self,sFile):
+        self.sFName = sFile
+        return self
 
     def read(self):
         with open(self.sFName, 'r') as csv_file:
@@ -53,9 +51,27 @@ class FileIO(object):
                 dataOut.append(line.strip().split(','))
         return dataOut
 
-    def initread(self,sFile):
-        self.sFName = sFile
-        return self
+    def readdict(self):
+        d = {}
+        # BaseDir  = os.path.dirname(os.path.realpath(__file__))
+        # os.chdir(BaseDir)
+        # dirpath = os.getcwd()
+        with open(self.sFName) as f:
+            for line in f:
+                (key, val) = line.split()
+                d[key] = val
+        return d
+    
+    def write(self,inStr):
+        if self.debug: print("FileOut    : %s"%inStr)
+        sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
+        with open(self.sFName, 'a') as csv_file:
+            csv_file.write(f'{sDate},{inStr}\n')
+
+    def write_raw(self,inStr):
+        if self.debug: print("FileOut_raw : %s"%inStr)
+        with open(self.sFName, 'a') as csv_file:
+            csv_file.write(f'{inStr}\n')
 
 #####################################################################
 ### Run if Main
