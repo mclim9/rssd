@@ -33,3 +33,4 @@
 *.zip
 rssd/VSA_Leveling.py
 .coveralls.yml
+htmlcov

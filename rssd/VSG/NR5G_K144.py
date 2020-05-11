@@ -274,6 +274,7 @@ class VSG(VSG):                             #pylint: disable=E0102
         self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:RBOF {iRBO}')
 
     def Set_5GNR_BWP_SubSpace(self,iSubSp):
+        """15 30 60 120"""
         if iSubSp == 15:
             self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S15K:USE 1')
             self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S30K:USE 0')
@@ -300,8 +301,8 @@ class VSG(VSG):                             #pylint: disable=E0102
         self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:SCSP N{iSubSp}')
 
     def Set_5GNR_CC_Num(self,iCC):
-        """ iCC, 0 start """
-        self.cc = iCC
+        """ iCC, 1 start """
+        self.cc = iCC - 1
         self.write(f'SOUR1:BB:NR5G:NODE:NCAR {iCC}')
 
     def Set_5GNR_CC_Offset(self,Freq):

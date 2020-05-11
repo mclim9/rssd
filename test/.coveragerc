@@ -1,0 +1,14 @@
+[run]
+relative_files = True
+
+[paths]
+source =
+    src/
+    https://github.com/mclim9/rssd
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    pragma: no cover
+    if self\.debug
+    if 0:
+    if __name__ == .__main__.

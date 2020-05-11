@@ -7,6 +7,7 @@
 ### User Entry
 ###############################################################################
 SMW_IP   = '192.168.1.114'
+SMW_IP   = '10.0.0.7'
 
 ###############################################################################
 ### Code Overhead: Import and create objects
@@ -30,7 +31,7 @@ IData = [0.1,0.2,0.3]
 QData = [0.4,0.5,0.6]
 
 ### ASCII
-scpi  = ':MMEM:DATA:UNPR "NVWFM://var//user//wave.wv",#'        # Ascii Cmd
+scpi  = ':MMEM:DATA:UNPR "NVWFM://var//user//test.wv",#'        # Ascii Cmd
 iqsize= str(len(IData)*4)                                       # Calculate bytes of IQ data
 scpi  = scpi + str(len(iqsize)) + iqsize                        # Calculate length of iqsize string
 ### Binary
@@ -39,8 +40,8 @@ bits  = np.array(iqdata*32767, dtype='>i2')                     # Convert to big
 ### ASCII + Binary
 cmd   = bytes(scpi, 'utf-8') + bits.tostring()                  # Add ASCII + Bin
 SMW.K2.write_raw(cmd)
-SMW.write('SOUR1:BB:ARB:WAV:CLOC "/var/user/wave.wv",1.1E6')    # Set Fs/Clk Rate
-SMW.write('BB:ARB:WAV:SEL "/var/user/wave.wv"')                 # Select Arb File
+SMW.write('SOUR1:BB:ARB:WAV:CLOC "/var/user/test.wv",1.1E6')    # Set Fs/Clk Rate
+SMW.write('BB:ARB:WAV:SEL "/var/user/test.wv"')                 # Select Arb File
 print(SMW.query('SYST:ERR?'))
 
 ###############################################################################

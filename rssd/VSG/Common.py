@@ -113,6 +113,27 @@ class VSG(jaVisa):
     #####################################################################
     ### SMW Settting Methods
     #####################################################################
+    # def Set_IQ_Data(self):
+    #     IData = [0.1,0.2,0.3]
+    #     QData = [0.4,0.5,0.6]
+
+    #     ### ASCII
+    #     scpi  = ':MMEM:DATA:UNPR "NVWFM://var//user//wave.wv",#'        # Ascii Cmd
+    #     iqsize= str(len(IData)*4)                                       # Calculate bytes of IQ data
+    #     scpi  = scpi + str(len(iqsize)) + iqsize                        # Calculate length of iqsize string
+    #     ### Binary
+    #     iqdata= np.vstack((IData,QData)).reshape((-1,),order='F')       # Combine I&Q Data
+    #     bits  = np.array(iqdata*32767, dtype='>i2')                     # Convert to big-endian 2byte int 
+    #     ### ASCII + Binary
+    #     cmd   = bytes(scpi, 'utf-8') + bits.tostring()                  # Add ASCII + Bin
+    #     self.K2.write_raw(cmd)
+    #     self.write('SOUR1:BB:ARB:WAV:CLOC "/var/user/wave.wv",1.1E6')    # Set Fs/Clk Rate
+    #     self.write('BB:ARB:WAV:SEL "/var/user/wave.wv"')                 # Select Arb File
+
+    def Set_ALC_RFDriveAmp(self,sState):
+        """input: ON, OFF, AUTO, FIX """
+        self.query('SOUR:POW:ALC:DAMP %s;*OPC?'%sState)
+
     def Set_ArbClockFreq(self,fFreq,RF=1):
         self.write('SOUR%d:BB:ARB:CLOC %f'%(RF,fFreq))
 
@@ -156,14 +177,14 @@ class VSG(jaVisa):
         self.write(f'SOUR1:LIST:SEL "/var/user/{sFile}"')
 
     def Set_ListMode(self,sState):
-        """input: LIST FREQ """
+        """input: LIST CW"""
         self.query(f':SOUR1:FREQ:MODE {sState};*OPC?')
 
     def Set_ListMode_TrigExecute(self):
         self.query(':SOUR1:LIST:TRIG:EXEC;*OPC?')
 
     def Set_ListMode_TrigSource(self,sSource):
-        """input: SING AUTO STEP ESTEP """
+        """SING AUTO STEP ESTEP ESING"""
         # USER5 Valid Signal A
         # USER6 Valid SIgnal B
         
@@ -192,15 +213,11 @@ class VSG(jaVisa):
             indx = self.Get_ListMode_IndexCurr()
 
     def Set_ListMode_RMode(self, sMode):
-        """input:  LIVE LEAR """
+        """RunMode: LIVE LEARned """
         self.write(f'SOUR:LIST:RMOD {sMode}')
 
     def Set_PhaseDelta(self,fPhase):
         self.write(':SOUR1:PHASE %d'%(fPhase))
-
-    def Set_RFDriveAmp(self,sState):
-        """input: ON, OFF, AUTO, FIX """
-        self.query('SOUR:POW:ALC:DAMP %s;*OPC?'%sState)
 
     def Set_RFPwr(self,fPow):
         self.write('SOUR:POW %f'%fPow)

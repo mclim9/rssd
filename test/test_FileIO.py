@@ -10,6 +10,7 @@
 ###############################################################################
 from rssd.FileIO      import FileIO             # pylint: disable=E0611,E0401
 import unittest
+import os
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                            #Run before each test
@@ -23,8 +24,8 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### </Test>
 ###############################################################################
-    def test_init(self):
-        self.FileIO.initread("stuff")
+    def test_setFilename(self):
+        self.FileIO.set_filename(".system")
 
     def test_makeFile(self):
         newName = 'makeFile'
@@ -55,5 +56,10 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 if __name__ == '__main__':                              # pragma: no cover
     # unittest.main()     #Run w/o test names
+    BaseDir  = os.path.dirname(os.path.realpath(__file__))
+    fily = FileIO()
+    fily.set_filename(f'{BaseDir}\\.system')
+    d = fily.readdict()
+    
     suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
     unittest.TextTestRunner(verbosity=2).run(suite)

@@ -40,24 +40,32 @@ class VSG(VSG):                     #pylint: disable=E0102
             self.ldir = "UL"
         else:
             print('Get_LTE_Direction Error')
-        return rdStr
+        return self.ldir
 
     def Get_LTE_Duplex(self):
         rdStr = self.query(f':SOUR:BB:EUTR:DUPL?')
         return rdStr
 
     def Get_LTE_Modulation(self,cc=1):
-        rdStr = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:CW1:PUSC:MOD?')
+        if self.ldir == 'UL':
+            rdStr = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:CW1:PUSC:MOD?')     # UL Only
+        else:
+            rdStr = self.query(f':SOUR:BB:EUTR:{self.ldir}:DUMD:MOD?')
         return rdStr     
 
     def Get_LTE_ResBlock(self,cc=1):
-        rdStr = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:RBC?')
+        if self.ldir == 'UL':
+            rdStr = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:RBC?')    # UL Only
+        else:
+            rdStr = self.query(f':SOUR:BB:EUTR:DL:SUBF0:ALL0:CW1:RBC?')                         # DL Only
         return rdStr
 
     def Get_LTE_ResBlockOffset(self,cc=1):
-        rdStr = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:VRB?')
+        if self.ldir == 'UL':
+            rdStr = self.query(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:VRB?')    # UL Only
+        else:
+            rdStr = self.query(f':SOUR:BB:EUTR:DL:SUBF0:ALL0:CW1:RBOF?')                        # DL Only
         return rdStr
-
 
     #####################################################################
     ### VSG Setting
@@ -79,11 +87,14 @@ class VSG(VSG):                     #pylint: disable=E0102
         self.write(f':SOUR:BB:EUTR:{self.ldir}:BW BW{iChBW:02d}_00')
         self.write(f':SOUR:BB:EUTR:{self.ldir}:CA:CELL{cc - 1}:BW BW{iChBW:02d}_00')
 
-    def Set_LTE_Direction(self,sDir, cc=1):
-        if self.ldir == 'UL':
+    def Set_LTE_Direction(self, sDir, cc=1):
+        """UL | DL | UP | DOWN """
+        if (sDir == 'UL') or (sDir == 'UP'):
             self.write(f':SOUR:BB:EUTR:LINK UP')
-        elif self.ldir == 'DL':
+            self.ldir = 'UL'
+        elif (sDir == 'DL') or (sDir == 'DOWN'):
             self.write(f':SOUR:BB:EUTR:LINK DOWN')
+            self.ldir = 'DL'
         else:
             print('Set_LTE_Direction Error.  Must be UL or DL')
 
@@ -100,8 +111,11 @@ class VSG(VSG):                     #pylint: disable=E0102
     def Set_LTE_ResBlock(self, iRB, cc=1):
         if self.ldir == 'UL':
             self.write(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:RBC {iRB}')
+        else:
+            pass
 
     def Set_LTE_ResBlockOffset(self,iRBO, cc=1):
         if self.ldir == 'UL':
             self.write(f':SOUR:BB:EUTR:{self.ldir}:CELL0:SUBF0:ALL0:PUSC:SET1:VRB {iRBO}')
-
+        else:
+            pass

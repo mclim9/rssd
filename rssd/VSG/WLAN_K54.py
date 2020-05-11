@@ -86,10 +86,12 @@ class VSG(VSG):                     #pylint: disable=E0102
         self.write(f':SOUR:BB:WLNN:FBL1:MCS MCS{iMCS}')
 
     def Set_WLAN_Modulation(self, sMod):
+        """QPSK; QAM16; QAM64; QAM256"""
         #WLAN-->Frame Blocks-->PPDU Conf..--> MCS Config
         self.write(f':SOUR:BB:WLNN:FBL1:MOD1 {sMod}')
 
     def Set_WLAN_Standard(self, sStd):
+        """B G A N AC"""
         #WLAN-->Frame Blocks-->TxMode
         sStd.upper()
         if sStd == 'B':

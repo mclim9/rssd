@@ -1,10 +1,10 @@
 # Rohde & Schwarz SCPI Driver 
 [![](https://travis-ci.org/mclim9/rssd.svg?branch=master)](https://pypi.org/project/rssd/) 
 [![PyPI version](https://badge.fury.io/py/rssd.svg)](https://badge.fury.io/py/rssd)
-[![Coverage Status](https://coveralls.io/repos/github/mclim9/rssd/badge.svg?branch=master)](https://coveralls.io/github/mclim9/rssd?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/mclim9/rssd/badge.svg)](https://coveralls.io/github/mclim9/rssd)
 ![Versioning](https://img.shields.io/badge/calver-YY.0M.MICRO-22bfda.svg)
 
-
+[![Coverage Status](https://coveralls.io/repos/github/mclim9/rssd/badge.svg)](https://coveralls.io/github/mclim9/rssd)
 ## Description
 - Example python drivers
   - VSA, Vector Spectrum Analyzer
