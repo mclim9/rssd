@@ -15,7 +15,7 @@ import os
 class TestGeneral(unittest.TestCase):
     def setUp(self):                            #Run before each test
         self.FileIO = FileIO()
-        self.FileIO.Init("FileIO.csv")
+        self.FileIO.init("FileIO.csv")
         self.FileIO.debug = 0
 
     def tearDown(self):                         #Run after each test
