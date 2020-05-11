@@ -1,6 +1,6 @@
 ###############################################################################
 ### Rohde & Schwarz Driver Test
-### Purpose: self.SMW.WLAN_K54 test
+### Purpose: SMW.WLAN_K54 test
 ### Author:  mclim
 ### Date:    2020.05.08
 ###              _   ___        __  _____         _   
@@ -12,7 +12,7 @@
 ###############################################################################
 ### User Entry
 ###############################################################################
-host = '10.0.0.7'              #Get local machine name
+host = '10.0.0.7'                                       #Get local machine name
 # host = '169.254.2.20'
 
 ###############################################################################
@@ -23,7 +23,7 @@ import os
 import unittest
 
 class TestGeneral(unittest.TestCase):
-    def setUp(self):                      #run before each test
+    def setUp(self):                                    #run before each test
         self.SMW = VSG()
         self.SMW.debug = 0
         self.SMW.jav_Open(host)
@@ -32,7 +32,7 @@ class TestGeneral(unittest.TestCase):
         self.SMW.jav_ClrErr()
         self.SMW.dLastErr = ""
 
-    def tearDown(self):                         #Run after each test
+    def tearDown(self):                                 #Run after each test
         self.SMW.jav_Close()
 
 ###############################################################################
@@ -71,12 +71,12 @@ class TestGeneral(unittest.TestCase):
         getVal = self.SMW.Get_WLAN_Standard()
         self.assertEqual(setVal,getVal)
 
-    def test_SMW_WLAN_Set_G(self):
-        setVal = 'G'
-        self.SMW.Set_WLAN_BBState('OFF')
-        self.SMW.Set_WLAN_Standard(setVal)
-        getVal = self.SMW.Get_WLAN_Standard()
-        self.assertEqual(setVal,getVal)
+    # def test_SMW_WLAN_Set_G(self):
+    #     setVal = 'G'
+    #     self.SMW.Set_WLAN_BBState('OFF')
+    #     self.SMW.Set_WLAN_Standard(setVal)
+    #     getVal = self.SMW.Get_WLAN_Standard()
+    #     self.assertEqual(setVal,getVal)
 
     def test_SMW_WLAN_Set_N(self):
         setVal = 'N'
@@ -106,6 +106,7 @@ class TestGeneral(unittest.TestCase):
         self.SMW.Set_WLAN_Standard(setVal)
 
     def test_SMW_WLAN_Set_BBON(self):
+        self.SMW.Set_WLAN_ChBW(20)
         self.SMW.Set_WLAN_BBState('ON')
         self.assertEqual(self.SMW.jav_Error()[0],'0')
 

@@ -1,6 +1,6 @@
 ###############################################################################
 ### Rohde & Schwarz Driver Test
-### Purpose: self.SMW_Common test
+### Purpose: SMW_Common test
 ### Author:  mclim
 ### Date:    2020.05.08
 ###              _   ___        __  _____         _   
@@ -12,7 +12,7 @@
 ###############################################################################
 ### User Entry
 ###############################################################################
-host = '10.0.0.7'              #Get local machine name
+host = '10.0.0.7'                                       #Get local machine name
 # host = '169.254.2.20'
 
 ###############################################################################
@@ -23,7 +23,7 @@ import os
 import unittest
 
 class TestGeneral(unittest.TestCase):
-    def setUp(self):                      #run before each test
+    def setUp(self):                                    #run before each test
         self.SMW = VSG()
         self.SMW.debug = 0
         self.SMW.jav_Open(host)
@@ -32,7 +32,7 @@ class TestGeneral(unittest.TestCase):
         self.SMW.jav_ClrErr()
         self.SMW.dLastErr = ""
 
-    def tearDown(self):                         #Run after each test
+    def tearDown(self):                                 #Run after each test
         self.SMW.jav_Close()
 
 ###############################################################################

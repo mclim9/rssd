@@ -1,6 +1,6 @@
 ###############################################################################
 ### Rohde & Schwarz Driver Test
-### Purpose: self.SMW_Common test
+### Purpose: VSG.LTE_K55 test
 ### Author:  mclim
 ### Date:    2018.06.13
 ###              _   ___        __  _____         _   
@@ -12,7 +12,7 @@
 ###############################################################################
 ### User Entry
 ###############################################################################
-host = '10.0.0.7'              #Get local machine name
+host = '10.0.0.7'                                       #Get local machine name
 # host = '169.254.2.20'
 
 ###############################################################################
@@ -23,7 +23,7 @@ import os
 import unittest
 
 class TestGeneral(unittest.TestCase):
-    def setUp(self):                      #run before each test
+    def setUp(self):                                    #run before each test
         self.SMW = VSG()
         self.SMW.debug = 0
         self.SMW.jav_Open(host)
@@ -32,7 +32,7 @@ class TestGeneral(unittest.TestCase):
         self.SMW.jav_ClrErr()
         self.SMW.dLastErr = ""
 
-    def tearDown(self):                         #Run after each test
+    def tearDown(self):                                 #Run after each test
         self.SMW.jav_Close()
 
 ###############################################################################
