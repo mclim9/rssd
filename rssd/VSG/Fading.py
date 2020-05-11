@@ -30,12 +30,23 @@ class VSG(VSG):                             #pylint: disable=E0102
     #####################################################################
     ### Fading Set Methods
     #####################################################################
-    def Set_Fade_State(self,iEnable):
+    def Set_Fade_State(self,State):
         """ON OFF 1 0 """
-        if (iEnable == 1) or (iEnable == 'ON'):
+        self.K2.timeout = 20000
+        if (State == 1) or (State == 'ON'):
+            self.write(':SCON:MODE ADV')
+            self.write(':SCON:APPL;*OPC?')
+            self.delay(1)
             self.jav_OPC_Wait(f'ENT{self.entity}:SOUR1:FSIM:STAT 1')
-        else:
+        elif (State == 0) or (State == 'OFF'):
+            # self.write(':SCON:MODE STAN')
+            # self.write(':SCON:APPL')
             self.jav_OPC_Wait(f'ENT{self.entity}:SOUR1:FSIM:STAT 0')
+        else:
+            print('State not supported, please set ON or OFF')
+        self.K2.timeout = 5000
+
+
 
 #####################################################################
 ### Run if Main

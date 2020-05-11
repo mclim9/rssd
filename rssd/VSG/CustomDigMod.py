@@ -17,15 +17,21 @@ class VSG(VSG):                             #pylint: disable=E0102
     #####################################################################
     ### SMW Get Methods
     #####################################################################
-    def Get_CDM_Center(self):
-        rdStr = self.queryInt(':SOUR1:BB:NR5G:UBWP:USER0:CELL0:%s:BWP0:DFR?'%(self.sdir))
+    def Get_CDM_State(self):
+        rdStr = self.queryInt(':SOUR1:BB:DM:STAT?')
         return rdStr
 
     #####################################################################
     ### SMW Set Functions
     #####################################################################
-    def Set_CDM_Modulation(self,sMod):
-        self.write(':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER0:BWP0:ALL%d:MOD %s'%(self.alloc,sMod))
+    def Set_CDM_State(self,State):
+        """ON OFF 1 0 """
+        if (State == 1) or (State == 'ON'):
+            self.write(':SOUR1:BB:DM:STAT ON')
+        elif (State == 0) or (State == 'OFF'):
+            self.write(':SOUR1:BB:DM:STAT OFF')
+        else:
+            print('State not supported, please set ON or OFF')
 
 #####################################################################
 ### Run if Main

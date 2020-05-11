@@ -504,14 +504,14 @@ class VSA(jaVisa):
     def Set_IQ_Adv_FFTLenth(self, dLength):
         self.write(f'IQ:FFT:LENG {dLength}')    
 
-    def Set_IQ_Adv_Mode(self, on=1):
+    def Set_IQ_Adv_Mode(self, State=1):
         """Turn Advanced Mode on"""
-        if (on == 'ON') or (on == 1):
+        if (State == 'ON') or (State == 1):
             self.write("IQ:BAND:MODE FFT")
-        elif (on == 'OFF') or (on == 0):
+        elif (State == 'OFF') or (State == 0):
             self.write("IQ:BAND:MODE AUTO")
         else:
-            print('Mode must be on/off')
+            print('State not supported, please set ON or OFF')
 
     def Set_IQ_Adv_TransAlgo(self, sInput):
         """ AVER SING """
