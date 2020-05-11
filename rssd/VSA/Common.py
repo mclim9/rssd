@@ -312,6 +312,10 @@ class VSA(jaVisa):
     def Init_IQ(self, sName=""):
         self.Set_Channel("IQ",sName)
 
+    def Init_Spectral(self, sName=""):
+        self.Set_Channel("SAN",sName)
+        self.write(':SENS:FREQ:MODE SWE')
+
     #####################################################################
     ### Set Methods
     #####################################################################
@@ -470,7 +474,8 @@ class VSA(jaVisa):
 
     def Set_Harm_adjust(self):
         """ Adjusts Ref Lvl, Attn, SwpTime """
-        self.write(':CALC1:MARK1:FUNC:HARM:PRE')
+        self.write(':CALC1:MARK1:FUNC:HARM:PRES')
+        
     #####################################################################
     ### FSW IQ Analyzer
     #####################################################################
@@ -499,19 +504,25 @@ class VSA(jaVisa):
     def Set_IQ_Adv_FFTLenth(self, dLength):
         self.write(f'IQ:FFT:LENG {dLength}')    
 
-    def Set_IQ_Adv_Mode(self):
-        self.write("IQ:BAND:MODE FFT")
+    def Set_IQ_Adv_Mode(self, on=1):
+        """Turn Advanced Mode on"""
+        if (on == 'ON') or (on == 1):
+            self.write("IQ:BAND:MODE FFT")
+        elif (on == 'OFF') or (on == 0):
+            self.write("IQ:BAND:MODE AUTO")
+        else:
+            print('Mode must be on/off')
 
     def Set_IQ_Adv_TransAlgo(self, sInput):
-        # AVER SING
+        """ AVER SING """
         self.write(f"IQ:FFT:ALG {sInput}")
 
     def Set_IQ_Adv_Window(self, sInput):
-        # BLAC FLAT GAUS RECT P5
+        """ BLAC FLAT GAUS RECT P5 """
         self.write(f'IQ:FFT:WIND:TYPE {sInput}')
 
     def Set_IQ_Adv_WindowLenth(self, dLength):
-        self.write("IQ:FFT:WIND:LENG 16384")
+        self.write(f"IQ:FFT:WIND:LENG {dLength}")
 
     def Set_IQ_BW(self,fFreq):
         # IQ_BW = SamplingRate * 0.8
