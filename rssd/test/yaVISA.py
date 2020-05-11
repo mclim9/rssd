@@ -11,8 +11,7 @@
 #####################################################################
 import time
 
-class mock(object):
-    ### Rohde & Schwarz VISA Class
+class jaVISA_mock(object):
     ### Instrument Common functions. 
     def __init__(self):
         self.dataIDN    = ""    # Raw IDN String
@@ -37,8 +36,7 @@ class mock(object):
         return "no Error"
 
     def jav_Error(self):
-        RdStr = self.query("SYST:ERR?").strip().split(',')
-        return RdStr
+        return '0,No Error'
 
     def jav_IDN(self,prnt=1):
         self.dataIDN    = "test"                               #Temp for self.query
@@ -69,8 +67,7 @@ class mock(object):
         pass
 
     def jav_logscpi(self):
-        self.f = rssd.FileIO()                              #pylint:disable=E1101
-        DataFile = self.f.Init("yaVISA")                    #pylint:disable=W0612
+        pass
 
     def jav_read_raw(self):
         pass
@@ -95,8 +92,7 @@ class mock(object):
         return OutList
 
     def query(self,cmd):
-        read ="testquery"
-        return read
+        return "<notRead>"
 
     def queryFloat(self,cmd):
         return -9999.9999
@@ -114,11 +110,7 @@ class mock(object):
         pass
 
 if __name__ == "__main__":
-    RS = jaVisa()
-    ipaddress   = '192.168.1.109'
-    port        = 5025
-    RS.debug    = 1
-    RS.jav_openvisa(f'TCPIP::{ipaddress}::{port}::SOCKET')    #Socket
-
+    RS = jaVISA_mock()
+    RS.jav_openvisa(f'TCPIP::192.168.1.100::200::SOCKET')    #Socket
     print(RS.query("*IDN?"))
     RS.jav_Close()
