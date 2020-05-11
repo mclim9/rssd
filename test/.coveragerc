@@ -5,6 +5,7 @@ relative_files = True
 source =
     src/
     https://github.com/mclim9/rssd
+
 [report]
 # Regexes for lines to exclude from consideration
 exclude_lines =
