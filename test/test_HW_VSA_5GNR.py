@@ -29,6 +29,7 @@ class TestGeneral(unittest.TestCase):
         self.FSW.K2.timeout = 5000
         # self.FSW.jav_Reset()
         self.FSW.jav_ClrErr()
+        self.FSW.Init_5GNR()
         self.FSW.dLastErr = ""
 
     def tearDown(self):                         #Run after each test
@@ -40,25 +41,25 @@ class TestGeneral(unittest.TestCase):
     def test_FSW_5GNR_Direction(self):
         self.FSW.Set_5GNR_Direction('UL')
         getVal = self.FSW.Get_5GNR_Direction()
-        self.assertEqual(getVal,'UP')
+        self.assertEqual(getVal,'UL')
         self.FSW.Set_5GNR_Direction('DL')
         getVal = self.FSW.Get_5GNR_Direction()
-        self.assertEqual(getVal,'DOWN')
+        self.assertEqual(getVal,'DL')
 
     def test_FSW_5GNR_FreqRange(self):
+        self.FSW.Set_5GNR_Direction('UL')
         self.FSW.Set_5GNR_FreqRange('LOW')
         getVal = self.FSW.Get_5GNR_FreqRange()
-        self.assertEqual(getVal,'LT3')
+        self.assertEqual(getVal,'LOW')
         self.FSW.Set_5GNR_FreqRange('MIDD')
         getVal = self.FSW.Get_5GNR_FreqRange()
-        self.assertEqual(getVal,'BT37125')
+        self.assertEqual(getVal,'MIDD')
         self.FSW.Set_5GNR_FreqRange('HIGH')
         getVal = self.FSW.Get_5GNR_FreqRange()
-        self.assertEqual(getVal,'GT7125')
+        self.assertEqual(getVal,'HIGH')
 
     def test_FSW_5GNR_Get_DL(self):
         self.FSW.Set_5GNR_Direction('DL')
-        self.FSW.Set_5GNR_BBState(0)
         nullVal = self.FSW.Get_5GNR_CC_Freq()
         nullVal = self.FSW.Get_5GNR_Direction()
         nullVal = self.FSW.Get_5GNR_FreqRange()
@@ -94,17 +95,8 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_RE_Offset()
         self.assertEqual(self.FSW.jav_Error()[0],'0')
 
-    def test_FSW_5GNR_Get_RBMax(self):
-        nullVal = self.FSW.Get_5GNR_RBMax()
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
-
-    def test_FSW_5GNR_Get_TMCat(self):
-        nullVal = self.FSW.Get_5GNR_TM_Cat()
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
-
     def test_FSW_5GNR_Get_UL(self):
         self.FSW.Set_5GNR_Direction('UL')
-        self.FSW.Set_5GNR_BBState(0)
         nullVal = self.FSW.Get_5GNR_CC_Freq()
         nullVal = self.FSW.Get_5GNR_Direction()
         nullVal = self.FSW.Get_5GNR_FreqRange()
@@ -143,7 +135,6 @@ class TestGeneral(unittest.TestCase):
         self.assertEqual(self.FSW.jav_Error()[0],'0')
 
     def test_FSW_5GNR_Set_DL(self):
-        self.FSW.Set_5GNR_BBState('OFF')                     # Baseband OFF
         self.FSW.Set_5GNR_Direction('DL')
         self.FSW.Set_5GNR_CC_Num(1)
         self.FSW.Set_5GNR_TransPrecoding('OFF')
@@ -158,26 +149,10 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_5GNR_BWP_Corset_ResBlock(66)
         #self.FSW.Set_5GNR_BWP_Ch_ResBlockOffset(NR_RBO)
         self.FSW.Set_5GNR_BWP_Ch_Modulation('QPSK')
-        self.FSW.Set_5GNR_SSB()
-        # self.FSW.Set_5GNR_BBState('ON')
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
-
-    def test_FSW_5GNR_Set_SubSpace(self):
-        self.FSW.Set_5GNR_FreqRange('MIDD')
-        # self.FSW.Set_5GNR_BWP_SubSpace(15)
-        self.FSW.Set_5GNR_BWP_SubSpace(30)
-        self.FSW.Set_5GNR_FreqRange('HIGH')
-        self.FSW.Set_5GNR_BWP_SubSpace(60)
-        self.FSW.Set_5GNR_BWP_SubSpace(120)
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
-
-    def test_FSW_5GNR_Set_FRC_State(self):
-        self.FSW.Set_5GNR_FRC_State('ON')
-        self.FSW.Set_5GNR_FRC_State('OFF')
+        # self.FSW.Set_5GNR_SSB()
         self.assertEqual(self.FSW.jav_Error()[0],'0')
 
     def test_FSW_5GNR_Set_UL(self):
-        self.FSW.Set_5GNR_BBState('OFF')                     # Baseband OFF
         self.FSW.Set_5GNR_Direction('UL')
         self.FSW.Set_5GNR_CC_Num(1)
         self.FSW.Set_5GNR_TransPrecoding('OFF')
@@ -191,8 +166,7 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_5GNR_BWP_Corset_ResBlock(66)
         #self.FSW.Set_5GNR_BWP_Ch_ResBlockOffset(NR_RBO)
         self.FSW.Set_5GNR_BWP_Ch_Modulation('QPSK')
-        self.FSW.Set_5GNR_SSB()
-        # self.FSW.Set_5GNR_BBState('ON')
+        # self.FSW.Set_5GNR_SSB()
         self.assertEqual(self.FSW.jav_Error()[0],'0')
 
 ###############################################################################
