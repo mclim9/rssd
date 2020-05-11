@@ -31,14 +31,14 @@ class TestGeneral(unittest.TestCase):
         self.instr = jaVisa()
         self.instr.delay(0.1)
 
-    def test_yaVISA_noVISA(self):
-        # Test will not make a VISA connection.  Testing exception paths
-        from rssd.yaVISA import jaVisa
-        self.instr = jaVisa()
-        # self.instr.K2.settimeout(0.01)
-        self.instr.jav_Open('1.1.1.1')
-        self.instr.jav_ClrErr                       # except
-        self.assertTrue(1)
+    # def test_yaVISA_noVISA(self):
+    #     # Test will not make a VISA connection.  Testing exception paths
+    #     from rssd.yaVISA import jaVisa
+    #     self.instr = jaVisa()
+    #     # self.instr.K2.settimeout(0.01)
+    #     self.instr.jav_Open('1.1.1.1')
+    #     self.instr.jav_ClrErr                       # except
+    #     self.assertTrue(1)
 
     def test_yaVISAs_delay(self):
         from rssd.yaVISA_socket import jaVisa
