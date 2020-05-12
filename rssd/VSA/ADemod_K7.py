@@ -1,4 +1,4 @@
-﻿# -*- coding: future_fstrings -*-
+# -*- coding: future_fstrings -*-
 ######################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ### Purpose : Vector Signal Explorer Analog Demod Functions
@@ -38,7 +38,7 @@ class VSA(VSA):
 
     def Set_Adem_LPassAbsolute(self,sBW):
         """Low Pass Filter Absolute Values: 3kHz; 15kHz; 150kHz"""
-        self.write(f'SENSe:FILT:​LPASS:​FREQ:​ABS {sBW}')      
+        self.write(f'SENSe:FILT:LPASS:FREQ:ABS {sBW}')      
         
     def Set_Adem_LPassRelative(self,sBW):
         """Low Pass Filter Relative Values:5PCT; 10PCT; 25PCT"""
@@ -46,7 +46,7 @@ class VSA(VSA):
 
     def Set_Adem_LPassManual(self,fBW):
         """0 to 3MHz"""
-        self.write(f'SENSe:FILT:LPASS​:FREQ:MAN {fBW}')
+        self.write(f'SENSe:FILT:LPASS:FREQ:MAN {fBW}')
 
 #####################################################################
 ### Run if Main
