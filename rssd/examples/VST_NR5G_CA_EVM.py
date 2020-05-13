@@ -10,9 +10,9 @@
 SMW_IP      = '192.168.1.114'
 FSW_IP      = '192.168.1.109'
 FreqArry    = [10e9, 20e9, 28e9, 39e9]
-pwrArry     = range(-40,10,1)                        #Power Array
+pwrArry     = range(-40,10,1)                                       #Power Array
 NR_Dir      = 'UL'
-waveparam   = [[100,120,66,'QPSK']]                 #ChBW, SubSp, RB, Mod
+waveparam   = [[100,120,66,'QPSK']]                                 #ChBW, SubSp, RB, Mod
 NumCC       = 1
 CCSpace     = 99.96e6
 CCStart     = (1 - NumCC) * (CCSpace/2)
