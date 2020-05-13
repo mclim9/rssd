@@ -93,8 +93,8 @@ class RCT(RCT):
         self.write(f'CONF:NRMM:MEAS:RFS:EATT {pwr} DB')
 
     def Set_5GNR_Freq(self,freq):
-        """MHz"""
-        self.write(f'CONF:NRMM:MEAS:RFS:FREQ {freq} MHz')
+        """freq in Hz"""
+        self.write(f'CONF:NRMM:MEAS:RFS:FREQ {freq}')
 
     def Set_5GNR_MixerOff(self, pwr):
         """ExpPwr = Range + ExtAttn - UserMargin
