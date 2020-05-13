@@ -46,6 +46,13 @@ class TestGeneral(unittest.TestCase):
         # self.assertTrue('FOO'.isupper())
         # self.assertFalse('Foo'.isupper())
 
+    def test_readdict(self):
+        BaseDir  = os.path.dirname(os.path.realpath(__file__))
+        self.FileIO.set_filename(f'{BaseDir}\\.system')
+        # self.FileIO.set_filename(f'\\.system')
+        rdDict = self.FileIO.readdict()
+        rdDict['VSG']
+
     def test_write(self):
         self.FileIO.write("test_write,write")           #Append Date
         self.FileIO.write_raw("test_write,write_raw")   #No Date
