@@ -63,6 +63,22 @@ class VSG(jaVisa):
         SCPI = self.queryFloat(':READ%d:POW?'%(NRP))
         return SCPI
 
+    def Get_OS_Dir(self):
+        rdStr = self.query(f'MMEM:CDIR?')
+        return rdStr
+
+    def Get_OS_FileList(self,filter=''):
+        """Return list of filenames in sDir"""
+        rdStr   = self.query('MMEM:CATalog?').split('","')
+        rdStr   = rdStr[2:]                                   #Filter out . and ..
+        outList = []
+        for i, file in enumerate(rdStr):
+            rdStr[i] = rdStr[i].split(',')
+            if (rdStr[i][0].find(filter) > -1):
+                outList.append(rdStr[i][0])
+        return outList
+
+
     def Get_PowerPEP(self,RF=1):
         SCPI = self.queryFloat('SOUR%d:POW:PEP?'%RF)
         return SCPI
@@ -204,7 +220,6 @@ class VSG(jaVisa):
             self.write(f'SOUR1:LIST:MODE STEP')
             self.write(f'SOUR1:LIST:TRIG:SOUR EXT')
 
-
     def Set_ListMode_TrigWait(self):
         indx = 0
         stop = self.Get_ListMode_IndexStop()
@@ -216,6 +231,9 @@ class VSG(jaVisa):
         """RunMode: LIVE LEARned """
         self.write(f'SOUR:LIST:RMOD {sMode}')
 
+    def Set_OS_Dir(self,sDir):
+        self.write(f'MMEMory:CDIRectory "/var/user/{sDir}"')
+
     def Set_PhaseDelta(self,fPhase):
         self.write(':SOUR1:PHASE %d'%(fPhase))
 
@@ -226,6 +244,9 @@ class VSG(jaVisa):
         ''' 0 1 '''
         self.query('OUTP %s;*OPC?'%sState)
 
+    def Set_Setting(self,sSettingFile):
+        """*.savrcltxt SettingFile"""
+        self.jav_OPC_Wait(f'SYST:RCL "/var/user/{sSettingFile}"')
 
 #####################################################################
 ### Run if Main
@@ -233,6 +254,5 @@ class VSG(jaVisa):
 if __name__ == "__main__":
     # this won't be run when imported
     SMW = VSG().jav_Open("192.168.1.114")
-#    SMW.Set_Freq(6e9)
-    print(SMW.Get_ArbInfo())
-    print(SMW.Get_PowerInfo())
+    getVal = SMW.Get_OS_FileList('savrcltxt')
+    SMW.Set_Setting('test.savrcltxt')
