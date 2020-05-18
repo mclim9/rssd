@@ -1,11 +1,30 @@
 Release History
 =====================================================================
 - RSSD 2020.05.0
+  - 5GNR methods streamlined between VSG; VSA; RCT
+  - VSA
+    - 5GNR
+      - Add Set_5GNR_BWP_Ch_DMRS methods
+      - Add self.cc check in Set_5GNR_CC_Capture and Set_5GNR_Result_View
+      - Add Set_5GNR_FrameCount
+  - VSG
+    - Common
+      - Add Get_OS_ methods
+    - 5GNR
+      - add self.SubF
+      - add self.Get_5GNR_BWP_Ch_PTRS_State check to PTRS methods
+      - chg Get_5GNR_FreqRange to return HIGH MIDD LOW
   - Examples
     - Add VSA_IQAutolevel.py
     - Add VSA_On flag for VST_NR5G_4CC_Config
-  - Alpha Examples directory test
     - Created mock classes in rssd.test
+  - SW Tests
+    - test_HW_VSA_xxx
+    - test_HW_VSG_xxx
+    - Alpha Examples directory test
+    - test_HW_RCT_5GNR.py alpha
+    - coverage and coveralls integration
+
 - RSSD 2020.04.0
   - VSA
     - Common alphebetize and cleanup
