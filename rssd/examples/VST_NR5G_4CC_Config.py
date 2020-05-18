@@ -10,10 +10,10 @@
 # SMW_IP  = '172.24.225.230'
 SMW_IP  = '192.168.1.114'
 FSW_IP  = '192.168.1.109'
-VSG_ON  = 0
+VSG_ON  = 1
 Freq    = 39e9
 Pwr     = -10
-NumCC   = 4
+NumCC   = 1
 NR_Dir  = 'UP'
 CCSpace = 99.96e6
 CCStart = (1 - NumCC) * (CCSpace/2)
@@ -71,7 +71,7 @@ for i in range(NumCC):
 tick    = timeit.default_timer()
 if VSG_ON: SMW.Set_5GNR_BBState('ON')
 tockA   = timeit.default_timer()
-print(f'{(tockA-tick):2,.6f}')
+print(f'Total Time: {(tockA-tick):2,.6f} sec')
 FSW.Set_Autolevel()
 
 ###############################################################################
