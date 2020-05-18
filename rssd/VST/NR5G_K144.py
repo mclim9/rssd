@@ -18,7 +18,7 @@ class VST(object):
     def __init__(self):
         self.Freq      = 19e9
         self.SWM_Out   = 0
-        self.NR_Dir    = 'DL'
+        self.NR_Dir    = 'UL'
         self.NR_Deploy = 'HIGH'     #LOW|MIDD|HIGH
         self.NR_PhaseC = 'OFF'      #ON|OFF
         self.NR_ChBW   = 100        #MHz
@@ -60,9 +60,9 @@ class VST(object):
         odata[0].append("User_BWP_Cntr  ")
         if DMRS:
             odata[0].append("=====DMRS======")
-            odata[0].append("DMRS Config    ")
             odata[0].append("DMRS Mapping   ")
             odata[0].append("DMRS FirstSym  ")
+            odata[0].append("DMRS Config    ")
             odata[0].append("DMRS Add Positn")
             odata[0].append("DMRS Length    ")
             odata[0].append("DMRS SeqGenMeth")
@@ -102,11 +102,13 @@ class VST(object):
             odata[1].append(self.SMW.Get_5GNR_BWP_Center()/1e6)
             if DMRS:
                 odata[1].append("=DMRS=")
-                odata[1].append(self.SMW.Get_5GNR_BWP_Ch_DMRS_Config())
                 odata[1].append(self.SMW.Get_5GNR_BWP_Ch_DMRS_Mapping())
                 odata[1].append(self.SMW.Get_5GNR_BWP_Ch_DMRS_1stDMRSSym())
+
+                odata[1].append(self.SMW.Get_5GNR_BWP_Ch_DMRS_Config())
                 odata[1].append(self.SMW.Get_5GNR_BWP_Ch_DMRS_AddPosition())
                 odata[1].append(self.SMW.Get_5GNR_BWP_Ch_DMRS_MSymbLen())
+
                 odata[1].append(self.SMW.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth())
                 odata[1].append(self.SMW.Get_5GNR_BWP_Ch_DMRS_SeqGenSeed())
                 odata[1].append(self.SMW.Get_5GNR_BWP_Ch_DMRS_RelPwr())
@@ -146,11 +148,13 @@ class VST(object):
             odata[2].append(self.FSW.Get_5GNR_BWP_Center()/1e6)
             if DMRS:
                 odata[2].append("=DMRS=")
-                odata[2].append(self.FSW.Get_5GNR_BWP_Ch_DMRS_Config())
                 odata[2].append(self.FSW.Get_5GNR_BWP_Ch_DMRS_Mapping())
                 odata[2].append(self.FSW.Get_5GNR_BWP_Ch_DMRS_1stDMRSSym())
+
+                odata[2].append(self.FSW.Get_5GNR_BWP_Ch_DMRS_Config())
                 odata[2].append(self.FSW.Get_5GNR_BWP_Ch_DMRS_AddPosition())
                 odata[2].append(self.FSW.Get_5GNR_BWP_Ch_DMRS_MSymbLen())
+
                 odata[2].append(self.FSW.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth())
                 odata[2].append(self.FSW.Get_5GNR_BWP_Ch_DMRS_SeqGenSeed())
                 odata[2].append(self.FSW.Get_5GNR_BWP_Ch_DMRS_RelPwr())
