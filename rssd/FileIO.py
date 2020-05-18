@@ -25,9 +25,6 @@ class FileIO(object):
         self.init(OutFile)
         return self
 
-    def openFile(self,sFilepath):
-        pass
-
     def init(self,sName="Datalog"):
         """Append to sName file"""
         self.sFName = "%s-%s.csv"%(sName,datetime.now().strftime("%y%m%d"))
@@ -52,16 +49,22 @@ class FileIO(object):
         return dataOut
 
     def readdict(self):
+        """Text file split w/ space"""
         d = {}
         # BaseDir  = os.path.dirname(os.path.realpath(__file__))
         # os.chdir(BaseDir)
         # dirpath = os.getcwd()
         with open(self.sFName) as f:
             for line in f:
-                (key, val) = line.split()
+                # (key, val) = line.split()
+                try:
+                    (key, val) = line.split()
+                except ValueError:
+                    key = line.split(' ')[0]
+                    val = line.split(' ')[1]
                 d[key] = val
         return d
-    
+
     def write(self,inStr):
         if self.debug: print("FileOut    : %s"%inStr)
         sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
