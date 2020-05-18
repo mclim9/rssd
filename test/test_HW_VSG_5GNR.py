@@ -13,7 +13,7 @@
 ### User Entry
 ###############################################################################
 host = '10.0.0.7'                                       #Get local machine name
-# host = '169.254.2.20'
+host = '192.168.1.114'
 
 ###############################################################################
 ### Code Start
@@ -45,21 +45,21 @@ class TestGeneral(unittest.TestCase):
     def test_SMW_5GNR_Direction(self):
         self.SMW.Set_5GNR_Direction('UL')
         getVal = self.SMW.Get_5GNR_Direction()
-        self.assertEqual(getVal,'UP')
+        self.assertEqual(getVal,'UL')
         self.SMW.Set_5GNR_Direction('DL')
         getVal = self.SMW.Get_5GNR_Direction()
-        self.assertEqual(getVal,'DOWN')
+        self.assertEqual(getVal,'DL')
 
     def test_SMW_5GNR_FreqRange(self):
         self.SMW.Set_5GNR_FreqRange('LOW')
         getVal = self.SMW.Get_5GNR_FreqRange()
-        self.assertEqual(getVal,'LT3')
+        self.assertEqual(getVal,'LOW')
         self.SMW.Set_5GNR_FreqRange('MIDD')
         getVal = self.SMW.Get_5GNR_FreqRange()
-        self.assertEqual(getVal,'BT37125')
+        self.assertEqual(getVal,'MIDD')
         self.SMW.Set_5GNR_FreqRange('HIGH')
         getVal = self.SMW.Get_5GNR_FreqRange()
-        self.assertEqual(getVal,'GT7125')
+        self.assertEqual(getVal,'HIGH')
 
     def test_SMW_5GNR_Get_DL(self):
         self.SMW.Set_5GNR_Direction('DL')
