@@ -48,8 +48,7 @@ class TestGeneral(unittest.TestCase):
 
     def test_readdict(self):
         BaseDir  = os.path.dirname(os.path.realpath(__file__))
-        self.FileIO.set_filename(f'{BaseDir}\\.system')
-        # self.FileIO.set_filename(f'\\.system')
+        self.FileIO.set_filename(os.path.join(BaseDir,'.system'))
         rdDict = self.FileIO.readdict()
         rdDict['VSG']
 
