@@ -13,7 +13,7 @@
 ### User Entry
 ###############################################################################
 host = '10.0.0.7'                                       #Get local machine name
-# host = '169.254.2.20'
+host = '192.168.1.114'
 
 ###############################################################################
 ### Code Start
@@ -50,14 +50,14 @@ class TestGeneral(unittest.TestCase):
         self.assertEqual(setVal,getVal)
 
     def test_SMW_Arb_State(self):
-        setVal = 'test.wv'
+        setVal = '/var/user/UCS2010/GSM.wv'
         self.SMW.Set_ArbWv(setVal)
         self.SMW.Set_ArbState(1)
         self.SMW.Set_ArbState(0)
         getVal = self.SMW.Get_ArbName()
         nulVal = self.SMW.Get_ArbInfo()
         nulVal = self.SMW.Get_PowerInfo()
-        self.assertTrue(getVal.find(setVal) > 0)
+        self.assertTrue(getVal.find(setVal) > -1)
         self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_BB_State(self):
@@ -70,6 +70,12 @@ class TestGeneral(unittest.TestCase):
 
     def test_SMW_CrestFactor(self):
         getVal = self.SMW.Get_CrestFactor()
+        self.assertEqual(self.SMW.jav_Error()[0],'0')
+
+    def test_SMW_OS(self):
+        self.SMW.Set_OS_Dir('UCS2010')
+        getVal = self.SMW.Get_OS_Dir()
+        getVal = self.SMW.Get_OS_FileList()
         self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_Init_Wideband(self):
