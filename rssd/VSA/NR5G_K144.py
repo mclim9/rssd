@@ -14,6 +14,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
         super(VSA, self).__init__()             #Python 2/3
         self.sdir   = "UL"
         self.cc     = 1                         #1 Start
+        self.subF   = 1
 
     #####################################################################
     ### FSW 5GNR Get
@@ -280,10 +281,49 @@ class VSA(VSA):                                 #pylint: disable=E0102
 
     def Set_5GNR_AllocFile(self,sFilename):
         # \Instr\user\V5GTF\AllocationFiles\UL
-        self.write(f'MMEM:LOAD:DEM "{sFilename}"')
+        self.jav_OPC_Wait(f'MMEM:LOAD:DEM:CC{self.cc} "{sFilename}"')
 
     def Set_5GNR_AllocFileSave(self,sFilename):
         self.write(f'MMEM:STOR:DEM:CC{self.cc} "C:\\R_S\\Instr\\user\\{sFilename}.allocation"')
+
+    def Set_5GNR_BWP_Ch_DMRS_1stDMRSSym(self,DMRS):
+        """ 2 3 """
+        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:TAP {DMRS}')
+
+    def Set_5GNR_BWP_Ch_DMRS_AddPosition(self,DMRS):
+        """ 0 1 2 3 """
+        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:MSYM:APOS {DMRS}')
+
+    def Set_5GNR_BWP_Ch_DMRS_Config(self,DMRS):
+        """ 1 or 2 """
+        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:CTYP {DMRS}')
+
+    def Set_5GNR_BWP_Ch_DMRS_MSymbLen(self,DMRS):
+        """ 1 2 """
+        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:MSYM:LENG {DMRS}')
+
+    def Set_5GNR_BWP_Ch_DMRS_Mapping(self,DMRS):
+        """ A B """
+        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:MTYP {DMRS}')
+        
+    def Set_5GNR_BWP_Ch_DMRS_RelPwr(self,DMRS):
+        """ -25 to 12 dB """
+        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:POW {DMRS}')
+
+    def Set_5GNR_BWP_Ch_DMRS_SeqGenMeth(self,DMRS):
+        """ NIDC NIDD """
+        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:SGEN {DMRS}')
+
+    def Set_5GNR_BWP_Ch_DMRS_SeqGenSeed(self,DMRS):
+        """ 0 1007 """
+        #Only for SeqGenMeth NIDD.  Not Valid for NIDC
+        SeqGenMeth = self.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth()
+        if SeqGenMeth == 'NIDD':
+            self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:NID {DMRS}')
+        elif SeqGenMeth == 'NIDC':
+            pass
+        else:
+            print('Get_5GNR_BWP_Ch_DMRS_SeqGenSeed Method?')
 
     def Set_5GNR_BWP_Ch_Modulation(self,sMod):
         # QPSK; QAM16; QAM64; QAM256; PITB
@@ -323,7 +363,10 @@ class VSA(VSA):                                 #pylint: disable=E0102
 
     def Set_5GNR_CC_Capture(self,sCapture):
         """SING AUTO"""
-        self.write(f':CONF:NR5G:CSC {sCapture}')
+        if (self.cc > 1):
+            self.write(f':CONF:NR5G:CSC {sCapture}')
+        else:
+            pass
 
     def Set_5GNR_CellID(self,iCellID):
         self.write(f'CONF:NR5G:{self.sdir}:CC{self.cc}:PLC:CID {iCellID}')
@@ -347,10 +390,19 @@ class VSA(VSA):                                 #pylint: disable=E0102
             self.sdir = "DL"
         else:
             print("Set_5GNR_UL_Direction must be UL or DL")
-    
+
     def Set_5GNR_EVMUnit(self,sUnit):
         """ DB | PCT """
         self.write(f'UNIT:EVM {sUnit}')
+
+    def Set_5GNR_FrameCount(self,State):
+        """ON OFF"""
+        if (State=='ON') or (State == 1):
+            self.write(f':SENS:NR5G:FRAM:COUN:STAT ON')
+        elif(State=='OFF') or (State == 0):
+            self.write(f':SENS:NR5G:FRAM:COUN:STAT OFF')
+        else:
+            pass
 
     def Set_5GNR_FreqRange(self,iRange):
         """ 0:<3GHz 1:3-6GHz 2:>6GHz """
@@ -380,8 +432,9 @@ class VSA(VSA):                                 #pylint: disable=E0102
 
     def Set_5GNR_Result_View(self, sMode):
         """ALL | VIEW """
-        self.query(f':SENS:NR5G:RSUM:CCR {sMode}')
-        
+        if (self.cc > 1):
+            self.query(f':SENS:NR5G:RSUM:CCR {sMode}')
+
     def Set_5GNR_savesetting(self, sName):
         self.query(f":MMEM:STOR:DEM:CC{self.cc} 'C:\\R_S\\Instr\\user\\NR5G\\AllocationFiles\\{sName}.allocation';*OPC?")
         
