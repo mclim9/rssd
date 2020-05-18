@@ -18,6 +18,7 @@ class VSG(VSG):                             #pylint: disable=E0102
         self.BWP    = 0
         self.User   = 0
         self.alloc  = 0
+        self.subF   = 0
         self.cc     = 0         # 0 Start
 
     #####################################################################
@@ -28,12 +29,12 @@ class VSG(VSG):                             #pylint: disable=E0102
         return rdStr
         
     def Get_5GNR_BWP_Ch_DMRS_1stDMRSSym(self):
-        #rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:APOS?')
+        #rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:APOS?')
         rdStr = "<TBD>"
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_AddPosition(self):
-        #rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:IND?')
+        #rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:IND?')
         if self.sdir == 'UL':
             # User/BWP-->ULBWP COnfig
             rdStr = self.query(f':SOUR:BB:NR5G:UBWP:USER0:CELL{self.cc}:UL:BWP0:PUSCH:DMTA:APIN?')
@@ -43,88 +44,105 @@ class VSG(VSG):                             #pylint: disable=E0102
 
     def Get_5GNR_BWP_Ch_DMRS_Config(self):
         rdStr = "<TBD>"
-        #rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:CONF?')
         if self.sdir == 'UL':
             # User/BWP-->ULBWP COnfig
             rdStr = self.query(f':SOUR:BB:NR5G:UBWP:USER0:CELL{self.cc}:UL:BWP0:PUSCH:DMTA:CTYP?')
         else:
             rdStr = self.query(f':SOUR:BB:NR5G:UBWP:USER0:CELL{self.cc}:DL:BWP0:PDSCH:DMTA:CTYP?')
-        return rdStr
+        return rdStr[1]
 
     def Get_5GNR_BWP_Ch_DMRS_Mapping(self):
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:MAPT?')
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:MAPT?')
         # rdStr = "<TBD>"
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_MSymbLen(self):
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:LENG?')
+        if self.sdir == 'DL':
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PDSCH:DMRS:LENG?')  #MMM
+        else:
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:LENG?')
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_RelPwr(self):
         if self.sdir == 'DL':
-            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PDSCH:DMRS:POW?')
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PDSCH:DMRS:POW?')
         else:
-            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSCH:DMRS:POW?')
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PUSCH:DMRS:POW?')
         #rdStr = "<TBD>"
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_SeqGenMeth(self):
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:SEQG?')
+        if self.sdir == 'DL':
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PDSC:DMRS:SEQG?') #MMM
+        else:
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:SEQG?')
         # rdStr = "<TBD>"
         return rdStr
 
     def Get_5GNR_BWP_Ch_DMRS_SeqGenSeed(self):
         #Only for SeqGenMeth NICP.  Not Valid for NIDC
         if self.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth() == 'DMRS':
-            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:NSID?')
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:NSID?')
         else:
             rdStr = '<!CELL>'
         return rdStr
 
     def Get_5GNR_BWP_Ch_Modulation(self):
-        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:MOD?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:MOD?')
         return rdStr
 
     def Get_5GNR_BWP_Ch_PTRS_K(self):
         """ Freq Density in RB """
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:FRQD?')
+        if self.Get_5GNR_BWP_Ch_PTRS_State() == '1':
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:FRQD?')
+        else:
+            rdStr = "PTRS Off"
         return rdStr
 
     def Get_5GNR_BWP_Ch_PTRS_L(self):
         """ Time Density in OFDM Sym Freq """
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:TMD?')
+        if self.Get_5GNR_BWP_Ch_PTRS_State() == '1':
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:TMD?')
+        else:
+            rdStr = "PTRS Off"
         return rdStr
 
     def Get_5GNR_BWP_Ch_PTRS_Pow(self):
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:POW?')
+        if self.Get_5GNR_BWP_Ch_PTRS_State() == '1':
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:POW?')
+        else:
+            rdStr = "PTRS Off"
         return rdStr
 
     def Get_5GNR_BWP_Ch_PTRS_RE_Offset(self):
         """ PTRS freq (RE) offset """
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:REOF?')
+        if self.Get_5GNR_BWP_Ch_PTRS_State() == '1':
+            rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:REOF?')
+        else:
+            rdStr = "PTRS Off"
         return rdStr
 
     def Get_5GNR_BWP_Ch_PTRS_State(self):
-        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:STAT?')
+        rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PUSC:PTRS:STAT?')
         return rdStr
 
     def Get_5GNR_BWP_Ch_ResBlock(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:RBN?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBN?')
         return rdStr
         
     def Get_5GNR_BWP_Ch_ResBlockOffset(self):
-        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:RBOF?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBOF?')
         return rdStr
         
     def Get_5GNR_BWP_Ch_SymbNum(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:SYMN?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:SYMN?')
         return rdStr
         
     def Get_5GNR_BWP_Ch_SymbOff(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:SYM?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:SYM?')
         return rdStr
         
     def Get_5GNR_BWP_Count(self):
@@ -142,7 +160,7 @@ class VSG(VSG):                             #pylint: disable=E0102
         
     def Get_5GNR_BWP_SlotNum(self):
         ### Number of slots
-        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:SLOT?')
+        rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:SLOT?')
         return rdStr
         
     def Get_5GNR_BWP_SubSpace(self):
@@ -188,11 +206,19 @@ class VSG(VSG):                             #pylint: disable=E0102
             self.alloc = 0         #Alloc 0:PUSCH
         else:
             print('Get_5GNR_Direction Error')
-        return rdStr
+        return self.sdir
 
     def Get_5GNR_FreqRange(self):
         rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD?')
-        return rdStr
+        if (rdStr == 'LT3') or (rdStr == 'LT3') or (rdStr == 'FR1LT3'):
+            outStr = 'LOW'
+        elif (rdStr == 'BT36') or (rdStr == 'BT37125')or (rdStr == 'FR1GT3'):
+            outStr = 'MIDD'
+        elif (rdStr == 'GT6') or (rdStr == 'GT7125')or (rdStr == 'FR2'):
+            outStr = 'HIGH'
+        else:
+            print('Error Get_5GNR_FreqRange {rdStr}')
+        return outStr
         
     def Get_5GNR_RefA(self):
         rdStr = self.queryInt(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:POIN?')
@@ -222,7 +248,7 @@ class VSG(VSG):                             #pylint: disable=E0102
     def Get_5GNR_TransPrecoding(self):
         # SC-FDMA or DFT-S-OFDM
         # 5GNR--> User/BWP --> UL BWP Config --> PUSCH --> TP
-        # rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL0:TPST?')
+        # rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL0:TPST?')
         rdStr = self.query(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:UL:BWP0:PUSC:TPST?') #4.50
         return rdStr
 
@@ -238,27 +264,27 @@ class VSG(VSG):                             #pylint: disable=E0102
             self.write(f':SOUR1:BB:NR5G:STAT 0')
 
     def Set_5GNR_BWP_Ch_Modulation(self,sMod):
-        self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:MOD {sMod}')
+        self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:MOD {sMod}')
         
     def Set_5GNR_BWP_Ch_ResBlock(self,iRB):
         ### 5GNR-->Scheduling-->PUSCH-->No. RBs
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        #self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:RBN %d'%iRB)
-        self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:RBN {iRB}')
+        #self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBN %d'%iRB)
+        self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBN {iRB}')
 
     def Set_5GNR_BWP_Ch_ResBlockOffset(self,iRBO):
         ### 5GNR-->Scheduling-->PUSCH-->No. RBs
-        #self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:RBOF %d'%%(self.alloc,iRBO))
-        self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL{self.alloc}:RBOF 0')
+        #self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBOF %d'%%(self.alloc,iRBO))
+        self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBOF 0')
 
     def Set_5GNR_BWP_Corset_ResBlock(self, iRB):
         if self.sdir == 'DL':
-            self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL0:RBN {iRB}')
+            self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL0:RBN {iRB}')
 
     def Set_5GNR_BWP_Corset_ResBlockOffset(self,iRBO):
         if self.sdir == 'DL':
         ### 5GNR-->Scheduling-->PUSCH-->No. RBs
-            self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL0:RBOF {iRBO}')
+            self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL0:RBOF {iRBO}')
 
     def Set_5GNR_BWP_ResBlock(self,iRB):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
@@ -339,12 +365,21 @@ class VSG(VSG):                             #pylint: disable=E0102
         """ 0:<3GHz 1:3-6GHz 2:>6GHz """ 
         """ LOW; MIDD; HIGH """ 
         if (iRange==0) or (iRange == 'LOW'):
-            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD LT3')
+            # self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD LT3')     #4.70.026.51
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD FR1LT3')    #C45.4.70.026.51.131
         elif (iRange==1) or (iRange == 'MIDD'):
-            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD BT36')
+            # self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD BT36')    #4.70.026.51
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD FR1GT3')    #C45.4.70.026.51.131
         elif (iRange==2) or (iRange == 'HIGH'):
-            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD GT6')
-            
+            # self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD GT6')     #4.70.026.51
+            self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD FR2')       #C45.4.70.026.51.131
+
+    def Set_5GNR_GenerateWv(self,sName):
+        """ Generate Waveform File""" 
+        self.write(f':SOUR1:BB:NR5G:WAV:CRE "{sName}"')
+        self.delay(2)
+        self.jav_OPC_Wait('*IDN?')
+
     def Set_5GNR_Parameters(self,sDir):
         self.Set_5GNR_Direction(sDir)
 
@@ -371,11 +406,14 @@ class VSG(VSG):                             #pylint: disable=E0102
         """ SC-FDMA or DFT-S-OFDM
         5GNR--> User/BWP --> UL BWP Config --> PUSCH --> TP  """
         if sState == 'ON':
-            # self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL0:TPST ON') #4.30SP2?
+            # self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL0:TPST ON') #4.30SP2?
             self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:UL:BWP0:PUSC:TPST ON') #4.50
         else:
-            # self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF0:USER0:BWP0:ALL0:TPST OFF') #4.30SP2?
+            # self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL0:TPST OFF') #4.30SP2?
             self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:UL:BWP0:PUSC:TPST OFF') #4.50
+
+    def Set_5GNR_Setting_Load(self, sName):
+        self.query(f':SOUR:BB:NR5G:SETT:LOAD "/var/user/{sName}";*OPC?')
 
     def Set_5GNR_savesetting(self, sName):
         self.query(f':SOUR:BB:NR5G:SETT:STOR "/var/user/{sName}";*OPC?')
