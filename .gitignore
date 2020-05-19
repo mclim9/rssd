@@ -32,5 +32,8 @@
 *.json
 *.zip
 rssd/VSA_Leveling.py
-.coveralls.yml
+
+## Testing Files
 htmlcov
+.coveralls.yml
+test/.coverage
