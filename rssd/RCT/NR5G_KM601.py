@@ -1,11 +1,10 @@
 # -*- coding: future_fstrings -*-
-###############################################################################
+################################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ### Purpose: Radio Communication Tester(RCT) Functions
 ### Author : Martin C Lim
-### Date   : 2018.05.29
-###############################################################################
-from rssd.RCT.Common import RCT              #pylint: disable=E0611,E0401
+################################################################################
+from rssd.RCT.Common import RCT                                                 #pylint: disable=E0611,E0401
 
 class RCT(RCT):
     """ Rohde & Schwarz Radio Comm Tester Object """
@@ -19,9 +18,9 @@ class RCT(RCT):
         self.subF   = 0
         self.cc     = 1         # 1 Start
 
-    ###########################################################################
+    ############################################################################
     ### RCT Get Functions
-    ###########################################################################
+    ############################################################################
     def Get_AmpSettings(self):
         """Get ExpectPwr; UserMargin; ExtAttn; MixerOffset settings"""
         expp = self.Get_5GNR_ExpPwr()
@@ -36,7 +35,7 @@ class RCT(RCT):
             Arry20:PkPwr 
             Arry16:FrqErr"""
         # self.write('ABOR:NRMM:MEAS:MEV')
-        self.query('INIT:NRMM:MEAS:MEV;*OPC?')
+        self.query('INIT:NRMM:MEAS:MEV;*OPC?')                                  #RUN state
         rdStr = self.queryFloatArry('FETC:NRMM:MEAS:MEV:MOD:AVER?')
         try:
             rdStr = [rdStr[2], rdStr[18], rdStr[19], rdStr[15]]
@@ -68,9 +67,9 @@ class RCT(RCT):
         rdStr = self.queryFloat(f'CONF:NRMM:MEAS:RFS:UMAR?')
         return rdStr
 
-    #####################################################################
+    ###########################################################################
     ### 5GNR Get Methods
-    #####################################################################
+    ###########################################################################
     def Get_5GNR_BWP_Center(self):
         rdStr = "<notRead>"
         return rdStr
@@ -207,6 +206,12 @@ class RCT(RCT):
         rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:PLC?')
         return rdStr
 
+    def Get_5GNR_CrestFactor(self):
+        self.query('INIT:NRMM:MEAS:MEV;*OPC?')                                        #RUN state.
+        rdStr = self.queryFloatArry(f'FETC:NRMM:MEAS:MEV:MOD:AVER?')
+        output = rdStr[19] - rdStr[18]
+        return output
+
     def Get_5GNR_SSB_SubSpace(self):
         if self.sdir == 'DL':
             # rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:SSPB0:SCSP?')
@@ -224,12 +229,12 @@ class RCT(RCT):
         rdStr = "UP"
         if rdStr == 'DOWN':
             self.sdir = "DL"
-            self.alloc = 1         #Alloc 0:CORSET
+            self.alloc = 1                                                      #Alloc 0:CORSET
         elif rdStr == 'UP':
             self.sdir = "UL"            
-            self.alloc = 1         #Alloc 0:PUSCH
+            self.alloc = 1                                                      #Alloc 0:PUSCH
         else:
-            print('Get_5GNR_Direction Error')
+            print('Get_5GNR_Direvmection Error')
         return self.sdir
 
     def Get_5GNR_FreqRange(self):
@@ -238,6 +243,62 @@ class RCT(RCT):
     # def Get_5GNR_RefA(self):
     #     rdStr = '<notRead>'
     #     return rdStr
+
+
+    def Get_5GNR_Params(self,amp,swp,sys,trc,header=0):
+        """Amp,Sweep,System,Trace"""
+        outStr = ""
+        outStr += self.Get_5GNR_Params_Amp(header)+","   if (amp==1) else ""
+        outStr += self.Get_5GNR_Params_Sweep(header)+"," if (swp==1) else ""
+        outStr += self.Get_5GNR_Params_System(header)+","if (sys==1) else ""
+        outStr += self.Get_5GNR_Params_Trace(header)+"," if (trc==1) else ""
+        return outStr
+
+    def Get_5GNR_Params_Amp(self,header=0):
+        """Retrieve Parameters for test logs"""
+        if header != 1:
+            attn    = self.Get_5GNR_UserMargin()
+            prea    = self.Get_5GNR_ExtAttn()
+            refl    = self.Get_5GNR_ExpPwr()
+            outStr  = f'{attn:7.3f},{prea},{refl:7.3f}'
+        else:
+            outStr = 'UserMargin,ExtAttn,ExpPwr'
+        return outStr
+
+    def Get_5GNR_Params_Sweep(self,header=0):
+        # SwpTime,SwpPts,SwpType,SwpOpt,
+        if header != 1:
+            Time    = '<N/A>'
+            Points  = '<N/A>'
+            Type    = '<N/A>'
+            Opt     = '<N/A>'
+            outStr  = f'{Time:5.3f},{Points},{Type},{Opt}'
+        else:
+            outStr  = 'SwpTimeM,SwpPts,SwpType,SwpOpt'
+        return outStr
+
+    def Get_5GNR_Params_System(self,header=0):
+        if header != 1:
+            error  = self.jav_Error()
+            ext    = self.Get_System_ErrorExt().replace('"','')
+            outStr = f'{error[0]:>4},{error[1]:10.10},{ext:10.10}'
+        else:
+            outStr  = 'ErrNo,ErrMsg,ExtError'
+        return outStr
+
+    def Get_5GNR_Params_EVM(self,header=0):
+        if header != 1:
+            self.query('INIT:NRMM:MEAS:MEV;*OPC?')                              #RUN state
+            rdStr = self.queryFloatArry('FETC:NRMM:MEAS:MEV:MOD:AVER?')
+            Power   = rdStr[18]     #19: RMS Ch Power
+            Crest   = rdStr[19] - Power
+            EVMAll  = rdStr[2]      #3: EVM RMS Low
+            EVMPhyC = rdStr[2]      #3: EVM RMS Low
+            EVMPhyS = rdStr[21]     #22: EVM DMRS Low
+            outStr  = f"{Crest:6.3f},{Power:6.3f},{EVMAll:.2f},{EVMPhyC:.2f},{EVMPhyS:.2f}"
+        else:
+            outStr  = 'CMP_Cres,CMPPwr,5GEVM_All,EVM_PhyCh,EVM_PhySig'
+        return outStr
 
     def Get_5GNR_PhaseCompensate(self):
         rdStr = self.query(f'CONF:NRMM:MEAS:MEV:PCOM?').split(',')[0]
@@ -262,8 +323,9 @@ class RCT(RCT):
     def Init_5GNR(self):
         self.write('SYST:GEN:ALL:OFF')
         self.write('SYST:MEAS:ALL:OFF')
-        self.write('ABOR:NRMM:MEAS:MEV')
-        self.query('INIT:NRMM:MEAS:MEV;*OPC?')
+        self.write('ABOR:NRMM:MEAS:MEV')                                        #OFF state
+        # self.write(f'STOP:NRMM:MEAS:MEV STOP')                                #RDY state
+        self.query('INIT:NRMM:MEAS:MEV;*OPC?')                                  #RUN state
 
     ###########################################################################
     ### BSE Set Functions
@@ -281,7 +343,7 @@ class RCT(RCT):
 
     def Set_5GNR_Freq(self,freq):
         """freq in Hz"""
-        self.write(f'CONF:NRMM:MEAS:RFS:FREQ {freq}')
+        self.write(f'CONF:NRMM:MEAS:RFS:FREQ {int(freq)}')
 
     def Set_5GNR_MixerOff(self, pwr):
         """ExpPwr = Range + ExtAttn - UserMargin
@@ -292,7 +354,7 @@ class RCT(RCT):
     def Set_5GNR_PhaseComp(self,state,freq):
         """ State: OFF | CAF | UDEF 
             Freq : Hz"""
-        self.write(f'CONF:NRMM:MEAS:MEV:PCOM {state},{freq}')
+        self.write(f'CONF:NRMM:MEAS:MEV:PCOM {state},{int(freq)}')
 
     def Set_5GNR_Periodicity(self,period):
         """ Period: 05 | 0625 | 1 | 125 | 2 | 25 | 5 | 10 """
@@ -382,7 +444,6 @@ class RCT(RCT):
         """1 to 1000 slots"""
         self.write(f':CONF:NRMM:MEAS:MEV:SCO:MOD {avg}')
 
-
     def Set_5GNR_Path(self,path):
         """string P1.RRH.RF1 P1.RRH.RF2 """
         self.write(f':ROUT:NRMM:MEAS:SPAT "{path}"')
@@ -397,6 +458,17 @@ class RCT(RCT):
     def Set_5GNR_PhaseCompensate_Freq(self,Freq):
         self.write(f'CONF:NRMM:MEAS:MEV:PCOM UDEF, {Freq}')
 
+    def Set_5GNR_PUSCH(self,RB,RBO,mod):
+        if (mod == 'QPSK'):
+            mod = 'QPSK'
+        elif (mod == 'Q16') or (mod == 'QAM16'):
+            mod = 'Q16'
+        elif (mod == 'Q64') or (mod == 'QAM64'):
+            mod = 'Q64'
+        else:
+            print(f'Set_5GNR_PUSCH {mod} not supported')
+        self.write(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC A, 14, 0, {RB}, {RBO}, {mod}')   #Map; Sym; SymStrt; RB; RBO; Mod
+
     # def Set_5GNR_SSB(self):
     #     """Num DL SS/PBCH Patterns"""
     #     if self.sdir == 'DL':
@@ -404,9 +476,10 @@ class RCT(RCT):
 
     def Set_5GNR_TransPrecoding(self, sState):
         """ SC-FDMA or DFT-S-OFDM  """
-        if (sState == 'ON') or (sState == 1):
+        sState = str(sState)
+        if   (sState == 'ON')  or (sState == "1"):
             self.write(f'CONF:NRMM:MEAS:CC{self.cc}:BWP:PUSC:DFTP BWP{self.BWP}, ON')
-        elif (sState == 'OFF') or (sState == 0):
+        elif (sState == 'OFF') or (sState == "0"):
             self.write(f'CONF:NRMM:MEAS:CC{self.cc}:BWP:PUSC:DFTP BWP{self.BWP}, OFF')
         else:
             print('Error Set_5GNR_TransPrecoding')
@@ -416,7 +489,7 @@ class RCT(RCT):
         self.write(f':TRIG:NRMM:MEAS:MEV:SOUR "{source}"')
     
     def Set_5GNR_Stop(self):
-        self.write(f'STOP:NRMM:MEAS:MEV STOP')
+        self.write(f'STOP:NRMM:MEAS:MEV STOP')                                  #RDY state
 
 ###############################################################################
 ### Run if Main
@@ -427,24 +500,24 @@ if __name__ == "__main__":
     CMP.jav_Open("192.168.1.160")
     CMP.Set_5GNR_Path('P1.RRH.RF1')
     CMP.Set_5GNR_Freq(28e9)
-    CMP.Get_GPRF_Pwr()
+    # CMP.Get_GPRF_Pwr()
     CMP.Set_5GNR_ExpPwr(-9)
     CMP.Set_5GNR_UserMargin(13)
     CMP.Set_5GNR_PhaseCompensate_Freq(28e9)
     CMP.write(f'CONF:NRMM:MEAS:ULDL:PER MS2')
-    CMP.write(f'CONF:NRMM:MEAS:ULDL:PATT S120k, 0,0,8,0')                               #DL Slot; DL Sym; UL SLot; UL Sym
-    CMP.write(f'CONF:NRMM:MEAS:ULDL:PATT S60k,  0,0,1,0')                               #DL Slot; DL Sym; UL SLot; UL Sym
+    CMP.write(f'CONF:NRMM:MEAS:ULDL:PATT S120k, 0,0,8,0')                       #DL Slot; DL Sym; UL SLot; UL Sym
+    CMP.write(f'CONF:NRMM:MEAS:ULDL:PATT S60k,  0,0,1,0')                       #DL Slot; DL Sym; UL SLot; UL Sym
     CMP.Set_5GNR_ChannelBW(100)
     CMP.Set_5GNR_CellID(1)
     CMP.Set_5GNR_BWP_Ch_DMRS_1stDMRSSym(2)
     # CMP.Set_5GNR_NumBWP()
-    CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP BWP0, S120K, NORM, 66, 0')                #SCS; NORM; RB; RBO
-    CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP:PUSC:DMTA BWP0, 1, 2, 1')                 #Config; AddPos; MaxLength
-    CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP:PUSC:DMTB BWP0, 1, 2, 1')                 #Config; AddPos; MaxLength
+    CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP BWP0, S120K, NORM, 66, 0')        #SCS; NORM; RB; RBO
+    CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP:PUSC:DMTA BWP0, 1, 2, 1')         #Config; AddPos; MaxLength
+    CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP:PUSC:DMTB BWP0, 1, 2, 1')         #Config; AddPos; MaxLength
     CMP.Set_5GNR_TransPrecoding('OFF')
-    CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:ALL{CMP.alloc}:PUSC A, 14, 0, 22, 22, Q64')   #Map; Sym; SymStrt; RB; RBO; Mod
-    CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:ALL{CMP.alloc}:PUSC:ADD 1, 2, 3, 0')          #Len; CDM; Pwr; Ant
-    CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:ALL{CMP.alloc}:PUSC:SGEN CID, 0, 0')          #SeqType; DMRSID; N_SCID
+    CMP.Set_5GNR_PUSCH(22,22,'Q64')
+    CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:ALL{CMP.alloc}:PUSC:ADD 1, 2, 3, 0')  #Len; CDM; Pwr; Ant
+    CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:ALL{CMP.alloc}:PUSC:SGEN CID, 0, 0')  #SeqType; DMRSID; N_SCID
     CMP.Set_5GNR_EVM_AvgCount(50)
     CMP.Set_5GNR_Trigger_Source('Free Run (Fast Sync)')
     print(CMP.Get_5GNR_EVM())
