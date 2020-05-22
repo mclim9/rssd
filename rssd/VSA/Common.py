@@ -32,17 +32,6 @@ class VSA(jaVisa):
                 ACLR = f'{ACLR},{self.Get_Mkr_Band(i)[1]:7.3f}'
         return ACLR
 
-    def Get_Params_Amp(self,header=0):
-        """Retrieve Parameters for test logs"""
-        if header != 1:
-            attn    = self.Get_AttnMech()
-            prea    = self.Get_Preamp()
-            refl    = self.Get_RefLevel()
-            outStr  = f'{attn:2d},{prea},{refl:7.3f}'
-        else:
-            outStr = 'Attn,PreAmp,RefLvl'
-        return outStr
-
     def Get_AttnMech(self):
         out = self.queryInt('INP:ATT?')
         return out 
@@ -75,13 +64,6 @@ class VSA(jaVisa):
         #EVM = self.query('FETC:SUMM:EVM:ALL:AVER?')
         out = self.queryFloat('FETC:SUMM:EVM?;*WAI').strip()
         return out
-
-    def Get_Params_EVM(self):
-        MAttn   = self.Get_AttnMech()
-        RefLvl  = self.Get_RefLevel()
-        Power   = self.Get_ChPwr()
-        EVM     = self.Get_EVM()
-        return f"{MAttn:.2f},{RefLvl:.2f},{Power:6.2f},{EVM:.2f}"
 
     def Get_Freq(self):
         rdStr = self.queryFloat(':SENS:FREQ:CENT?')
@@ -206,6 +188,64 @@ class VSA(jaVisa):
         IF_Ovld = Read & 4      # pylint: disable=W0612
         return Read
 
+    def Get_Params(self,amp,swp,sys,trc,header=0):
+        """Amp,Sweep,System,Trace"""
+        outStr = ""
+        outStr += self.Get_Params_Amp(header)+","   if (amp==1) else ""
+        outStr += self.Get_Params_Sweep(header)+"," if (swp==1) else ""
+        outStr += self.Get_Params_System(header)+","if (sys==1) else ""
+        outStr += self.Get_Params_Trace(header)+"," if (trc==1) else ""
+        return outStr
+
+    def Get_Params_Amp(self,header=0):
+        """Retrieve Parameters for test logs"""
+        if header != 1:
+            attn    = self.Get_AttnMech()
+            prea    = self.Get_Preamp()
+            refl    = self.Get_RefLevel()
+            outStr  = f'{attn:2d},{prea},{refl:7.3f}'
+        else:
+            outStr = 'Attn,PreAmp,RefLvl'
+        return outStr
+
+    def Get_Params_EVM(self):
+        MAttn   = self.Get_AttnMech()
+        RefLvl  = self.Get_RefLevel()
+        Power   = self.Get_ChPwr()
+        EVM     = self.Get_EVM()
+        return f"{MAttn:.2f},{RefLvl:.2f},{Power:6.2f},{EVM:.2f}"
+
+    def Get_Params_Sweep(self,header=0):
+        # SwpTime,SwpPts,SwpType,SwpOpt,
+        if header != 1:
+            Time    = self.Get_SweepTime()
+            Points  = self.Get_SweepPoints()
+            Type    = self.Get_SweepType()
+            Opt     = self.Get_SweepOpt()
+            outStr  = f'{Time:5.3f},{Points},{Type},{Opt}'
+        else:
+            outStr  = 'SwpTimeM,SwpPts,SwpType,SwpOpt'
+        return outStr
+
+    def Get_Params_System(self,header=0):
+        if header != 1:
+            error  = self.jav_Error()
+            ext    = self.Get_System_ErrorExt().replace('"','')
+            outStr = f'{error[0]:>4},{error[1]:10.10},{ext:10.10}'
+        else:
+            outStr  = 'ErrNo,ErrMsg,ExtError'
+        return outStr
+
+    def Get_Params_Trace(self,header=0,trace=1):
+        if header != 1:
+            mode    = self.Get_Trace_Mode(trace)
+            detect  = self.Get_Trace_Detector(trace)
+            avgtype = self.Get_Trace_AvgType()
+            outStr  = f'{mode},{detect},{avgtype}'
+        else:
+            outStr  = 'TrcMode,TrcDet,AvgMode'
+        return outStr
+
     def Get_Preamp(self):
         return self.queryInt(f'INP:GAIN:STAT?')
 
@@ -240,30 +280,9 @@ class VSA(jaVisa):
         rdStr = self.query(':SENS:SWE:TYPE?')
         return rdStr
 
-    def Get_Params_Sweep(self,header=0):
-        # SwpTime,SwpPts,SwpType,SwpOpt,
-        if header != 1:
-            Time    = self.Get_SweepTime()
-            Points  = self.Get_SweepPoints()
-            Type    = self.Get_SweepType()
-            Opt     = self.Get_SweepOpt()
-            outStr  = f'{Time:5.3f},{Points},{Type},{Opt}'
-        else:
-            outStr  = 'SwpTimeM,SwpPts,SwpType,SwpOpt'
-        return outStr
-
     def Get_System_ErrorExt(self):
         rdStr = self.query(':SYST:ERR:EXT? ALL')
         return rdStr
-
-    def Get_Params_System(self,header=0):
-        if header != 1:
-            error  = self.jav_Error()
-            ext    = self.Get_System_ErrorExt().replace('"','')
-            outStr = f'{error[0]:>4},{error[1]:10.10},{ext:10.10}'
-        else:
-            outStr  = 'ErrNo,ErrMsg,ExtError'
-        return outStr
 
     def Get_Trace_Data(self,trace=1):
         self.write('FORM ASCII ')
@@ -278,16 +297,6 @@ class VSA(jaVisa):
     def Get_Trace_Mode(self,trace=1):
         rdStr = self.query(f'DISP:TRAC{trace}:MODE?')
         return rdStr
-
-    def Get_Params_Trace(self,header=0,trace=1):
-        if header != 1:
-            mode    = self.Get_Trace_Mode(trace)
-            detect  = self.Get_Trace_Detector(trace)
-            avgtype = self.Get_Trace_AvgType()
-            outStr  = f'{mode},{detect},{avgtype}'
-        else:
-            outStr  = 'TrcMode,TrcDet,AvgMode'
-        return outStr
 
     def Get_Trace_AvgType(self):
         rdStr   = self.query('SENS:AVER:TYPE?')
@@ -750,6 +759,6 @@ if __name__ == "__main__":
     ### this won't be run when imported
     import timeit
     FSW = VSA().jav_Open("192.168.1.109")
-    print(FSW.Get_ChannelName())
+    print(FSW.Get_Param(1,0,1,1,1))
     FSW.jav_ClrErr()
     del FSW
