@@ -24,10 +24,14 @@ class VSG(VSG):                             #pylint: disable=E0102
     #####################################################################
     ### 5GNR Get Methods
     #####################################################################
+    def Get_5GNR_BWP_CellID(self):
+        rdStr = self.queryInt(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CELL?')
+        return rdStr
+
     def Get_5GNR_BWP_Center(self):
         rdStr = self.queryInt(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:DFR?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Ch_DMRS_1stDMRSSym(self):
         #rdStr = self.query(f':SOUR:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:PUSC:DMRS:APOS?')
         rdStr = "<TBD>"
