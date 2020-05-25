@@ -352,6 +352,7 @@ class VSA(jaVisa):
 
     def Set_Autolevel(self):
         self.query(':SENS:ADJ:LEV;*OPC?')
+        # self.jav_OPC_Wait(':SENS:ADJ:LEV')
 
     def Set_Autolevel_Proto(self,sState):
     ### Used by WLAN; K96.  Please use ADJ:LEV;
