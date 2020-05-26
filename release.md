@@ -24,6 +24,7 @@ Release History
     - Alpha Examples directory test
     - test_HW_RCT_5GNR.py alpha
     - coverage and coveralls integration
+    - Add github.ci Action pythonpackage.yml
 
 - RSSD 2020.04.0
   - VSA
