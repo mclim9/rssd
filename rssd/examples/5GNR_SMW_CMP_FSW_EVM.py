@@ -9,6 +9,7 @@ UserDir     = '2020.05.12-CMPEval'
 FSW_Rx      = True
 freqArry    = [24.250e9, 26e9, 28e9, 39e9]
 pwrArry     = range(-40,10,1)                                       #Power Array
+comment     = '-autoEVM'
 
 ###############################################################################
 ### Overhead
@@ -17,9 +18,10 @@ from rssd.VSG.NR5G_K144     import VSG                              #pylint: dis
 from rssd.VSA.NR5G_K144     import VSA                              #pylint: disable=E0611,E0401
 from rssd.RCT.NR5G_KM601    import RCT                              #pylint: disable=E0611,E0401
 from rssd.FileIO            import FileIO                           #pylint: disable=E0611,E0401
-import timeit
+from rssd.RSI.time          import timer                            #pylint: disable=E0611,E0401
 
 OFile = FileIO().makeFile(__file__)
+TMR = timer()
 SMW = VSG().jav_Open(SMW_IP,OFile)                                  #Create SMW Object
 if FSW_Rx:
     FSW = VSA().jav_Open(FSW_IP,OFile)                              #Create FSW Object
@@ -28,7 +30,17 @@ else:
     CMP = RCT().jav_Open(CMP_IP,OFile)                              #Create CMP Object
 
 class dataClass():
-    pass
+    NR5G.Direction      = 'UL'
+    NR5G.CellID         = 1
+    # NR5G.FreqRng      = 'HIGH'
+    NR5G.ChBW           = 100
+    NR5G.TF             = 'ON'
+    NR5G.SubSp          = 120
+    NR5G.RB             = 60
+    NR5G.RBO            = 0
+    NR5G.Ch_RB          = 60
+    NR5G.Ch_RBO         = 0
+    NR5G.Mod            = 'QPSK'
 
 def ReadSMW_Settings(NR5G):
     # NR5G.freq         = SMW.Get_Freq()
@@ -70,7 +82,7 @@ def NR5G_Rx_Config(sSetting):
         FSW.Set_Trig1_Source('EXT')
         FSW.Set_SweepTime(3e-3)
         FSW.Set_5GNR_SubFrameCount(16)
-        NR5G.Rx = FSW.Model
+        NR5G.Rx = FSW.Model + comment
     else:
         CMP.Init_5GNR()
         CMP.Set_5GNR_Path('P1.RRH.RF1')
@@ -82,7 +94,7 @@ def NR5G_Rx_Config(sSetting):
         CMP.Set_5GNR_CellID(NR5G.CellID)
         CMP.Set_5GNR_BWP_Ch_DMRS_1stDMRSSym(2)
         # CMP.Set_5GNR_NumBWP()
-        CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP BWP0, S120K, NORM, {NR5G.RB}, {NR5G.RBO}')                #SCS; NORM; RB; RBO
+        CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP BWP0, S120K, NORM, {NR5G.RB}, {NR5G.RBO}')#SCS; NORM; RB; RBO
         CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP:PUSC:DMTA BWP0, 1, 2, 1')                 #Config; AddPos; MaxLength
         CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP:PUSC:DMTB BWP0, 1, 2, 1')                 #Config; AddPos; MaxLength
         CMP.Set_5GNR_TransPrecoding(NR5G.TF)
@@ -93,7 +105,7 @@ def NR5G_Rx_Config(sSetting):
         CMP.write(f'CONF:NRMM:MEAS:MEV:MOEX')
         CMP.Set_5GNR_EVM_AvgCount(10)
         CMP.Set_5GNR_Trigger_Source('Free Run (Fast Sync)')
-        NR5G.Rx = CMP.Model
+        NR5G.Rx = CMP.Model + comment
 
 def NR5G_Rx_SetFreq(freq):
     if FSW_Rx:
@@ -106,8 +118,9 @@ def NR5G_Rx_SetFreq(freq):
 
 def NR5G_Rx_SetLevel(NR5G):
     if FSW_Rx:
-        FSW.Set_SweepCont(1)
-        FSW.Set_Autolevel()
+        # FSW.Set_SweepCont(1)
+        # FSW.Set_Autolevel()
+        FSW.Set_5GNR_AutoEVM()
     else:
         CF  = SMW.Get_CrestFactor()
         CMP.Init_Meas_Power()
@@ -160,20 +173,17 @@ for saveState in saveArry:
         for pwr in pwrArry:
             SMW.Set_RFPwr(pwr)
             NR5G.pwr = pwr
-            tick        = timeit.default_timer()                        #Tick Begin meas
+            TMR.start()
             NR5G_Rx_SetLevel(NR5G)
-            tockA       = timeit.default_timer()                        #Tick Auto Lev
-            EVM         = NR5G_Rx_Get_EVM()
-            tockB       = timeit.default_timer()                        #Tick Meas
-            ALTime      = (tockA-tick)
-            TotTime     = (tockB-tick)
-            TestTime    = TotTime - ALTime
+            TMR.tick()
+            EVM      = NR5G_Rx_Get_EVM()
+            TMR.tick()
 
             ### Log Data
             LoopParam   = f'{saveState},{NR5G.Rx},{freq},{pwr:3d}'
             # NR5GParam   = f'{NR5G.ChBW},{NR5G.RB},{NR5G.SubSp},{NR5G.Mod},{NR5G.TF}'
             AttnParam   = FSW.Get_Params_Amp() if FSW_Rx else CMP.Get_5GNR_Params_Amp(0)
-            TimeParam   = f'{ALTime:2,.3f},{TestTime:2,.3f},{TotTime:2,.3f}'
+            TimeParam   = TMR.deltaTimeTxt()
             OutStr      = f'{LoopParam},{AttnParam},{EVM},{TimeParam}'
             OFile.write(OutStr)
 
