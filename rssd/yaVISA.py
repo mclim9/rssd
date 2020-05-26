@@ -97,6 +97,25 @@ class jaVisa(object):
                 if self.debug: print("jav_OPCWai: timeout")
                 break
         if self.debug: print('jav_OPCWai: %0.2fsec'%(delta))
+        self.jav_ClrErr()
+        return delta
+    
+    def jav_Wait(self, InCMD):
+        """Brute Force Wait and check *OPC? """
+        start_time = time.time()
+        self.write(InCMD)                                                       #Initiate Command
+        read = "0"
+        while (int(read) & 1) != 1:                                             #Loop until done
+            try:
+                read = self.queryInt("*OPC?")                                   #See if we can get *OPC?
+            except:
+                pass
+            time.sleep(2)
+            delta = (time.time() - start_time)
+            if delta > 300:
+                if self.debug: print("jav_Wai: timeout")
+                break
+        if self.debug: print('jav_Wai: %0.2fsec'%(delta))
         return delta
     
     def jav_Open(self, IPAddr, fily='',prnt=1):
