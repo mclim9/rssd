@@ -272,9 +272,8 @@ class VSA(VSA):                                 #pylint: disable=E0102
     ### FSW 5GNR Settings
     #####################################################################
     def Set_5GNR_AutoEVM(self):
-        self.jav_OPC_Wait(':SENS:ADJ:EVM;*OPC?')
-        #self.query(':SENS:ADJ:EVM;*OPC?')
-        #self.delay(60)  #timed at 45sec
+        # self.jav_OPC_Wait(':SENS:ADJ:EVM')
+        self.jav_Wait(':SENS:ADJ:EVM')
 
     def Set_5GNR_AutoRefLvl(self):
         pass
@@ -464,7 +463,8 @@ class VSA(VSA):                                 #pylint: disable=E0102
 if __name__ == "__main__":
     ### this won't be run when imported
     FSW = VSA().jav_Open("192.168.1.109")
-    FSW.cc = 2
+    FSW.cc = 1
+    FSW.Set_5GNR_AutoEVM()
     print(FSW.Get_5GNR_Params_EVM())
     FSW.jav_ClrErr()
     FSW.jav_Close()
