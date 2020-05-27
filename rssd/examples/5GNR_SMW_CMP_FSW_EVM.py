@@ -9,7 +9,7 @@ UserDir     = '2020.05.12-CMPEval'
 FSW_Rx      = True
 freqArry    = [24.250e9, 26e9, 28e9, 39e9]
 pwrArry     = range(-40,10,1)                                       #Power Array
-comment     = '-autoEVM'
+comment     = '-autoEVM-SMW-IQ'
 
 ###############################################################################
 ### Overhead
@@ -30,17 +30,18 @@ else:
     CMP = RCT().jav_Open(CMP_IP,OFile)                              #Create CMP Object
 
 class dataClass():
-    NR5G.Direction      = 'UL'
-    NR5G.CellID         = 1
-    # NR5G.FreqRng      = 'HIGH'
-    NR5G.ChBW           = 100
-    NR5G.TF             = 'ON'
-    NR5G.SubSp          = 120
-    NR5G.RB             = 60
-    NR5G.RBO            = 0
-    NR5G.Ch_RB          = 60
-    NR5G.Ch_RBO         = 0
-    NR5G.Mod            = 'QPSK'
+    def __init__(self):
+        self.Direction      = 'UL'
+        self.CellID         = 1
+        # self.FreqRng      = 'HIGH'
+        self.ChBW           = 100
+        self.TF             = 'ON'
+        self.SubSp          = 120
+        self.RB             = 60
+        self.RBO            = 0
+        self.Ch_RB          = 60
+        self.Ch_RBO         = 0
+        self.Mod            = 'QPSK'
 
 def ReadSMW_Settings(NR5G):
     # NR5G.freq         = SMW.Get_Freq()
@@ -172,6 +173,7 @@ for saveState in saveArry:
         NR5G_Rx_SetFreq(freq)
         for pwr in pwrArry:
             SMW.Set_RFPwr(pwr)
+            SMW.jav_OPC_Wait(':CAL1:IQM:LOC?')
             NR5G.pwr = pwr
             TMR.start()
             NR5G_Rx_SetLevel(NR5G)
