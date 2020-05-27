@@ -221,7 +221,7 @@ class VSG(VSG):                             #pylint: disable=E0102
         elif (rdStr == 'GT6') or (rdStr == 'GT7125')or (rdStr == 'FR2'):
             outStr = 'HIGH'
         else:
-            print('Error Get_5GNR_FreqRange {rdStr}')
+            outStr = 'Error Get_5GNR_FreqRange {rdStr}'
         return outStr
         
     def Get_5GNR_RefA(self):
