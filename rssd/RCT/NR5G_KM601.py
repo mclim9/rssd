@@ -17,6 +17,7 @@ class RCT(RCT):
         self.alloc  = 1
         self.subF   = 0
         self.cc     = 1         # 1 Start
+        self.scs    = 'S120K'
 
     ############################################################################
     ### RCT Get Functions
@@ -292,12 +293,12 @@ class RCT(RCT):
             rdStr = self.queryFloatArry('FETC:NRMM:MEAS:MEV:MOD:AVER?')
             Power   = rdStr[18]     #19: RMS Ch Power
             Crest   = rdStr[19] - Power
-            EVMAll  = rdStr[2]      #3: EVM RMS Low
+            EVMAll  = rdStr[4]      #5: EVM PEAK Low
             EVMPhyC = rdStr[2]      #3: EVM RMS Low
             EVMPhyS = rdStr[21]     #22: EVM DMRS Low
             outStr  = f"{Crest:6.3f},{Power:6.3f},{EVMAll:.2f},{EVMPhyC:.2f},{EVMPhyS:.2f}"
         else:
-            outStr  = 'CMP_Cres,CMPPwr,5GEVM_All,EVM_PhyCh,EVM_PhySig'
+            outStr  = 'CMP_Cres,CMPPwr,5GEVM_Peak,EVM_RMS,EVM_DMRS'
         return outStr
 
     def Get_5GNR_PhaseCompensate(self):
@@ -356,10 +357,6 @@ class RCT(RCT):
             Freq : Hz"""
         self.write(f'CONF:NRMM:MEAS:MEV:PCOM {state},{int(freq)}')
 
-    def Set_5GNR_Periodicity(self,period):
-        """ Period: 05 | 0625 | 1 | 125 | 2 | 25 | 5 | 10 """
-        self.write(f'CONF:NRMM:MEAS:ULDL:PER MS{period}')
-
     def Set_5GNR_UserMargin(self, pwr):
         """ExpPwr = Range + ExtAttn - UserMargin
            units: dB """
@@ -393,22 +390,26 @@ class RCT(RCT):
     #     ### 5GNR-->Scheduling-->PUSCH-->No. RBs
     #         self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL0:RBOF {iRBO}')
 
-    # def Set_5GNR_BWP_ResBlock(self,iRB):
-    #     ### RB = (CHBw * 0.95) / (SubSp * 12)
-    #     self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:RBN {iRB}')
+    def Set_5GNR_BWP_Frame_SlotConfig(self,DLSlot,DLSym,ULSlot,ULSym):
+        """DLSlot,DLSym,ULSlot,ULSym """
+        self.write(f'CONF:NRMM:MEAS:ULDL:PATT {self.scs}, {DLSlot},{DLSym},{ULSlot},{ULSym}')    #DL Slot; DL Sym; UL SLot; UL Sym
 
-    # def Set_5GNR_BWP_ResBlockMax(self):
-    #     ### RB = (CHBw * 0.95) / (SubSp * 12)
-    #     MaxRB =  20
-    #     rdStr = self.query(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:RBN {MaxRB}')
-    #     return rdStr
-        
+    def Set_5GNR_BWP_Frame_Periodicity(self,msec):
+        """ Period,msec: 05 | 0625 | 1 | 125 | 2 | 25 | 5 | 10 """
+        self.write(f'CONF:NRMM:MEAS:ULDL:PER MS{msec}')
+
+    def Set_5GNR_BWP_ResBlock(self, iRB, iRBO):
+        ### RB = (CHBw * 0.95) / (SubSp * 12)
+        self.write(f'CONF:NRMM:MEAS:CCAL:TXBW:SCSP {self.scs}')
+        self.write(f'CONF:NRMM:MEAS:CC{self.cc}:BWP BWP{self.BWP}, {self.scs}, NORM, {iRB}, {iRBO}')#SCS; NORM; RB; RBO
+
     # def Set_5GNR_BWP_ResBlockOffset(self,iRBO):
     #     self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:RBOF {iRBO}')
 
-    # def Set_5GNR_BWP_SubSpace(self,iSubSp):
-    #     """60| 120"""
-    #     self.write(f'CONF:NRMM:MEAS:CCAL:TXBW:SCSP S{iSubSp}K')
+    def Set_5GNR_BWP_SubSpace(self,iSubSp):
+        """60| 120"""
+        self.scs = f'S{iSubSp}K'
+        self.write(f'CONF:NRMM:MEAS:CCAL:TXBW:SCSP {self.scs}')
 
     # def Set_5GNR_CC_Num(self,iCC):
     #     """ iCC, 1 start """
@@ -443,6 +444,13 @@ class RCT(RCT):
     def Set_5GNR_EVM_AvgCount(self, avg):
         """1 to 1000 slots"""
         self.write(f':CONF:NRMM:MEAS:MEV:SCO:MOD {avg}')
+
+    def Set_5GNR_EVM_MeasOnExcept(self, state):
+        """ 'ON' | 'OFF' """
+        if (state == "ON") or (state == 1):
+            self.write(f'CONF:NRMM:MEAS:MEV:MOEX ON')
+        else:
+            self.write(f'CONF:NRMM:MEAS:MEV:MOEX OFF')
 
     def Set_5GNR_Path(self,path):
         """string P1.RRH.RF1 P1.RRH.RF2 """
@@ -500,18 +508,16 @@ if __name__ == "__main__":
     CMP.jav_Open("192.168.1.160")
     CMP.Set_5GNR_Path('P1.RRH.RF1')
     CMP.Set_5GNR_Freq(28e9)
-    # CMP.Get_GPRF_Pwr()
     CMP.Set_5GNR_ExpPwr(-9)
     CMP.Set_5GNR_UserMargin(13)
     CMP.Set_5GNR_PhaseCompensate_Freq(28e9)
-    CMP.write(f'CONF:NRMM:MEAS:ULDL:PER MS2')
-    CMP.write(f'CONF:NRMM:MEAS:ULDL:PATT S120k, 0,0,8,0')                       #DL Slot; DL Sym; UL SLot; UL Sym
-    CMP.write(f'CONF:NRMM:MEAS:ULDL:PATT S60k,  0,0,1,0')                       #DL Slot; DL Sym; UL SLot; UL Sym
+    CMP.Set_5GNR_BWP_Frame_Periodicity('2')
+    CMP.Set_5GNR_BWP_Frame_SlotConfig(0,0,8,0)
     CMP.Set_5GNR_ChannelBW(100)
     CMP.Set_5GNR_CellID(1)
     CMP.Set_5GNR_BWP_Ch_DMRS_1stDMRSSym(2)
     # CMP.Set_5GNR_NumBWP()
-    CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP BWP0, S120K, NORM, 66, 0')        #SCS; NORM; RB; RBO
+    CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP BWP0, {CMP.scs}, NORM, 66, 0')    #SCS; NORM; RB; RBO
     CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP:PUSC:DMTA BWP0, 1, 2, 1')         #Config; AddPos; MaxLength
     CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP:PUSC:DMTB BWP0, 1, 2, 1')         #Config; AddPos; MaxLength
     CMP.Set_5GNR_TransPrecoding('OFF')
@@ -522,4 +528,5 @@ if __name__ == "__main__":
     CMP.Set_5GNR_Trigger_Source('Free Run (Fast Sync)')
     print(CMP.Get_5GNR_EVM())
     CMP.Set_5GNR_Stop
+    CMP.jav_ClrErr()
     CMP.jav_Close()
