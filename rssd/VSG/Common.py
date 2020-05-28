@@ -234,6 +234,21 @@ class VSG(jaVisa):
     def Set_OS_Dir(self,sDir):
         self.write(f'MMEMory:CDIRectory "/var/user/{sDir}"')
 
+    def Set_OptimizeNow(self):
+        """Please set"""
+        self.Set_OptimizeIQ()
+        self.Set_OptimizeLevel()
+
+    def Set_OptimizeIQ(self):
+        """Please set"""
+        self.K2.timeout = 9000
+        self.query(':CAL:IQM:LOC?')       # SMW IQ Adjust
+
+    def Set_OptimizeLevel(self):
+        """Please set"""
+        self.K2.timeout = 9000
+        self.query(':CAL:LEV:LOC?')       # SMW Level Adjust
+
     def Set_PhaseDelta(self,fPhase):
         self.write(':SOUR1:PHASE %d'%(fPhase))
 
