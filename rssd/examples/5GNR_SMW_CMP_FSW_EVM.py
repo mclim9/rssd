@@ -6,10 +6,10 @@ SMW_IP      = '192.168.1.114'
 FSW_IP      = '192.168.1.109'
 CMP_IP      = '192.168.1.160'
 UserDir     = '2020.05.12-CMPEval'
-FSW_Rx      = True
+FSW_Rx      = False
 freqArry    = [24.250e9, 26e9, 28e9, 39e9]
 pwrArry     = range(-40,10,1)                                       #Power Array
-comment     = '-autoEVM-SMW-IQ'
+comment     = '-PhTimTracking'
 
 ###############################################################################
 ### Overhead
@@ -23,8 +23,10 @@ from rssd.RSI.time          import timer                            #pylint: dis
 OFile = FileIO().makeFile(__file__)
 TMR = timer()
 SMW = VSG().jav_Open(SMW_IP,OFile)                                  #Create SMW Object
+SMW.debug = 0
 if FSW_Rx:
     FSW = VSA().jav_Open(FSW_IP,OFile)                              #Create FSW Object
+    FSW.debug = 0
 else:
     RCT().jav_Close()
     CMP = RCT().jav_Open(CMP_IP,OFile)                              #Create CMP Object
@@ -56,14 +58,6 @@ def ReadSMW_Settings(NR5G):
     NR5G.RBO            = SMW.Get_5GNR_BWP_ResBlockOffset()
     NR5G.Ch_RB          = SMW.Get_5GNR_BWP_Ch_ResBlock()
     NR5G.Ch_RBO         = SMW.Get_5GNR_BWP_Ch_ResBlockOffset()
-    # NR5G.Ch_DMRS_Config  = SMW.Get_5GNR_BWP_Ch_DMRS_Config()
-    # NR5G.Ch_DMRS_1st     = SMW.Get_5GNR_BWP_Ch_DMRS_1stDMRSSym()
-    # NR5G.Ch_DMRS_AddPost = SMW.Get_5GNR_BWP_Ch_DMRS_AddPosition()
-    # NR5G.Ch_DMRS_Mapping = SMW.Get_5GNR_BWP_Ch_DMRS_Mapping()
-    # NR5G.Ch_DMRS_MSymbL  = SMW.Get_5GNR_BWP_Ch_DMRS_MSymbLen()
-    # NR5G.Ch_DMRS_RelPwr  = SMW.Get_5GNR_BWP_Ch_DMRS_RelPwr()
-    # NR5G.Ch_DMRS_SGMeth  = SMW.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth()
-    # NR5G.Ch_DMRS_SGSeed  = SMW.Get_5GNR_BWP_Ch_DMRS_SeqGenSeed()
     NR5G.Mod            = SMW.Get_5GNR_BWP_Ch_Modulation()
     return NR5G
 
@@ -88,23 +82,21 @@ def NR5G_Rx_Config(sSetting):
         CMP.Init_5GNR()
         CMP.Set_5GNR_Path('P1.RRH.RF1')
         CMP.Set_Meas_Port('P1.RRH.RF1')
-        CMP.write(f'CONF:NRMM:MEAS:ULDL:PER MS2')
-        CMP.write(f'CONF:NRMM:MEAS:ULDL:PATT S120k, 0,0,8,0')                               #DL Slot; DL Sym; UL SLot; UL Sym
-        CMP.write(f'CONF:NRMM:MEAS:ULDL:PATT S60k,  0,0,1,0')                               #DL Slot; DL Sym; UL SLot; UL Sym
+        CMP.Set_5GNR_BWP_Frame_Periodicity(2)
+        CMP.Set_5GNR_BWP_Frame_SlotConfig(0,0,8,0)
         CMP.Set_5GNR_ChannelBW(100)
         CMP.Set_5GNR_CellID(NR5G.CellID)
         CMP.Set_5GNR_BWP_Ch_DMRS_1stDMRSSym(2)
         # CMP.Set_5GNR_NumBWP()
-        CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP BWP0, S120K, NORM, {NR5G.RB}, {NR5G.RBO}')#SCS; NORM; RB; RBO
+        CMP.Set_5GNR_BWP_ResBlock(NR5G.RB, NR5G.RBO)
         CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP:PUSC:DMTA BWP0, 1, 2, 1')                 #Config; AddPos; MaxLength
         CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:BWP:PUSC:DMTB BWP0, 1, 2, 1')                 #Config; AddPos; MaxLength
         CMP.Set_5GNR_TransPrecoding(NR5G.TF)
         CMP.Set_5GNR_PUSCH(NR5G.Ch_RB, NR5G.Ch_RBO, NR5G.Mod)
-        # CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:ALL{CMP.alloc}:PUSC A, 14, 0, {NR5G.Ch_RB}, {NR5G.Ch_RBO}, {mod}')   #Map; Sym; SymStrt; RB; RBO; Mod
         CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:ALL{CMP.alloc}:PUSC:ADD 1, 2, 3, 0')          #Len; CDM; Pwr; Ant
         CMP.write(f'CONF:NRMM:MEAS:CC{CMP.cc}:ALL{CMP.alloc}:PUSC:SGEN CID, 0, 0')          #SeqType; DMRSID; N_SCID
-        CMP.write(f'CONF:NRMM:MEAS:MEV:MOEX')
-        CMP.Set_5GNR_EVM_AvgCount(10)
+        CMP.Set_5GNR_EVM_MeasOnExcept('ON')
+        CMP.Set_5GNR_EVM_AvgCount(20)
         CMP.Set_5GNR_Trigger_Source('Free Run (Fast Sync)')
         NR5G.Rx = CMP.Model + comment
 
@@ -152,7 +144,7 @@ LoopParam   = 'State,Model,SMW_Fre,SMW_Pwr'
 WaveParam   = 'ChBW,SubSp,RB,Mod,TF'
 AttnParam   = FSW.Get_Params_Amp(1) if FSW_Rx else CMP.Get_5GNR_Params_Amp(1)
 EVMParam    = FSW.Get_5GNR_Params_EVM(1) if FSW_Rx else CMP.Get_5GNR_Params_EVM(1)
-TimeParam   = 'AlTime,MeasTime,TotalTIme'
+TimeParam   = 'AlTime,MeasTime,TotalTime,HoursLeft'
 Header      = f'{LoopParam},{AttnParam},{EVMParam},{TimeParam}'
 OFile.write(Header)
 
@@ -163,6 +155,8 @@ saveArry = SMW.Get_OS_FileList('savrcltxt')
 saveArry = SMW.Get_OS_FileList('nr5g')
 NR5G_Rx_Init()
 
+TMR.numTest = len(saveArry) * len(freqArry) * len(pwrArry)
+TMR.suite_start()
 for saveState in saveArry:
     SMW.Set_5GNR_Setting_Load(f'{UserDir}/{saveState}')
     ReadSMW_Settings(NR5G)
@@ -172,13 +166,13 @@ for saveState in saveArry:
         SMW.Set_5GNR_PhaseCompensate_Freq(freq)
         NR5G_Rx_SetFreq(freq)
         for pwr in pwrArry:
-            SMW.Set_RFPwr(pwr)
-            SMW.jav_OPC_Wait(':CAL1:IQM:LOC?')
-            NR5G.pwr = pwr
             TMR.start()
+            SMW.Set_RFPwr(pwr)
+            SMW.Set_OptimizeAll()
+            NR5G.pwr = pwr
             NR5G_Rx_SetLevel(NR5G)
             TMR.tick()
-            EVM      = NR5G_Rx_Get_EVM()
+            EVM = NR5G_Rx_Get_EVM()
             TMR.tick()
 
             ### Log Data
@@ -188,5 +182,6 @@ for saveState in saveArry:
             TimeParam   = TMR.deltaTimeTxt()
             OutStr      = f'{LoopParam},{AttnParam},{EVM},{TimeParam}'
             OFile.write(OutStr)
+SMW.Set_RFPwr(-100)
 
 
