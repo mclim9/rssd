@@ -15,7 +15,6 @@ class FileIO(object):
         self.Outfile = ""
         self.sFName = ""
         self.debug = 1
-        pass
 
     def makeFile(self,sFilepath):
         """"Create file in same directory as sFilepath."""
@@ -28,7 +27,7 @@ class FileIO(object):
     def init(self,sName="Datalog"):
         """Append to sName file"""
         self.sFName = "%s-%s.csv"%(sName,datetime.now().strftime("%y%m%d"))
-        self.Outfile = open(self.sFName, 'a')              #Open File
+        self.Outfile = open(self.sFName, 'a')                               #Open File
         return self
 
     def set_filename(self,sFile):

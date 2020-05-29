@@ -8,25 +8,26 @@
 ### Requird: python -m pip install pyvisa
 ### Descrip: Wrapper for common VISA commands
 ###          properties for: Make; Model; Version; IDN; last error
-###          logSCPI --> file for 
+###          logSCPI --> file for
 #####################################################################
-import visa
 import time
+import visa
 import rssd.FileIO                                #pylint: disable=E0611,E0401
-import socket
 
 class jaVisa(object):
     ### Rohde & Schwarz VISA Class
-    ### Instrument Common functions. 
+    ### Instrument Common functions
     def __init__(self):
         self.dataIDN    = ""    # Raw IDN String
         self.Make       = ""    # IDN Make
         self.Model      = ""    # IDN Model
         self.Device     = ""    # IDN Device
-        self.Version    = ""    # IDN Version 
+        self.Version    = ""    # IDN Version
         self.debug      = 1     # Print or not.
         self.EOL        = '\n'
         self.f          = ''    # file log object
+        self.dLastErr   = ''
+        self.K2         = 'NoVISA'
 
     def delay(self,sec):
         time.sleep(sec)
@@ -56,13 +57,13 @@ class jaVisa(object):
                 if self.debug: print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
         except:  #Instrument does not support SYST:ERR?
             if self.debug: print("jav_ClrErr: %s-->SYST:ERR not Supported"%(self.Model))
-        return ErrList 
-            
+        return ErrList
+
     def jav_Error(self):
         RdStr = self.query("SYST:ERR?").strip().split(',')
         return RdStr
 
-    def jav_IDN(self,prnt=1):
+    def jav_IDN(self):
         self.dataIDN = "Temp"                               #Temp for self.query
         self.dataIDN = self.query("*IDN?").strip()
         if self.dataIDN != "<notRead>":                     #Data Returned?
@@ -78,7 +79,7 @@ class jaVisa(object):
             self.dataIDN = ""                               #Reset if not read
         if self.debug: print('jav_IDN    : %s'%(self.dataIDN))
         return self.dataIDN
-                
+
     def jav_OPC_Wait(self, InCMD):
         start_time = time.time()
         self.write("*ESE 1")                                #Event Status Enable
@@ -99,7 +100,7 @@ class jaVisa(object):
         if self.debug: print('jav_OPCWai: %0.2fsec'%(delta))
         self.jav_ClrErr()
         return delta
-    
+
     def jav_Wait(self, InCMD):
         """Brute Force Wait and check *OPC? """
         start_time = time.time()
@@ -117,21 +118,21 @@ class jaVisa(object):
                 break
         if self.debug: print('jav_Wai   : %0.2fsec'%(delta))
         return delta
-    
-    def jav_Open(self, IPAddr, fily='',prnt=1):
+
+    def jav_Open(self, IPAddr, fily=''):
         #  VISA: 'TCPIP0::'+IP_Address+'::INSTR'
         #  VISA: 'TCPIP0::'+IP_Address+'::inst0'
         #  VISA: 'TCPIP0::'+IP_Address+'::hislip0'
         #  VISA: 'TCPIP0::'+IP_Address+'::hislip0::INSTR'
         try:
-            self.jav_openvisa('TCPIP0::'+IPAddr+'::hislip0::INSTR',fily,prnt)
+            self.jav_openvisa('TCPIP0::'+IPAddr+'::hislip0::INSTR',fily)
         except:
             print('VISA Openerror.  Using Raw Socket')
-            self.jav_openvisa('TCPIP::'+IPAddr+'::5025::SOCKET',fily,prnt)
+            self.jav_openvisa('TCPIP::'+IPAddr+'::5025::SOCKET',fily)
         return self
 
-    def jav_openvisa(self, sVISAStr, fily='',prnt=1):
-        """ 
+    def jav_openvisa(self, sVISAStr, fily=''):
+        """
         TCPIP0::<IP_Address>::inst0::INSTR
         TCPIP0::<IP_Address>::hislip0::INSTR
         TCPIP0::<IP_Address>::5025::SOCKET
@@ -143,7 +144,7 @@ class jaVisa(object):
         try:
             self.K2 = rm.open_resource(sVISAStr)            #Create Visa Obj
             self.K2.timeout = 5000                          #Timeout, millisec
-            self.jav_IDN(prnt)
+            self.jav_IDN()
             self.jav_fileout(fily, self.dataIDN)
             self.jav_ClrErr()
         except:
@@ -180,7 +181,7 @@ class jaVisa(object):
         return rmList
 
     def jav_scpilist(self,SCPIList):
-        ### Send SCPI list & Query if "?" 
+        ### Send SCPI list & Query if "?"
         ### Collect read results into a list for return.
         OutList = []
         for cmd in SCPIList:
@@ -194,7 +195,7 @@ class jaVisa(object):
     def query(self,cmd):
         read ="<notRead>"
         try:
-            if self.dataIDN != "": 
+            if self.dataIDN != "":
                 read = self.K2.query(cmd).strip()           #Write if connected
         except:
             if self.debug: print("jav_RdErr : %s-->%s"%(self.Model,cmd))
@@ -219,7 +220,7 @@ class jaVisa(object):
         try:
             strArry = self.query(cmd).split(',')
             return int([float(i) for i in strArry][0])
-            # Float for scientific 'e' notation 
+            # Float for scientific 'e' notation
         except:
             return -9999
 
@@ -239,15 +240,15 @@ class jaVisa(object):
 
 if __name__ == "__main__":
     RS = jaVisa()
-    ipaddress   = '192.168.1.109'
+    ipaddress   = '192.168.1.160'
     port        = 5025
     RS.debug    = 1
     # RS.jav_logscpi()
-
-    # RS.jav_Open(ipaddress)                                    #Default HiSlip
+    RS.jav_Open(ipaddress)                                    #Default HiSlip
     # RS.jav_openvisa(f'TCPIP::{ipaddress}::hislip0::INSTR')    #hislip
     # RS.jav_openvisa(f'TCPIP::{ipaddress}::instr0::INSTR')     #VXI11
-    RS.jav_openvisa(f'TCPIP::{ipaddress}::{port}::SOCKET')    #Socket
+    # RS.jav_openvisa(f'TCPIP::{ipaddress}::{port}::SOCKET')    #Socket
 
     print(RS.query("*IDN?"))
     RS.jav_Close()
+    

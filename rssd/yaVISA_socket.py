@@ -1,33 +1,32 @@
 # -*- coding: future_fstrings -*-
 #####################################################################
 ### Rohde & Schwarz Automation for demonstration use.
-###
 ### Purpose: Yet(Just) Another VISA wrapper
-### Author:  Martin C Lim
-### Date:     2017.09.01
-### Requird: python -m pip install pyvisa
+### Author : Martin C Lim
+### Date   : 2017.09.01
 ### Descrip: Wrapper for common VISA commands
 ###          properties for: Make; Model; Version; IDN; last error
-###          logSCPI --> file for 
+###          logSCPI --> file for
 #####################################################################
 import time
-import rssd.FileIO                                #pylint: disable=E0611,E0401
 import socket
+import rssd.FileIO                                #pylint: disable=E0611,E0401
 
 class jaVisa(object):
     ### Rohde & Schwarz VISA Class
-    ### Instrument Common functions. 
+    ### Instrument Common functions
     def __init__(self):
         self.dataIDN    = ""        # Raw IDN String
         self.Make       = ""        # IDN Make
         self.Model      = ""        # IDN Model
         self.Device     = ""        # IDN Device
-        self.Version    = ""        # IDN Version 
-        self.debug      = 1         # Print or not.
+        self.Version    = ""        # IDN Version
+        self.debug      = 1         # Print or not
         self.EOL        = '\n'
         self.f          = ''        # Log File Object
-        pass
-    
+        self.K2         = ''        # VISA object
+        self.dLastErr   = ''        # Last error
+
     def delay(self,sec):
         time.sleep(sec)
 
@@ -50,17 +49,16 @@ class jaVisa(object):
                 RdStr = self.query("SYST:ERR?").strip()
                 ErrList.append(RdStr)
                 RdStrSplit = RdStr.split(',')
-                if RdStr == "<notRead>": break              #No readstring
-                if RdStrSplit[0] == "0": break              #Read 0 error:R&S
-                if RdStrSplit[0] == "+0": break             #Read 0 error:Other
-                if 'Page Could not be Displayed' in RdStrSplit[0] : break        #For html testing socket
+                if RdStr            == "<notRead>": break                       #No readstring
+                if RdStrSplit[0]    == "0": break                               #Read 0 error:R&S
+                if RdStrSplit[0]    == "+0": break                              #Read 0 error:Other
+                if 'Page Could not be Displayed' in RdStrSplit[0] : break       #For html testing socket
                 self.dLastErr = RdStr
                 if self.debug: print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
         except:  #Instrument does not support SYST:ERR?
             if self.debug: print("jav_ClrErr: %s-->SYST:ERR not Supported"%(self.Model))
-            pass
-        return ErrList 
-            
+        return ErrList
+
     def jav_Error(self):
         RdStr = self.query("SYST:ERR?").strip().split(',')
         return RdStr
@@ -81,7 +79,7 @@ class jaVisa(object):
             self.dataIDN = ""                               #Reset if not read
         if self.debug: print('jav_IDN   : %s'%(self.dataIDN))
         return self.dataIDN
-                
+
     def jav_OPC_Wait(self, InCMD):
         start_time = time.time()
         self.write("*ESE 1")                                #Event Status Enable
@@ -118,7 +116,7 @@ class jaVisa(object):
         return self
 
     def jav_Open_Basic(self, sIPAddr,fily='',port=5025):
-        """ Open raw socket Connection 
+        """ Open raw socket Connection
             No IDN or Error checking"""
         self.K2 = socket.socket()
         try:
@@ -155,7 +153,7 @@ class jaVisa(object):
         return ["No VISA"]
 
     def jav_scpilist(self,SCPIList):
-        ### Send SCPI list & Query if "?" 
+        ### Send SCPI list & Query if "?"
         ### Collect read results into a list for return.
         OutList = []
         for cmd in SCPIList:
@@ -173,7 +171,7 @@ class jaVisa(object):
         read ="<notRead>"
         try:
             if self.dataIDN != "":
-                cmd = cmd + '\n' 
+                cmd = cmd + '\n'
                 self.K2.sendall(cmd.encode())               #Write if connected
                 sOut = self.K2.recv(2048).strip()           #read socket
                 read = sOut.decode()
@@ -181,7 +179,7 @@ class jaVisa(object):
             if self.debug: print("jav_RdErr : %s-->%s"%(self.Model,cmd))
         self.jav_fileout(self.f, "%s,%s,%s"%(self.Model,cmd,read))
         return read
-        
+
     def queryFloat(self,cmd):
         try:
             strArry = self.query(cmd).split(',')
@@ -195,7 +193,7 @@ class jaVisa(object):
             return [float(i) for i in strArry]
         except:
             return [-9999.9999]
-            
+
     def queryInt(self,cmd):
         try:
             strArry = self.query(cmd).split(',')
@@ -219,11 +217,9 @@ class jaVisa(object):
         self.jav_fileout(self.f, "%s,%s"%(self.Model,cmd))
 
 if __name__ == "__main__":
-    if 0:
-        RS = jaVisa().jav_Open_Basic("192.168.1.30",5025)
-        RS.EOL = '\r\n'
-    else:
-        RS = jaVisa().jav_Open_Basic("192.168.1.50",200)
-        RS.EOL = '\x00'
+    RS = jaVisa().jav_Open_Basic("192.168.1.160",5025)
+    RS.EOL = '\r\n'
+    # RS = jaVisa().jav_Open_Basic("192.168.1.50",200)
+    # RS.EOL = '\x00'
     print(RS.query("*IDN?"))
     RS.jav_Close()
