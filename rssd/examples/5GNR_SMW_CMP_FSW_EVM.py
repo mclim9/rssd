@@ -9,7 +9,7 @@ UserDir     = '2020.05.12-CMPEval'
 FSW_Rx      = False
 freqArry    = [24.250e9, 26e9, 28e9, 39e9]
 pwrArry     = range(-40,10,1)                                       #Power Array
-comment     = '-PhTimTracking'
+comment     = '-PhTimTracking-SMWIQ'
 
 ###############################################################################
 ### Overhead
@@ -44,6 +44,8 @@ class dataClass():
         self.Ch_RB          = 60
         self.Ch_RBO         = 0
         self.Mod            = 'QPSK'
+        self.Rx             = ''
+        self.pwr            = -100
 
 def ReadSMW_Settings(NR5G):
     # NR5G.freq         = SMW.Get_Freq()
@@ -183,5 +185,3 @@ for saveState in saveArry:
             OutStr      = f'{LoopParam},{AttnParam},{EVM},{TimeParam}'
             OFile.write(OutStr)
 SMW.Set_RFPwr(-100)
-
-

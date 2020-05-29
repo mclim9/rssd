@@ -4,13 +4,11 @@
 ### Title  : Timing SCPI Commands Example
 ### Author : mclim
 ### Date   : 2018.05.24
-### Steps  : 
-###
 ################################################################################
 ### User Entry
 ################################################################################
 VSA_IP  = '192.168.1.109'
-VSG_IP  = '192.168.1.114' 
+VSG_IP  = '192.168.1.114'
 MeasTim = 0
 Freq    = 9.0e9
 RBW     = 200e3
@@ -30,9 +28,8 @@ PwrSweep = 59
 ################################################################################
 from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
 from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
-from datetime               import datetime
 from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
-# import rssd.VSA_Leveling    as VSAL                 #pylint: disable=E0611,E0401
+# import rssd.VSA_Leveling    as VSAL               #pylint: disable=E0611,E0401
 import timeit
 
 OFile = FileIO().makeFile(__file__)
@@ -81,15 +78,15 @@ for i in range(Repeat):
         tick = timeit.default_timer()
 
         ### <\thing we are timing>
-        VSG.write(f':POW:AMPL {VSApwr - DUTGain}dbm')                  ### VSG Power
+        VSG.write(f':POW:AMPL {VSApwr - DUTGain}dbm')           # VSG Power
         #################
         ### AUTOLEVEL ###
         #################
         if 1:
             VSA.Set_SweepCont(0)                                # Sweep Continuous
             VSA.Set_Autolevel()
-        else:
-            lvlTable = VSA.Set_Autolevel_IQIF(table)
+        # else:
+        #     lvlTable = VSA.Set_Autolevel_IQIF(table)
         tockA =  timeit.default_timer()
         VSA.Set_Channel('SAN')
         VSA.Set_SweepCont(0)                                    # Single Sweep

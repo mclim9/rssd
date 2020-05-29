@@ -1,9 +1,8 @@
 ##########################################################
 ### Rohde & Schwarz Automation for demonstration use.
-###
 ### Purpose: Demonstrate CMW100 Gen Purpose RF Loopback
 ### Author:  mclim
-### Date:    2018.05.31 
+### Date:    2018.05.31
 ##########################################################
 ### User Entry
 ##########################################################
@@ -33,12 +32,12 @@ def CMW_Set(freq, pwr):
 ##########################################################
 ### Code Start
 ##########################################################
+from datetime           import datetime
 from rssd.FileIO        import FileIO
 from rssd.RCT.GPRF      import RCT
-from datetime           import datetime
 
 f = FileIO()
-f.debug = 0 
+f.debug = 0
 IArry = f.initread(InpFile).readcsv()
 OFile = f.Init(OutFile)
 
@@ -46,8 +45,8 @@ CMW = RCT()
 CMW.jav_Open("127.0.0.1")
 
 for port in ports:
-	CMW.Set_Sys_TxPortLoss(port,0)
-	CMW.Set_Sys_RxPortLoss(port,0)
+    CMW.Set_Sys_TxPortLoss(port,0)
+    CMW.Set_Sys_RxPortLoss(port,0)
 CMW.Init_VSG()
 
 OFile.write ('\nDate,Iter,Freq,Pwr,MPwr,Port,Time,Diff')
