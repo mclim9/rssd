@@ -38,15 +38,17 @@ class RCT(RCT):                                 #pylint: disable=E0102
     ### RCT Init Functions
     ###########################################################################
     def Init_Gen(self,port=1):                                              #Val
-        self.write('ROUT:GPRF:GEN:SCENario:SALone R118, TX11')
+        # self.write('ROUT:GPRF:GEN:SCENario:SALone R118, TX11')
+        self.Set_Gen_Port(port)
         self.write('CONF:GPRF:GEN:CMWS:USAGe:TX:ALL R118, OFF, OFF,OFF, OFF, OFF, OFF, OFF, OFF')
 
     def Init_Meas_FFT(self,port=1):                                          #Val
-        self.write('ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1'%port)
+        self.write(f'ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1')
         self.write('INIT:GPRF:MEAS:FFTS')
 
     def Init_Meas_Power(self,port=1):                                        #Val
-        # self.write('ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1'%port)
+        # self.write(f'ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1')
+        self.Set_Meas_Port(port)
         self.write('FORMAT:BASE:DATA ASCII')
         self.write('INIT:GPRF:MEAS:POW')
         self.write('CONF:GPRF:MEAS:POW:MODE POW')      #POW|STAT
@@ -146,7 +148,5 @@ if __name__ == "__main__":
     ### this won't be run when imported
     CMW = RCT()
     CMW.jav_Open("192.168.1.160")
-    pwr = CMW.Set_Gen_ArbWv('OneTone.mat.wv')
-    print(pwr)
-    # CMW.Set_Meas_Autolevel()
+    CMW.Set_Gen_ArbWv('OneTone.mat.wv')
     CMW.jav_Close()

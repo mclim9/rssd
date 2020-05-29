@@ -7,80 +7,78 @@
 ### Date:    2020.04.20
 ### Descrip: jaVISA mockup
 ###          properties for: Make; Model; Version; IDN; last error
-###          logSCPI --> file for 
+###          logSCPI --> file for
 #####################################################################
-import time
-
-class jaVISA_mock(object):
-    ### Instrument Common functions. 
+class jaVISA_mock(object):                          #pylint: disable=R0205
+    ### Instrument Common functions
     def __init__(self):
         self.dataIDN    = ""    # Raw IDN String
         self.Make       = ""    # IDN Make
         self.Model      = ""    # IDN Model
         self.Device     = ""    # IDN Device
-        self.Version    = ""    # IDN Version 
-        self.debug      = 1     # Print or not.
+        self.Version    = ""    # IDN Version
+        self.debug      = 1     # Print or not
         self.EOL        = '\n'
         self.f          = ''    # file log object
 
-    def delay(self,sec):
+    def delay(self,sec):                            #pylint: disable=R0201,W0613
         pass
 
-    def jav_Clear(self):
+    def jav_Clear(self):                            #pylint: disable=R0201,W0613
         pass
 
-    def jav_Close(self):
+    def jav_Close(self):                            #pylint: disable=R0201,W0613
         pass
 
-    def jav_ClrErr(self):
+    def jav_ClrErr(self):                           #pylint: disable=R0201,W0613
         return "no Error"
 
-    def jav_Error(self):
+    def jav_Error(self):                            #pylint: disable=R0201,W0613
         return '0,No Error'
 
-    def jav_IDN(self,prnt=1):
-        self.dataIDN    = "test"                               #Temp for self.query
+    def jav_IDN(self,prnt=1):                       #pylint: disable=R0201,W0613
+        self.dataIDN    = "test"                    #Temp for self.query
         self.Make       = 'MakeTest'
         self.Model      = 'ModelTest'
         self.Device     = 'DevTest'
         self.Version    = '1.0.0'
         if self.debug: print('jav_IDN    : %s'%(self.dataIDN))
         return self.dataIDN
-                
-    def jav_OPC_Wait(self, InCMD):
+
+    def jav_OPC_Wait(self, InCMD):                  #pylint: disable=R0201,W0613
         return 0.0
 
-    def jav_Open(self, IPAddr, fily='',prnt=1):
+    def jav_Open(self, IPAddr, fily=''):            #pylint: disable=R0201,W0613
         return self
 
-    def jav_openvisa(self, sVISAStr, fily='',prnt=1):
+    def jav_openvisa(self, sVISAStr, fily=''):      #pylint: disable=R0201,W0613
         return self
 
-    def jav_fileout(self, fily, outstr):
+    def jav_fileout(self, fily, outstr):            #pylint: disable=R0201,W0613
         try:
             if fily != '':
                 fily.write(outstr.strip())
         except:
             pass
 
-    def jav_Reset(self):
+    def jav_Reset(self):                            #pylint: disable=R0201,W0613
         pass
 
-    def jav_logscpi(self):
+    def jav_logscpi(self):                          #pylint: disable=R0201,W0613
         pass
 
     def jav_read_raw(self):
         pass
 
-    def jav_write_raw(self,SCPI):
+    def jav_write_raw(self,SCPI):                   #pylint: disable=R0201,W0613
         pass
 
-    def jav_reslist(self):
+    def jav_reslist(self):                          #pylint: disable=R0201,W0613
         rmList =["jaVISA Test"]
         return rmList
 
-    def jav_scpilist(self,SCPIList):
-        ### Send SCPI list & Query if "?" 
+    def jav_scpilist(self,SCPIList):                #pylint: disable=R0201,W0613
+        ### Send SCPI list & Query if "?"
         ### Collect read results into a list for return.
         OutList = []
         for cmd in SCPIList:
@@ -91,22 +89,22 @@ class jaVISA_mock(object):
                 OutList.append(ReadStr)
         return OutList
 
-    def query(self,cmd):
+    def query(self,cmd):                            #pylint: disable=R0201,W0613
         return "<notRead>"
 
-    def queryFloat(self,cmd):
+    def queryFloat(self,cmd):                       #pylint: disable=R0201,W0613
         return -9999.9999
 
-    def queryFloatArry(self,cmd):
+    def queryFloatArry(self,cmd):                   #pylint: disable=R0201,W0613
         return [-9999.9999]
 
-    def queryInt(self,cmd):
+    def queryInt(self,cmd):                         #pylint: disable=R0201,W0613
         return -9999
 
-    def queryIntArry(self,cmd):
+    def queryIntArry(self,cmd):                     #pylint: disable=R0201,W0613
         return [-9999]
 
-    def write(self,cmd):
+    def write(self,cmd):                            #pylint: disable=R0201,W0613
         pass
 
 if __name__ == "__main__":

@@ -32,19 +32,19 @@ class VSE(VSA):
     ### VSE Input
     #####################################################################
     def Set_Input(self,sType):
-        self.write('INP:SEL %s'%sType);                  #RF|FILE
+        self.write('INP:SEL %s'%sType)                  #RF|FILE
 
     def Set_File_InputIQT(self,sFilename):
         ABW = '10MHz'
         IQCh = '2'
-        self.write("INST:BLOC:CHAN:FILE:IQT '%s',%s,%s"%(sFilename,ABW,IQCh));
-        
+        self.write("INST:BLOC:CHAN:FILE:IQT '%s',%s,%s"%(sFilename,ABW,IQCh))
+
     def Set_File_InputIQW(self,Fs,sFileName='\\file.iqw'):
         abw = 0.8*float(Fs)
         val = "'%s',%d,%d,IQIQ"%(sFileName,abw,Fs)
         print("VSE_Common  :" + val)
         self.write("INST:BLOC:CHAN:FILE:IQW " + val)
-        
+
     #####################################################################
     ### VSE Attenuation
     #####################################################################
@@ -58,9 +58,9 @@ class VSE(VSA):
     #####################################################################
     def Set_SweepCont(self,iON):
         if iON > 0:
-            self.write('INIT:SEQ:MODE CONT');            #Continuous Sweep
+            self.write('INIT:SEQ:MODE CONT')            #Continuous Sweep
         else:
-            self.write('INIT:SEQ:MODE SING');            #Single Sweep
+            self.write('INIT:SEQ:MODE SING')            #Single Sweep
 
     #####################################################################
     ### VSE IQ Analyzer

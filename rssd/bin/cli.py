@@ -4,11 +4,11 @@
 ### Author: Martin C Lim
 ### Date  : 2019.05.01
 #####################################################################
-from rssd.yaVISA_socket import jaVisa
 import argparse
-import rssd
 import sys
 import os
+import rssd
+from rssd.yaVISA_socket import jaVisa
 
 def main():
     parser = argparse.ArgumentParser(description='RSSD Helper')

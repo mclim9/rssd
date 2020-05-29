@@ -9,13 +9,12 @@
 from datetime  import datetime
 import os
 
-class FileIO(object):
+class FileIO(object):                                       #pylint: disable=R0205
     """ Util File IO Object """
     def __init__(self):
         self.Outfile = ""
         self.sFName = ""
         self.debug = 1
-        pass
 
     def makeFile(self,sFilepath):
         BaseDir  = os.path.dirname(os.path.realpath(sFilepath))
@@ -28,16 +27,16 @@ class FileIO(object):
         self.sFName = "%s-%s.csv"%(sName,datetime.now().strftime("%y%m%d"))
         return self
 
-    def write(self,inStr):
+    def write(self,inStr):                                  #pylint: disable=R0201,W0613
         pass
 
-    def write_raw(self,inStr):
+    def write_raw(self,inStr):                              #pylint: disable=R0201,W0613
         pass
 
-    def read(self):
+    def read(self):                                         #pylint: disable=R0201,W0613
         return 'asdkfal;sdf;jkasljk;df;jklasfd;jklasjkl;dfjkasdfljk;as;lkjf'
 
-    def readcsv(self):
+    def readcsv(self):                                      #pylint: disable=R0201,W0613
         return ['str1','str2','str3','str4','str5']
 
     def initread(self,sFile):
