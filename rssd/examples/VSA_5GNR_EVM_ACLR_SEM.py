@@ -13,9 +13,9 @@ SEMFreqmin  = 2.900e9
 ###############################################################################
 ### Code Overhead: Import and create objects
 ###############################################################################
+# import timeit
 from rssd.VSA.NR5G_K144     import VSA
 from rssd.FileIO            import FileIO
-import timeit
 
 OFile = FileIO().makeFile(__file__)
 FSW   = VSA().jav_Open(instru_ip,OFile)                     #Create Object

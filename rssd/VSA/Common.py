@@ -15,8 +15,9 @@ class VSA(jaVisa):
     """ Rohde & Schwarz Vector Signal Analyzer Object """
     def __init__(self):
         super(VSA, self).__init__()
-        self.Model = "FSW"
-        
+        self.Model  = "FSW"
+        self.CurrCh = ""
+
     #####################################################################
     ### FSW Get
     #####################################################################
@@ -34,7 +35,7 @@ class VSA(jaVisa):
 
     def Get_AttnMech(self):
         out = self.queryInt('INP:ATT?')
-        return out 
+        return out
 
     def Get_CCDF(self):
         P10_00 = self.queryFloat(f'CALC:STAT:CCDF:X1? P10;*WAI')
@@ -46,7 +47,7 @@ class VSA(jaVisa):
 
     def Get_ChPwr(self):
         out = self.queryFloat('FETC:SUMM:POW?')
-        return out 
+        return out
 
     def Get_ChannelName(self):
         ChList  = self.Get_Channels()
@@ -54,7 +55,7 @@ class VSA(jaVisa):
         match   = [x for x in ChList if CurrApp in x]
         index   = ChList.index(match[0])
         self.CurrCh  = ChList[index+1]
-        return(self.CurrCh)
+        return self.CurrCh
 
     def Get_Channels(self):
         ChList  = self.query('INST:LIST?').replace("\'","").split(',')
@@ -80,7 +81,7 @@ class VSA(jaVisa):
 
     def Get_IQ_Data(self,sFilename="file.iqw"):
         ####################################################################
-        """ Get the IQ data and store to IQW file to process in VSE """
+        ### Get the IQ data and store to IQW file to process in VSE
         ####################################################################
         self.write("FORM REAL,32")
         self.write("TRAC:IQ:DATA:FORM IQP")
@@ -91,38 +92,36 @@ class VSA(jaVisa):
 
         # Read num of digits to get for No of floats
         if int(samples) < 125000000:
-          digits = data[1]
+            digits = data[1]
         else:
-          digits = "10"
+            digits = "10"
 
-        """
-        # Don't need this but including for completeness
-        # Reads total number of bytes that holds IQ data
+        # # Don't need this but including for completeness
+        # # Reads total number of bytes that holds IQ data
 
-        i = 2
-        totalbytes = ""
-        while i <= int(digits)+1:
-          totalbytes = totalbytes + data [i]
-          i += 1
-        """
-          
+        # i = 2
+        # totalbytes = ""
+        # while i <= int(digits)+1:
+        #   totalbytes = totalbytes + data [i]
+        #   i += 1
+
         iqfile = open (sFilename, "wb")
         iqfile.write(data[2 + int(digits):])
         iqfile.close()
 
     def Get_IQ_Data_Ascii(self,MLEN=1e3):
         CSVd = ""
-        self.write('Format:DATA ASCII')        
+        self.write('Format:DATA ASCII')
         self.write('TRAC:IQ:DATA:FORM IQP')
-        RLEN = self.Get_IQ_RecLength()                  #Sweep Points
+        RLEN = self.Get_IQ_RecLength()                          #Sweep Points
         numLoops  = int(round(RLEN/MLEN))+1
-        for i in range(numLoops):                      # pylint: disable=E0602
+        for i in range(numLoops):                               # pylint: disable=E0602
             SCPI = "TRAC:IQ:DATA:MEM? %d,%d"%((i * MLEN),MLEN)  #TRAC:IQ:DATA:MEM? <MemStrt>,<MLEN>
-            CSVd = CSVd + self.query(SCPI)                #IQ Dump
+            CSVd = CSVd + self.query(SCPI)                      #IQ Dump
         print("Memory Done Reading %d"%len(CSVd.split(',')))
         return CSVd
 
-    def Get_IQ_Data_Ascii2(self,MLEN=1e3):
+    def Get_IQ_Data_Ascii2(self):
         CSVd = ""
         self.write('FORMAT:DATA ASCII')
         self.write('TRAC:IQ:DATA:FORM IQP')
@@ -136,10 +135,11 @@ class VSA(jaVisa):
         self.write('TRAC:IQ:DATA:FORM IQP')
         self.write('TRAC:IQ:DATA:MEM?')
         rdStr = self.K2.read_raw()
-        numBytes = int(chr(rdStr[1]))       # Number of Bytes
+        numBytes = int(chr(rdStr[1]))                   # Number of Bytes
         numIQ    = int(rdStr[2:2+numBytes])
-        IQBytes  = rdStr[(numBytes+2):-1]    # Remove Header
+        IQBytes  = rdStr[(numBytes+2):-1]               # Remove Header
         IQAscii  = struct.unpack("<" + 'f' * int(numIQ/4),IQBytes)
+        print(IQAscii[0:10])
         return IQBytes
 
     def Get_IQ_RecLength(self):
@@ -266,7 +266,7 @@ class VSA(jaVisa):
         #AUTO | SPEed | DYN
         rdStr = self.query(':SENS:SWE:OPT?')
         return rdStr
-        
+
     def Get_SweepPoints(self):
         rdStr = self.queryInt(':SENS:SWE:POIN?')                 #Number of trace points
         return rdStr
@@ -360,36 +360,36 @@ class VSA(jaVisa):
 
     def Set_Autolevel_IFOvld(self):
         ####################################################################
-        """ Algorithm designed by Darren Tipton, RSUK"""
-        """ Optimise level for Mixer Input => Optimal EVM """
-        """ Optimises for signals using IF gain as well as 1dB steps """     
+        # """ Algorithm designed by Darren Tipton, RSUK"""
+        # """ Optimise level for Mixer Input => Optimal EVM """
+        # """ Optimises for signals using IF gain as well as 1dB steps """
         ####################################################################
         optmix = 10                            # Optimal mixer level
         self.Set_SweepCont(0)
         self.Set_Autolevel()
         level = self.Get_Mkr_TimeDomain()
-        
-        """ Switch Pre-Amp """                                                                                 
+
+        # """ Switch Pre-Amp """
         if level >= -20:
             self.query("INP:GAIN:STAT OFF; *OPC?")
             gain = 0
             maxmix = 0
         else:
-            self.query("INP:GAIN:STAT ON; *OPC?")      
+            self.query("INP:GAIN:STAT ON; *OPC?")
             gain = 20
             maxmix = -30
-        
+
         rfatt = level + gain - optmix       #Calc RfAttn for optimal mixer level
         if rfatt < 0: rfatt = 0             #If calculated RF atten < 0, set 0
         self.Set_AttnMech(rfatt)            #Set Attenuation
-         
+
         reflev = maxmix + rfatt
         self.Set_RefLevel(reflev)          #Set RefLevel
 
         ifovl = self.Get_Ovld_Stat()      #Check Overload
         print ("Inital: Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
 
-        """ Optimising for attenuation """
+        # """ Optimising for attenuation """
         while ifovl != 0:
             print ("ATloop: Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
             rfatt = rfatt + 1
@@ -398,19 +398,19 @@ class VSA(jaVisa):
             reflev = maxmix + rfatt
             self.Set_RefLevel(reflev)
 
-            """ Check if there is IF Overload """
+            # """ Check if there is IF Overload """
             ifovl = self.Get_Ovld_Stat()
 
-        """ Optimising for reference level """
+        # """ Optimising for reference level """
         while reflev > (-20 - gain) and ifovl == 0:
             print ("RefLop: Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
             reflev = reflev - 1
             self.Set_RefLevel(reflev)
 
-            """ Check if there is IF Overload """          
+            # """ Check if there is IF Overload """
             ifovl = self.Get_Ovld_Stat()
-         
-        """ Final check for IF Overload """
+
+        # """ Final check for IF Overload """
         if ifovl != 0:
             reflev = reflev + 1
             self.Set_RefLevel(reflev)
@@ -437,7 +437,7 @@ class VSA(jaVisa):
             sName = Chan
         ChList = self.query('INST:LIST?').split(',')
         #print("Chan:%s in %s"%(Chan,ChList))
-        if ("'" + sName + "'") in ChList:
+        if f"'{sName}'" in ChList:
             pass
         else:
             self.query(":INST:CRE %s,'%s';*OPC?"%(Chan,sName))
@@ -451,14 +451,14 @@ class VSA(jaVisa):
 
     def Set_DisplayUpdate(self,state):
         self.write('SYST:DISP:UPD %s'%state)      #Display Update State
-         
+
     #####################################################################
     ### FSW Equalization K544
     #####################################################################
     def Set_EQ_File(self,sFile):
         #self.write('SENS:CORR:FRES:Input1:USER:SLIS1:SEL "c:\\R_S\\Instr\\Debug\\K544\\IFH.s2p"')
         self.write('SENS:CORR:FRES:Input1:USER:SLIS1:SEL "%s"'%sFile)
-        
+
     def Set_EQ_State(self,sState):
         FSW.write('SENS:CORR:FRES:Input1:USER:PRES')
         self.write('SENS:CORR:FRES:Input1:USER:STATe %s'%sState)
@@ -485,7 +485,7 @@ class VSA(jaVisa):
     def Set_Harm_adjust(self):
         """ Adjusts Ref Lvl, Attn, SwpTime """
         self.write(':CALC1:MARK1:FUNC:HARM:PRES')
-        
+
     #####################################################################
     ### FSW IQ Analyzer
     #####################################################################
@@ -512,7 +512,7 @@ class VSA(jaVisa):
         self.Set_SweepCont(0)
 
     def Set_IQ_Adv_FFTLenth(self, dLength):
-        self.write(f'IQ:FFT:LENG {dLength}')    
+        self.write(f'IQ:FFT:LENG {dLength}')
 
     def Set_IQ_Adv_Mode(self, State=1):
         """Turn Advanced Mode on"""
@@ -540,7 +540,7 @@ class VSA(jaVisa):
 
     def Set_IQ_RecLength(self,iLen):
         self.query('TRAC:IQ:RLEN %d'%iLen)          #Record(Samples) Length
-        
+
     def Set_IQ_Samples(self,iNum):
         # Samples = MeasTime * SamplingRate
         self.write('TRAC:IQ:RLEN %d'%iNum)         #Samples
@@ -550,16 +550,14 @@ class VSA(jaVisa):
         self.write('TRAC:IQ:SRAT %f'%fFreq)        #Sampling Rate
 
     def Set_IQ_SpectrumWindow(self):
-        if 0:
-            windList = self.query('LAY:CAT:WIND?').split(',')
-            numWind = len(windList)
-            if numWind > 2:
-                for indx in range(2,int(numWind/2)+1):
-                    self.write(f'LAY:REM "{indx}"')
-            self.write(":LAY:ADD:WIND? '1',RIGH,FREQ")
-            self.write(":DISP:WIND2:SUBW:SEL")
-        else:
-            self.write("LAY:REPL '1',Freq")
+        # windList = self.query('LAY:CAT:WIND?').split(',')
+        # numWind = len(windList)
+        # if numWind > 2:
+        #     for indx in range(2,int(numWind/2)+1):
+        #         self.write(f'LAY:REM "{indx}"')
+        # self.write(":LAY:ADD:WIND? '1',RIGH,FREQ")
+        # self.write(":DISP:WIND2:SUBW:SEL")
+        self.write("LAY:REPL '1',Freq")
 
     def Set_IQ_Time(self,fSwpTime):
         self.Set_SweepTime(fSwpTime)
@@ -579,7 +577,7 @@ class VSA(jaVisa):
 
     def Set_InitImm(self):
         self.query('INIT:IMM;*OPC?')
-            
+
     def Set_Input(self,sType):
         """ RF|AIQ|DIQ|FILE """
         self.write('INP:SEL %s'%sType)
@@ -673,7 +671,7 @@ class VSA(jaVisa):
 
     def Set_Span(self,fFreq):
         self.write('SENS:FREQ:SPAN %f'%fFreq)
-        
+
     def Set_SweepTime(self,fSwpTime):
         """Auto if fSwpTime == 0"""
         if fSwpTime == 0:
@@ -684,11 +682,11 @@ class VSA(jaVisa):
     def Set_SweepType(self,sType):
         #AUTO | SWE | FFT
         self.write(f':SENS:SWE:TYPE {sType}')
-       
+
     def Set_SweepOpt(self,sOpt):
         #AUTO | SPEed | DYN
         self.write(f':SENS:SWE:OPT {sOpt}')
-       
+
     def Set_SweepCont(self,iON):
         """0 | 1 """
         if iON == 1:
@@ -705,7 +703,7 @@ class VSA(jaVisa):
         self.Set_Trace_Detector('AVER')
         self.Set_Trace_AvgType(sType)
 
-    def Set_Trace_AvgCount(self,iAvg,trace=1):
+    def Set_Trace_AvgCount(self,iAvg):
         self.write('SENS:SWE:COUN %d'%(iAvg))
 
     def Set_Trace_AvgOff(self,trace=1):
@@ -727,20 +725,20 @@ class VSA(jaVisa):
     ### FSW Trigger
     #####################################################################
     def Set_Trig1_Source(self,sDetect):
-        """IMM; EXT; EXT2; EXT3; RFP; IFP; TIME; VID; PSEN""" 
+        """IMM; EXT; EXT2; EXT3; RFP; IFP; TIME; VID; PSEN"""
         self.write('TRIG:SEQ:SOUR %s'%sDetect)
-    
+
     def Set_Trig2_Dir(self,sDir):
-        if (sDir == 'OUT'):
+        if sDir == 'OUT':
             self.write('OUTP:TRIG2:DIR OUTP')
         else:
             self.write('OUTP:TRIG2:DIR INP')
-        
+
     def Set_Trig2_OutType(self,sDir):
         #DEV : Device
         #TARM: Trigger Armed
         #UDEF: User Defined
-        self.write('OUTP:TRIG2:OTYP %s')
+        self.write(f'OUTP:TRIG2:OTYP {sDir}')
 
     def Set_VidBW(self,fFreq):
         if fFreq == 0:
@@ -758,8 +756,8 @@ class VSA(jaVisa):
 #####################################################################
 if __name__ == "__main__":
     ### this won't be run when imported
-    import timeit
     FSW = VSA().jav_Open("192.168.1.109")
-    print(FSW.Get_Param(1,0,1,1,1))
+    # print(FSW.Get_Param(1,0,1,1,1))
+    FSW.Set_Channel('iqasdf')
     FSW.jav_ClrErr()
     del FSW

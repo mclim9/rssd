@@ -11,6 +11,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
     """ Rohde & Schwarz Vector Signal Analyzer Object """
     def __init__(self):
         super(VSA, self).__init__()             #Python 2/3
+        self.mod = ''
 
     ###########################################################################
     ### VSA Get Functions
@@ -157,7 +158,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
     def Set_VSA_Symbol_Rate(self,rate):
         """Symbol Rate, Hz"""
         self.write(f':SENS:DDEM:SRAT {rate}')
-    
+
     def Set_VSA_Result_Length(self,dLength):
         """integer length or 'MAX' """
         if dLength == 'MAX':

@@ -37,7 +37,7 @@ class VSG(VSG):                             #pylint: disable=E0102
 ### Run if Main
 #####################################################################
 if __name__ == "__main__":
-    # this won't be run when imported 
+    # this won't be run when imported
     SMW = VSG()
     SMW.jav_Open("192.168.1.114")
     SMW.jav_Close()

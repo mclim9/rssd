@@ -6,11 +6,11 @@
 ### Author  : Martin C Lim
 ### Date    : 2018.05.18
 ### Requird : python -m pip install pyvisa
-### 
+###
 ### VISAFmt : USB0::0x0AAD::0x0138::100961::INSTR
 ###           <VS>::<Manu>::<Modl>::<SerN>::INSTR
 ###           TCPIP0::NRPM3-900105::inst0
-### 
+###
 ### Product  |USB ID        Product  |USB ID
 ### ---------|------        ---------|------
 ### NRP8S     0x00E2        NRP33SN-V 0x0168
@@ -27,7 +27,7 @@ class PMr(jaVisa):
     def __init__(self):
         super(PMr,self).__init__()     #Python2/3
         self.Model = "NRP"
-        
+
     #####################################################################
     ### NRP Common
     #####################################################################
@@ -35,7 +35,7 @@ class PMr(jaVisa):
         resList = self.jav_reslist()
         asdf = [s for s in resList if "USB0::0x0AAD::0x" in s]
         print(asdf)
-        
+
     def Get_Average(self):
         outp = self.queryInt('SENS:AVER:COUN?')
         return outp
@@ -52,7 +52,7 @@ class PMr(jaVisa):
     def Get_Freq(self):
         outp = self.query(':SENS:FREQ?')
         return outp
-        
+
     def Set_Freq(self,fFreq):
         self.query('SENS:FREQ %f;*OPC?'%fFreq)
 
@@ -62,25 +62,25 @@ class PMr(jaVisa):
         ### -Num ==> -Reading
         outp = self.queryFloat('SENS:CORR:OFFS?')
         return outp
-        
+
     def Get_Power(self):
         self.write('UNIT:POW DBM')
         self.write('SENS:FUNC "POW:AVG"')
-        self.write('INIT:IMM')          
+        self.write('INIT:IMM')
         outp = self.queryFloat('FETCH?')
         return outp
 
     def Get_PowerAll(self):
         ### NRP3M
         self.write('UNIT:POW DBM')
-#        self.write('SENS:FUNC "POW:AVG"')
+        # self.write('SENS:FUNC "POW:AVG"')
         self.write('SENS:CHAN1:ENAB ON')
         self.write('SENS:CHAN2:ENAB ON')
         self.write('SENS:CHAN3:ENAB ON')
         self.query('INIT:IMM;*OPC?')
         outp = self.queryFloat('FETCH:ALL?')
         return outp
-        
+
     def Set_PowerOffset(self,fOffset):
         self.write('SENS:CORR:OFFS:STAT ON')
         self.write('SENS:CORR:OFFS %f'%fOffset)
@@ -93,7 +93,8 @@ class PMr(jaVisa):
 
     def Set_InitImm(self):
         outp = self.query('INIT:IMM;*OPC?')
-        
+        return outp
+
 #####################################################################
 ### NRP Trigger
 #####################################################################
@@ -109,15 +110,14 @@ class PMr(jaVisa):
 
     def Set_TriggerCount(self,iNum):
         self.write('TRIG:COUN %d'%iNum)
-        
-        
+
 #####################################################################
 ### NRP Advanced
 #####################################################################
     def Get_EventStatus(self):
         outp = self.query('STAT:OPER:MEAS:EVEN?')
         return outp
-        
+
     def Set_BufferSize(self,iSize):
         self.write('SENS:BUFF:SIZE %d'%iSize)                #Buffer size is randomly selected to 17
 
@@ -127,11 +127,10 @@ class PMr(jaVisa):
         else:
             self.write('SENS:BUFF:STAT ON')                #Configure a buffered measurement
 
-    
 #####################################################################
 ### NRPM
 ###    - NRP-ZKU    USB cable (3.0m) to R&S®NRPxxS(N)
-###    - NRPM3      OTA power sensor 
+###    - NRPM3      OTA power sensor
 ###    - NRPM-ZKD3 Interface cable; R&S®NRPM3 to R&S®NRPM-ZD3
 ###    - NRPM-ZD3  Cable feedthrough for anechoic chamber
 ###    - NRPM-Axx  OTA Antenna module: A66(27-75)
@@ -141,7 +140,7 @@ class PMr(jaVisa):
             self.write('SYST:LED:CHAN%d:COL 255'%iSensor)
         else:
             self.write('SYST:LED:CHAN%d:COL 0'%iSensor)
-                            
+
 #####################################################################
 ### Run if Main
 #####################################################################
@@ -151,6 +150,6 @@ if __name__ == "__main__":
     NRP.Get_AvailableNRP()
     NRP.jav_openvisa("USB0::0x0AAD::0x0196::900105::INSTR")
     NRP.jav_logscpi()
-    NRP.Set_Freq(24e9)  
+    NRP.Set_Freq(24e9)
     NRP.Get_Power()
     NRP.jav_ClrErr()

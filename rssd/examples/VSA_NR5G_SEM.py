@@ -1,11 +1,8 @@
 ##########################################################
 ### Rohde & Schwarz Automation for demonstration use.
-###
 ### Title  : Timing SCPI Commands Example
 ### Author : mclim
-### Date : 2018.05.24
-### Steps  : 
-###
+### Date   : 2018.05.24
 ##########################################################
 ### User Entry
 ##########################################################
@@ -17,8 +14,8 @@ numMeas  = 10
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
+# from datetime              import datetime
 from rssd.VSA.NR5G_K144    import VSA
-from datetime              import datetime
 from rssd.FileIO           import FileIO
 
 OFile = FileIO().makeFile(__file__)
@@ -43,7 +40,6 @@ FSW.Set_5GNR_ChannelBW(ChBW)        #MHz
 OFile.write('asdf')
 FSW.Set_SweepCont(0)
 
-   
 ##########################################################
 ### Cleanup Automation
 ##########################################################

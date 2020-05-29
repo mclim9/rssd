@@ -7,15 +7,16 @@
 ### Date:    2018.04.03
 ### Requird: python -m pip install pyvisa
 #####################################################################
-from rssd.VSA.Common    import VSA          #pylint: disable=E0611,E0401
 from datetime           import datetime     #pylint: disable=E0611,E0401
+from rssd.VSA.Common    import VSA          #pylint: disable=E0611,E0401
 
 class VSA(VSA):                        #pylint: disable=E0102
     """ Rohde & Schwarz Vector Signal Analyzer LTE Object """
     def __init__(self):
         super(VSA, self).__init__()
         self.ldir = "DL"
-      
+        self.cc   = 1
+
     #####################################################################
     ### VSA Query
     #####################################################################
@@ -28,13 +29,13 @@ class VSA(VSA):                        #pylint: disable=E0102
         RefLvl  = self.Get_RefLevel()
         Power   = self.Get_ChPwr()
         EVM     = self.Get_EVM()
-        return ("%.2f,%.2f,%6.2f,%.2f"%(MAttn,RefLvl,Power,EVM))
+        return "%.2f,%.2f,%6.2f,%.2f"%(MAttn,RefLvl,Power,EVM)
 
     def Get_LTE_CC(self):
         rdStr = self.query(':CONF:LTE:NOCC?')
         return rdStr
 
-    def Get_LTE_ChBW(self,cc=1):
+    def Get_LTE_ChBW(self):
         rdStr = self.query(f':CONF:LTE:{self.ldir}:BW?')
         return rdStr
 
@@ -46,7 +47,7 @@ class VSA(VSA):                        #pylint: disable=E0102
         rdStr = self.queryFloat('FETC:CC1:SUMM:CRES:AVER?')
         return rdStr
 
-    def Get_LTE_Direction(self,cc=1):
+    def Get_LTE_Direction(self):
         rdStr = self.query(':CONF:LDIR?')
         if rdStr == 'DL':
             self.ldir = "DL"
@@ -69,9 +70,9 @@ class VSA(VSA):                        #pylint: disable=E0102
         Crest = self.Get_LTE_CrestFactor()
         Power = self.Get_LTE_ChPwr()
         EVM   = self.Get_LTE_EVM()
-        return (f"{Crest:6.3f},{Power:6.3f},{EVM:.2f}")
+        return f"{Crest:6.3f},{Power:6.3f},{EVM:.2f}"
 
-    def Get_LTE_Modulation(self,cc=1):
+    def Get_LTE_Modulation(self):
         if self.ldir == 'UL':
             rdStr = self.query(f':CONF:LTE:{self.ldir}:SUBF0:ALL:MOD?')
         elif self.ldir == 'DL':
@@ -80,7 +81,7 @@ class VSA(VSA):                        #pylint: disable=E0102
             print('LDIR error in Get_LTE_Mod')
         return rdStr
 
-    def Get_LTE_ResBlock(self,cc=1):
+    def Get_LTE_ResBlock(self):
         if self.ldir == 'UL':
             rdStr = self.query(f':CONF:LTE:{self.ldir}:SUBF0:ALL:RBC?')
         elif self.ldir == 'DL':
@@ -89,7 +90,7 @@ class VSA(VSA):                        #pylint: disable=E0102
             print('LDIR error in Get_LTE_RB')
         return rdStr
 
-    def Get_LTE_ResBlockOffset(self,cc=1):
+    def Get_LTE_ResBlockOffset(self):
         if self.ldir == 'UL':
             rdStr = self.query(f':CONF:LTE:{self.ldir}:SUBF0:ALL:RBOF?')
         elif self.ldir == 'DL':
@@ -131,6 +132,7 @@ class VSA(VSA):                        #pylint: disable=E0102
 
     def Set_LTE_CC(self,iCC):
         self.write(':CONF:LTE:NOCC %d'%iCC)
+        self.cc = iCC
 
     def Set_LTE_ChBW(self,iBW):
         self.write(f':CONF:LTE:{self.ldir}:BW BW{iBW:02d}_00')
@@ -178,9 +180,9 @@ class VSA(VSA):                        #pylint: disable=E0102
 ### Run if Main
 #####################################################################
 if __name__ == "__main__":
-   ### this won't be run when imported
-   FSW = VSA()
-   FSW.ldir = 'UL'
-   FSW.jav_Open("192.168.1.109")
-   FSW.Get_LTE_Direction()
-   FSW.jav_IDN()
+    ### this won't be run when imported
+    FSW = VSA()
+    FSW.ldir = 'UL'
+    FSW.jav_Open("192.168.1.109")
+    FSW.Get_LTE_Direction()
+    FSW.jav_IDN()

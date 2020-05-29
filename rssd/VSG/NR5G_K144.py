@@ -134,24 +134,24 @@ class VSG(VSG):                             #pylint: disable=E0102
         ### RB = (CHBw * 0.95) / (SubSp * 12)
         rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBN?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Ch_ResBlockOffset(self):
         rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBOF?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Ch_SymbNum(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
         rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:SYMN?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Ch_SymbOff(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
         rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:SYM?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Count(self):
         rdStr = self.query(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:NBWP?')
-        return rdStr        
+        return rdStr
 
     def Get_5GNR_BWP_ResBlock(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
@@ -160,13 +160,13 @@ class VSG(VSG):                             #pylint: disable=E0102
 
     def Get_5GNR_BWP_ResBlockOffset(self):
         rdStr = self.query(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:RBOF?')
-        return rdStr        
-        
+        return rdStr
+
     def Get_5GNR_BWP_SlotNum(self):
         ### Number of slots
         rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:SLOT?')
         return rdStr
-        
+
     def Get_5GNR_BWP_SubSpace(self):
         rdStr = self.query(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:SCSP?')
         return rdStr
@@ -174,7 +174,7 @@ class VSG(VSG):                             #pylint: disable=E0102
     def Get_5GNR_CC_Freq(self):
         offset = self.Get_5GNR_CC_Offset()
         freq    = self.Get_Freq()
-        return (offset + freq)
+        return offset + freq
 
     def Get_5GNR_CC_Offset(self):
         rdStr = self.queryFloat(f'SOUR1:BB:NR5G:NODE:CARM:DFREQ:ROW{self.cc}?')
@@ -194,7 +194,7 @@ class VSG(VSG):                             #pylint: disable=E0102
         rdStr.append(self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S60K:NRB?'))
         rdStr.append(self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S120K:NRB?'))
         return rdStr
-        
+
     def Get_5GNR_ChannelBW(self):
         ### 5;10;15;20;25;30;40;50;60;70;80;90;100;200;400
         rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CBW?')
@@ -206,7 +206,7 @@ class VSG(VSG):                             #pylint: disable=E0102
             self.sdir = "DL"
             self.alloc = 1         #Alloc 0:CORSET
         elif rdStr == 'UP':
-            self.sdir = "UL"            
+            self.sdir = "UL"
             self.alloc = 0         #Alloc 0:PUSCH
         else:
             print('Get_5GNR_Direction Error')
@@ -223,7 +223,7 @@ class VSG(VSG):                             #pylint: disable=E0102
         else:
             outStr = 'Error Get_5GNR_FreqRange {rdStr}'
         return outStr
-        
+
     def Get_5GNR_RefA(self):
         rdStr = self.queryInt(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:POIN?')
         return rdStr
@@ -232,7 +232,7 @@ class VSG(VSG):                             #pylint: disable=E0102
         odata = []
         rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S15K:NRB?')
         odata.append([15,int(rdStr)])
-        
+
         rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S30K:NRB?')
         odata.append([30,int(rdStr)])
         rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S60K:NRB?')
@@ -269,7 +269,7 @@ class VSG(VSG):                             #pylint: disable=E0102
 
     def Set_5GNR_BWP_Ch_Modulation(self,sMod):
         self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:MOD {sMod}')
-        
+
     def Set_5GNR_BWP_Ch_ResBlock(self,iRB):
         ### 5GNR-->Scheduling-->PUSCH-->No. RBs
         ### RB = (CHBw * 0.95) / (SubSp * 12)
@@ -279,7 +279,7 @@ class VSG(VSG):                             #pylint: disable=E0102
     def Set_5GNR_BWP_Ch_ResBlockOffset(self,iRBO):
         ### 5GNR-->Scheduling-->PUSCH-->No. RBs
         #self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBOF %d'%%(self.alloc,iRBO))
-        self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBOF 0')
+        self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBOF {iRBO}')
 
     def Set_5GNR_BWP_Corset_ResBlock(self, iRB):
         if self.sdir == 'DL':
@@ -299,7 +299,7 @@ class VSG(VSG):                             #pylint: disable=E0102
         MaxRB =  20
         rdStr = self.query(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:RBN {MaxRB}')
         return rdStr
-        
+
     def Set_5GNR_BWP_ResBlockOffset(self,iRBO):
         self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:RBOF {iRBO}')
 
@@ -366,8 +366,8 @@ class VSG(VSG):                             #pylint: disable=E0102
             self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:UL:BWP0:FRC:STAT OFF')
 
     def Set_5GNR_FreqRange(self,iRange):
-        """ 0:<3GHz 1:3-6GHz 2:>6GHz """ 
-        """ LOW; MIDD; HIGH """ 
+        """ 0:<3GHz 1:3-6GHz 2:>6GHz """
+        # """ LOW; MIDD; HIGH """
         if (iRange==0) or (iRange == 'LOW'):
             # self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD LT3')     #4.70.026.51
             self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD FR1LT3')    #C45.4.70.026.51.131
@@ -379,7 +379,7 @@ class VSG(VSG):                             #pylint: disable=E0102
             self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CARD FR2')       #C45.4.70.026.51.131
 
     def Set_5GNR_GenerateWv(self,sName):
-        """ Generate Waveform File""" 
+        """ Generate Waveform File"""
         self.write(f':SOUR1:BB:NR5G:WAV:CRE "{sName}"')
         self.delay(2)
         self.jav_OPC_Wait('*IDN?')
@@ -428,7 +428,7 @@ class VSG(VSG):                             #pylint: disable=E0102
 ### Run if Main
 #####################################################################
 if __name__ == "__main__":
-    # this won't be run when imported 
+    # this won't be run when imported
     SMW = VSG()
     SMW.jav_Open("192.168.1.114")
     SMW.cc = 1

@@ -38,11 +38,11 @@ class VSA(VSA):
 
     def Set_Adem_LPassAbsolute(self,sBW):
         """Low Pass Filter Absolute Values: 3kHz; 15kHz; 150kHz"""
-        self.write(f'SENSe:FILT:LPASS:FREQ:ABS {sBW}')      
-        
+        self.write(f'SENSe:FILT:LPASS:FREQ:ABS {sBW}')
+
     def Set_Adem_LPassRelative(self,sBW):
         """Low Pass Filter Relative Values:5PCT; 10PCT; 25PCT"""
-        self.write(f'SENSe:FILT:LPASS:FREQ:REL {sBW}') 
+        self.write(f'SENSe:FILT:LPASS:FREQ:REL {sBW}')
 
     def Set_Adem_LPassManual(self,fBW):
         """0 to 3MHz"""
@@ -53,9 +53,8 @@ class VSA(VSA):
 #####################################################################
 if __name__ == "__main__":
     ### this won't be run when imported
-    if 0:
-        import sys
-        print(sys.version)
+    # import sys
+    # print(sys.version)
     VSA = VSA()
     VSA.jav_Open("192.168.1.109")
     VSA.Set_DisplayUpdate('ON')

@@ -128,8 +128,7 @@ class VSA(VSA):                        #pylint: disable=E0102
         self.write(':SENS:DEM:FORM:BCON:AUTO 1')
 
     def Set_WLAN_Autolvl(self):
-        ## Supports B40; B80;  
-        ## B2001 not supported.
+        """ Supports B40; B80; B2001 not supported."""
         #self.query('ADJ:LEV;*OPC?')
         self.write(':CONF:POW:AUTO ONCE;*WAI')      #FSVA
 
@@ -175,10 +174,10 @@ class VSA(VSA):                        #pylint: disable=E0102
 ### Run if Main
 #####################################################################
 if __name__ == "__main__":
-   ### this won't be run when imported
-   FSW = VSA()
-   FSW.jav_Open("192.168.1.109")
-   print(FSW.query(':TRAC:DATA? TRACE1'))
-   #print(FSW.Get_WLAN_EVMParams())
-   #FSW.Set_WLAN_Autolvl()
-   FSW.jav_Close()
+    ### this won't be run when imported
+    FSW = VSA()
+    FSW.jav_Open("192.168.1.109")
+    print(FSW.query(':TRAC:DATA? TRACE1'))
+    #print(FSW.Get_WLAN_EVMParams())
+    #FSW.Set_WLAN_Autolvl()
+    FSW.jav_Close()

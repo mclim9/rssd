@@ -7,8 +7,8 @@
 ### Date   : 2018.02.01
 ### Requird: python -m pip install pyvisa
 #####################################################################
-from rssd.yaVISA    import jaVisa        #pylint: disable=E0611,E0401
 from time           import sleep
+from rssd.yaVISA    import jaVisa        #pylint: disable=E0611,E0401
 
 class VSG(jaVisa):
     """ Rohde & Schwarz Vector Signal Generator Object """
@@ -203,7 +203,7 @@ class VSG(jaVisa):
         """SING AUTO STEP ESTEP ESING"""
         # USER5 Valid Signal A
         # USER6 Valid SIgnal B
-        
+
         if 'AUTO' in sSource:
             self.write(f'SOUR1:LIST:MODE AUTO')
             self.write(f'SOUR1:LIST:TRIG:SOUR AUTO')

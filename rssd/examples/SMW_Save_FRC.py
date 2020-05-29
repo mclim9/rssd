@@ -25,7 +25,7 @@ cat_FR2_60  = {'FR2A11','FR2A14','FR2A31','FR2A311','FR2A32','FR2A36','FR2A37','
 ### Code Overhead: Import and create objects
 ##########################################################
 from rssd.VSG.NR5G_K144     import VSG
-from rssd.FileIO            import FileIO
+# from rssd.FileIO            import FileIO
 
 SMW = VSG().jav_Open(SMW_IP)  #Create SMW Object
 
@@ -33,7 +33,7 @@ SMW = VSG().jav_Open(SMW_IP)  #Create SMW Object
 ### Code Start
 ##########################################################
 SMW.Set_5GNR_Direction('UP')
-SMW.write(f'SOUR1:BB:NR5G:UBWP:USER0:USCH:CCOD:STAT 1')
+SMW.write('SOUR1:BB:NR5G:UBWP:USER0:USCH:CCOD:STAT 1')
 SMW.Set_5GNR_FRC_State('ON')
 SMW.Set_5GNR_BBState('OFF')
 
@@ -43,12 +43,12 @@ SMW.Set_5GNR_BWP_SubSpace(120)
 SMW.Set_5GNR_BWP_ResBlock(264)
 for file in cat_FR2_120:
     SMW.write(f'SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:TYPE {file}')
-    Fil = SMW.query(f'SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:TYPE?')
+    Fil = SMW.query('SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:TYPE?')
     if Fil == file:
-        SCS = SMW.query(f'SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:SCS?')     #Sub CarSpacing
-        NRB = SMW.query(f'SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:ALRB?')    #Num RB
-        MOD = SMW.query(f'SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:MOD?')     #Modulation
-        PAS = SMW.query(f'SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:PAS?')     #Payload Size
+        SCS = SMW.query('SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:SCS?')     #Sub CarSpacing
+        NRB = SMW.query('SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:ALRB?')    #Num RB
+        MOD = SMW.query('SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:MOD?')     #Modulation
+        PAS = SMW.query('SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:PAS?')     #Payload Size
         SMW.write(f'SOUR1:BB:NR5G:SETT:STOR "/var/user/FRC/{file}-{SCS}-{NRB}-{MOD}-{PAS}"')
 
 SMW.Set_5GNR_FreqRange(2)
@@ -57,12 +57,12 @@ SMW.Set_5GNR_BWP_SubSpace(60)
 SMW.Set_5GNR_BWP_ResBlock(264)
 for file in cat_FR2_60:
     SMW.write(f'SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:TYPE {file}')
-    Fil = SMW.query(f'SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:TYPE?')
+    Fil = SMW.query('SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:TYPE?')
     if Fil == file:
-        SCS = SMW.query(f'SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:SCS?')     #Sub CarSpacing
-        NRB = SMW.query(f'SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:ALRB?')    #Num RB
-        MOD = SMW.query(f'SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:MOD?')     #Modulation
-        PAS = SMW.query(f'SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:PAS?')     #Payload Size
+        SCS = SMW.query('SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:SCS?')     #Sub CarSpacing
+        NRB = SMW.query('SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:ALRB?')    #Num RB
+        MOD = SMW.query('SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:MOD?')     #Modulation
+        PAS = SMW.query('SOUR1:BB:NR5G:UBWP:USER0:CELL0:UL:BWP0:FRC:PAS?')     #Payload Size
         SMW.write(f'SOUR1:BB:NR5G:SETT:STOR "/var/user/FRC/{file}-{SCS}-{NRB}-{MOD}-{PAS}"')
 
 ##########################################################

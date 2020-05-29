@@ -50,7 +50,7 @@ class VSG(VSG):                     #pylint: disable=E0102
     def Get_WLAN_PPDU(self):
         #n : HT
         #ac: VHT
-        #ax: HE 
+        #ax: HE
         rdStr = self.query(f':SOUR:BB:WLNN:FBL1:TMOD?')
         return rdStr
 
@@ -66,7 +66,6 @@ class VSG(VSG):                     #pylint: disable=E0102
             return 'AC'
         elif rdStr[:2] == 'HE':
             return 'AX'
-            
 
     #####################################################################
     ### VSG Setting
@@ -117,8 +116,8 @@ class VSG(VSG):                     #pylint: disable=E0102
 ### Run if Main
 #####################################################################
 if __name__ == "__main__":
-   ### this won't be run when imported
-   WLAN = VSG()
-   WLAN.jav_Open("192.168.1.114")
-   print(WLAN.Get_WLAN_Standard())
-   WLAN.jav_Close()
+    ### this won't be run when imported
+    WLAN = VSG()
+    WLAN.jav_Open("192.168.1.114")
+    print(WLAN.Get_WLAN_Standard())
+    WLAN.jav_Close()

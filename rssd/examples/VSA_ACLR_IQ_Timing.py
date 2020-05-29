@@ -8,7 +8,7 @@
 ### User Entry
 ###############################################################################
 VSA_IP  = '192.168.1.109'
-VSG_IP  = '192.168.1.114' 
+VSG_IP  = '192.168.1.114'
 MeasTim = 100e-6
 Freq    = 9e9
 ChBW    = 95e6
@@ -28,9 +28,9 @@ meth = {
 ###############################################################################
 ### Code Overhead
 ###############################################################################
+import timeit
 from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
 from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
-import timeit
 from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
 
 OFile = FileIO().makeFile(__file__)
@@ -41,9 +41,8 @@ VSG = jaVisa().jav_Open(VSG_IP,OFile)               #Create Object
 ###############################################################################
 #VSA.jav_Reset()
 VSA.Init_IQ()                                       #FSW ACLR Channel
-if 1:
-   VSA.Set_Freq(Freq)
-   VSA.Set_IQ_ACLR(ChBW, ChSpace)
+VSA.Set_Freq(Freq)
+VSA.Set_IQ_ACLR(ChBW, ChSpace)
 
 #VSA.Set_DisplayUpdate("OFF")
 VSA.Set_Param_Couple_All()
@@ -52,8 +51,7 @@ VSA.Set_Trace_Avg('LIN')
 VSA.Set_Trace_AvgCount(Avg)
 VSA.Set_Trace_Detector('RMS')
 VSA.Set_YIG('OFF')
-if 0:
-    VSA.Set_Trig1_Source('Ext')
+# VSA.Set_Trig1_Source('Ext')
 
 ###############################################################################
 ### Measure Time

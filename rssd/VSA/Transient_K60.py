@@ -18,15 +18,15 @@ class VSA(VSA):
     #####################################################################
     def Init_TranAna(self):
         self.Set_Channel('TA')
-        
+
     #####################################################################
     ### FSW TA Settings
     #####################################################################
- 
+
     #####################################################################
     ### FSW Common Query
     #####################################################################
-    def Get_TA_HopTable(self): 
+    def Get_TA_HopTable(self):
         self.write('SENS:SIGN:MOD HOP')
         TATable = self.query('CALC:HOPD:TABL:RES? 1,3').split(',')
         numEle = 27
@@ -36,8 +36,8 @@ class VSA(VSA):
             if (i % numEle) == (numEle-1):
                 print('<break>\r\n')
         return 1
-        
-    def Get_TA_ChirpTable(self): 
+
+    def Get_TA_ChirpTable(self):
         #Manual 11.9.2
         self.write('SENS:SIGN:MOD CHIR')
         TATable = self.query('CALC:CHRD:TABL:RES? 1,2').split(',')
@@ -49,12 +49,12 @@ class VSA(VSA):
                 print('<break>\r\n')
         return 1
 
-    def Get_TA_ChirpStat(self): 
+    def Get_TA_ChirpStat(self):
         #Manual 11.9.2
         TATable = self.query('CALC:CHRD:STAT:DATA?').split(',')
         print(TATable)
 
-    def Get_TA_ChirpStats_TimeBegin(self): 
+    def Get_TA_ChirpStats_TimeBegin(self):
         # Chirp Stat Col2
         #Manual 11.9.2  CURR | ALL
         QRange = 'ALL'
@@ -64,7 +64,7 @@ class VSA(VSA):
         print(self.query('SENS:CHIR:TIM:BEG:MIN? %s'%QRange))
         print()
 
-    def Get_TA_ChirpStats_TimeLength(self): 
+    def Get_TA_ChirpStats_TimeLength(self):
         # Chirp Stat Col3
         #Manual 11.9.2  CURR | ALL
         QRange = 'ALL'
@@ -73,8 +73,8 @@ class VSA(VSA):
         print(self.query('SENS:CHIR:TIM:LENG:MAX? %s'%QRange))
         print(self.query('SENS:CHIR:TIM:LENG:MIN? %s'%QRange))
         print()
-        
-    def Get_TA_ChirpStats_Rate(self): 
+
+    def Get_TA_ChirpStats_Rate(self):
         # Chirp Stat Col4
         #Manual 11.9.2  CURR | ALL
         QRange = 'ALL'
@@ -83,8 +83,8 @@ class VSA(VSA):
         print(self.query('SENS:CHIR:TIM:RATE:MAX? %s'%QRange))
         print(self.query('SENS:CHIR:TIM:RATE:MIN? %s'%QRange))
         print()
-        
-    def Get_TA_ChirpStats_StateDev(self): 
+
+    def Get_TA_ChirpStats_StateDev(self):
         # Chirp Stat Col5
         #Manual 11.9.2  CURR | ALL
         QRange = 'ALL'
@@ -93,8 +93,8 @@ class VSA(VSA):
         print(self.query('SENS:CHIR:FREQ:CHER:MAX? %s'%QRange))
         print(self.query('SENS:CHIR:FREQ:CHER:MIN? %s'%QRange))
         print()
-        
-    def Get_TA_ChirpStats_AvgFreq(self): 
+
+    def Get_TA_ChirpStats_AvgFreq(self):
         # Chirp Stat Col6
         #Manual 11.9.2  CURR | ALL
         QRange = 'ALL'
@@ -103,8 +103,8 @@ class VSA(VSA):
         print(self.query('SENS:CHIR:FREQ:FREQ:MAX? %s'%QRange))
         print(self.query('SENS:CHIR:FREQ:FREQ:MIN? %s'%QRange))
         print()
-        
-    def Get_TA_ChirpStats_Bandwidth(self): 
+
+    def Get_TA_ChirpStats_Bandwidth(self):
         # Chirp Stat Col7
         #Manual 11.9.2  CURR | ALL
         QRange = 'ALL'
@@ -113,8 +113,8 @@ class VSA(VSA):
         print(self.query('SENS:CHIR:FREQ:BWID:MAX? %s'%QRange))
         print(self.query('SENS:CHIR:FREQ:BWID:MIN? %s'%QRange))
         print()
-        
-    def Get_TA_ChirpStats_FreqDevAvg(self): 
+
+    def Get_TA_ChirpStats_FreqDevAvg(self):
         # Chirp Stat Col13
         #Manual 11.9.2  CURR | ALL
         QRange = 'ALL'
@@ -123,13 +123,12 @@ class VSA(VSA):
         print(self.query('SENS:CHIR:FREQ:AVGF:MAX? %s'%QRange))
         print(self.query('SENS:CHIR:FREQ:AVGF:MIN? %s'%QRange))
         print()
-        
+
     def Get_TA_TestStuff(self):
         TATable = self.query('CALC:CHRD:STAT:DATA?').split(',')
         print(len(TATable))
         #print(TATable)
         #self.write("MMEM:STOR6:TAB ALL,'C:\\R_S\\Instr\\asdf.data'")
-        
 
 #####################################################################
 ### Run if Main

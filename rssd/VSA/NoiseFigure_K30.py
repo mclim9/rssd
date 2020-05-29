@@ -18,21 +18,21 @@ class VSA(VSA):
     ###########################################################################
     def Init_Noise(self):
         self.Set_Channel('NOISE')
-        
+
     ###########################################################################
-    ### FSW ENR & Noise (With Option Installed) 
+    ### FSW ENR & Noise (With Option Installed)
     ###########################################################################
     def Set_FSW_Option(self, sfswOption):
         self.write('INST:SEL %s'%sfswOption)
 
     def Set_ENR_Cal_Type(self, sENRtype):
-        self.write('SENS:CORR:ENR:CAL:TYPE %s'%sENRtype)    #DIODe|RES (Noise Diode or Resistor)
+        self.write('SENS:CORR:ENR:CAL:TYPE %s'%sENRtype)        #DIODe|RES (Noise Diode or Resistor)
 
     def Set_NF_Meas_Type(self, sENRtype):
-        self.write('SENS:CORR:ENR:MEAS:TYPE %s'%sENRtype)    #DIODe|RES  (Noise Diode or Resistor)
+        self.write('SENS:CORR:ENR:MEAS:TYPE %s'%sENRtype)       #DIODe|RES  (Noise Diode or Resistor)
 
     def Set_NF_Meas_Mode(self, sENRmode):
-        self.write('SENS:CORR:ENR:MEAS:MODE %s'%sENRmode)    #|TABL
+        self.write('SENS:CORR:ENR:MEAS:MODE %s'%sENRmode)       #|TABL
 
     def Get_Noise_Temp(self, fnoiseTemp):
         self.write('SENS:CORR:TEMP %f'%fnoiseTemp)
@@ -41,35 +41,35 @@ class VSA(VSA):
         self.write('SENS:CORR:LOSS:INP:TABL:SEL %f'%fnoiseLossIn)
 
     def Set_ENR_Table(self, sENRtable):
-        self.write("CORR:ENR:MEAS:TABL:SEL '%s'"%sENRtable)      #'346B.1321'
+        self.write("CORR:ENR:MEAS:TABL:SEL '%s'"%sENRtable)     #'346B.1321'
 
     def Set_Noise_Cal_Type(self, snoiseCalType):
         self.write('CONF:CONT %s'%snoiseCalType)
 
     def Config_Noise_Cal(self, snoiseCalTemp):
-        self.write('CONF:MEAS %s'%snoiseCalTemp)             #HOT|COLD
+        self.write('CONF:MEAS %s'%snoiseCalTemp)                #HOT|COLD
 
     def Set_2nd_Stage_Correction(self):
         self.write('SENS:CONF:CORR')
 
     def Set_Noise_Cal_State(self, sState):
-        self.write('SENS:CORR:STAT %s*WAI'%sState);        #ON|OFF|1|0
+        self.write('SENS:CORR:STAT %s*WAI'%sState)              #ON|OFF|1|0
 
     def Get_Noise_Sweep(self, sNoiseSweep):
-        self.write('SENS:CONF:LIST %s'%sNoiseSweep)        #SINGL|CONT
+        self.write('SENS:CONF:LIST %s'%sNoiseSweep)             #SINGL|CONT
         self.Set_InitImm()
 
     def Set_Noise_Meas_Single(self):
         self.write('CONF:FREQ:SING')
 
     def Set_Single_Coupled_To_List(self):
-        self.write('FREQ:SING:COUP ON')             #ON|OFF|1|0
+        self.write('FREQ:SING:COUP ON')                         #ON|OFF|1|0
 
     def Set_Single_Freq(self, sFreq):
         self.write('FREQ:SING %s'%sFreq)
 
     def Set_DUT_InLoss_Mode(self, sinputMode):
-        self.write('CORR:LOSS:INP:MODE %s'%sinputMode)      #SPOT|TABL
+        self.write('CORR:LOSS:INP:MODE %s'%sinputMode)          #SPOT|TABL
 
     def Set_DUT_InLoss_TableName(self, sinTableName):
         self.write("CORR:LOSS:INP:TABL:SEL '%s'"%sinTableName)
@@ -98,7 +98,7 @@ class VSA(VSA):
     def Get_NoiseFigure(self):
         NF = self.queryFloat('TRAC? TRACE1, NOIS')
         return NF
-      
+
     def Get_YFactor(self):
         YFac = self.queryFloat('TRAC? TRACE1, YFAC')
         return YFac

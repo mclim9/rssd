@@ -36,7 +36,7 @@ iqsize= str(len(IData)*4)                                       # Calculate byte
 scpi  = scpi + str(len(iqsize)) + iqsize                        # Calculate length of iqsize string
 ### Binary
 iqdata= np.vstack((IData,QData)).reshape((-1,),order='F')       # Combine I&Q Data
-bits  = np.array(iqdata*32767, dtype='>i2')                     # Convert to big-endian 2byte int 
+bits  = np.array(iqdata*32767, dtype='>i2')                     # Convert to big-endian 2byte int
 ### ASCII + Binary
 cmd   = bytes(scpi, 'utf-8') + bits.tostring()                  # Add ASCII + Bin
 SMW.K2.write_raw(cmd)

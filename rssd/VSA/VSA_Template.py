@@ -42,7 +42,7 @@ class VSA(VSA):                        #pylint: disable=E0102
 ### Run if Main
 #####################################################################
 if __name__ == "__main__":
-   ### this won't be run when imported
-   FSW = VSA()
-   FSW.jav_Open("192.168.1.109")
-   FSW.jav_Close()
+    ### this won't be run when imported
+    FSW = VSA()
+    FSW.jav_Open("192.168.1.109")
+    FSW.jav_Close()
