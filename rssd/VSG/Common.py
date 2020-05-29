@@ -17,7 +17,7 @@ class VSG(jaVisa):
         self.Model = "SMW"
 
     #####################################################################
-     ### SMW Get 
+     ### SMW Get
     #####################################################################
     def Get_ArbClockFreq(self):
         SCPI = self.queryFloat('SOUR:BB:ARB:CLOC?')
@@ -42,7 +42,7 @@ class VSG(jaVisa):
     def Get_CrestFactor(self):
         PEP = self.Get_PowerPEP()
         RMS = self.Get_PowerRMS()
-        return (PEP - RMS)
+        return PEP - RMS
 
     def Get_Freq(self):
         rdStr = self.queryFloat(':SOUR1:FREQ:CW?')     #RF Freq
@@ -74,7 +74,7 @@ class VSG(jaVisa):
         outList = []
         for i, file in enumerate(rdStr):
             rdStr[i] = rdStr[i].split(',')
-            if (rdStr[i][0].find(filter) > -1):
+            if rdStr[i][0].find(filter) > -1:
                 outList.append(rdStr[i][0])
         return outList
 
@@ -121,7 +121,7 @@ class VSG(jaVisa):
         self.write('POW:ALC:STATE AUTO')            #Turn ALC ON|OFF|OFFT|AUTO|
         self.write('SOUR:POW:ALC:DAMP AUTO')      #Turn Driver AMP ON|OFF|AUTO
         self.write('SOUR:BB:IQG DB8')                #Baseband IQ gain
-        
+
         ## Not so critical
         self.write('SOUR:AWGN:STAT 0')              #Turn AWGN off (default)
         self.write('BBIN:STAT OFF')                  #Turn BB Input off(default)
@@ -139,7 +139,7 @@ class VSG(jaVisa):
     #     scpi  = scpi + str(len(iqsize)) + iqsize                        # Calculate length of iqsize string
     #     ### Binary
     #     iqdata= np.vstack((IData,QData)).reshape((-1,),order='F')       # Combine I&Q Data
-    #     bits  = np.array(iqdata*32767, dtype='>i2')                     # Convert to big-endian 2byte int 
+    #     bits  = np.array(iqdata*32767, dtype='>i2')                     # Convert to big-endian 2byte int
     #     ### ASCII + Binary
     #     cmd   = bytes(scpi, 'utf-8') + bits.tostring()                  # Add ASCII + Bin
     #     self.K2.write_raw(cmd)
@@ -157,14 +157,14 @@ class VSG(jaVisa):
         self.query('BB:ARB:WSEG:NEXT %d;*OPC?'%(num))
 
     def Set_ArbSeg(self,Seg):
-         self.write('SOUR:BB:ARB:WSEG:NEXT %d'%Seg)
+        self.write('SOUR:BB:ARB:WSEG:NEXT %d'%Seg)
         #  self.write('SOUR:BB:ARB:WSEG:NEXT:EXEC')
 
     def Set_ArbState(self,sState):
         self.query(':SOUR:BB:ARB:STATE %s;*OPC?'%sState)
 
     def Set_ArbWv(self,InWv):
-         self.query('BB:ARB:WAV:SEL "%s"; *OPC?'%InWv)
+        self.query('BB:ARB:WAV:SEL "%s"; *OPC?'%InWv)
 
     def Set_BBState(self,sState):
         """'ON' 'OFF' 1 or 0"""
@@ -234,7 +234,7 @@ class VSG(jaVisa):
     def Set_OS_Dir(self,sDir):
         self.write(f'MMEMory:CDIRectory "/var/user/{sDir}"')
 
-    def Set_OptimizeNow(self):
+    def Set_OptimizeAll(self):
         """Please set"""
         self.Set_OptimizeIQ()
         self.Set_OptimizeLevel()

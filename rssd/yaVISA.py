@@ -113,9 +113,9 @@ class jaVisa(object):
             time.sleep(2)
             delta = (time.time() - start_time)
             if delta > 300:
-                if self.debug: print("jav_Wai: timeout")
+                if self.debug: print("jav_Wai   : timeout")
                 break
-        if self.debug: print('jav_Wai: %0.2fsec'%(delta))
+        if self.debug: print('jav_Wai   : %0.2fsec'%(delta))
         return delta
     
     def jav_Open(self, IPAddr, fily='',prnt=1):
