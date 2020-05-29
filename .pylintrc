@@ -78,20 +78,24 @@ disable=print-statement,
         deprecated-sys-function,
         exception-escape,
         comprehension-escape,
-        C0326,
         C0103,
-        C0114,
-        C0115,
-        C0116,
+        C0114, C0115, C0116,
         C0301,
+        C0321, C0326,
         C0413,
+	E0611, E0401,
         R0902, R0903,
-        W0621
-# C0103 Variable name "CF" doesn't conform to snake_case naming styl
+        W0621, W0702
+# C0103         Variable name "CF" doesn't conform to snake_case naming styl
 # C0114, C0115, C0116 Missing function or method docstring 
-# C0301 Line too long
+# C0301         Line too long
+# C0321         More than one statement on a single line
 # C0326 
-# C0413 Import should be placed at the top
-# W0621 Redefining name '' from outer scope
+# C0413         Import should be placed at the top
+# E0611,E0401   Import Error
+# E1101         Instance of '' has no 'Init' member
+# W0621         Redefining name '' from outer scope
+# W0702         No exception type(s) specified (bare-except)
+
 enable=c-extension-no-member
 
