@@ -27,7 +27,7 @@ Freq     = 28e9
 ##########################################################
 ### Code Start
 ##########################################################
-from rssd.NRP.Common import PMr 
+from rssd.NRP.Common import PMr
 
 NRP = PMr()
 NRP.jav_openvisa(NRPStr)

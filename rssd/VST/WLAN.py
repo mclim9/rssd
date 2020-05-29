@@ -40,7 +40,7 @@ class VST(object):
             odata[1].append(self.SMW.Get_WLAN_Modulation())
         except:
             pass
-            
+
         try:
             self.FSW.Init_WLAN()
             odata[2].append("[-FSW-]")
@@ -51,7 +51,7 @@ class VST(object):
             odata[2].append(self.FSW.Get_WLAN_Modulation())
         except:
             pass
-        print('SMW/FSW Values: %d %d'%(len(odata[2]),len(odata[2]))) 
+        print('SMW/FSW Values: %d %d'%(len(odata[2]),len(odata[2])))
 
         return odata
 
@@ -60,7 +60,7 @@ class VST(object):
         for i in range(len(data[0])):
             try:
                 print("%s\t%s\t%s"%(data[0][i],data[1][i],data[2][i]))
-            except: 
+            except:
                 try:
                     print("%s\t%s\t%s"%(data[0][i],data[1][i],'<notRead>'))
                 except:
@@ -73,11 +73,11 @@ class VST(object):
 
     def jav_Close(self):
         self.SMW.jav_Close()
-        self.FSW.jav_Close() 
-    
+        self.FSW.jav_Close()
+
     def jav_Clear(self):
         self.SMW.jav_Clear()
-        self.FSW.jav_Clear() 
+        self.FSW.jav_Clear()
 
     def Set_WLAN_All(self):
         try:

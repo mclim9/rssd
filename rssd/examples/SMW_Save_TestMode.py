@@ -13,7 +13,7 @@ SMW_IP   = '192.168.1.114'
 ### Code Overhead: Import and create objects
 ###############################################################################
 from rssd.VSG.NR5G_K144     import VSG              #pylint: disable=E0611,E0401
-from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
+# from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
 SMW = VSG().jav_Open(SMW_IP)                        #Create SMW Object
 
 ###############################################################################

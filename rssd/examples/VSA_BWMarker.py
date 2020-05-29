@@ -1,11 +1,8 @@
 ################################################################################
 ### Rohde & Schwarz Automation for demonstration use.
-###
 ### Title  : Bandwidth Marker Test
 ### Author : mclim
 ### Date   : 2020.02.03
-### Descrip: 
-###
 ################################################################################
 ### User Entry
 ################################################################################
@@ -22,10 +19,9 @@ rbwArry = [1e3, 3e3, 5e3, 1e4, 3e4, 5e4, 1e5, 3e5, 5e5, 1e6]
 ################################################################################
 ### Code Overhead
 ################################################################################
-from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
-from datetime               import datetime
-from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
 import timeit
+from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
+from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
 
 OFile = FileIO().makeFile(__file__)
 VSA = VSA().jav_Open(VSA_IP,OFile)                  #Create VSA Object

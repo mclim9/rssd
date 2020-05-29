@@ -83,7 +83,7 @@ class VST(object):
             odata[1].append(self.SMW.Get_5GNR_Direction())
             odata[1].append(self.SMW.Get_5GNR_FreqRange())
             odata[1].append(self.SMW.Get_5GNR_RefA()/1e6)
-            odata[1].append(self.SMW.Get_5GNR_ChannelBW()) 
+            odata[1].append(self.SMW.Get_5GNR_ChannelBW())
             odata[1].append(self.SMW.Get_5GNR_TransPrecoding())
             odata[1].append(self.SMW.Get_5GNR_PhaseCompensate())
             odata[1].append("=SSB==")
@@ -121,7 +121,7 @@ class VST(object):
                 odata[1].append(self.SMW.Get_5GNR_BWP_Ch_PTRS_RE_Offset())
         except:
             pass
-            
+
         try:
             self.FSW.Init_5GNR()
             odata[2].append("[-FSW-]")
@@ -167,7 +167,7 @@ class VST(object):
                 odata[2].append(self.FSW.Get_5GNR_BWP_Ch_PTRS_RE_Offset())
         except:
             pass
-        print('SMW/FSW Values: %d %d'%(len(odata[2]),len(odata[2]))) 
+        print('SMW/FSW Values: %d %d'%(len(odata[2]),len(odata[2])))
 
         return odata
 
@@ -176,7 +176,7 @@ class VST(object):
         for i in range(len(data[0])):
             try:
                 print(f"{data[0][i]}\t{data[1][i]}\t{data[2][i]}")
-            except: 
+            except:
             #     try:
             #         print("%s\t%s\t%s"%(data[0][i],data[1][i],'<notRead>'))
             #     except:
@@ -190,11 +190,11 @@ class VST(object):
 
     def jav_Close(self):
         self.SMW.jav_Close()
-        self.FSW.jav_Close() 
-    
+        self.FSW.jav_Close()
+
     def jav_Clear(self):
         self.SMW.jav_Clear()
-        self.FSW.jav_Clear() 
+        self.FSW.jav_Clear()
 
     def Set_5GNR_All(self):
         try:
@@ -223,7 +223,7 @@ class VST(object):
 
         try:
             ### FSW Setting
-            self.cc         = self.NR_CC
+            # self.cc         = self.NR_CC
             self.FSW.Init_5GNR()
             self.FSW.Set_Freq(self.Freq)
             self.FSW.Set_5GNR_Direction(self.NR_Dir)

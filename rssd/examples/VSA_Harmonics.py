@@ -12,7 +12,6 @@ freq        = 1.950    #GHz
 ###############################################################################
 from rssd.VSA.Common        import VSA
 from rssd.FileIO            import FileIO
-import timeit
 
 OFile = FileIO().makeFile(__file__)
 FSW   = VSA().jav_Open(instru_ip,OFile)                  #Create Object

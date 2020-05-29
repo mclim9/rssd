@@ -13,6 +13,7 @@ class VNA(jaVisa):
     def __init__(self):
         super(VNA,self).__init__()          #Python2/3
         self.Model = "VNA"
+        self.dChan = ''
 
     #####################################################################
     ### VNA GET Functions Alphabetical
@@ -78,10 +79,10 @@ class VNA(jaVisa):
         self.query("INIT:IMM;*OPC?")
 
     def Set_PowerStart(self,fPwr,dChan=1):
-        self.write(":SOUR%d:POW:STAR %f dBm"%(dChan,fPwr))
+        self.write(f":SOUR{dChan}:POW:STAR {fPwr} dBm")
 
     def Set_PowerStop(self,fPwr,dChan=1):
-        self.write(":SOUR%d:POW:STOP %f dBm"%(dChan,fPwr))
+        self.write(f":SOUR{dChan}:POW:STOP {fPwr} dBm")
 
     def Set_Pwrcal_Init(self):
         self.write(f":SOUR:POW:CORR:COLL:FLAT ON")      #Flatness Cal
@@ -89,18 +90,18 @@ class VNA(jaVisa):
         self.write(f":SOUR:POW:CORR:COLL:VER ON")       #Verification Sweep
         self.write(f":SOUR:POW:CORR:COLL:METH PMON")    #PMON | RFAF | RRON
 
-    def Set_Pwrcal_NumReading(self,iNum,chan=1):
-        self.write(f":SOUR{chan}:POW:CORR:NRE {iNum}")
+    def Set_Pwrcal_NumReading(self,iNum,dChan=1):
+        self.write(f":SOUR{dChan}:POW:CORR:NRE {iNum}")
 
     def Set_Pwrcal_Measure(self,iPort,dChan=1):
         self.write(f":SOUR{dChan}:POW:CORR:ACQ PORT,{iPort}")
 
-    def Set_Pwrcal_Rx(self,Source,Port,dChan=1):
+    def Set_Pwrcal_Rx(self,Source,Port):
         # CORR:POW:ACQ <What to Cal> <Port>,<SourceTYpe>,<Port#>,<AWAV/NOM>
         self.write(f":CORR:POW:ACQ BWAV,{Port},PORT,{Source},AWAV")
         self.query('CORR:POW:AWAV?')
 
-    def Set_Pwrcal_Tolerance(self,fTol,dChan=1):
+    def Set_Pwrcal_Tolerance(self,fTol):
         self.write(f":SOUR:POW:CORR:COLL:AVER:NTOL {fTol}")
 
     def Set_SweepCont(self,iON):
@@ -139,11 +140,11 @@ class VNA(jaVisa):
         self.write(f"CALC{dChan}:PAR:SDEF '{sMeas}','{sMeas}'")     #<TrcName>,<Measurement>
         self.write(f'DISP:WIND1:TRAC:EFE "{sMeas}"')                #Displays Trace
 
-    def Set_Trace_MeasAdd_AWave(self,APort,GenPort,dChan=1):
+    def Set_Trace_MeasAdd_AWave(self,APort,GenPort):
         #Default: SAM; RMS; PEAK; AVG
         self.Set_Trace_MeasAdd(f'A{APort}D{GenPort}RMS')
 
-    def Set_Trace_MeasAdd_BWave(self,BPort,GenPort,dChan=1):
+    def Set_Trace_MeasAdd_BWave(self,BPort,GenPort):
         self.Set_Trace_MeasAdd(f'B{BPort}D{GenPort}RMS')
 
     # def Set_Trace_MeasAdd_IMD3(self,dChan=1):                         #mmm
@@ -151,10 +152,10 @@ class VNA(jaVisa):
     #     self.Set_Trace_MeasAdd("IP3UI")
     #     self.Set_Trace_MeasAdd("IP3LI")
 
-    def Set_Trace_MeasAdd_SParam(self,Port1,Port2,dChan=1):
+    def Set_Trace_MeasAdd_SParam(self,Port1,Port2):
         self.Set_Trace_MeasAdd(f'S{Port1}{Port2}')
 
-    def Set_Trace_MeasAdd_PwrMtr(self,GenPort,dChan=1):
+    def Set_Trace_MeasAdd_PwrMtr(self,GenPort):
         self.Set_Trace_MeasAdd(f'Pmtr{1}D{GenPort}')
 
     def Set_Trace_MeasDel(self,sTrcName,dChan=1):

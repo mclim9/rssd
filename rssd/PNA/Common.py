@@ -25,7 +25,7 @@ class PNA(jaVisa):
 
     def Get_AttnMech(self):
         out = self.queryInt('INP:ATT?')
-        return out 
+        return out
 
     def Get_Channels(self):                                                     #done
         ChList = self.query('INST:LIST?').split(',')
@@ -108,7 +108,7 @@ class PNA(jaVisa):
         #AUTO | SWE | FFT
         rdStr = self.query(':SENS:SWE:TYPE?')
         return rdStr
-       
+
     def Get_SweepParams(self):
         # ,SwpTime,SwpPts,SwpType,SwpOpt,
         Opt = self.Get_SweepOpt()
@@ -161,7 +161,7 @@ class PNA(jaVisa):
         else:
             self.query(":INST:CRE %s,'%s';*OPC?"%(Chan,sName))
         self.query(":INST:SEL '%s';*OPC?"%sName)
-        
+
     def Set_DisplayUpdate(self,state):
         self.write('SYST:DISP:UPD %s'%state)      #Display Update State
 
@@ -186,7 +186,7 @@ class PNA(jaVisa):
 
     def Set_InitImm(self):
         self.query('INIT:IMM;*OPC?')
-            
+
     def Set_Input(self,sType):
         self.write('INP:SEL %s'%sType)                  #RF|AIQ|DIQ|FILE
 
@@ -230,11 +230,11 @@ class PNA(jaVisa):
     def Set_SweepType(self,sType):
         #AUTO | SWE | FFT
         self.write(f':SENS:SWE:TYPE {sType}')
-       
+
     def Set_SweepOpt(self,sOpt):
         #AUTO | SPEed | DYN
         self.write(f':SENS:SWE:OPT {sOpt}')
-       
+
     def Set_SweepCont(self,iON):
         ''' 0 1 '''
         if iON == 1:
@@ -250,13 +250,13 @@ class PNA(jaVisa):
         self.write('DISP:TRAC%d:MODE AVER'%trace)
         self.write('SENS:DET1:FUNC AVER')
         self.write('SENS:AVER:TYPE %s'%sType)           #LIN|VID
-        
-    def Set_Trace_AvgCount(self,iAvg,trace=1):
+
+    def Set_Trace_AvgCount(self,iAvg):
         self.write('SENS:SWE:COUN %d'%(iAvg))
-        
+
     def Set_Trace_AvgOff(self,trace=1):
         self.write('DISP:TRAC%d:MODE WRIT'%(trace))
-    
+
     def Set_Trace_Detector(self,sDetect,iWind=1):
         """APE; NEG; POS; QPE; SAMP; RMS; CAV; CRMS"""
         self.write('SENS:WIND%d:DET %s'%(iWind,sDetect))

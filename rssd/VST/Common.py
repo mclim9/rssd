@@ -16,7 +16,9 @@ from rssd.VSA.Common import VSA  #pylint: disable=E0611,E0401
 class VST(object):
     """ Rohde & Schwarz Vector Signal Transceiver Object """
     def __init__(self):
-        self.Freq      = 19e9
+        self.Freq       = 19e9
+        self.SMW        = ''
+        self.FSW        = ''
 
     def jav_Open(self,SMW_IP,FSW_IP,OFile=''):
         self.SMW = VSG().jav_Open(SMW_IP,OFile)  #Create SMW Object
@@ -25,11 +27,11 @@ class VST(object):
 
     def jav_Close(self):
         self.SMW.jav_Close()
-        self.FSW.jav_Close() 
+        self.FSW.jav_Close()
 
     def jav_ClrErr(self):
         self.SMW.jav_ClrErr()
-        self.FSW.jav_ClrErr() 
+        self.FSW.jav_ClrErr()
 
     def Set_Freq(self,freq):
         self.SMW.Set_Freq(freq)

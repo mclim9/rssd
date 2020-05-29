@@ -36,7 +36,7 @@ class OSP(jaVisa):
         """ Slot, Switch """
         # ROUT:CLOS? (@F01A11(0161))
         for pos in range(0,7):
-            state = self.queryInt('ROUT:CLOS? (@F01A%02d(%02d%02d))'%(slot,pos,sw))[0]
+            state = self.queryInt(f'ROUT:CLOS? (@F01A{slot:02d}({pos:02d}{sw:02d}))')[0]
             if state == 1:
                 CurrState = pos
                 print(f"A{slot:02d} SW{sw:02d} @Pos{pos:02d}")

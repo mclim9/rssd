@@ -1,16 +1,13 @@
 ##########################################################
 ### Rohde & Schwarz Automation for demonstration use.
-###
 ### Title  : Timing SCPI Commands Example
 ### Author : mclim
-### Date    : 2018.05.24
-### Steps  : 
-###
+### Date   : 2018.05.24
 ##########################################################
 ### User Entry
 ##########################################################
 VSA_IP  = '192.168.1.108'
-VSG_IP  = '192.168.1.114' 
+VSG_IP  = '192.168.1.114'
 MeasTim = 10e-3
 Freq    = 28e9
 RBW     = 200e3
@@ -27,9 +24,9 @@ PwrSweep = 59
 ##########################################################
 ### Code Overhead
 ##########################################################
+from datetime               import datetime
 from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
 from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
-from datetime               import datetime         
 from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
 
 OFile = FileIO().makeFile(__file__)
@@ -114,8 +111,7 @@ VSA.Set_Trace_Detector('RMS')
 VSA.Set_SweepOpt(SweMode)
 VSA.Set_SweepType(SweType)
 VSA.Set_YIG('OFF')
-if 0:
-    VSA.Set_Trig1_Source('Ext')
+# VSA.Set_Trig1_Source('Ext')
 
 ##########################################################
 ### Measure Time
