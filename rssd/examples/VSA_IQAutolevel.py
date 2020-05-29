@@ -8,7 +8,7 @@
 ### User Entry
 ###############################################################################
 VSA_IP  = '192.168.1.109'
-VSG_IP  = '192.168.1.114' 
+VSG_IP  = '192.168.1.114'
 MeasTim = 100e-6
 Freq    = 6e9
 Avg     = 0
@@ -22,10 +22,10 @@ PwrArry = range(-50,0,2)
 ###############################################################################
 ### Code Overhead
 ###############################################################################
+import timeit
 from rssd.VSA.WLAN_K91      import VSA              #pylint: disable=E0611,E0401
 from rssd.VSG.WLAN_K54      import VSG              #pylint: disable=E0611,E0401
 from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
-import timeit
 
 OFile = FileIO().makeFile(__file__)
 VSA = VSA().jav_Open(VSA_IP,OFile)                  #Create VSA Object

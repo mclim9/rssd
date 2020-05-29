@@ -11,28 +11,27 @@
 SMW_IP      = '192.168.1.114'
 FSW_IP      = '192.168.1.109'
 FreqArry    = [26.55e9, 28.6e9, 29.45e9, 37.05e9, 38.5e9, 39.95e9]
-pwrArry     = range(-50,8,2)        #Power Array
+pwrArry     = range(-50,8,2)            #Power Array
 NR_Dir      = 'UL'
-waveparam   = [[100,60,128]]         #ChBW, SubSp, RB
-
-            #   [100,120,66]]         #ChBW, SubSp, RB
-            #   [200,60,264],       #ChBW, SubSp, RB
-            #   [200,120,132],      #ChBW, SubSp, RB
-            #   [400,120,264]]      #ChBW, SubSp, RB
+waveparam   = [[100,60,128]]            #ChBW, SubSp, RB
+            #   [100,120,66]]           #ChBW, SubSp, RB
+            #   [200,60,264],           #ChBW, SubSp, RB
+            #   [200,120,132],          #ChBW, SubSp, RB
+            #   [400,120,264]]          #ChBW, SubSp, RB
 subFArry    = [1]
-modArry     = ['QPSK','QAM64']     #QPSK; QAM16; QAM64; QAM256; PITB
+modArry     = ['QPSK','QAM64']          #QPSK; QAM16; QAM64; QAM256; PITB
 numMeas     = 1
-AutoLvl     = 1                     #0:AutoEVM 1:AutoLevel
+AutoLvl     = 1                         #0:AutoEVM 1:AutoLevel
 DFT_S_OFDM  = 'ON'
 
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
+# import time
+# import ctypes                                   # An included library with Python install
 from datetime               import datetime     #pylint: disable=E0611,E0401
 from rssd.FileIO            import FileIO       #pylint: disable=E0611,E0401
 from rssd.VST.NR5G_K144     import VST          #pylint: disable=E0611,E0401
-import time
-import ctypes                                   # An included library with Python install
 OFile = FileIO().makeFile(__file__)
 
 ##########################################################

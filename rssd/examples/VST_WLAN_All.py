@@ -1,10 +1,8 @@
 ##########################################################
 ### Rohde & Schwarz Automation for demonstration use.
-###
 ### Title  : Sample SMW FSW WLAN EVM Sweep
 ### Author : mclim
 ### Date   : 2019.03.21
-###
 ##########################################################
 ### User Entry
 ##########################################################
@@ -14,7 +12,7 @@ FreqArry    = [2.1e9,2.2e9]
 pwrArry     = [-20, -10, -5]
 StdArry     = ['AC','N']
 CHBWArry    = [20,40]
-MCSArry     = [1,3,5] 
+MCSArry     = [1,3,5]
 SweepTime   = 0.002
 
 MeasEVM     = 0
@@ -24,10 +22,10 @@ MeasSEM     = 1
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
+# import time
 from datetime               import datetime     #pylint: disable=E0611,E0401
 from rssd.FileIO            import FileIO       #pylint: disable=E0611,E0401
 from rssd.VST_WLAN          import VST          #pylint: disable=E0611,E0401
-import time
 OFile = FileIO().makeFile(__file__)
 
 ##########################################################

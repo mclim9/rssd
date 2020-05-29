@@ -21,10 +21,10 @@ CCStart = (1 - NumCC) * (CCSpace/2)
 ###############################################################################
 ### Code Overhead: Import and create objects
 ###############################################################################
+import timeit
 from rssd.VSG.NR5G_K144     import VSG              #pylint: disable=E0611,E0401
 from rssd.VSA.NR5G_K144     import VSA              #pylint: disable=E0611,E0401
-from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
-import timeit
+# from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
 
 if VSG_ON: SMW = VSG().jav_Open(SMW_IP)             #Create SMW Object
 FSW = VSA().jav_Open(FSW_IP)                        #Create FSW Object
@@ -77,4 +77,4 @@ FSW.Set_Autolevel()
 ###############################################################################
 ### Close Nicely
 ###############################################################################
-if VSG_ON: SMW.jav_Close() 
+if VSG_ON: SMW.jav_Close()

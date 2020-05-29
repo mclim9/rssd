@@ -14,9 +14,9 @@ numRepeat   = 10
 ################################################################################
 ### Code Overhead: Import and create objects
 ################################################################################
+from datetime           import datetime
 from rssd.VSA.Common    import VSA
 from rssd.FileIO        import FileIO
-from datetime           import datetime
 
 OFile = FileIO().makeFile(__file__)
 FSW = VSA().jav_Open(FSW_IP,OFile)  #Create FSW Object
