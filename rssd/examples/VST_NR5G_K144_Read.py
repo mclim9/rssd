@@ -1,6 +1,5 @@
 ##########################################################
 ### Rohde & Schwarz Automation for demonstration use.
-###
 ### Purpose: FSW/SMW 5G NR Demo
 ### Author:  mclim
 ### Date:    2018.09.10
@@ -18,9 +17,7 @@ FSW_IP   = '192.168.1.109'                    #IP Address
 from rssd.VST.NR5G_K144 import VST           #pylint: disable=E0611,E0401
 
 if __name__ == "__main__":
-   NR5G = VST().jav_Open(SMW_IP,FSW_IP)
-   NR5G.Get_5GNR_All_print()
-   NR5G.jav_Clear()
-   NR5G.jav_Close()
-
-   
+    NR5G = VST().jav_Open(SMW_IP,FSW_IP)
+    NR5G.Get_5GNR_All_print()
+    NR5G.jav_Clear()
+    NR5G.jav_Close()

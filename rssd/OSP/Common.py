@@ -12,7 +12,7 @@ class OSP(jaVisa):
     def __init__(self):
         super(OSP, self).__init__()
         self.Model = "OSP1x0"
-                 
+
     #####################################################################
     ### OSP Switching Functions
     #####################################################################
@@ -25,7 +25,7 @@ class OSP(jaVisa):
 
     def Get_SW_SPDT(self,slot=11,sw=1):
         """ Slot, Switch """
-        # ROUT:CLOS? (@F01A11(0161)) 
+        # ROUT:CLOS? (@F01A11(0161))
         outstr = f'ROUT:CLOS? (@F01A{slot:02d}(01{sw:02d}))'
         print(outstr)
         state = self.queryInt(outstr)
@@ -34,7 +34,7 @@ class OSP(jaVisa):
 
     def Get_SW_SP6T(self,slot=11,sw=1):
         """ Slot, Switch """
-        # ROUT:CLOS? (@F01A11(0161)) 
+        # ROUT:CLOS? (@F01A11(0161))
         for pos in range(0,7):
             state = self.queryInt('ROUT:CLOS? (@F01A%02d(%02d%02d))'%(slot,pos,sw))[0]
             if state == 1:
@@ -43,9 +43,9 @@ class OSP(jaVisa):
         return CurrState
 
     def Set_CompatabilityMode(self,sState):
-        """ 
+        """
             F01Mxx --> F01A1x nomenclature
-            ON OFF 1 0 
+            ON OFF 1 0
         """
         self.write(f'CONF:COMP {sState}')
 
@@ -68,4 +68,3 @@ if __name__ == "__main__":
     RFU3.Set_SW(11,12,0)
     # RFU3.query('ROUT:CLOS? (@F01A11(0111))')
     RFU3.jav_ClrErr()
-    

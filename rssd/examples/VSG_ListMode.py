@@ -13,7 +13,7 @@ host = '192.168.1.114'               #Get local machine name
 ##########################################################
 from rssd.SMW_Common import VSG
 
-SMW = VSG().jav_Open(host) 
+SMW = VSG().jav_Open(host)
 #SMW.jav_logSCPI()                  # Log SCPI commands
 SMW.Set_Freq(10e9)                  # Set 10GHz
 SMW.Set_RFPwr(-30)                  # Output -30dBm

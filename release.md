@@ -1,6 +1,6 @@
 Release History
 =====================================================================
-- RSSD 2020.05.0
+- RSSD 2020.06.0
   - 5GNR methods streamlined between VSG; VSA; RCT
   - VSA
     - 5GNR
@@ -10,10 +10,21 @@ Release History
   - VSG
     - Common
       - Add Get_OS_ methods
+      - Add Set_OptimizeNow_ methods
     - 5GNR
       - add self.SubF
       - add self.Get_5GNR_BWP_Ch_PTRS_State check to PTRS methods
       - chg Get_5GNR_FreqRange to return HIGH MIDD LOW
+  - RCT
+    - NR5G_KM601.py
+      - Verified against CMP200 w/ RRH
+      - add self.scs
+      - chg Get_5GNR_Params_EVM
+      - del Set_5GNR_Periodicity
+      - add Set_5GNR_BWP_Frame_Periodicity 
+      - add Set_5GNR_BWP_Frame_SlotConfig
+      - add Set_5GNR_BWP_SubSpace
+      - add Set_5GNR_EVM_MeasOnExcept
   - Examples
     - Add VSA_IQAutolevel.py
     - Add VSA_On flag for VST_NR5G_4CC_Config

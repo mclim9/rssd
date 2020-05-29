@@ -15,6 +15,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
         self.sdir   = "UL"
         self.cc     = 1                         #1 Start
         self.subF   = 1
+        self.alloc  = 1
 
     #####################################################################
     ### FSW 5GNR Get
@@ -32,32 +33,32 @@ class VSA(VSA):                                 #pylint: disable=E0102
         RBMax = int(self.Get_5GNR_BWP_ResBlock())
         self.Set_5GNR_BWP_ResBlock(RB)
         self.Set_5GNR_BWP_ResBlockOffset(RBO)
-        ressy = (SS * 1e3 *12*(RB - RBMax + 2 * RBO))/2 
+        ressy = (SS * 1e3 *12*(RB - RBMax + 2 * RBO))/2
         return ressy
-                 
+
     #####################################################################
     ### FSW 5GNR DMRS Config
     #####################################################################
     def Get_5GNR_BWP_Ch_DMRS_1stDMRSSym(self):
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:TAP?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Ch_DMRS_AddPosition(self):
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:MSYM:APOS?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Ch_DMRS_Config(self):
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:CTYP?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Ch_DMRS_MSymbLen(self):
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:MSYM:LENG?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Ch_DMRS_Mapping(self):
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:MTYP?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Ch_DMRS_RelPwr(self):
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:POW?')
         return rdStr
@@ -117,39 +118,39 @@ class VSA(VSA):                                 #pylint: disable=E0102
         ### RB = (CHBw * 0.95) / (SubSp * 12)
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:RBC?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Ch_ResBlockOffset(self):
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:RBOF?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Ch_SymbNum(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:SCO?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Ch_SymbOff(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:SOFF?')
         return rdStr
-        
+
     def Get_5GNR_BWP_Count(self):
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWPC?')
         return rdStr
- 
+
     def Get_5GNR_BWP_ResBlock(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:RBC?')
         return rdStr
-        
+
     def Get_5GNR_BWP_ResBlockOffset(self):
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:RBOF?')
         return rdStr
-        
+
     def Get_5GNR_BWP_SlotNum(self):
         ### Number of slots
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SCO?')
         return rdStr
-        
+
     def Get_5GNR_BWP_SubSpace(self):
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SSP?')
         return rdStr
@@ -165,7 +166,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
     def Get_5GNR_ChPwr(self):
         Power = self.queryFloat(f'FETC:CC{self.cc}:ISRC:FRAM:SUMM:POW:AVER?')
         return Power
-        
+
     def Get_5GNR_ChannelBW(self):
         ### 5;10;15;20;25;30;40;50;60;70;80;90;100;200;400
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:BW?')
@@ -181,7 +182,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
             self.sdir = "DL"
             self.alloc = 1         #Alloc 0:CORSET
         elif rdStr == 'UL':
-            self.sdir = "UL"            
+            self.sdir = "UL"
             self.alloc = 0         #Alloc 0:PUSCH
         else:
             print('Get_5GNR_Direction Error')
@@ -241,7 +242,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
         else:
             rdStr = '<UL n/a>'
         return rdStr
-    
+
     def Get_5GNR_TM_Cat(self):
         rdStr = self.query(f'MMEM:LOAD:TMOD:CC{self.cc}:CAT?').split(',')
         return rdStr
@@ -259,7 +260,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
     #####################################################################
     def Init_5GNR(self):
         self.Set_Channel('NR5G')
-        
+
     def Init_5GNR_Meas(self,sMeas):
         """ EVM; ESPectrum; ACLR; TAER"""
         self.write(f'CONF:NR5G:MEAS {sMeas}')
@@ -267,7 +268,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
     def Init_5GNR_SEM(self):
         self.Set_Channel('NR5G')
         self.write(':CONF:NR5G:MEAs ESP')
-        
+
     #####################################################################
     ### FSW 5GNR Settings
     #####################################################################
@@ -304,7 +305,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
     def Set_5GNR_BWP_Ch_DMRS_Mapping(self,DMRS):
         """ A B """
         self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:MTYP {DMRS}')
-        
+
     def Set_5GNR_BWP_Ch_DMRS_RelPwr(self,DMRS):
         """ -25 to 12 dB """
         self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:DMRS:POW {DMRS}')
@@ -342,7 +343,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
     def Set_5GNR_BWP_Corset_ResBlockOffset(self,iRBO):
         if self.sdir == 'DL':
             self.write(f':CONF:NR5G:DL:CC{self.cc}:FRAM1:BWP0:SLOT0:COR0:RBOF {iRBO}')
-    
+
     def Set_5GNR_BWP_ResBlock(self,iRB):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
         self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:RBC {iRB}')
@@ -362,7 +363,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
 
     def Set_5GNR_CC_Capture(self,sCapture):
         """SING AUTO"""
-        if (self.cc > 1):
+        if self.cc > 1:
             self.write(f':CONF:NR5G:CSC {sCapture}')
         else:
             pass
@@ -373,7 +374,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
     def Set_5GNR_ChannelBW(self,iBW):
         ### 5;10;15;20;25;30;40;50;60;70;80;90;100;200;400
         self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:BW BW{iBW}')
-        
+
     def Set_5GNR_Direction(self,sDirection):
         """UL | DL"""
         if (sDirection == "UL") or (sDirection == "UP"):
@@ -431,12 +432,12 @@ class VSA(VSA):                                 #pylint: disable=E0102
 
     def Set_5GNR_Result_View(self, sMode):
         """ALL | VIEW """
-        if (self.cc > 1):
+        if self.cc > 1:
             self.query(f':SENS:NR5G:RSUM:CCR {sMode}')
 
     def Set_5GNR_savesetting(self, sName):
         self.query(f":MMEM:STOR:DEM:CC{self.cc} 'C:\\R_S\\Instr\\user\\NR5G\\AllocationFiles\\{sName}.allocation';*OPC?")
-        
+
     def Set_5GNR_SEM_Freq(self,fFreq,dSubBlock=1):
         self.write(f':SENS:ESP{dSubBlock}:SCEN {fFreq}')
 

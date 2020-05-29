@@ -1,21 +1,19 @@
 # -*- coding: future_fstrings -*-
 #####################################################################
 ### Rohde & Schwarz Automation for demonstration use.
-###
 ### Purpose: Vector Network Analyzer Common Functions
 ### Author : Martin C Lim
 ### Date   : 2019.02.14
 ### Requird: python -m pip install rssd
-###
 #####################################################################
 from rssd.yaVISA import jaVisa            # pylint: disable=E0611,E0401
 
 class VNA(jaVisa):
     """ Rohde & Schwarz Vector Network Analyzer Object """
     def __init__(self):
-        super(VNA,self).__init__()     #Python2/3
+        super(VNA,self).__init__()          #Python2/3
         self.Model = "VNA"
-    
+
     #####################################################################
     ### VNA GET Functions Alphabetical
     #####################################################################
@@ -60,12 +58,12 @@ class VNA(jaVisa):
     #####################################################################
     ### VNA SET Functions Alphabetical
     #####################################################################
-    # def Set_Cal_Group(self,sName,dChan=1):                          #MMM
+    # def Set_Cal_Group(self,sName,dChan=1):                        #MMM
     #     #sName should end in '.cal'
     #     if not sName.lower().endswith(".cal"):
     #         sName += ".cal"
-    #     self.write(":MMEM:LOAD:CORR:RES %d,%s"%(dChan,sName))       #Resolve Cal Group
-    #     self.write(":MMEM:LOAD:CORR %s"%(sName))                    #Load cal group.
+    #     self.write(":MMEM:LOAD:CORR:RES %d,%s"%(dChan,sName))     #Resolve Cal Group
+    #     self.write(":MMEM:LOAD:CORR %s"%(sName))                  #Load cal group.
 
     def Set_FreqStart(self,fFreq,dChan=1):
         self.write(":SENS%d:FREQ:STAR %f"%(dChan,fFreq))
@@ -75,10 +73,10 @@ class VNA(jaVisa):
 
     def Set_IFBW(self,fFreq,dChan=1):
         self.write("SENS%d:BAND %f"%(dChan,fFreq))
-        
-    def Set_InitImm(self):                                        
+
+    def Set_InitImm(self):
         self.query("INIT:IMM;*OPC?")
-          
+
     def Set_PowerStart(self,fPwr,dChan=1):
         self.write(":SOUR%d:POW:STAR %f dBm"%(dChan,fPwr))
 
@@ -96,7 +94,7 @@ class VNA(jaVisa):
 
     def Set_Pwrcal_Measure(self,iPort,dChan=1):
         self.write(f":SOUR{dChan}:POW:CORR:ACQ PORT,{iPort}")
-    
+
     def Set_Pwrcal_Rx(self,Source,Port,dChan=1):
         # CORR:POW:ACQ <What to Cal> <Port>,<SourceTYpe>,<Port#>,<AWAV/NOM>
         self.write(f":CORR:POW:ACQ BWAV,{Port},PORT,{Source},AWAV")
@@ -107,18 +105,18 @@ class VNA(jaVisa):
 
     def Set_SweepCont(self,iON):
         if iON == 1:
-            self.write("INIT:CONT ON")                          #Continuous Sweep
+            self.write("INIT:CONT ON")                              #Continuous Sweep
         else:
-            self.write("INIT:CONT OFF")                         #Single Sweep
+            self.write("INIT:CONT OFF")                             #Single Sweep
 
     def Set_SweepPoints(self,dPoints,dChan=1):
-        self.write(":SENS%d:SWE:POIN %d"%(dChan,dPoints))  #RF Freq
+        self.write(":SENS%d:SWE:POIN %d"%(dChan,dPoints))           #RF Freq
 
     def Set_SweepTime(self,fSwpTime,dChan=1):
         if fSwpTime == 0:
-            self.write("SENS%d:SWE:TIME:AUTO ON"%(dChan))  #Auto        
+            self.write("SENS%d:SWE:TIME:AUTO ON"%(dChan))           #Auto
         else:
-            self.write("SENS%d:SWE:TIME %f"%(dChan,fSwpTime))  #Sweep/Capture Time
+            self.write("SENS%d:SWE:TIME %f"%(dChan,fSwpTime))       #Sweep/Capture Time
 
     def Set_Trace_Avg(self,state,dChan=1):
         if state == 1:
