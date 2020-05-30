@@ -5,8 +5,8 @@
 ### Author : Martin C Lim
 ### Date   : 2018.05.29
 ###############################################################################
-from rssd.RCT.Common import RCT                 #pylint: disable=E0611,E0401
 import struct                                   # For IQ Manipulation
+from rssd.RCT.Common import RCT                 #pylint: disable=E0611,E0401
 
 class RCT(RCT):                                 #pylint: disable=E0102
     """ Rohde & Schwarz Radio Comm Tester Object """
@@ -27,14 +27,13 @@ class RCT(RCT):                                 #pylint: disable=E0102
         return rdStr
 
     def Get_IQR_data_Bin(self):
-        import struct
         self.write('FORMAT:BASE:DATA REAL,32')
         self.write('FETC:GPRF:MEAS:IQR?')
         rdStr = self.K2.read_raw()
         numBytes = int(chr(rdStr[3]))           # Number of Bytes
         numIQ    = int(rdStr[2:2+numBytes])
         IQBytes  = rdStr[(numBytes+4):-1]       # Remove Header
-        IQAscii  = struct.unpack("<" + 'f' * int(numIQ/4),IQBytes)
+        IQAscii  = struct.unpack("<" + 'f' * int(numIQ/4),IQBytes)          #pylint: disable=W0612
         self.write('FORMAT:BASE:DATA ASCII')
         return IQBytes
 
@@ -43,6 +42,7 @@ class RCT(RCT):                                 #pylint: disable=E0102
     ###########################################################################
     def Init_Meas_IQCapture(self,port=1):
         self.write('INIT:GPRF:MEAS:IQR')
+        self.Set_Meas_Port(port)
         self.write(f'CONFigure:GPRF:MEAS:IQRecorder:FORMat IQ')
 
     ###########################################################################

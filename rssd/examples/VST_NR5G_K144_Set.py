@@ -16,7 +16,7 @@ FSW_IP    = '192.168.1.109'
 ##########################################################
 from rssd.VST.NR5G_K144 import VST          #pylint: disable=E0611,E0401
 
-def NR5G_SetSettings(FSW,SMW):
+def NR5G_SetSettings(FSW,SMW):              #pylint: disable=W0613
     pass
 
 if __name__ == "__main__":

@@ -29,7 +29,7 @@ class VST(object):
         self.NR_CC     = 1
         self.NR_TF     = 'OFF'
 
-    def Get_5GNR_All(self):
+    def Get_5GNR_All(self):                     #pylint: disable=R0915
         DMRS = 1
         PTRS = 1
         self.SMW.cc     = self.NR_CC - 1

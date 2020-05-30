@@ -72,7 +72,7 @@ def MeasRelPhase(FSW, SMW, x):
 
         count = count + 1
         if (count > 10):    #Quit if too many retests.
-            quit()
+            break
 
         if leaveLoop:
             break

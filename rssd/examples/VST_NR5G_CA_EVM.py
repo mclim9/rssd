@@ -22,11 +22,11 @@ DFT_S_OFDM  = 'ON'
 ###############################################################################
 ### Code Overhead: Import and create objects
 ###############################################################################
-from datetime                   import datetime     #pylint: disable=E0611,E0401
+import timeit
+# import ctypes                                       #MessageBoxW
+# from datetime                   import datetime     #pylint: disable=E0611,E0401
 from rssd.FileIO                import FileIO       #pylint: disable=E0611,E0401
 from rssd.VST.NR5G_K144         import VST          #pylint: disable=E0611,E0401
-import timeit
-import ctypes                                       #MessageBoxW
 OFile = FileIO().makeFile(__file__)
 
 ###############################################################################

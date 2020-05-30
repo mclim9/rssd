@@ -31,7 +31,7 @@ class DSO(DSO):
     #####################################################################
     ### DSO Set Functions
     #####################################################################
-    def Set_SA_AcqTime(self):
+    def Set_SA_AcqTime(self, sec):
         """ Seconds """
         self.write(f':TIM:RANG {sec}')
 

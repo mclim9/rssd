@@ -32,8 +32,8 @@ class RCT(RCT):
 
     def Get_5GNR_EVM(self):
         """ Arry4: EVM_RMS_HIGH
-            Arry19:TxPwr 
-            Arry20:PkPwr 
+            Arry19:TxPwr
+            Arry20:PkPwr
             Arry16:FrqErr"""
         # self.write('ABOR:NRMM:MEAS:MEV')
         self.query('INIT:NRMM:MEAS:MEV;*OPC?')                                  #RUN state
@@ -189,12 +189,12 @@ class RCT(RCT):
     def Get_5GNR_BWP_ResBlockOffset(self):
         rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:BWP? BWP{self.BWP}').split(',')
         return rdStr[3]
-        
+
     # def Get_5GNR_BWP_SlotNum(self):
     #     ### Number of slots
     #     rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:SLOT?')
     #     return rdStr
-        
+
     def Get_5GNR_BWP_SubSpace(self):
         rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:BWP? BWP{self.BWP}').split(',')
         return rdStr[0]
@@ -232,7 +232,7 @@ class RCT(RCT):
             self.sdir = "DL"
             self.alloc = 1                                                      #Alloc 0:CORSET
         elif rdStr == 'UP':
-            self.sdir = "UL"            
+            self.sdir = "UL"
             self.alloc = 1                                                      #Alloc 0:PUSCH
         else:
             print('Get_5GNR_Direvmection Error')
@@ -240,13 +240,13 @@ class RCT(RCT):
 
     def Get_5GNR_FreqRange(self):
         return "HIGH"
-        
+
     # def Get_5GNR_RefA(self):
     #     rdStr = '<notRead>'
     #     return rdStr
 
 
-    def Get_5GNR_Params(self,amp,swp,sys,trc,header=0):
+    def Get_5GNR_Params(self,amp,swp,sys,trc,header=0):                 #pylint: disable=R0913
         """Amp,Sweep,System,Trace"""
         outStr = ""
         outStr += self.Get_5GNR_Params_Amp(header)+","   if (amp==1) else ""
@@ -353,7 +353,7 @@ class RCT(RCT):
         self.write(f'CONF:NRMM:MEAS:RFS:MLOF {pwr}')
 
     def Set_5GNR_PhaseComp(self,state,freq):
-        """ State: OFF | CAF | UDEF 
+        """ State: OFF | CAF | UDEF
             Freq : Hz"""
         self.write(f'CONF:NRMM:MEAS:MEV:PCOM {state},{int(freq)}')
 
@@ -369,7 +369,7 @@ class RCT(RCT):
 
     # def Set_5GNR_BWP_Ch_Modulation(self,sMod):
     #     self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:MOD {sMod}')
-        
+
     # def Set_5GNR_BWP_Ch_ResBlock(self,iRB):
     #     ### 5GNR-->Scheduling-->PUSCH-->No. RBs
     #     ### RB = (CHBw * 0.95) / (SubSp * 12)
@@ -495,7 +495,7 @@ class RCT(RCT):
     def Set_5GNR_Trigger_Source(self, source):
         """ string 'Free Run (Fast Sync)' 'Free Run (No Sync)' 'IF Power' """
         self.write(f':TRIG:NRMM:MEAS:MEV:SOUR "{source}"')
-    
+
     def Set_5GNR_Stop(self):
         self.write(f'STOP:NRMM:MEAS:MEV STOP')                                  #RDY state
 
@@ -527,6 +527,6 @@ if __name__ == "__main__":
     CMP.Set_5GNR_EVM_AvgCount(50)
     CMP.Set_5GNR_Trigger_Source('Free Run (Fast Sync)')
     print(CMP.Get_5GNR_EVM())
-    CMP.Set_5GNR_Stop
+    CMP.Set_5GNR_Stop()
     CMP.jav_ClrErr()
     CMP.jav_Close()

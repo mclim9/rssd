@@ -3,7 +3,7 @@
 ###
 ### Purpose: CMP200A Example
 ### Author:  mclim
-### Date:    2019.09.09 
+### Date:    2019.09.09
 ########################################################################
 ### User Entry
 ########################################################################
@@ -17,11 +17,11 @@ numMeas     = 1
 ########################################################################
 ### Code Overhead: Import and create objects
 ########################################################################
+import math
 from datetime               import datetime     #pylint: disable=E0611,E0401
 from rssd.RCT.NR5G_K        import RCT          #pylint: disable=E0611,E0401
 from rssd.VSG.NR5G_K144     import VSG          #pylint: disable=E0611,E0401
 from rssd.FileIO            import FileIO       #pylint: disable=E0611,E0401
-import math
 OFile = FileIO().makeFile(__file__)
 
 class vari:

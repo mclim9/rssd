@@ -7,7 +7,7 @@
 ###############################################################################
 from rssd.RCT.Common import RCT                 #pylint: disable=E0611,E0401
 
-class RCT(RCT):                                 #pylint: disable=E0102
+class RCT(RCT):                                 #pylint: disable=E0102,R0904
     """ Rohde & Schwarz Radio Comm Tester Object """
     def __init__(self):
         super(RCT, self).__init__()

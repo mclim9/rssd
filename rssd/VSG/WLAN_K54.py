@@ -66,6 +66,8 @@ class VSG(VSG):                     #pylint: disable=E0102
             return 'AC'
         elif rdStr[:2] == 'HE':
             return 'AX'
+        else:
+            return 'Error'
 
     #####################################################################
     ### VSG Setting

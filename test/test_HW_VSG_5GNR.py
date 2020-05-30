@@ -1,12 +1,10 @@
 ###############################################################################
 ### Rohde & Schwarz Driver Test
 ### Purpose: VSG.NR5G_K144 test
-### Author:  mclim
-### Date:    2020.05.08
-###              _   ___        __  _____         _   
-###             | | | \ \      / / |_   _|__  ___| |_ 
+###              _   ___        __  _____
+###             | | | \ \      / / |_   _|__  ___| |_
 ###             | |_| |\ \ /\ / /    | |/ _ \/ __| __|
-###             |  _  | \ V  V /     | |  __/\__ \ |_ 
+###             |  _  | \ V  V /     | |  __/\__ \ |_
 ###             |_| |_|  \_/\_/      |_|\___||___/\__|
 ###             Please connect instrument prior 2 test
 ###############################################################################
@@ -18,17 +16,27 @@ host = '192.168.1.114'
 ###############################################################################
 ### Code Start
 ###############################################################################
-from rssd.VSG.NR5G_K144 import VSG
-import os
 import unittest
+from rssd.VSG.NR5G_K144 import VSG                      #pylint: disable=E0611,E0401
+from rssd.test.yaVISA   import jaVISA_mock              #pylint: disable=E0611,E0401
+
 
 class TestGeneral(unittest.TestCase):
+    def __init__(self, *args, **kwargs):
+        super(TestGeneral, self).__init__(*args, **kwargs)
+
     def setUp(self):                                    #run before each test
-        self.SMW = VSG()
-        self.SMW.debug = 0
-        self.SMW.jav_Open(host)
-        self.SMW.K2.timeout = 5000
-        # self.SMW.jav_Reset()
+        try:
+            self.SMW = VSG()
+            self.SMW.debug = 0
+            self.SMW.jav_Open(host)
+            self.SMW.K2.timeout = 5000
+        except:
+            mock = jaVISA_mock()
+            self.SMW.jav_Open   = mock.jav_Open
+            self.SMW.write      = mock.write
+            self.SMW.query      = mock.query
+            self.SMW.jav_Error  = mock.jav_Error
         self.SMW.jav_ClrErr()
         self.SMW.dLastErr = ""
 

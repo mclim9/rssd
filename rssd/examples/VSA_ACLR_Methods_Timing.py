@@ -119,14 +119,14 @@ VSA.Set_YIG('OFF')
 #sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
 OFile.write('Instr,Iter,RBW,SwpTime,SMWPwr,ALType,AL Time,TotalTime,Attn,PreAmp,RefLvl,SwpTime,SwpPts,SwpType,SwpOpt,TxPwr,Adj-,Adj+,Alt-,Alt+,Freq,ChBw')
 for i in range(Repeat):
-    for autoMeth in range(len(meth)):
+    for autoMeth in meth:
         for pwr in range(PwrSweep):
             ### <\thing we are timing>
             VSG.query(f':POW:AMPL {-50 + pwr}dbm;*OPC?')            # VSG Power
             tick = datetime.now()
 
             ### <AUTOLEVEL> ###
-            eval(meth[autoMeth])                                    # Dynamically call
+            eval(autoMeth)                                          # Dynamically call
             ### <AUTOLEVEL> ###
 
             tockA =  datetime.now()

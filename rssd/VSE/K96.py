@@ -59,7 +59,7 @@ class VSE(VSE):
         print("K96_EVM_Wait: %.3f sec"%(delta))
         self.Get_EVM()                                  #Flush buffer of NaN
 
-    def K96_EVM_AutoCal(self):
+    def K96_EVM_AutoCal(self):                          #pylint: disable=R0915,R0912
         #######################################################################
         ### Code Settings
         #######################################################################
@@ -112,8 +112,8 @@ class VSE(VSE):
         #print('    RefLvl Swp: ')
         EVM_Prev = 1.00
         i=0
-        self.Set_Autolevel("OFF")                            #Manually Set RefLvl & Attn
-        for x in range(0):
+        self.Set_Autolevel("OFF")                               #Manually Set RefLvl & Attn
+        for x in range(0):                                      #pylint: disable=W0612
             self.Set_RefLevel(RefLvl - i)
             EVM_Curr = self.Get_EVM()
             if debug==1: print("        Ref:%.2f MAttn:%.0f EVM:%.2f"%(RefLvl-i, MechAttn, EVM_Curr))
@@ -121,7 +121,7 @@ class VSE(VSE):
                 print("EVM NAN")
                 break
 
-            Diff = EVM_Prev - EVM_Curr                  #Positive = improvedEVM
+            Diff = EVM_Prev - EVM_Curr                          #Positive = improvedEVM
             if (Diff > EVM_Wind):
                 EVM_Prev = EVM_Curr
                 i = i + 1

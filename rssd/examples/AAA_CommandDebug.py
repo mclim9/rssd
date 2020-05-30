@@ -10,9 +10,9 @@ instru_ip  = '127.0.0.1'
 ###############################################################################
 ### Code Overhead: Import and create objects
 ###############################################################################
-from rssd.yaVISA_socket     import jaVisa                       #pylint: disable=E0611,E0401
-from rssd.FileIO            import FileIO                       #pylint: disable=E0611,E0401
 import timeit
+from rssd.yaVISA_socket     import jaVisa                       #pylint: disable=E0611,E0401
+# from rssd.FileIO            import FileIO                       #pylint: disable=E0611,E0401
 
 instr = jaVisa().jav_Open(instru_ip,port=5025)                  #Create Object
 

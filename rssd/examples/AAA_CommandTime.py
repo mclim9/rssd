@@ -27,8 +27,7 @@ for i in range(10):
     rdStr = ''
     tick = timeit.default_timer()
     ### <\thing we are timing>
-    if 1:
-        instr.query('INIT:IMM;*OPC?')
+    instr.query('INIT:IMM;*OPC?')
     # instr.write(':INST:COUP:RLEV ON')
     # rdStr = instr.query('FETC:SUMM:EVM:ALL?')
     ### <\thing we are timing>

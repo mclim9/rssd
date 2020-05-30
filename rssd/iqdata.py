@@ -21,7 +21,7 @@ import os
 import re
 import math
 import time
-import array                            # dataConvert
+# import array                            # dataConvert
 import struct
 from datetime import datetime           # writeXml, writeWv
 import tarfile                          # readIqTar, writeIqTar
@@ -80,7 +80,7 @@ class IQ(object):
         try:
             file = open(FileName, "wb")
             file.write(struct.pack("f"*len(self.iqiqList),*self.iqiqList))
-            file.close
+            file.close()
         except:
             print("File (" + FileName +") write error!" )
             return 0
@@ -97,7 +97,7 @@ class IQ(object):
         try:
             file = open(FileName, "rb")
             data = file.read()
-            file.close
+            file.close()
         except:
             print("File open error ("+ FileName+")!")
 
@@ -188,7 +188,7 @@ class IQ(object):
         data = list(map( lambda x: x/32767.0, data ))                                   #MMM consumes a lot of time
         self.__iqiq2complex__(data)
 
-    def writeXml(self, filenameiqw, filenamexml):               # Verified  2020.0115
+    def writeXml(self, filenameiqw, filenamexml):                                       # Verified  2020.0115
         """Function to write the xml part of the iq.tar"""
         xmlfile = open (filenamexml, "w")
         xmlfile.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
@@ -204,15 +204,15 @@ class IQ(object):
         xmlfile.write("<ScalingFactor unit=\"V\">1</ScalingFactor>\n")              #Optional
         xmlfile.write("<NumberOfChannels>1</NumberOfChannels>\n")                   #Optional
         xmlfile.write("<DataFilename>" + filenameiqw+ "</DataFilename>\n")
-        # xmlfile.write("<UserData></UserData>\n")                                   #Optional
+        # xmlfile.write("<UserData></UserData>\n")                                  #Optional
         xmlfile.write("</RS_IQ_TAR_FileFormat>\n")
         xmlfile.close()
-        return
+        return 1
 
     def writeIqTar(self, FileName):             # Verified 2020.0115
         """writes an iq.tar file. Complex self.iqData values are interpreted as Volts.
         self.iqData can be a list of complex or list of floats (iqiqiq format)."""
-        path,filename = os.path.split(FileName)
+        path,filename = os.path.split(FileName)                                     #pylint: disable=W0612
 
         #Create binary file
         binaryfile = re.sub("iq.tar", "complex.1ch.float32", filename, flags=re.IGNORECASE)
@@ -237,7 +237,7 @@ class IQ(object):
 
     def readIqTar(self,FileName):               # Verified 2020.0115
         """Reads an iq.tar file --> self.iqData"""
-        path,filename = os.path.split(FileName)
+        path,filename = os.path.split(FileName)                         #pylint: disable=W0612
         self.fSamplingRate = 0
 
         try:

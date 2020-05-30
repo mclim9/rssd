@@ -26,11 +26,11 @@ PwrSweep = 59
 ################################################################################
 ### Code Overhead
 ################################################################################
+import timeit
 from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
 from rssd.yaVISA_socket     import jaVisa           #pylint: disable=E0611,E0401
 from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
 # import rssd.VSA_Leveling    as VSAL               #pylint: disable=E0611,E0401
-import timeit
 
 OFile = FileIO().makeFile(__file__)
 VSA = VSA().jav_Open(VSA_IP,OFile)                  #Create VSA Object
@@ -55,8 +55,7 @@ VSA.Set_Trace_Detector('RMS')
 VSA.Set_SweepOpt(SweMode)
 VSA.Set_SweepType(SweType)
 VSA.Set_YIG('OFF')
-if 0:
-    VSA.Set_Trig1_Source('Ext')
+# VSA.Set_Trig1_Source('Ext')
 
 ################################################################################
 ### Measure Time
@@ -82,9 +81,8 @@ for i in range(Repeat):
         #################
         ### AUTOLEVEL ###
         #################
-        if 1:
-            VSA.Set_SweepCont(0)                                # Sweep Continuous
-            VSA.Set_Autolevel()
+        VSA.Set_SweepCont(0)                                # Sweep Continuous
+        VSA.Set_Autolevel()
         # else:
         #     lvlTable = VSA.Set_Autolevel_IQIF(table)
         tockA =  timeit.default_timer()

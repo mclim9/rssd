@@ -40,10 +40,9 @@ DataFile = f.Init(OutFile)
 SMW = VSG().jav_Open(SMW_IP,f.sFName)   #Connect to SMW
 FSW = VSA().jav_Open(FSW_IP,f.sFName)   #Connect to FSW
 VSE = VSE().jav_Open(VSE_IP,f.sFName)   #Connect to VSE
-if 0:
-    SMW.jav_logSCPI()
-    FSW.jav_logSCPI()
-    VSE.jav_logSCPI()
+# SMW.jav_logSCPI()
+# FSW.jav_logSCPI()
+# VSE.jav_logSCPI()
 
 ##########################################################
 ### Setup Instruments

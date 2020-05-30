@@ -11,7 +11,7 @@ import os
 BaseDir = os.path.dirname(os.path.realpath(__file__))
 OutFile = BaseDir + "\\data\\SMW_FSW_Sweep"
 
-print __file__
+print(__file__)
 
 SMW_IP = '192.168.1.115'                    #IP Address
 FreqStart = int(51e9)
@@ -26,7 +26,6 @@ Mixer = 1
 ##########################################################
 from rssd.VSG.Common import VSG
 from rssd.FileIO     import FileIO
-import time
 
 f = FileIO()
 DataFile = f.Init(OutFile)

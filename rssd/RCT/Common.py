@@ -58,15 +58,18 @@ class RCT(jaVisa):
     ### RCT Init Functions
     ###########################################################################
     def Init_Gen(self,port=1):                                                  #Val
-        self.write('ROUT:GPRF:GEN:SCENario:SALone R118, TX11')
+        # self.write('ROUT:GPRF:GEN:SCENario:SALone R118, TX11')
+        self.Set_Gen_Port(port)
         self.write('CONF:GPRF:GEN:CMWS:USAGe:TX:ALL R118, OFF, OFF,OFF, OFF, OFF, OFF, OFF, OFF')
 
     def Init_Meas_FFT(self,port=1):                                             #Val
-        self.write('ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1'%port)
+        # self.write('ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1'%port)
+        self.Set_Meas_Port(port)
         self.write('INIT:GPRF:MEAS:FFTS')
 
     def Init_Meas_Power(self,port=1):                                           #Val
         # self.write('ROUT:GPRF:MEAS:SCEN:SAL R1{port}, RX1'%port)
+        self.Set_Meas_Port(port)
         self.write('FORMAT:BASE:DATA ASCII')
         self.write('INIT:GPRF:MEAS:POW')
         self.write('CONF:GPRF:MEAS:POW:MODE POW')      #POW|STAT
@@ -144,9 +147,9 @@ class RCT(jaVisa):
         """ CMP: 'P<x>.IFIn' | 'P<x>.RRH.RF<y>'"""
         self.write(f'ROUT:GPRF:MEAS:SPAT "{port}"')
 
-    def Set_Meas_Pwr_MLength(self,len):
-        self.write(f'CONF:GPRF:MEAS:POW:SLEN {len}')
-        self.write(f'CONF:GPRF:MEAS:POW:MLEN {len}')
+    def Set_Meas_Pwr_MLength(self,length):
+        self.write(f'CONF:GPRF:MEAS:POW:SLEN {length}')
+        self.write(f'CONF:GPRF:MEAS:POW:MLEN {length}')
 
     def Set_Meas_RefLevl(self,fRefLvl):                                         #Val
         ### ENP = Expected Nominal Power

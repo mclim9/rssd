@@ -3,7 +3,7 @@
 ###
 ### Purpose: OSP Switch Matrix Example
 ### Author:  mclim
-### Date:    2018.09.09 
+### Date:    2018.09.09
 ###
 ### Rack3 Switch Configuration
 ### ================================================================
@@ -39,5 +39,5 @@ Rack3 = OSP()
 Rack3.jav_openvisa('TCPIP0::192.168.1.150::INSTR')
 #Rack3.Set_SW(11,49,0)
 for sw in Path:
-   Rack3.Set_SW(sw[0],sw[1],sw[2])
+    Rack3.Set_SW(sw[0],sw[1],sw[2])
 Rack3.jav_ClrErr()                          #Clear Errors

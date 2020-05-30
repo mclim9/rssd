@@ -11,5 +11,4 @@ text  = 'hello world'               #Get local machine name
 ##########################################################
 ### Code Overhead: Import and create objects
 ##########################################################
-import datetime
 print(text)

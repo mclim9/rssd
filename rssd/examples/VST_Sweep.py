@@ -19,10 +19,10 @@ Mixer = 0
 ##########################################################
 ### Code Start
 ##########################################################
+import time
 from rssd.FSW_Common    import VSA          #pylint:disable=
 from rssd.SMW_Common    import VSG
 from rssd.FileIO        import FileIO
-import time
 
 OFileCSV = FileIO().makeFile(__file__+'csv')
 OFileXML = FileIO().makeFile(__file__+'xml')

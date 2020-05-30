@@ -67,14 +67,14 @@ class VSG(jaVisa):
         rdStr = self.query(f'MMEM:CDIR?')
         return rdStr
 
-    def Get_OS_FileList(self,filter=''):
+    def Get_OS_FileList(self,filterKey=''):
         """Return list of filenames in sDir"""
         rdStr   = self.query('MMEM:CATalog?').split('","')
-        rdStr   = rdStr[2:]                                   #Filter out . and ..
+        rdStr   = rdStr[2:]                                     #Filter out . and ..
         outList = []
-        for i, file in enumerate(rdStr):
+        for i, file in enumerate(rdStr):                        #pylint: disable=W0612
             rdStr[i] = rdStr[i].split(',')
-            if rdStr[i][0].find(filter) > -1:
+            if rdStr[i][0].find(filterKey) > -1:
                 outList.append(rdStr[i][0])
         return outList
 

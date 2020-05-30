@@ -69,14 +69,14 @@ OFile.write(f'{LoopParam},{TimeParam},{AmpParam},{SwpParam},{TrcParam},{SysParam
 # OFile.write('Model    ,Iter,Freq,RBW,SwpTime,SMWPwr,ALType,ALTime,TotTime,Attn,PreAmp,RefLvl,SwpTime,SwpPts,SwpType,SwpOpt,TxPwr,Adj-,Adj+,Alt-,Alt+,ChSpace')
 tick0 = timeit.default_timer()
 for i in range(Repeat):
-    for autoMeth in range(len(meth)):
+    for autoMeth in meth:
         for VSApwr in range(PwrSweep):
             ### <\thing we are timing>
             VSG.write(f':POW:AMPL {-50 + VSApwr}dbm')                  ### VSG Power
             tick = timeit.default_timer()
 
             ### <AUTOLEVEL> ###
-            eval(meth[autoMeth])                                    # Dynamically call
+            eval(autoMeth)                                    # Dynamically call
             tockA = timeit.default_timer()
             ### <AUTOLEVEL> ###
 

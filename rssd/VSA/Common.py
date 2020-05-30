@@ -130,7 +130,7 @@ class VSA(jaVisa):
         return CSVd
 
     def Get_IQ_Data_Bin(self):
-        import struct
+        import struct                                   #pylint: disable=C0415
         self.write('FORMAT:DATA REAL,32')
         self.write('TRAC:IQ:DATA:FORM IQP')
         self.write('TRAC:IQ:DATA:MEM?')
@@ -188,7 +188,7 @@ class VSA(jaVisa):
         IF_Ovld = Read & 4      # pylint: disable=W0612
         return Read
 
-    def Get_Params(self,amp,swp,sys,trc,header=0):
+    def Get_Params(self,amp,swp,sys,trc,header=0):                      #pylint: disable=R0913
         """Amp,Sweep,System,Trace"""
         outStr = ""
         outStr += self.Get_Params_Amp(header)+","   if (amp==1) else ""
