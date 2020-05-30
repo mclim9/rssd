@@ -3,6 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/rssd.svg)](https://badge.fury.io/py/rssd)
 [![Coverage Status](https://coveralls.io/repos/github/mclim9/rssd/badge.svg)](https://coveralls.io/github/mclim9/rssd)
 ![Versioning](https://img.shields.io/badge/calver-YY.0M.MICRO-22bfda.svg)
+![Python package](https://github.com/mclim9/rssd/workflows/Python%20package/badge.svg)
 
 ## Description
 - Example python drivers
