@@ -78,8 +78,7 @@ class RCT(RCT):                                 #pylint: disable=E0102,R0904
 
     def Set_Gen_Port(self, port):                                           #Val
         """ CMP: 'P<x>.IFOut' | 'P<x>.RRH.RF<y>'"""
-        rdStr = self.write(f'ROUT:GPRF:GEN:SPAT "{port}"')
-        return rdStr
+        self.write(f'ROUT:GPRF:GEN:SPAT "{port}"')
 
     def Set_Gen_Port_State(self,port=1,state='ON'):                         #val
         """ 'ON' 'OFF' """
@@ -120,8 +119,7 @@ class RCT(RCT):                                 #pylint: disable=E0102,R0904
 
     def Set_Meas_Port(self, port):
         """ CMP: 'P<x>.IFIn' | 'P<x>.RRH.RF<y>'"""
-        rdStr = self.write(f'ROUT:GPRF:MEAS:SPAT "{port}"')
-        return rdStr
+        self.write(f'ROUT:GPRF:MEAS:SPAT "{port}"')
 
     def Set_Meas_RefLevl(self,fRefLvl):                                     #Val
         ### ENP = Expected Nominal Power

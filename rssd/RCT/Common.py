@@ -98,8 +98,7 @@ class RCT(jaVisa):
 
     def Set_Gen_Port(self, port):                                               #Val
         """ CMP: 'P<x>.IFOut' | 'P<x>.RRH.RF<y>'"""
-        rdStr = self.write(f'ROUT:GPRF:GEN:SPAT "{port}"')
-        return rdStr
+        self.write(f'ROUT:GPRF:GEN:SPAT "{port}"')
 
     def Set_Gen_Port_State(self,port=1,state='ON'):                             #val
         """ 'ON' 'OFF' """
