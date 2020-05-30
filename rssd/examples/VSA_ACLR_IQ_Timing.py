@@ -72,11 +72,11 @@ for i in range(Repeat):
     for autoMeth in meth:
         for VSApwr in range(PwrSweep):
             ### <\thing we are timing>
-            VSG.write(f':POW:AMPL {-50 + VSApwr}dbm')                  ### VSG Power
+            VSG.write(f':POW:AMPL {-50 + VSApwr}dbm')               # VSG Power
             tick = timeit.default_timer()
 
             ### <AUTOLEVEL> ###
-            eval(autoMeth)                                    # Dynamically call
+            eval(autoMeth)                                          #pylint: disable=W0123
             tockA = timeit.default_timer()
             ### <AUTOLEVEL> ###
 

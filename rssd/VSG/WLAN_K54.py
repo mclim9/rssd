@@ -56,7 +56,7 @@ class VSG(VSG):                     #pylint: disable=E0102
 
     def Get_WLAN_Standard(self):
         rdStr = self.query(f':SOUR:BB:WLNN:FBL1:TMOD?')
-        if rdStr[0] == 'L':
+        if rdStr[0] == 'L':                                     #pylint: disable=R1705
             return 'A'
         elif (rdStr[:3] == 'CCK') or (rdStr[:3] == 'PBC'):
             return 'B'

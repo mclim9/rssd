@@ -126,7 +126,7 @@ for i in range(Repeat):
             tick = datetime.now()
 
             ### <AUTOLEVEL> ###
-            eval(autoMeth)                                          # Dynamically call
+            eval(autoMeth)                                          # Dynamically call #pylint: disable=W0123
             ### <AUTOLEVEL> ###
 
             tockA =  datetime.now()

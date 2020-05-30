@@ -61,7 +61,7 @@ class DSO(jaVisa):
         # Start = Headr[0]
         # Stops = Headr[1]
         # Sampl = Headr[2]
-        return YVals
+        return YVals, Headr
 
     #####################################################################
     ### DSO Init Functions

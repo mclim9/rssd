@@ -16,7 +16,7 @@ Description:
     - Sets self.NumberOfSamples
     self.write<format>  Writes self.iqData into <format>
 """
-#TODO: errorhandling
+
 import os
 import re
 import math
@@ -209,7 +209,7 @@ class IQ(object):
         xmlfile.close()
         return 1
 
-    def writeIqTar(self, FileName):             # Verified 2020.0115
+    def writeIqTar(self, FileName):             # Verified 2020.0115  #pylint: disable=R1710
         """writes an iq.tar file. Complex self.iqData values are interpreted as Volts.
         self.iqData can be a list of complex or list of floats (iqiqiq format)."""
         path,filename = os.path.split(FileName)                                     #pylint: disable=W0612
