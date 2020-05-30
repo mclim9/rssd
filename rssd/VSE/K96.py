@@ -11,7 +11,7 @@ class VSE(VSE):
     """ Rohde & Schwarz VSE K96 Object """
     def __init__(self):
         super(VSE, self).__init__()
-        self.Model = 'K96'
+        self.Model = 'VSE'
 
     ###########################################################################
     ### VSE General Settings
