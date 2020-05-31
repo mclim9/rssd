@@ -1,4 +1,26 @@
+
+
 [MESSAGES CONTROL]
+
+# Only show warnings with the listed confidence levels. Leave empty to show
+# all. Valid levels: HIGH, INFERENCE, INFERENCE_FAILURE, UNDEFINED
+confidence=
+
+# Enable the message, report, category or checker with the given id(s). You can
+# either give multiple identifier separated by comma (,) or put this option
+# multiple time. See also the "--disable" option for examples.
+#enable=
+
+# Disable the message, report, category or checker with the given id(s). You
+# can either give multiple identifiers separated by comma (,) or put this
+# option multiple times (only on the command line, not in the configuration
+# file where it should appear only once).You can also use "--disable=all" to
+# disable everything first and then reenable specific checks. For example, if
+# you want to run only the similarities checker, you can use "--disable=all
+# --enable=similarities". If you want to run only the classes checker, but have
+# no Warning level messages displayed, use"--disable=all --enable=classes
+# --disable=W"
+#disable=
 disable=print-statement,
         parameter-unpacking,
         unpacking-in-except,
@@ -87,24 +109,38 @@ disable=print-statement,
         R0801, R0902, R0903,
         W0621, W0702, W1309,
         W0201, R1714, R0201, R0205, R0904, W0235
-# C0103         Variable name "CF" doesn't conform to snake_case naming styl
-# C0114, C0115, C0116 Missing function or method docstring 
-# C0301         Line too long
+        
+# Disabled:
+# R* [refactoring suggestions & reports]
+# C0103 Variable name "CF" doesn't conform to snake_case naming styl
+# C0114 Missing function or method docstring 
+# C0115 Missing function or method docstring 
+# C0116 Missing function or method docstring 
+# C0301 Line too long
 # C0321         More than one statement on a single line
 # C0325:        Unnecessary parens after 'if' keyword (superfluous-parens)
 # C0326 
-# C0413         Import should be placed at the top
+# C0413 Import should be placed at the top
 # E0102 class already defined line
-# E0611,E0401   Import Error
-# E1101         Instance of '' has no 'Init' member
+# E0611 
+# E0401 Import Error
+# E1101 Instance of '' has no 'Init' member
 # R0801: Similar lines in 3 files
 # W0621         Redefining name '' from outer scope
 # W0702         No exception type(s) specified (bare-except)
 # W1309:        Using an f-string that does not have any interpolated variables
+#
 # Work On Later
 # W0201: Attribute 'SMW' defined outside _
 # R1714: Consider merging these comparisons with "in" to
 # R0904
 
-enable=c-extension-no-member
+[REPORTS]
+
+# Tells whether to display a full report or only the messages
+reports=no
+
+# Template used to display messages. This is a python new-style format string
+# used to format the message information. See doc for all details
+msg-template='{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}'
 
