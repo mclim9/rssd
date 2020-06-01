@@ -11,7 +11,7 @@
 ### User Entry
 ###############################################################################
 host = '10.0.0.7'                                       #Get local machine name
-host = '192.168.1.114'
+# host = '192.168.1.114'
 
 ###############################################################################
 ### Code Start
@@ -20,27 +20,24 @@ import unittest
 from rssd.VSG.NR5G_K144 import VSG                      #pylint: disable=E0611,E0401
 from rssd.test.yaVISA   import jaVISA_mock              #pylint: disable=E0611,E0401
 
-
 class TestGeneral(unittest.TestCase):
-    def __init__(self, *args, **kwargs):
-        super(TestGeneral, self).__init__(*args, **kwargs)
-
     def setUp(self):                                    #run before each test
-        try:
-            self.SMW = VSG()
-            self.SMW.debug = 0
-            self.SMW.jav_Open(host)
-            self.SMW.K2.timeout = 5000
-        except:
+        self.SMW = VSG()
+        self.SMW.debug      = 0
+        self.SMW.jav_Open(host)
+        self.connected      = 1
+        if self.SMW.K2 == 'NoVISA':
             mock = jaVISA_mock()
             self.SMW.jav_Open   = mock.jav_Open
             self.SMW.write      = mock.write
             self.SMW.query      = mock.query
             self.SMW.jav_Error  = mock.jav_Error
+            self.connected      = 0
         self.SMW.jav_ClrErr()
         self.SMW.dLastErr = ""
 
     def tearDown(self):                                 #Run after each test
+        self.assertEqual(self.SMW.jav_Error()[0],'0')
         self.SMW.jav_Close()
 
 ###############################################################################
@@ -53,21 +50,21 @@ class TestGeneral(unittest.TestCase):
     def test_SMW_5GNR_Direction(self):
         self.SMW.Set_5GNR_Direction('UL')
         getVal = self.SMW.Get_5GNR_Direction()
-        self.assertEqual(getVal,'UL')
+        if self.connected: self.assertEqual(getVal,'UL')
         self.SMW.Set_5GNR_Direction('DL')
         getVal = self.SMW.Get_5GNR_Direction()
-        self.assertEqual(getVal,'DL')
+        if self.connected: self.assertEqual(getVal,'DL')
 
     def test_SMW_5GNR_FreqRange(self):
         self.SMW.Set_5GNR_FreqRange('LOW')
         getVal = self.SMW.Get_5GNR_FreqRange()
-        self.assertEqual(getVal,'LOW')
+        if self.connected: self.assertEqual(getVal,'LOW')
         self.SMW.Set_5GNR_FreqRange('MIDD')
         getVal = self.SMW.Get_5GNR_FreqRange()
-        self.assertEqual(getVal,'MIDD')
+        if self.connected: self.assertEqual(getVal,'MIDD')
         self.SMW.Set_5GNR_FreqRange('HIGH')
         getVal = self.SMW.Get_5GNR_FreqRange()
-        self.assertEqual(getVal,'HIGH')
+        if self.connected: self.assertEqual(getVal,'HIGH')
 
     def test_SMW_5GNR_Get_DL(self):
         self.SMW.Set_5GNR_Direction('DL')
@@ -107,9 +104,9 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.SMW.Get_5GNR_BWP_Ch_PTRS_RE_Offset()
         self.assertEqual(self.SMW.jav_Error()[0],'0')
 
-    def test_SMW_5GNR_Get_RBMax(self):
-        nullVal = self.SMW.Get_5GNR_RBMax()
-        self.assertEqual(self.SMW.jav_Error()[0],'0')
+    # def test_SMW_5GNR_Get_RBMax(self):
+    #     nullVal = self.SMW.Get_5GNR_RBMax()
+    #     self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_5GNR_Get_TMCat(self):
         nullVal = self.SMW.Get_5GNR_TM_Cat()

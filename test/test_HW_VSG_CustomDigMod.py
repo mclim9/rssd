@@ -1,12 +1,9 @@
 ###############################################################################
-### Rohde & Schwarz Driver Test
-### Purpose: VSG.CustomDigMod test
-### Author:  mclim
-### Date:    2018.06.13
-###              _   ___        __  _____         _   
-###             | | | \ \      / / |_   _|__  ___| |_ 
+### Purpose: rssd.VSG.CustomDigMod test
+###              _   ___        __  _____         _
+###             | | | \ \      / / |_   _|__  ___| |_
 ###             | |_| |\ \ /\ / /    | |/ _ \/ __| __|
-###             |  _  | \ V  V /     | |  __/\__ \ |_ 
+###             |  _  | \ V  V /     | |  __/\__ \ |_
 ###             |_| |_|  \_/\_/      |_|\___||___/\__|
 ###             Please connect instrument prior 2 test
 ###############################################################################
@@ -18,20 +15,28 @@ host = '192.168.1.114'
 ###############################################################################
 ### Code Start
 ###############################################################################
-from rssd.VSG.CustomDigMod import VSG
-import os
 import unittest
+from rssd.VSG.CustomDigMod  import VSG
+from rssd.test.yaVISA       import jaVISA_mock          #pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                    #run before each test
         self.SMW = VSG()
-        self.SMW.debug = 0
+        self.SMW.debug      = 0
         self.SMW.jav_Open(host)
-        self.SMW.K2.timeout = 5000
+        self.connected      = 1
+        if self.SMW.K2 == 'NoVISA':
+            mock = jaVISA_mock()
+            self.SMW.jav_Open   = mock.jav_Open
+            self.SMW.write      = mock.write
+            self.SMW.query      = mock.query
+            self.SMW.jav_Error  = mock.jav_Error
+            self.connected      = 0
         self.SMW.jav_ClrErr()
         self.SMW.dLastErr = ""
 
     def tearDown(self):                                 #Run after each test
+        self.assertEqual(self.SMW.jav_Error()[0],'0')
         self.SMW.jav_Close()
 
 ###############################################################################

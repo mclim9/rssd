@@ -3,10 +3,10 @@
 ### Purpose: VSG.LTE_K55 test
 ### Author:  mclim
 ### Date:    2018.06.13
-###              _   ___        __  _____         _   
-###             | | | \ \      / / |_   _|__  ___| |_ 
+###              _   ___        __  _____         _
+###             | | | \ \      / / |_   _|__  ___| |_
 ###             | |_| |\ \ /\ / /    | |/ _ \/ __| __|
-###             |  _  | \ V  V /     | |  __/\__ \ |_ 
+###             |  _  | \ V  V /     | |  __/\__ \ |_
 ###             |_| |_|  \_/\_/      |_|\___||___/\__|
 ###             Please connect instrument prior 2 test
 ###############################################################################
@@ -18,23 +18,29 @@ host = '192.168.1.114'
 ###############################################################################
 ### Code Start
 ###############################################################################
-from rssd.VSG.LTE_K55 import VSG
-import os
 import unittest
+from rssd.VSG.LTE_K55   import VSG
+from rssd.test.yaVISA   import jaVISA_mock              #pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                    #run before each test
         self.SMW = VSG()
-        self.SMW.debug = 0
+        self.SMW.debug      = 0
         self.SMW.jav_Open(host)
-        self.SMW.K2.timeout = 5000
-        # self.SMW.jav_Reset()
+        self.connected      = 1
+        if self.SMW.K2 == 'NoVISA':
+            mock = jaVISA_mock()
+            self.SMW.jav_Open   = mock.jav_Open
+            self.SMW.write      = mock.write
+            self.SMW.query      = mock.query
+            self.SMW.jav_Error  = mock.jav_Error
+            self.connected      = 0
         self.SMW.jav_ClrErr()
         self.SMW.dLastErr = ""
 
     def tearDown(self):                                 #Run after each test
+        self.assertEqual(self.SMW.jav_Error()[0],'0')
         self.SMW.jav_Close()
-
 ###############################################################################
 ### <Test>
 ###############################################################################
@@ -48,7 +54,6 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.SMW.Get_LTE_ResBlock()           # Need to test DL
         nullVal = self.SMW.Get_LTE_ResBlockOffset()     # Need to test DL
         nullVal = self.SMW.Get_LTE_Modulation()         # Need to test DL
-        self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_LTE_Get_UL(self):
         setVal = 'ON'
@@ -60,26 +65,23 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.SMW.Get_LTE_ResBlock()           # Need to test DL
         nullVal = self.SMW.Get_LTE_ResBlockOffset()     # Need to test DL
         nullVal = self.SMW.Get_LTE_Modulation()         # Need to test DL
-        self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_LTE_CC(self):
         self.SMW.Set_LTE_CC(1)
         self.SMW.Get_LTE_CC()
-        self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_LTE_Direction(self):
         self.SMW.Set_LTE_Direction('BAD')
         self.SMW.Set_LTE_Direction('UL')
         getVal = self.SMW.Get_LTE_Direction()
-        self.assertEqual(getVal,'UL')
+        if self.connected: self.assertEqual(getVal,'UL')
         self.SMW.Set_LTE_Direction('DL')
         getVal = self.SMW.Get_LTE_Direction()
-        self.assertEqual(getVal,'DL')
+        if self.connected: self.assertEqual(getVal,'DL')
 
     def test_SMW_LTE_Direction(self):
         self.SMW.Set_LTE_Duplex('TDD')
         self.SMW.Set_LTE_Duplex('TDD')
-        self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_LTE_Set_UL(self):
         self.SMW.Set_Freq(2e9)
@@ -93,7 +95,6 @@ class TestGeneral(unittest.TestCase):
         # self.SMW.Set_RFState('ON')                          # Turn RF Output on
         self.SMW.Set_RFPwr(-50)                             # Output Power
         # self.SMW.delay(0.5)
-        self.assertEqual(self.SMW.jav_Error()[0],'0')
 
 ###############################################################################
 ### </Test>

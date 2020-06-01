@@ -1,38 +1,43 @@
 ###############################################################################
-### Rohde & Schwarz Driver Test
-### Purpose: self.VSA.NR5G_K144 test
-### Author:  mclim
-### Date:    2020.05.08
-###              _   ___        __  _____         _   
-###             | | | \ \      / / |_   _|__  ___| |_ 
+### Purpose: rssd.VSA.NR5G_K144 test
+###              _   ___        __  _____         _
+###             | | | \ \      / / |_   _|__  ___| |_
 ###             | |_| |\ \ /\ / /    | |/ _ \/ __| __|
-###             |  _  | \ V  V /     | |  __/\__ \ |_ 
+###             |  _  | \ V  V /     | |  __/\__ \ |_
 ###             |_| |_|  \_/\_/      |_|\___||___/\__|
 ###             Please connect instrument prior 2 test
 ###############################################################################
 ### User Entry
 ###############################################################################
-host = '192.168.1.109'              #Get local machine name
+host = '192.168.1.109'                              #Get local machine name
 
 ###############################################################################
 ### Code Start
 ###############################################################################
-from rssd.VSA.NR5G_K144 import VSA
-import os
 import unittest
+from rssd.VSA.NR5G_K144     import VSA
+from rssd.test.yaVISA       import jaVISA_mock      #pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
-    def setUp(self):                      #run before each test
+    def setUp(self):                                #run before each test
+        print("",end="")
         self.FSW = VSA()
-        self.FSW.debug = 0
+        self.FSW.debug      = 0
         self.FSW.jav_Open(host)
-        self.FSW.K2.timeout = 5000
-        # self.FSW.jav_Reset()
+        self.connected      = 1
+        if self.FSW.K2 == 'NoVISA':
+            mock = jaVISA_mock()
+            self.FSW.jav_Open   = mock.jav_Open
+            self.FSW.write      = mock.write
+            self.FSW.query      = mock.query
+            self.FSW.jav_Error  = mock.jav_Error
+            self.connected      = 0
         self.FSW.jav_ClrErr()
-        self.FSW.Init_5GNR()
         self.FSW.dLastErr = ""
+        self.FSW.Init_5GNR()
 
-    def tearDown(self):                         #Run after each test
+    def tearDown(self):                             #Run after each test
+        self.assertEqual(self.FSW.jav_Error()[0],'0')
         self.FSW.jav_Close()
 
 ###############################################################################
@@ -41,22 +46,24 @@ class TestGeneral(unittest.TestCase):
     def test_FSW_5GNR_Direction(self):
         self.FSW.Set_5GNR_Direction('UL')
         getVal = self.FSW.Get_5GNR_Direction()
-        self.assertEqual(getVal,'UL')
+        if self.connected: self.assertEqual(getVal,'UL')
         self.FSW.Set_5GNR_Direction('DL')
         getVal = self.FSW.Get_5GNR_Direction()
-        self.assertEqual(getVal,'DL')
+        if self.connected: self.assertEqual(getVal,'DL')
 
     def test_FSW_5GNR_FreqRange(self):
         self.FSW.Set_5GNR_Direction('UL')
         self.FSW.Set_5GNR_FreqRange('LOW')
         getVal = self.FSW.Get_5GNR_FreqRange()
-        self.assertEqual(getVal,'LOW')
+        if self.connected: self.assertEqual(getVal,'LOW')
+
         self.FSW.Set_5GNR_FreqRange('MIDD')
         getVal = self.FSW.Get_5GNR_FreqRange()
-        self.assertEqual(getVal,'MIDD')
+        if self.connected: self.assertEqual(getVal,'MIDD')
+
         self.FSW.Set_5GNR_FreqRange('HIGH')
         getVal = self.FSW.Get_5GNR_FreqRange()
-        self.assertEqual(getVal,'HIGH')
+        if self.connected: self.assertEqual(getVal,'HIGH')
 
     def test_FSW_5GNR_Get_DL(self):
         self.FSW.Set_5GNR_Direction('DL')
@@ -93,7 +100,6 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_K()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_Pow()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_RE_Offset()
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
 
     def test_FSW_5GNR_Get_UL(self):
         self.FSW.Set_5GNR_Direction('UL')
@@ -132,7 +138,6 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_K()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_Pow()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_RE_Offset()
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
 
     def test_FSW_5GNR_Set_DL(self):
         self.FSW.Set_5GNR_Direction('DL')
@@ -150,7 +155,6 @@ class TestGeneral(unittest.TestCase):
         #self.FSW.Set_5GNR_BWP_Ch_ResBlockOffset(NR_RBO)
         self.FSW.Set_5GNR_BWP_Ch_Modulation('QPSK')
         # self.FSW.Set_5GNR_SSB()
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
 
     def test_FSW_5GNR_Set_UL(self):
         self.FSW.Set_5GNR_Direction('UL')
@@ -167,7 +171,6 @@ class TestGeneral(unittest.TestCase):
         #self.FSW.Set_5GNR_BWP_Ch_ResBlockOffset(NR_RBO)
         self.FSW.Set_5GNR_BWP_Ch_Modulation('QPSK')
         # self.FSW.Set_5GNR_SSB()
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
 
 ###############################################################################
 ### </Test>

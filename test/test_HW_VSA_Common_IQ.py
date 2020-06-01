@@ -1,38 +1,44 @@
 # # -*- coding: future_fstrings -*-
-# ###############################################################################
-### Rohde & Schwarz driver Test
-### Purpose: self.FSW_common test
-### Author:  mclim
-### Date:    2018.05.07
-###              _   ___        __  _____         _   
-###             | | | \ \      / / |_   _|__  ___| |_ 
+###############################################################################
+### Purpose: rssd.VSA.Common_IQ test
+###              _   ___        __  _____         _
+###             | | | \ \      / / |_   _|__  ___| |_
 ###             | |_| |\ \ /\ / /    | |/ _ \/ __| __|
-###             |  _  | \ V  V /     | |  __/\__ \ |_ 
+###             |  _  | \ V  V /     | |  __/\__ \ |_
 ###             |_| |_|  \_/\_/      |_|\___||___/\__|
 ###             Please connect instrument prior 2 test
 ###############################################################################
 ### User Entry
 ###############################################################################
-host = '192.168.1.109'                          #Get local machine name
+host = '192.168.1.109'                              #Get local machine name
 
 ###############################################################################
 ### Code Start
 ###############################################################################
-from rssd.VSA.Common import VSA                 # pylint: disable=E0611,E0401
 import unittest
+from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
+from rssd.test.yaVISA       import jaVISA_mock      #pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
-    def setUp(self):                            #Run before each test
+    def setUp(self):                                #run before each test
         print("",end="")
         self.FSW = VSA()
-        self.FSW.debug = 0
-        self.FSW.jav_Open(host,prnt=0)
-        #self.FSW.jav_Reset()
+        self.FSW.debug      = 0
+        self.FSW.jav_Open(host)
+        self.connected      = 1
+        if self.FSW.K2 == 'NoVISA':
+            mock = jaVISA_mock()
+            self.FSW.jav_Open   = mock.jav_Open
+            self.FSW.write      = mock.write
+            self.FSW.query      = mock.query
+            self.FSW.jav_Error  = mock.jav_Error
+            self.connected      = 0
         self.FSW.jav_ClrErr()
         self.FSW.dLastErr = ""
         self.FSW.Init_IQ()
 
-    def tearDown(self):                         #Run after each test
+    def tearDown(self):                                 #Run after each test
+        self.assertEqual(self.FSW.jav_Error()[0],'0')
         self.FSW.jav_Close()
 
 ###############################################################################
@@ -46,21 +52,18 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_IQ_Time(1e-3)
         getVal = self.FSW.Get_IQ_RecLength()
         getVal = self.FSW.Get_IQ_SamplingRate()
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
 
     def test_FSW_Get_IQData(self):
         self.FSW.Set_IQ_RecLength(10)
         self.FSW.Set_SweepCont(0)
-        getVal = self.FSW.Get_IQ_Data()
+        if self.connected: getVal = self.FSW.Get_IQ_Data()
         # getVal = self.FSW.Get_IQ_Data_Ascii()
-        getVal = self.FSW.Get_IQ_Data_Ascii2()
-        getVal = self.FSW.Get_IQ_Data_Bin()
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
+        if self.connected: getVal = self.FSW.Get_IQ_Data_Ascii2()
+        if self.connected: getVal = self.FSW.Get_IQ_Data_Bin()
 
     def test_FSW_Set_IQ_ALCR(self):
         self.FSW.Set_IQ_ACLR(9e6,10e6)
         self.FSW.Get_Mkr_BandACLR()
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
 
     def test_FSW_Set_IQ_Adv(self):
         self.FSW.Set_IQ_Adv_Mode()
@@ -68,12 +71,9 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_IQ_Adv_WindowLenth(101)
         self.FSW.Set_IQ_Adv_FFTLenth(4096+1)
         self.FSW.Set_IQ_Adv_Window('P5')
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
 
     def test_FSW_Set_IQSpectrum(self):
         self.FSW.Set_IQ_SpectrumWindow()
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
-
 
 ###############################################################################
 ### </Test>
