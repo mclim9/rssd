@@ -20,11 +20,21 @@ class VSG(VSG):                             #pylint: disable=E0102
     ### Fading Get Methods
     #####################################################################
     def Get_Fade_Standard(self):
-        rdStr = self.queryInt(f'ENT{self.entity}:SOUR1:FSIM:STAN?')
+        if self.Get_SMW_Mode() == 'ADV':
+            rdStr = self.queryInt(f'ENT{self.entity}:SOUR1:FSIM:STAN?')
+        else:
+            rdStr = 0
         return rdStr
 
     def Get_Fade_State(self):
-        rdStr = self.queryInt(f'ENT{self.entity}:SOUR1:FSIM:STAT?')
+        if self.Get_SMW_Mode() == 'ADV':
+            rdStr = self.queryInt(f'ENT{self.entity}:SOUR1:FSIM:STAT?')
+        else:
+            rdStr = 0
+        return rdStr
+
+    def Get_SMW_Mode(self):
+        rdStr = self.queryInt(f'SCON:MODE?')
         return rdStr
 
     #####################################################################
@@ -33,12 +43,12 @@ class VSG(VSG):                             #pylint: disable=E0102
     def Set_Fade_State(self,State):
         """ON OFF 1 0 """
         self.K2.timeout = 20000
-        if (State == 1) or (State == 'ON'):
+        if State in (1, 'ON'):
             self.write(':SCON:MODE ADV')
             self.write(':SCON:APPL;*OPC?')
             self.delay(1)
             self.jav_OPC_Wait(f'ENT{self.entity}:SOUR1:FSIM:STAT 1')
-        elif (State == 0) or (State == 'OFF'):
+        elif State in (0, 'OFF'):
             # self.write(':SCON:MODE STAN')
             # self.write(':SCON:APPL')
             self.jav_OPC_Wait(f'ENT{self.entity}:SOUR1:FSIM:STAT 0')
