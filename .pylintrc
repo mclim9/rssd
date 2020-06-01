@@ -1,3 +1,9 @@
+# C convention related checks
+# R refactoring related checks
+# W various warnings
+# E errors, for probable bugs in the code
+# F fatal, if an error occurred which prevented pylint from doing further processing.
+
 [MESSAGES CONTROL]
 
 # Only show warnings with the listed confidence levels. Leave empty to show
@@ -27,8 +33,8 @@ disable=C0103, C0114, C0115, C0116, C0301, C0321, C0325, C0326, C0413,
 # Disabled:
 # R* [refactoring suggestions & reports]
 # C0103 Variable name "CF" doesn't conform to snake_case naming styl
-# C0114 Missing function or method docstring 
-# C0115 Missing function or method docstring 
+# C0114 Missing module docstring
+# C0115 Missing class docstring 
 # C0116 Missing function or method docstring 
 # C0301 Line too long
 # C0321 More than one statement on a single line
