@@ -25,7 +25,6 @@ class TestGeneral(unittest.TestCase):
         self.instr = jaVisa()
         self.instr.debug = 0
         self.instr.jav_Open(IPAddr)
-        pass
 
     def tearDown(self):                             #Run after each test
         self.instr.K2.close()

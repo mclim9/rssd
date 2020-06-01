@@ -17,9 +17,8 @@ host = '192.168.1.160'              #Get local machine name
 ###############################################################################
 ### Code Start
 ###############################################################################
-from rssd.RCT.NR5G_KM601 import RCT
-import os
 import unittest
+from rssd.RCT.NR5G_KM601 import RCT
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                      #run before each test

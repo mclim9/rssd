@@ -18,8 +18,8 @@ port = 5025                                     #Reserve a port for your service
 ###############################################################################
 ### Code Start
 ###############################################################################
-from rssd.VSE.Common import VSE
 import unittest
+from rssd.VSE.Common import VSE
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                            #Run before each test
@@ -30,7 +30,7 @@ class TestGeneral(unittest.TestCase):
             self.VSE.VISA_ClrErr()
             self.VSE.dLastErr = ""
         except:
-            self.assertTrue(1)
+            pass
 
     def tearDown(self):                         #Run after each test
         self.VSE.jav_Close()

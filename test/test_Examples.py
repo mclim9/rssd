@@ -2,11 +2,7 @@ from __future__ import print_function
 #coding: future_fstrings
 ###############################################################################
 ### Rohde & Schwarz SCPI Driver Software Test
-###
-### Purpose: Import Library-->Create Object-->Catch obvious typos.
-###          Tests do not require instrument.
-### Author:  mclim
-### Date:    2018.06.13
+### Purpose: rssd.test.examples
 ###############################################################################
 ### Code Start
 ###############################################################################
@@ -20,7 +16,6 @@ class TestGeneral(unittest.TestCase):
         reload(rssd.test.yaVISA)
         reload(rssd.test.FileIO)
         print("",end="")
-        pass
 
     def tearDown(self):                             #Run after each test
         pass
@@ -30,7 +25,6 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
     def test_EX_helloworld(self):
         import rssd.examples.AAA_CommandTime as example
-        self.assertTrue(1)
 
     # def test_EX_CMW_GPRF_Loopback(self):
     #     import rssd.examples.CMW_GPRF_Loopback as example
@@ -43,4 +37,4 @@ if __name__ == '__main__':
     # unittest.main()     #Run w/o test names
     suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
     unittest.TextTestRunner(verbosity=2).run(suite)
-
+    

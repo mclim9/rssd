@@ -18,8 +18,8 @@ host = '192.168.1.40'              #Get local machine name
 ###############################################################################
 ### Code Start
 ###############################################################################
-from rssd.NRQ.Common import NRQ
 import unittest
+from rssd.NRQ.Common import NRQ
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                      #run before each test
@@ -30,7 +30,7 @@ class TestGeneral(unittest.TestCase):
             self.NRQ6.jav_ClrErr()
             self.NRQ6.dLastErr = ""
         except:
-            self.assertTrue(1)
+            pass
 
     def tearDown(self):                         #Run after each test
         self.NRQ6.jav_Close()

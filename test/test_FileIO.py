@@ -8,9 +8,9 @@
 ###############################################################################
 ### Code Start
 ###############################################################################
-from rssd.FileIO      import FileIO             # pylint: disable=E0611,E0401
-import unittest
 import os
+import unittest
+from rssd.FileIO      import FileIO             # pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                            #Run before each test
@@ -50,7 +50,7 @@ class TestGeneral(unittest.TestCase):
         BaseDir  = os.path.dirname(os.path.realpath(__file__))
         self.FileIO.set_filename(os.path.join(BaseDir,'.system'))
         rdDict = self.FileIO.readdict()
-        rdDict['VSG']
+        rdDict['VSG']           #pylint: disable=W0104
 
     def test_write(self):
         self.FileIO.write("test_write,write")           #Append Date

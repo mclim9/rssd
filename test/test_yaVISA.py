@@ -14,14 +14,12 @@ import unittest
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                #Run before each test
         print("",end="")
-        pass
 
     def tearDown(self):                             #Run after each test
         try:
             self.instr.jav_Close()
         except:
             pass
-
 
 ###############################################################################
 ### <Test>
@@ -63,3 +61,4 @@ if __name__ == '__main__':
     # unittest.main()     #Run w/o test names
     suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
     unittest.TextTestRunner(verbosity=2).run(suite)
+

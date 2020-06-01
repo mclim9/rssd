@@ -18,7 +18,6 @@ host = '192.168.1.114'
 ###############################################################################
 ### Code Start
 ###############################################################################
-import os
 import unittest
 from rssd.VSG.WLAN_K54  import VSG
 from rssd.test.yaVISA   import jaVISA_mock              #pylint: disable=E0611,E0401
