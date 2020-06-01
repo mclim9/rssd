@@ -59,7 +59,7 @@ class TestGeneral(unittest.TestCase):
         self.SMW.Set_ArbState(1)
         self.SMW.Set_ArbState(0)
         getVal = self.SMW.Get_ArbName()
-        nulVal = self.SMW.Get_ArbInfo()
+        # nulVal = self.SMW.Get_ArbInfo()
         nulVal = self.SMW.Get_PowerInfo()
         if self.connected: self.assertTrue(getVal.find(setVal) > -1)
 

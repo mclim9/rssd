@@ -45,11 +45,10 @@ class TestGeneral(unittest.TestCase):
     def test_SMW_CDM(self):
         self.SMW.Set_CDM_State('ON')
         getVal = self.SMW.Get_CDM_State()
-        self.assertEqual(getVal,1)                      #Value
+        if self.connected: self.assertEqual(getVal,1)                      #Value
         self.SMW.Set_CDM_State('OFF')
         getVal = self.SMW.Get_CDM_State()
-        self.assertEqual(getVal,0)                      #Value
-        self.assertEqual(self.SMW.jav_Error()[0],'0')
+        if self.connected: self.assertEqual(getVal,0)                      #Value
 
 ###############################################################################
 ### </Test>
