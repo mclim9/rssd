@@ -39,7 +39,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip pylint wheel
         pip install -r requirements.txt
-        pip install pytest coverage pyvisa-py coveralls
+        pip install pytest coverage pyvisa-py
 
     - name: Lint with pylint
       run: |
@@ -62,4 +62,3 @@ jobs:
         coverage run -a -m unittest -v test.test_HW_VSG_Fading
         coverage run -a -m unittest -v test.test_HW_VSG_LTE
         coverage run -a -m unittest -v test.test_HW_VSG_WLAN
-        coveralls
