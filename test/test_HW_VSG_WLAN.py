@@ -115,7 +115,7 @@ class TestGeneral(unittest.TestCase):
 
     def test_SMW_WLAN_Set_BBON(self):
         self.SMW.Set_WLAN_ChBW(20)
-        self.SMW.Set_WLAN_BBState('ON')
+        if self.connected: self.SMW.Set_WLAN_BBState('ON')
 
 ###############################################################################
 ### </Test>
