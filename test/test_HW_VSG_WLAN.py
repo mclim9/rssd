@@ -23,7 +23,9 @@ import unittest
 from rssd.VSG.WLAN_K54  import VSG
 from rssd.test.yaVISA   import jaVISA_mock              #pylint: disable=E0611,E0401
 
+class TestGeneral(unittest.TestCase):
     def setUp(self):                                    #run before each test
+        print("",end="")
         self.SMW = VSG()
         self.SMW.debug      = 0
         self.SMW.jav_Open(host)

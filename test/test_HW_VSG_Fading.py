@@ -11,16 +11,16 @@
 ### User Entry
 ###############################################################################
 host = '10.0.0.7'                                       #Get local machine name
-# host = '169.254.2.20'
+host = '192.168.1.114'
 
 ###############################################################################
 ### Code Start
 ###############################################################################
-import os
 import unittest
 from rssd.VSG.Fading    import VSG
 from rssd.test.yaVISA   import jaVISA_mock              #pylint: disable=E0611,E0401
 
+class TestGeneral(unittest.TestCase):
     def setUp(self):                                    #run before each test
         self.SMW = VSG()
         self.SMW.debug      = 0
@@ -48,12 +48,11 @@ from rssd.test.yaVISA   import jaVISA_mock              #pylint: disable=E0611,E
         getVal = self.SMW.Get_Fade_State()
 
     def test_SMW_Fading_State(self):
-        # self.SMW.Set_Fade_State('ON')
+        self.SMW.Set_Fade_State('ON')
         # getVal = self.SMW.Get_Fade_State()
         # self.assertEqual(getVal,1)
-        # self.SMW.Set_Fade_State('OFF')
+        self.SMW.Set_Fade_State('OFF')
         # getVal = self.SMW.Get_Fade_State()
-        pass
 
 
 
