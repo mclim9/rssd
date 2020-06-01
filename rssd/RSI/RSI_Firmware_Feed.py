@@ -4,17 +4,16 @@
 ### Purpose: Rohde & Scharz Instrument Functions
 ### Author : Martin C Lim
 ### Date   : 2019.09.30
-###  _____  _____   ____ _______ ____ _________     _______  ______ 
+###  _____  _____   ____ _______ ____ _________     _______  ______
 ### |  __ \|  __ \ / __ \__   __/ __ \__   __\ \   / /  __ \|  ____|
-### | |__) | |__) | |  | | | | | |  | | | |   \ \_/ /| |__) | |__    
-### |  ___/|  _  /| |  | | | | | |  | | | |    \   / |  ___/|  __|  
-### | |    | | \ \| |__| | | | | |__| | | |     | |  | |    | |____ 
+### | |__) | |__) | |  | | | | | |  | | | |   \ \_/ /| |__) | |__
+### |  ___/|  _  /| |  | | | | | |  | | | |    \   / |  ___/|  __|
+### | |    | | \ \| |__| | | | | |__| | | |     | |  | |    | |____
 ### |_|    |_|  \_\\____/  |_|  \____/  |_|     |_|  |_|    |______|
 ###############################################################################
+import feedparser
 
 def parse_feed_firmware():
-    import feedparser
-
     url = 'https://www.rohde-schwarz.com/us/rss-feeds/firmware-feed_229511.rss'
     feed = feedparser.parse(url)
     print(f'\n{url}')
@@ -28,8 +27,6 @@ def parse_feed_firmware():
         print (f"{entry_title[0:30]:32}[{entry_link:55}] {entry_published}")
 
 def parse_feed_drivers():
-    import feedparser
-
     url = 'https://www.rohde-schwarz.com/us/rss-feeds/driver-feed_229510.rss'
     feed = feedparser.parse(url)
     print(f'\n{url}')
@@ -41,8 +38,6 @@ def parse_feed_drivers():
         print (f"{entry_title[0:30]:32}[{entry_link:55}] {entry_published}")
 
 def parse_feed_appNote():
-    import feedparser
-
     url = 'https://www.rohde-schwarz.com/us/rss-feeds/application-note-feed_229508.rss'
     feed = feedparser.parse(url)
     print(f'\n{url}')

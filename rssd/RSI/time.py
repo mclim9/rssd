@@ -59,5 +59,4 @@ if __name__ == "__main__":
     time.sleep(1.2)
     asdf.tick()
     adf =asdf.deltaTimeTxt()
-    pass
     

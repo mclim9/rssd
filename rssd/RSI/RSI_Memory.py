@@ -4,13 +4,13 @@
 ### Purpose: Rohde & Scharz Instrument Functions
 ### Author : Martin C Lim
 ### Date   : 2019.05.10
-###  _____  _____   ____ _______ ____ _________     _______  ______ 
+###  _____  _____   ____ _______ ____ _________     _______  ______
 ### |  __ \|  __ \ / __ \__   __/ __ \__   __\ \   / /  __ \|  ____|
-### | |__) | |__) | |  | | | | | |  | | | |   \ \_/ /| |__) | |__    
-### |  ___/|  _  /| |  | | | | | |  | | | |    \   / |  ___/|  __|  
-### | |    | | \ \| |__| | | | | |__| | | |     | |  | |    | |____ 
+### | |__) | |__) | |  | | | | | |  | | | |   \ \_/ /| |__) | |__
+### |  ___/|  _  /| |  | | | | | |  | | | |    \   / |  ___/|  __|
+### | |    | | \ \| |__| | | | | |__| | | |     | |  | |    | |____
 ### |_|    |_|  \_\\____/  |_|  \____/  |_|     |_|  |_|    |______|
-###                         _            _           _ 
+###                         _            _           _
 ###                        | |          | |         | |
 ###             _   _ _ __ | |_ ___  ___| |_ ___  __| |
 ###            | | | | '_ \| __/ _ \/ __| __/ _ \/ _` |
@@ -18,8 +18,8 @@
 ###             \__,_|_| |_|\__\___||___/\__\___|\__,_|
 ###
 ###############################################################################
-from rssd.yaVISA import jaVisa
 import timeit
+from rssd.yaVISA import jaVisa
 
 class RSI(jaVisa):
     """ Rohde & Schwarz Instrument Memory Object """
@@ -28,7 +28,7 @@ class RSI(jaVisa):
         self.Model = "AAA"
 
     ##########################################################################
-    ### AAA Get Functions
+    ### AAA Get Methods
     ##########################################################################
     def Get_dir(self):
         rdStr = self.query(f':MMEM:CDIR?')
@@ -66,7 +66,7 @@ class RSI(jaVisa):
         return rdStr
 
     ###########################################################################
-    ### AAA Get Functions
+    ### AAA Set Methods
     ###########################################################################
     def Set_Copy(self,fromLoc, toLoc):
         """ Copy files from <source> to <destination>
@@ -74,11 +74,11 @@ class RSI(jaVisa):
         """
         self.write(f'MMEM:COPY "{fromLoc}","{toLoc}"')
 
-    def Set_Dir(self,dir):
+    def Set_Dir(self, pathy):
         """ Set_Dir('C:\\R_S\\Instr')
             Set_Dir('C:\\R_S\\Instr\\')
         """
-        self.write(f'MMEM:CDIR "{dir}"')
+        self.write(f'MMEM:CDIR "{pathy}"')
 
     def Set_FileCreate(self,filename):
         """Set_FileCreate('temp.txt')"""
@@ -103,7 +103,8 @@ class RSI(jaVisa):
 if __name__ == "__main__":
     RSI = RSI().jav_Open("192.168.1.108")
     tick = timeit.default_timer()
-    RSI.Set_FileCreate
+    RSI.Set_FileCreate()
+
     #####################################
     ### Begin Timer
     #####################################

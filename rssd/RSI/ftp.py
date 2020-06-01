@@ -1,6 +1,6 @@
 import pysftp
 cnopts = pysftp.CnOpts()
-cnopts.hostkeys = None 
+cnopts.hostkeys = None
 
 myHostname = "192.168.1.160"
 myUsername = "root"
@@ -16,7 +16,5 @@ with pysftp.Connection(host=myHostname, username=myUsername, password=myPassword
     # sftp.cwd(remotePath)
     # data = sftp.listdir_attr()            # Get the directory and file listing
 
-
 # for i in data:                  # Prints out the directories and files, line by line
 #     print(f'{i.filename} {i.st_size}')
-

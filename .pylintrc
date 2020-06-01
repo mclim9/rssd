@@ -24,10 +24,10 @@ confidence=
 #  "--disable=all --enable=similarities". run only the similarities checker
 #  "--disable=all --enable=classes --disable=W"
 #  run only the classes checker, but have no Warning level messages displayed
-disable=C0103, C0114, C0115, C0116, C0301, C0321, C0325, C0326, C0413,
+disable=C0103, C0114, C0115, C0116, C0301, C0303, C0321, C0325, C0326, C0413,
         E0102, E0401, E0611, E1101,
         R0801, R0902, R0903,
-        W0621, W0702, W1309,
+        W0621, W0702, W1309, W0612,
         R0201, R0205, R0904, R1714, W0201, W0235
 
 # Disabled:
@@ -37,6 +37,7 @@ disable=C0103, C0114, C0115, C0116, C0301, C0321, C0325, C0326, C0413,
 # C0115 Missing class docstring 
 # C0116 Missing function or method docstring 
 # C0301 Line too long
+# C0303: Trailing whitespace
 # C0321 More than one statement on a single line
 # C0325 Unnecessary parens after 'if' keyword (superfluous-parens)
 # C0326 Exactly one space required around assignment
@@ -48,6 +49,7 @@ disable=C0103, C0114, C0115, C0116, C0301, C0321, C0325, C0326, C0413,
 # R0801 Similar lines in 3 files
 # R0902 too-many-instance-attributes
 # R0903 too-few-public-methods
+# W0612 Unused variable
 # W0621 Redefining name '' from outer scope
 # W0702 No exception type(s) specified (bare-except)
 # W1309 Using an f-string that does not have any interpolated variables
