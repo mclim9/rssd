@@ -62,7 +62,7 @@ class RSI(jaVisa):
         self.Get_dirInfo()
         self.write(f':MMEM:DATA? {filename}')
         size = self.files[filename]
-        rdStr = self.jav_read_raw(self.files[filename])
+        rdStr = self.jav_read_raw()
         return rdStr
 
     ###########################################################################
