@@ -53,15 +53,15 @@ class TestGeneral(unittest.TestCase):
         getVal = self.SMW.Get_ArbClockFreq()
         if self.connected: self.assertEqual(setVal,getVal)
 
-    def test_SMW_Arb_State(self):
-        setVal = '/var/user/UCS2010/GSM.wv'
-        self.SMW.Set_ArbWv(setVal)
-        self.SMW.Set_ArbState(1)
-        self.SMW.Set_ArbState(0)
-        getVal = self.SMW.Get_ArbName()
-        nulVal = self.SMW.Get_ArbInfo()
-        nulVal = self.SMW.Get_PowerInfo()
-        if self.connected: self.assertTrue(getVal.find(setVal) > -1)
+    # def test_SMW_Arb_State(self):
+    #     setVal = '/var/user/UCS2010/GSM.wv'
+    #     self.SMW.Set_ArbWv(setVal)
+    #     self.SMW.Set_ArbState(1)
+    #     self.SMW.Set_ArbState(0)
+    #     getVal = self.SMW.Get_ArbName()
+    #     nulVal = self.SMW.Get_ArbInfo()
+    #     nulVal = self.SMW.Get_PowerInfo()
+    #     if self.connected: self.assertTrue(getVal.find(setVal) > -1)
 
     def test_SMW_BB_State(self):
         self.SMW.Set_BBState(1)
