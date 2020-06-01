@@ -48,13 +48,14 @@ class TestGeneral(unittest.TestCase):
         getVal = self.SMW.Get_Fade_State()
 
     def test_SMW_Fading_State(self):
-        self.SMW.Set_Fade_State('ON')
-        # getVal = self.SMW.Get_Fade_State()
-        # self.assertEqual(getVal,1)
-        self.SMW.Set_Fade_State('OFF')
-        # getVal = self.SMW.Get_Fade_State()
-
-
+        if self.connected: 
+            self.SMW.Set_Fade_State('ON')
+            # getVal = self.SMW.Get_Fade_State()
+            # self.assertEqual(getVal,1)
+            self.SMW.Set_Fade_State('OFF')
+            # getVal = self.SMW.Get_Fade_State()
+        else:
+            pass
 
 ###############################################################################
 ### </Test>
