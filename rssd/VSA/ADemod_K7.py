@@ -12,11 +12,12 @@ class VSA(VSA):
         super(VSA,self).__init__()     #Python2
 
     #####################################################################
-    ### VSA ADemod Settings
+    ### ADemod Get 
     #####################################################################
-    def Set_Adem_dbw(self,iBW):
+    def Get_Adem_dbw(self):
         """100Hz - MaxBW: Values is rounded up: 1;3;5;"""
-        self.write('SENS:BWID:DEM %d'%iBW)
+        rdStr = self.queryInt('SENS:BWID:DEM?')
+        return rdStr
 
     #####################################################################
     ### VSA Init Settings
@@ -25,8 +26,12 @@ class VSA(VSA):
         self.Set_Channel("ADEM")
 
     #####################################################################
-    ### VSA Filter Settings
+    ### ADemod Set
     #####################################################################
+    def Set_Adem_dbw(self,iBW):
+        """100Hz - MaxBW: Values is rounded up: 1;3;5;"""
+        self.write('SENS:BWID:DEM %d'%iBW)
+
     def Set_Adem_LPassStat(self,on):
         """LPass Filter: on"""
         if (on == 'ON') or (on == 1):
