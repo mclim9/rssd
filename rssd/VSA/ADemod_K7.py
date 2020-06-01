@@ -12,7 +12,7 @@ class VSA(VSA):
         super(VSA,self).__init__()     #Python2
 
     #####################################################################
-    ### ADemod Get 
+    ### ADemod Get
     #####################################################################
     def Get_Adem_dbw(self):
         """100Hz - MaxBW: Values is rounded up: 1;3;5;"""
