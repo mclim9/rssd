@@ -24,7 +24,7 @@ install:
   # - pip install -r requirements.txt
   - pip install future_fstrings     #3.6 f-Strings in 2.7
   - pip install pyvisa
-  - pip install coveralls 
+  - pip install coveralls
 #  - pip install pyvisa-py           #testing
 
 # command to run tests
