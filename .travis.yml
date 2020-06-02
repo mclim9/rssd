@@ -24,22 +24,17 @@ install:
   # - pip install -r requirements.txt
   - pip install future_fstrings     #3.6 f-Strings in 2.7
   - pip install pyvisa
-  - pip install coveralls 
+  - pip install coveralls
   - pip install pyvisa-py           #testing
 
 # command to run tests
 script:
   # - python -m unittest -v test.test_RSSD
+  # - python -m unittest -v test.test_FileIO
+  # - python -m unittest -v test.test_yaVISA
   - coverage run -m unittest -v test.test_RSSD
   - coverage run -a -m unittest -v test.test_FileIO
   - coverage run -a -m unittest -v test.test_yaVISA
-  - coverage run -a -m unittest -v test.test_HW_VSG_5GNR
-  - coverage run -a -m unittest -v test.test_HW_VSG_Common
-  - coverage run -a -m unittest -v test.test_HW_VSG_CustomDigMod
-  - coverage run -a -m unittest -v test.test_HW_VSG_Fading
-  - coverage run -a -m unittest -v test.test_HW_VSG_LTE
-  - coverage run -a -m unittest -v test.test_HW_VSG_WLAN
 
-  after_success:
+after_success:
   - coveralls
-
