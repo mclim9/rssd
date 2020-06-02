@@ -25,7 +25,7 @@ install:
   - pip install future_fstrings     #3.6 f-Strings in 2.7
   - pip install pyvisa
   - pip install coveralls
-#  - pip install pyvisa-py           #testing
+  - pip install pyvisa-py           #testing
 
 # command to run tests
 script:
@@ -41,5 +41,5 @@ script:
 #  - coverage run -a -m unittest -v test.test_HW_VSG_WLAN
 
   after_success:
-  - coveralls
+    - coveralls
 
