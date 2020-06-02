@@ -20,7 +20,6 @@ from rssd.test.yaVISA       import jaVISA_mock      #pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                #run before each test
-        print("",end="")
         self.FSW = VSA()
         self.FSW.debug      = 0
         self.FSW.jav_Open(host)
