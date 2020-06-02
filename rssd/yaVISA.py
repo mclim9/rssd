@@ -60,7 +60,7 @@ class jaVisa(object):
             if self.debug: print("jav_ClrErr: %s-->SYST:ERR not Supported"%(self.Model))
         return ErrList
 
-    def jav_Error(self):
+    def jav_Error(self):                                    #pylint: disable=E0202
         RdStr = self.query("SYST:ERR?").strip().split(',')
         return RdStr
 
@@ -120,7 +120,7 @@ class jaVisa(object):
         if self.debug: print('jav_Wai   : %0.2fsec'%(delta))
         return delta
 
-    def jav_Open(self, IPAddr, fily=''):
+    def jav_Open(self, IPAddr, fily=''):                                        #pylint: disable=E0202
         #  VISA: 'TCPIP0::'+IP_Address+'::INSTR'
         #  VISA: 'TCPIP0::'+IP_Address+'::inst0'
         #  VISA: 'TCPIP0::'+IP_Address+'::hislip0'
@@ -208,7 +208,7 @@ class jaVisa(object):
                 OutList.append(ReadStr)
         return OutList
 
-    def query(self,cmd):
+    def query(self,cmd):                                    #pylint: disable=E0202
         read ="<notRead>"
         try:
             if self.dataIDN != "":
@@ -247,7 +247,7 @@ class jaVisa(object):
         except:
             return [-9999,-8888,-7777]
 
-    def write(self,cmd):
+    def write(self,cmd):                                    #pylint: disable=E0202
         try:
             if self.dataIDN != "": self.K2.write(cmd)       #Write if connected
         except:
