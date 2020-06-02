@@ -29,11 +29,15 @@ install:
 # command to run tests
 script:
   # - python -m unittest -v test.test_RSSD
-  # - python -m unittest -v test.test_FileIO
-  # - python -m unittest -v test.test_yaVISA
   - coverage run -m unittest -v test.test_RSSD
   - coverage run -a -m unittest -v test.test_FileIO
   - coverage run -a -m unittest -v test.test_yaVISA
+  - coverage run -a -m unittest -v test.test_HW_VSA_5GNR
+  - coverage run -a -m unittest -v test.test_HW_VSA_Common
+  - coverage run -a -m unittest -v test.test_HW_VSA_Common_CCDF
+  - coverage run -a -m unittest -v test.test_HW_VSA_Common_Harm
+  - coverage run -a -m unittest -v test.test_HW_VSA_Common_IQ
+  - coverage run -a -m unittest -v test.test_HW_VSA_LTE
   - coverage run -a -m unittest -v test.test_HW_VSG_5GNR
   - coverage run -a -m unittest -v test.test_HW_VSG_Common
   - coverage run -a -m unittest -v test.test_HW_VSG_CustomDigMod
