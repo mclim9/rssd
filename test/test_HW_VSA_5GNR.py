@@ -16,24 +16,10 @@ host = '192.168.1.109'                              #Get local machine name
 ###############################################################################
 import unittest
 from rssd.VSA.NR5G_K144     import VSA
-from rssd.test.yaVISA       import jaVISA_mock      #pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                #run before each test
-        print("",end="")
-        self.FSW = VSA()
-        self.FSW.debug      = 0
-        self.FSW.jav_Open(host)
-        self.connected      = 1
-        if self.FSW.K2 == 'NoVISA':
-            mock = jaVISA_mock()
-            self.FSW.jav_Open   = mock.jav_Open
-            self.FSW.write      = mock.write
-            self.FSW.query      = mock.query
-            self.FSW.jav_Error  = mock.jav_Error
-            self.connected      = 0
-        self.FSW.jav_ClrErr()
-        self.FSW.dLastErr = ""
+        self.FSW = VSA().jav_OpenTest(host)
         self.FSW.Init_5GNR()
 
     def tearDown(self):                             #Run after each test
@@ -46,24 +32,24 @@ class TestGeneral(unittest.TestCase):
     def test_FSW_5GNR_Direction(self):
         self.FSW.Set_5GNR_Direction('UL')
         getVal = self.FSW.Get_5GNR_Direction()
-        if self.connected: self.assertEqual(getVal,'UL')
+        if self.FSW.connected: self.assertEqual(getVal,'UL')
         self.FSW.Set_5GNR_Direction('DL')
         getVal = self.FSW.Get_5GNR_Direction()
-        if self.connected: self.assertEqual(getVal,'DL')
+        if self.FSW.connected: self.assertEqual(getVal,'DL')
 
     def test_FSW_5GNR_FreqRange(self):
         self.FSW.Set_5GNR_Direction('UL')
         self.FSW.Set_5GNR_FreqRange('LOW')
         getVal = self.FSW.Get_5GNR_FreqRange()
-        if self.connected: self.assertEqual(getVal,'LOW')
+        if self.FSW.connected: self.assertEqual(getVal,'LOW')
 
         self.FSW.Set_5GNR_FreqRange('MIDD')
         getVal = self.FSW.Get_5GNR_FreqRange()
-        if self.connected: self.assertEqual(getVal,'MIDD')
+        if self.FSW.connected: self.assertEqual(getVal,'MIDD')
 
         self.FSW.Set_5GNR_FreqRange('HIGH')
         getVal = self.FSW.Get_5GNR_FreqRange()
-        if self.connected: self.assertEqual(getVal,'HIGH')
+        if self.FSW.connected: self.assertEqual(getVal,'HIGH')
 
     def test_FSW_5GNR_Get_DL(self):
         self.FSW.Set_5GNR_Direction('DL')
@@ -84,7 +70,7 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_5GNR_BWP_Ch_ResBlockOffset()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_SymbNum()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_SymbOff()
-        nullVal = self.FSW.Get_5GNR_BWP_Center()
+        # nullVal = self.FSW.Get_5GNR_BWP_Center()
         ### "=DMRS="
         nullVal = self.FSW.Get_5GNR_BWP_Ch_DMRS_Config()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_DMRS_Mapping()
@@ -122,7 +108,7 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_5GNR_BWP_Ch_ResBlockOffset()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_SymbNum()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_SymbOff()
-        nullVal = self.FSW.Get_5GNR_BWP_Center()
+        # nullVal = self.FSW.Get_5GNR_BWP_Center()
         ### "=DMRS="
         nullVal = self.FSW.Get_5GNR_BWP_Ch_DMRS_Config()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_DMRS_Mapping()

@@ -16,26 +16,13 @@ host = '192.168.1.109'                              #Get local machine name
 ###############################################################################
 import unittest
 from rssd.VSA.LTE_K100      import VSA
-from rssd.test.yaVISA       import jaVISA_mock      #pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                #run before each test
-        self.FSW = VSA()
-        self.FSW.debug      = 0
-        self.FSW.jav_Open(host)
-        self.connected      = 1
-        if self.FSW.K2 == 'NoVISA':
-            mock = jaVISA_mock()
-            self.FSW.jav_Open   = mock.jav_Open
-            self.FSW.write      = mock.write
-            self.FSW.query      = mock.query
-            self.FSW.jav_Error  = mock.jav_Error
-            self.connected      = 0
-        self.FSW.jav_ClrErr()
-        self.FSW.dLastErr = ""
+        self.FSW = VSA().jav_OpenTest(host)
         self.FSW.Init_LTE()
 
-    def tearDown(self):                                 #Run after each test
+    def tearDown(self):                             #Run after each test
         self.assertEqual(self.FSW.jav_Error()[0],'0')
         self.FSW.jav_Close()
 
@@ -50,7 +37,6 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_LTE_ResBlock()           # Need to test DL
         nullVal = self.FSW.Get_LTE_ResBlockOffset()     # Need to test DL
         nullVal = self.FSW.Get_LTE_Modulation()         # Need to test DL
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
 
     def test_FSW_LTE_Get_UL(self):
         self.FSW.Set_LTE_Direction('UL')
@@ -60,7 +46,6 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_LTE_ResBlock()           # Need to test DL
         nullVal = self.FSW.Get_LTE_ResBlockOffset()     # Need to test DL
         nullVal = self.FSW.Get_LTE_Modulation()         # Need to test DL
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
 
     def test_FSW_LTE_CC(self):
         self.FSW.Get_LTE_CC()
@@ -68,10 +53,10 @@ class TestGeneral(unittest.TestCase):
     def test_FSW_LTE_Direction(self):
         self.FSW.Set_LTE_Direction('UL')
         getVal = self.FSW.Get_LTE_Direction()
-        self.assertEqual(getVal,'UL')
+        if self.FSW.connected: self.assertEqual(getVal,'UL')
         self.FSW.Set_LTE_Direction('DL')
         getVal = self.FSW.Get_LTE_Direction()
-        self.assertEqual(getVal,'DL')
+        if self.FSW.connected: self.assertEqual(getVal,'DL')
 
     def test_FSW_LTE_Set_UL(self):
         self.FSW.Set_Freq(2e9)
@@ -81,7 +66,6 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_LTE_ResBlockOffset(0)
         self.FSW.Set_LTE_Modulation('QPSK')
         # self.FSW.delay(0.5)
-        self.assertEqual(self.FSW.jav_Error()[0],'0')
 
 ###############################################################################
 ### </Test>

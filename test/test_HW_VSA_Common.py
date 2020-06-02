@@ -17,27 +17,13 @@ host = '192.168.1.109'                              #Get local machine name
 ###############################################################################
 import unittest
 from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
-from rssd.test.yaVISA       import jaVISA_mock      #pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                #run before each test
-        print("",end="")
-        self.FSW = VSA()
-        self.FSW.debug      = 0
-        self.FSW.jav_Open(host)
-        self.connected      = 1
-        if self.FSW.K2 == 'NoVISA':
-            mock = jaVISA_mock()
-            self.FSW.jav_Open   = mock.jav_Open
-            self.FSW.write      = mock.write
-            self.FSW.query      = mock.query
-            self.FSW.jav_Error  = mock.jav_Error
-            self.connected      = 0
-        self.FSW.jav_ClrErr()
-        self.FSW.dLastErr = ""
+        self.FSW = VSA().jav_OpenTest(host)
         self.FSW.Init_Spectral()
 
-    def tearDown(self):                                 #Run after each test
+    def tearDown(self):                             #Run after each test
         self.assertEqual(self.FSW.jav_Error()[0],'0')
         self.FSW.jav_Close()
 
@@ -50,14 +36,14 @@ class TestGeneral(unittest.TestCase):
 
     def test_FSW_Connect(self):
         self.FSW.jav_IDN()
-        if self.connected: self.assertEqual(self.FSW.Make,"Rohde&Schwarz")     # Valuecompare
+        if self.FSW.connected: self.assertEqual(self.FSW.Make,"Rohde&Schwarz")  # Valuecompare
 
-    def test_FSW_ChannelManagement(self):
-        getVal = self.FSW.Get_ChannelName()
-        getVal = self.FSW.Get_Channels()
-        self.FSW.Init_IQ()
-        # self.FSW.Set_ChannelName('IQ','IQ_Test')
-        self.FSW.Set_ChannelSelect('Spectrum')
+    # def test_FSW_ChannelManagement(self):
+        # getVal = self.FSW.Get_ChannelName()
+        # getVal = self.FSW.Get_Channels()
+        # self.FSW.Init_IQ()
+        # # self.FSW.Set_ChannelName('IQ','IQ_Test')
+        # self.FSW.Set_ChannelSelect('Spectrum')
 
     def test_FSW_CommonSettings(self):
         self.FSW.Set_Freq(1e6)
@@ -75,7 +61,7 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_Freq(100e6)
         rdStr = self.FSW.Get_Freq()
         #var = input("Please enter something: ")
-        if self.connected: self.assertEqual(100e6,rdStr)                                           # Valuecompare
+        if self.FSW.connected: self.assertEqual(100e6,rdStr)                    # Valuecompare
 
     def test_FSW_GetParams(self):
         nullVal = self.FSW.Get_Params_Amp(1)

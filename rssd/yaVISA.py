@@ -13,6 +13,7 @@
 import time
 import visa
 import rssd.FileIO                                #pylint: disable=E0611,E0401
+from rssd.test.yaVISA       import jaVISA_mock      #pylint: disable=E0611,E0401
 
 class jaVisa(object):
     ### Rohde & Schwarz VISA Class
@@ -150,6 +151,21 @@ class jaVisa(object):
         except:
             if self.debug: print ('jav_OpnErr: ' + sVISAStr)
             self.K2 = 'NoVISA'
+        return self
+
+    def jav_OpenTest(self, host):
+        self.debug = 0
+        self.jav_Open(host)
+        self.connected      = 1
+        if self.K2 == 'NoVISA':
+            mock = jaVISA_mock()
+            self.jav_Open   = mock.jav_Open
+            self.write      = mock.write
+            self.query      = mock.query
+            self.jav_Error  = mock.jav_Error
+            self.connected  = 0
+        self.jav_ClrErr()
+        self.dLastErr = ""
         return self
 
     def jav_fileout(self, fily, outstr):

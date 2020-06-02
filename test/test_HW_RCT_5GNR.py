@@ -1,12 +1,9 @@
 ###############################################################################
-### Rohde & Schwarz Driver Test
-### Purpose: RCT.NR5G_KM601 test
-### Author:  mclim
-### Date:    2020.05.08
-###              _   ___        __  _____         _   
-###             | | | \ \      / / |_   _|__  ___| |_ 
+### Purpose: rssd.RCT.NR5G_KM601 test
+###              _   ___        __  _____         _
+###             | | | \ \      / / |_   _|__  ___| |_
 ###             | |_| |\ \ /\ / /    | |/ _ \/ __| __|
-###             |  _  | \ V  V /     | |  __/\__ \ |_ 
+###             |  _  | \ V  V /     | |  __/\__ \ |_
 ###             |_| |_|  \_/\_/      |_|\___||___/\__|
 ###             Please connect instrument prior 2 test
 ###############################################################################
@@ -18,18 +15,14 @@ host = '192.168.1.160'              #Get local machine name
 ### Code Start
 ###############################################################################
 import unittest
-from rssd.RCT.NR5G_KM601 import RCT
+from rssd.RCT.NR5G_KM601    import RCT
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                      #run before each test
-        self.CMP = RCT()
-        self.CMP.debug = 0
-        self.CMP.jav_Open(host)
-        self.CMP.jav_ClrErr()
+        self.CMP = RCT().jav_OpenTest(host)
         self.CMP.Init_5GNR()
-        self.CMP.dLastErr = ""
-
     def tearDown(self):                         #Run after each test
+        self.assertEqual(self.CMP.jav_Error()[0],'0')
         self.CMP.jav_Close()
 
 ###############################################################################
@@ -38,19 +31,17 @@ class TestGeneral(unittest.TestCase):
     def test_CMP_5GNR_ChBW(self):
         self.CMP.Set_5GNR_ChannelBW(200)
         getVal = self.CMP.Get_5GNR_ChannelBW()
-        self.assertEqual(self.CMP.jav_Error()[0],'0')
 
     def test_CMP_5GNR_Direction(self):
         self.CMP.Set_5GNR_Direction('UL')
         getVal = self.CMP.Get_5GNR_Direction()
-        self.assertEqual(getVal,'UL')
-        self.assertEqual(self.CMP.jav_Error()[0],'0')
+        if self.CMP.connected: self.assertEqual(getVal,'UL')
 
     def test_CMP_5GNR_FreqRange(self):
         self.CMP.Set_5GNR_Direction('UL')
         self.CMP.Set_5GNR_FreqRange('HIGH')
         getVal = self.CMP.Get_5GNR_FreqRange()
-        self.assertEqual(getVal,'HIGH')
+        if self.CMP.connected: self.assertEqual(getVal,'HIGH')
 
     def test_CMP_5GNR_PhaseComp(self):
         self.CMP.Set_5GNR_PhaseCompensate('ON')
@@ -58,14 +49,12 @@ class TestGeneral(unittest.TestCase):
         self.CMP.Set_5GNR_PhaseCompensate_Freq(39e9)
         getVal = self.CMP.Get_5GNR_PhaseCompensate()
         getVal = self.CMP.Get_5GNR_PhaseCompensate_Freq()
-        self.assertEqual(self.CMP.jav_Error()[0],'0')
 
     def test_CMP_5GNR_TransPrecoding(self):
         self.CMP.Set_5GNR_TransPrecoding('ON')
         getVal = self.CMP.Get_5GNR_TransPrecoding()
         self.CMP.Set_5GNR_TransPrecoding('OFF')
         getVal = self.CMP.Get_5GNR_TransPrecoding()
-        self.assertEqual(self.CMP.jav_Error()[0],'0')
 
     def test_CMP_5GNR_Get_UL(self):
         self.CMP.Set_5GNR_Direction('UL')
@@ -110,7 +99,6 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.CMP.Get_5GNR_BWP_Ch_PTRS_K()
         nullVal = self.CMP.Get_5GNR_BWP_Ch_PTRS_Pow()
         nullVal = self.CMP.Get_5GNR_BWP_Ch_PTRS_RE_Offset()
-        self.assertEqual(self.CMP.jav_Error()[0],'0')
 
     # def test_CMP_5GNR_Set_UL(self):
     #     self.CMP.Set_5GNR_Direction('UL')
@@ -127,7 +115,6 @@ class TestGeneral(unittest.TestCase):
     #     #self.CMP.Set_5GNR_BWP_Ch_ResBlockOffset(NR_RBO)
     #     self.CMP.Set_5GNR_BWP_Ch_Modulation('QPSK')
     #     # self.CMP.Set_5GNR_SSB()
-    #     self.assertEqual(self.CMP.jav_Error()[0],'0')
 
 ###############################################################################
 ### </Test>

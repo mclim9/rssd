@@ -17,24 +17,10 @@ host = '192.168.1.109'                              #Get local machine name
 ###############################################################################
 import unittest
 from rssd.VSA.Common        import VSA              #pylint: disable=E0611,E0401
-from rssd.test.yaVISA       import jaVISA_mock      #pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                #run before each test
-        print("",end="")
-        self.FSW = VSA()
-        self.FSW.debug      = 0
-        self.FSW.jav_Open(host)
-        self.connected      = 1
-        if self.FSW.K2 == 'NoVISA':
-            mock = jaVISA_mock()
-            self.FSW.jav_Open   = mock.jav_Open
-            self.FSW.write      = mock.write
-            self.FSW.query      = mock.query
-            self.FSW.jav_Error  = mock.jav_Error
-            self.connected      = 0
-        self.FSW.jav_ClrErr()
-        self.FSW.dLastErr = ""
+        self.FSW = VSA().jav_OpenTest(host)
         self.FSW.Init_IQ()
 
     def tearDown(self):                                 #Run after each test
@@ -56,10 +42,10 @@ class TestGeneral(unittest.TestCase):
     def test_FSW_Get_IQData(self):
         self.FSW.Set_IQ_RecLength(10)
         self.FSW.Set_SweepCont(0)
-        if self.connected: getVal = self.FSW.Get_IQ_Data()
+        if self.FSW.connected: getVal = self.FSW.Get_IQ_Data()
         # getVal = self.FSW.Get_IQ_Data_Ascii()
-        if self.connected: getVal = self.FSW.Get_IQ_Data_Ascii2()
-        if self.connected: getVal = self.FSW.Get_IQ_Data_Bin()
+        if self.FSW.connected: getVal = self.FSW.Get_IQ_Data_Ascii2()
+        if self.FSW.connected: getVal = self.FSW.Get_IQ_Data_Bin()
 
     def test_FSW_Set_IQ_ALCR(self):
         self.FSW.Set_IQ_ACLR(9e6,10e6)
