@@ -389,7 +389,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
             self.write(f':CONF:NR5G:DL:CC{self.cc}:IDC ON')
             self.sdir = "DL"
         else:
-            print("Set_5GNR_UL_Direction must be UL or DL")
+            if self.debug: print("Set_5GNR_UL_Direction must be UL or DL")
 
     def Set_5GNR_EVMUnit(self,sUnit):
         """ DB | PCT """

@@ -439,7 +439,7 @@ class RCT(RCT):
             self.sdir = "DL"
             self.alloc = 1         #Alloc 0:Coreset 1:PDSCH
         else:
-            print("Set_5GNR_Direction must be UP or DOWN")
+            if self.debug: print("Set_5GNR_Direction must be UP or DOWN")
 
     def Set_5GNR_EVM_AvgCount(self, avg):
         """1 to 1000 slots"""

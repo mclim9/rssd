@@ -54,7 +54,7 @@ class VSA(VSA):                        #pylint: disable=E0102
         elif rdStr == 'UL':
             self.ldir = "UL"
         else:
-            print('Get_5GNR_Direction Error')
+            if self.debug: print('Get_LTE_Direction Error')
         # print(f'LTE DIRECTION = {self.ldir}')
         return rdStr
 
