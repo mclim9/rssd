@@ -35,6 +35,29 @@ script:
   - coverage run -m unittest -v test.test_RSSD
   - coverage run -a -m unittest -v test.test_FileIO
   - coverage run -a -m unittest -v test.test_yaVISA
+<<<<<<< .mine
+
+
+
+
+
+
+=======
+#  - coverage run -a -m unittest -v test.test_HW_VSG_5GNR
+#  - coverage run -a -m unittest -v test.test_HW_VSG_Common
+#  - coverage run -a -m unittest -v test.test_HW_VSG_CustomDigMod
+#  - coverage run -a -m unittest -v test.test_HW_VSG_Fading
+#  - coverage run -a -m unittest -v test.test_HW_VSG_LTE
+#  - coverage run -a -m unittest -v test.test_HW_VSG_WLAN
+>>>>>>> .theirs
 
 after_success:
+<<<<<<< .mine
+after_success:
   - coveralls
+
+=======
+  after_success:
+    - coveralls
+
+>>>>>>> .theirs
