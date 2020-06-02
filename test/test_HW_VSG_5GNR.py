@@ -18,23 +18,10 @@ host = '192.168.1.114'
 ###############################################################################
 import unittest
 from rssd.VSG.NR5G_K144 import VSG                      #pylint: disable=E0611,E0401
-from rssd.test.yaVISA   import jaVISA_mock              #pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                    #run before each test
-        self.SMW = VSG()
-        self.SMW.debug      = 0
-        self.SMW.jav_Open(host)
-        self.connected      = 1
-        if self.SMW.K2 == 'NoVISA':
-            mock = jaVISA_mock()
-            self.SMW.jav_Open   = mock.jav_Open
-            self.SMW.write      = mock.write
-            self.SMW.query      = mock.query
-            self.SMW.jav_Error  = mock.jav_Error
-            self.connected      = 0
-        self.SMW.jav_ClrErr()
-        self.SMW.dLastErr = ""
+        self.SMW = VSG().jav_OpenTest(host)
 
     def tearDown(self):                                 #Run after each test
         self.assertEqual(self.SMW.jav_Error()[0],'0')
@@ -50,21 +37,21 @@ class TestGeneral(unittest.TestCase):
     def test_SMW_5GNR_Direction(self):
         self.SMW.Set_5GNR_Direction('UL')
         getVal = self.SMW.Get_5GNR_Direction()
-        if self.connected: self.assertEqual(getVal,'UL')
+        if self.SMW.connected: self.assertEqual(getVal,'UL')
         self.SMW.Set_5GNR_Direction('DL')
         getVal = self.SMW.Get_5GNR_Direction()
-        if self.connected: self.assertEqual(getVal,'DL')
+        if self.SMW.connected: self.assertEqual(getVal,'DL')
 
     def test_SMW_5GNR_FreqRange(self):
         self.SMW.Set_5GNR_FreqRange('LOW')
         getVal = self.SMW.Get_5GNR_FreqRange()
-        if self.connected: self.assertEqual(getVal,'LOW')
+        if self.SMW.connected: self.assertEqual(getVal,'LOW')
         self.SMW.Set_5GNR_FreqRange('MIDD')
         getVal = self.SMW.Get_5GNR_FreqRange()
-        if self.connected: self.assertEqual(getVal,'MIDD')
+        if self.SMW.connected: self.assertEqual(getVal,'MIDD')
         self.SMW.Set_5GNR_FreqRange('HIGH')
         getVal = self.SMW.Get_5GNR_FreqRange()
-        if self.connected: self.assertEqual(getVal,'HIGH')
+        if self.SMW.connected: self.assertEqual(getVal,'HIGH')
 
     def test_SMW_5GNR_Get_DL(self):
         self.SMW.Set_5GNR_Direction('DL')

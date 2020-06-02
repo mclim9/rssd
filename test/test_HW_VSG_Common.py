@@ -17,24 +17,10 @@ host = '192.168.1.114'
 ###############################################################################
 import unittest
 from rssd.VSG.Common    import VSG
-from rssd.test.yaVISA   import jaVISA_mock              #pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                    #run before each test
-        print("",end="")
-        self.SMW = VSG()
-        self.SMW.debug      = 0
-        self.SMW.jav_Open(host)
-        self.connected      = 1
-        if self.SMW.K2 == 'NoVISA':
-            mock = jaVISA_mock()
-            self.SMW.jav_Open   = mock.jav_Open
-            self.SMW.write      = mock.write
-            self.SMW.query      = mock.query
-            self.SMW.jav_Error  = mock.jav_Error
-            self.connected      = 0
-        self.SMW.jav_ClrErr()
-        self.SMW.dLastErr = ""
+        self.SMW = VSG().jav_OpenTest(host)
 
     def tearDown(self):                                 #Run after each test
         self.assertEqual(self.SMW.jav_Error()[0],'0')
@@ -51,7 +37,7 @@ class TestGeneral(unittest.TestCase):
         setVal = 10e6
         self.SMW.Set_ArbClockFreq(setVal)
         getVal = self.SMW.Get_ArbClockFreq()
-        if self.connected: self.assertEqual(setVal,getVal)
+        if self.SMW.connected: self.assertEqual(setVal,getVal)
 
     def test_SMW_Arb_State(self):
         setVal = '/var/user/UCS2010/GSM.wv'
@@ -61,14 +47,14 @@ class TestGeneral(unittest.TestCase):
         getVal = self.SMW.Get_ArbName()
         # nulVal = self.SMW.Get_ArbInfo()
         nulVal = self.SMW.Get_PowerInfo()
-        if self.connected: self.assertTrue(getVal.find(setVal) > -1)
+        if self.SMW.connected: self.assertTrue(getVal.find(setVal) > -1)
 
     def test_SMW_BB_State(self):
         self.SMW.Set_BBState(1)
         self.SMW.Set_BBState(0)
 
     def test_SMW_Connect(self):
-        if self.connected: self.assertEqual(self.SMW.Make,"Rohde&Schwarz")
+        if self.SMW.connected: self.assertEqual(self.SMW.Make,"Rohde&Schwarz")
 
     def test_SMW_CrestFactor(self):
         getVal = self.SMW.Get_CrestFactor()
@@ -91,7 +77,7 @@ class TestGeneral(unittest.TestCase):
         setVal = 2e6
         self.SMW.Set_Freq(setVal)
         getVal = self.SMW.Get_Freq()
-        if self.connected: self.assertEqual(setVal,getVal)
+        if self.SMW.connected: self.assertEqual(setVal,getVal)
 
     def test_SMW_ListMode(self):
         self.SMW.Set_RFState(1)
@@ -123,7 +109,7 @@ class TestGeneral(unittest.TestCase):
         self.SMW.Set_RFPwr(setVal)
         getVal = self.SMW.Get_PowerRMS()
         self.assertEqual(self.SMW.jav_Error()[0],'0')
-        if self.connected: self.assertEqual(setVal,getVal)
+        if self.SMW.connected: self.assertEqual(setVal,getVal)
 
     def test_SMW_SysConfigAll(self):
         getVal = self.SMW.Get_SysC_All()
