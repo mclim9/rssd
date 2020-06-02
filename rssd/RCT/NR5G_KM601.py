@@ -241,9 +241,9 @@ class RCT(RCT):
     def Get_5GNR_FreqRange(self):
         return "HIGH"
 
-    # def Get_5GNR_RefA(self):
-    #     rdStr = '<notRead>'
-    #     return rdStr
+    def Get_5GNR_RefA(self):
+        rdStr = '<notRead>'
+        return rdStr
 
 
     def Get_5GNR_Params(self,amp,swp,sys,trc,header=0):                 #pylint: disable=R0913
@@ -310,7 +310,7 @@ class RCT(RCT):
         return outStr
 
     def Get_5GNR_PhaseCompensate_Freq(self):
-        rdStr = self.query(f'CONF:NRMM:MEAS:MEV:PCOM?').split(',')[1]
+        rdStr = self.queryIntArry(f'CONF:NRMM:MEAS:MEV:PCOM?')[1]
         return rdStr
 
     def Get_5GNR_TransPrecoding(self):
@@ -451,6 +451,9 @@ class RCT(RCT):
             self.write(f'CONF:NRMM:MEAS:MEV:MOEX ON')
         else:
             self.write(f'CONF:NRMM:MEAS:MEV:MOEX OFF')
+
+    def Set_5GNR_FreqRange(self, state):
+        pass
 
     def Set_5GNR_Path(self,path):
         """string P1.RRH.RF1 P1.RRH.RF2 """

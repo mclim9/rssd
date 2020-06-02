@@ -63,7 +63,7 @@ class VSA(jaVisa):
 
     def Get_EVM(self):
         #EVM = self.query('FETC:SUMM:EVM:ALL:AVER?')
-        out = self.queryFloat('FETC:SUMM:EVM?;*WAI').strip()
+        out = self.queryFloat('FETC:SUMM:EVM?;*WAI')
         return out
 
     def Get_Freq(self):
@@ -208,12 +208,12 @@ class VSA(jaVisa):
             outStr = 'Attn,PreAmp,RefLvl'
         return outStr
 
-    def Get_Params_EVM(self):
-        MAttn   = self.Get_AttnMech()
-        RefLvl  = self.Get_RefLevel()
-        Power   = self.Get_ChPwr()
-        EVM     = self.Get_EVM()
-        return f"{MAttn:.2f},{RefLvl:.2f},{Power:6.2f},{EVM:.2f}"
+    # def Get_Params_EVM(self):
+    #     MAttn   = self.Get_AttnMech()
+    #     RefLvl  = self.Get_RefLevel()
+    #     Power   = self.Get_ChPwr()
+    #     EVM     = self.Get_EVM()
+    #     return f"{MAttn:.2f},{RefLvl:.2f},{Power:6.2f},{EVM:.2f}"
 
     def Get_Params_Sweep(self,header=0):
         # SwpTime,SwpPts,SwpType,SwpOpt,
@@ -471,9 +471,9 @@ class VSA(jaVisa):
         """Hz"""
         self.write(':SENS:FREQ:STAR %f'%fFreq)
 
-    def Set_FreqStep(self,fFreq):
-        """Hz"""
-        self.write(':SENS:FREQ:STEP %f'%fFreq)
+    # def Set_FreqStep(self,fFreq):
+    #     """Hz"""
+    #     self.write(':SENS:FREQ:STEP %f'%fFreq)
 
     def Set_FreqStop(self,fFreq):
         """Hz"""
