@@ -52,7 +52,8 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Get_Mkr_BandACLR()
 
     def test_FSW_Set_IQ_Adv(self):
-        self.FSW.Set_IQ_Adv_Mode()
+        self.FSW.Set_IQ_Adv_Mode(0)
+        self.FSW.Set_IQ_Adv_Mode(1)
         self.FSW.Set_IQ_Adv_TransAlgo("AVER")
         self.FSW.Set_IQ_Adv_WindowLenth(101)
         self.FSW.Set_IQ_Adv_FFTLenth(4096+1)

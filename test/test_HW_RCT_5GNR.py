@@ -43,19 +43,6 @@ class TestGeneral(unittest.TestCase):
         getVal = self.CMP.Get_5GNR_FreqRange()
         if self.CMP.connected: self.assertEqual(getVal,'HIGH')
 
-    def test_CMP_5GNR_PhaseComp(self):
-        self.CMP.Set_5GNR_PhaseCompensate('ON')
-        getVal = self.CMP.Get_5GNR_PhaseCompensate()
-        self.CMP.Set_5GNR_PhaseCompensate_Freq(39e9)
-        getVal = self.CMP.Get_5GNR_PhaseCompensate()
-        getVal = self.CMP.Get_5GNR_PhaseCompensate_Freq()
-
-    def test_CMP_5GNR_TransPrecoding(self):
-        self.CMP.Set_5GNR_TransPrecoding('ON')
-        getVal = self.CMP.Get_5GNR_TransPrecoding()
-        self.CMP.Set_5GNR_TransPrecoding('OFF')
-        getVal = self.CMP.Get_5GNR_TransPrecoding()
-
     def test_CMP_5GNR_Get_UL(self):
         self.CMP.Set_5GNR_Direction('UL')
         # nullVal = self.CMP.Get_5GNR_CC_Freq()
@@ -115,6 +102,19 @@ class TestGeneral(unittest.TestCase):
     #     #self.CMP.Set_5GNR_BWP_Ch_ResBlockOffset(NR_RBO)
     #     self.CMP.Set_5GNR_BWP_Ch_Modulation('QPSK')
     #     # self.CMP.Set_5GNR_SSB()
+
+    def test_CMP_5GNR_PhaseComp(self):
+        self.CMP.Set_5GNR_PhaseCompensate('ON')
+        getVal = self.CMP.Get_5GNR_PhaseCompensate()
+        self.CMP.Set_5GNR_PhaseCompensate_Freq(39e9)
+        getVal = self.CMP.Get_5GNR_PhaseCompensate()
+        getVal = self.CMP.Get_5GNR_PhaseCompensate_Freq()
+
+    def test_CMP_5GNR_TransPrecoding(self):
+        self.CMP.Set_5GNR_TransPrecoding('ON')
+        getVal = self.CMP.Get_5GNR_TransPrecoding()
+        self.CMP.Set_5GNR_TransPrecoding('OFF')
+        getVal = self.CMP.Get_5GNR_TransPrecoding()
 
 ###############################################################################
 ### </Test>
