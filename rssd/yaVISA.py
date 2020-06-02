@@ -230,7 +230,7 @@ class jaVisa(object):
             strArry = self.query(cmd).split(',')
             return [float(i) for i in strArry]
         except:
-            return [-9999.9999]
+            return [-9999.9999, -888.888, -777.777]
 
     def queryInt(self,cmd):
         try:
@@ -245,7 +245,7 @@ class jaVisa(object):
             strArry = self.query(cmd).split(',')
             return [int(i) for i in strArry]
         except:
-            return [-9999]
+            return [-9999,-8888,-7777]
 
     def write(self,cmd):
         try:
