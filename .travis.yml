@@ -32,22 +32,11 @@ script:
   - coverage run -m unittest -v test.test_RSSD
   - coverage run -a -m unittest -v test.test_FileIO
   - coverage run -a -m unittest -v test.test_yaVISA
-  # - coverage run -a -m unittest -v test.test_HW_VSA_5GNR
-  # - coverage run -a -m unittest -v test.test_HW_VSA_ADemod
-  # - coverage run -a -m unittest -v test.test_HW_VSA_Common
-  # - coverage run -a -m unittest -v test.test_HW_VSA_Common_CCDF
-  # - coverage run -a -m unittest -v test.test_HW_VSA_Common_Harm
-  # - coverage run -a -m unittest -v test.test_HW_VSA_Common_IQ
-  # - coverage run -a -m unittest -v test.test_HW_VSA_LTE
-  # - coverage run -a -m unittest -v test.test_HW_VSG_5GNR
-  # - coverage run -a -m unittest -v test.test_HW_VSG_Common
-  # - coverage run -a -m unittest -v test.test_HW_VSG_CustomDigMod
-  # - coverage run -a -m unittest -v test.test_HW_VSG_Fading
-  # - coverage run -a -m unittest -v test.test_HW_VSG_LTE
-  # - coverage run -a -m unittest -v test.test_HW_VSG_WLAN
+  - coverage run -a -m unittest discover -b -v -p test_HW_VNA_*
   - coverage run -a -m unittest discover -b -v -p test_HW_VSA_*
   - coverage run -a -m unittest discover -b -v -p test_HW_VSG_*
   - coverage run -a -m unittest discover -b -v -p test_HW_VST_*
+
 after_success:
   - coveralls
 
