@@ -55,12 +55,12 @@ jobs:
         coverage run -m unittest -v test.test_RSSD
         coverage run -a -m unittest -v test.test_FileIO
         coverage run -a -m unittest -v test.test_yaVISA
-        coverage run -a -m unittest discover -b -v -p "test.test_HW_NRQ_*"
-        coverage run -a -m unittest discover -b -v -p "test.test_HW_NRP_*.py"
-        coverage run -a -m unittest discover -b -v -p test.test_HW_VNA_*.py
-        coverage run -a -m unittest discover -b -v -p test.test_HW_VSA_*.py
-        coverage run -a -m unittest discover -b -v -p test.test_HW_VSG_*.py
-        coverage run -a -m unittest discover -b -v -p test.test_HW_VST_*.py
+        coverage run -a -m unittest discover -b -v -p test_HW_NRQ*
+        coverage run -a -m unittest discover -b -v -p test_HW_NRP*
+        coverage run -a -m unittest discover -b -v -p test_HW_VNA*
+        coverage run -a -m unittest discover -b -v -p test_HW_VSA*
+        coverage run -a -m unittest discover -b -v -p test_HW_VSG*
+        coverage run -a -m unittest discover -b -v -p test_HW_VST*.py
 
     # - name: Coveralls
     #   uses: coverallsapp/github-action@master
