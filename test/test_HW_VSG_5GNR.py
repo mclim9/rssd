@@ -32,7 +32,6 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
     def test_SMW_5GNR_BWP_Sub(self):
         self.SMW.Get_5GNR_BWP_SubSpaceTotal()
-        self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_5GNR_Direction(self):
         self.SMW.Set_5GNR_Direction('UL')
@@ -89,15 +88,12 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.SMW.Get_5GNR_BWP_Ch_PTRS_K()
         nullVal = self.SMW.Get_5GNR_BWP_Ch_PTRS_Pow()
         nullVal = self.SMW.Get_5GNR_BWP_Ch_PTRS_RE_Offset()
-        self.assertEqual(self.SMW.jav_Error()[0],'0')
 
-    # def test_SMW_5GNR_Get_RBMax(self):
-    #     nullVal = self.SMW.Get_5GNR_RBMax()
-    #     self.assertEqual(self.SMW.jav_Error()[0],'0')
+    def test_SMW_5GNR_Get_RBMax(self):
+        nullVal = self.SMW.Get_5GNR_RBMax()
 
     def test_SMW_5GNR_Get_TMCat(self):
         nullVal = self.SMW.Get_5GNR_TM_Cat()
-        self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_5GNR_Get_UL(self):
         self.SMW.Set_5GNR_Direction('UL')
@@ -158,7 +154,7 @@ class TestGeneral(unittest.TestCase):
         self.SMW.Set_5GNR_BWP_ResBlockOffset(0)
         self.SMW.Set_5GNR_BWP_Ch_ResBlock(66)
         self.SMW.Set_5GNR_BWP_Corset_ResBlock(66)
-        #self.SMW.Set_5GNR_BWP_Ch_ResBlockOffset(NR_RBO)
+        self.SMW.Set_5GNR_BWP_Ch_ResBlockOffset(0)
         self.SMW.Set_5GNR_BWP_Ch_Modulation('QPSK')
         self.SMW.Set_5GNR_SSB()
         # self.SMW.Set_5GNR_BBState('ON')
@@ -174,12 +170,10 @@ class TestGeneral(unittest.TestCase):
         self.SMW.Set_5GNR_FreqRange('HIGH')
         self.SMW.Set_5GNR_BWP_SubSpace(60)
         self.SMW.Set_5GNR_BWP_SubSpace(120)
-        self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_5GNR_Set_FRC_State(self):
         self.SMW.Set_5GNR_FRC_State('ON')
         self.SMW.Set_5GNR_FRC_State('OFF')
-        self.assertEqual(self.SMW.jav_Error()[0],'0')
 
     def test_SMW_5GNR_Set_UL(self):
         self.SMW.Set_5GNR_BBState('OFF')                     # Baseband OFF
@@ -198,7 +192,6 @@ class TestGeneral(unittest.TestCase):
         self.SMW.Set_5GNR_BWP_Ch_Modulation('QPSK')
         self.SMW.Set_5GNR_SSB()
         # self.SMW.Set_5GNR_BBState('ON')
-        self.assertEqual(self.SMW.jav_Error()[0],'0')
 
 ###############################################################################
 ### </Test>

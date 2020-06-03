@@ -29,6 +29,9 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
+    def test_FSW_LTE_AutoRef(self):
+        self.FSW.Set_LTE_AutoRef()
+
     def test_FSW_LTE_Get_DL(self):
         self.FSW.Set_LTE_Direction('DL')
         nullVal = self.FSW.Get_LTE_Direction()
@@ -48,7 +51,9 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_LTE_Modulation()         # Need to test DL
 
     def test_FSW_LTE_CC(self):
-        self.FSW.Get_LTE_CC()
+        self.FSW.Set_LTE_CC(2)
+        getVal = self.FSW.Get_LTE_CC()
+        if self.FSW.connected: self.assertEqual(getVal,'2')
 
     def test_FSW_LTE_Direction(self):
         self.FSW.Set_LTE_Direction('UL')
@@ -60,16 +65,19 @@ class TestGeneral(unittest.TestCase):
 
     def test_FSW_LTE_Set_UL(self):
         self.FSW.Set_Freq(2e9)
+        self.FSW.Set_LTE_EVMUnit('DB')
+        self.FSW.Set_LTE_Duplex('TDD')
+        self.FSW.Set_LTE_SubFrameCount(2)
         self.FSW.Set_LTE_Direction('UL')
         self.FSW.Set_LTE_ChBW(20)
         self.FSW.Set_LTE_ResBlock(66)
         self.FSW.Set_LTE_ResBlockOffset(0)
         self.FSW.Set_LTE_Modulation('QPSK')
-        # self.FSW.delay(0.5)
 
 ###############################################################################
 ### </Test>
 ###############################################################################
 if __name__ == '__main__':
+#coverage run -a -m unittest -b -v test_HW_VSA_LTE
     suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
     unittest.TextTestRunner(verbosity=2).run(suite)

@@ -87,6 +87,13 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_Pow()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_RE_Offset()
 
+    def test_FSW_5GNR_Get_PTRS(self):
+        nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_State()
+        nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_L()
+        nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_K()
+        nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_Pow()
+        nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_RE_Offset()
+
     def test_FSW_5GNR_Get_UL(self):
         self.FSW.Set_5GNR_Direction('UL')
         nullVal = self.FSW.Get_5GNR_CC_Freq()
