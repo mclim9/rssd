@@ -75,8 +75,13 @@ class VST(object):
                     print("%s\t%s\t%s"%(data[0][i],'<notRead>',data[2][i]))
 
     def jav_Open(self,SMW_IP,FSW_IP,OFile=''):
-        self.SMW = VSG().jav_Open(SMW_IP,OFile,prnt=0)  #Create SMW Object
-        self.FSW = VSA().jav_Open(FSW_IP,OFile,prnt=0)  #Create FSW Object
+        self.SMW = VSG().jav_Open(SMW_IP,OFile)  #Create SMW Object
+        self.FSW = VSA().jav_Open(FSW_IP,OFile)  #Create FSW Object
+        return self
+
+    def jav_OpenTest(self,SMW_IP,FSW_IP):
+        self.SMW = VSG().jav_OpenTest(SMW_IP)  #Create SMW Object
+        self.FSW = VSA().jav_OpenTest(FSW_IP)  #Create FSW Object
         return self
 
     def jav_Close(self):
