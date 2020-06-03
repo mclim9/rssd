@@ -52,14 +52,15 @@ jobs:
     - name: Test with pytest
       run: |
         # pytest
-        cd test
-        coverage run -m unittest -v test_RSSD
-        coverage run -a -m unittest -v test_FileIO
-        coverage run -a -m unittest -v test_yaVISA
-        coverage run -a -m unittest discover -b -v -p test_HW_VNA_*.py
-        coverage run -a -m unittest discover -b -v -p test_HW_VSA_*.py
-        coverage run -a -m unittest discover -b -v -p test_HW_VSG_*.py
-        coverage run -a -m unittest discover -b -v -p test_HW_VST_*.py
+        coverage run -m unittest -v test.test_RSSD
+        coverage run -a -m unittest -v test.test_FileIO
+        coverage run -a -m unittest -v test.test_yaVISA
+        coverage run -a -m unittest discover -b -v -p test.test_HW_NRQ_*.py
+        coverage run -a -m unittest discover -b -v -p test.test_HW_NRP_*.py
+        coverage run -a -m unittest discover -b -v -p test.test_HW_VNA_*.py
+        coverage run -a -m unittest discover -b -v -p test.test_HW_VSA_*.py
+        coverage run -a -m unittest discover -b -v -p test.test_HW_VSG_*.py
+        coverage run -a -m unittest discover -b -v -p test.test_HW_VST_*.py
 
     # - name: Coveralls
     #   uses: coverallsapp/github-action@master
