@@ -38,9 +38,13 @@ class TestGeneral(unittest.TestCase):
     def test_VST_Get_WLAN_All_print(self):
         self.VST.Get_WLAN_All_print()
 
+    def test_VST_Set_WLAN_All(self):
+        self.VST.Set_WLAN_All()
+
 ###############################################################################
 ### </Test>
 ###############################################################################
 if __name__ == '__main__':
+#coverage run -a -m unittest -b -v test_HW_VST_WLAN
     suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
     unittest.TextTestRunner(verbosity=2).run(suite)

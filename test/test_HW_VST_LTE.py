@@ -38,6 +38,9 @@ class TestGeneral(unittest.TestCase):
     def test_VST_Get_LTE_All_print(self):
         self.VST.Get_LTE_All_print()
 
+    def test_VST_Set_LTE_All(self):
+        self.VST.Set_LTE_All()
+
 ###############################################################################
 ### </Test>
 ###############################################################################

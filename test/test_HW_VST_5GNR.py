@@ -38,6 +38,9 @@ class TestGeneral(unittest.TestCase):
     def test_VST_Get_5GNR_All_print(self):
         self.VST.Get_5GNR_All_print()
 
+    def test_VST_Set_5GNR_All(self):
+        self.VST.Set_5GNR_All()
+
 ###############################################################################
 ### </Test>
 ###############################################################################
