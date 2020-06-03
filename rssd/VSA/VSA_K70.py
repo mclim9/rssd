@@ -17,47 +17,52 @@ class VSA(VSA):                                 #pylint: disable=E0102
     ### VSA Get Functions
     ###########################################################################
     def Get_VSA_EVM(self):
-        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:EVM?')
+        rdStr = self.queryFloat(':CALC2:MARK:FUNC:DDEM:STAT:EVM?')
+        return rdStr
+
+    def Get_VSA_EqualizerState(self):
+        """ ON; OFF"""
+        rdStr = self.query(f':SENS:DDEM:EQU:STAT?')
         return rdStr
 
     def Get_VSA_CarrierFreqError(self):
-        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:CFER?')
+        rdStr = self.queryFloat(':CALC2:MARK:FUNC:DDEM:STAT:CFER?')
         return rdStr
 
     def Get_VSA_IQImbalance(self):
-        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:IQIM?')
+        rdStr = self.queryFloat(':CALC2:MARK:FUNC:DDEM:STAT:IQIM?')
         return rdStr
 
     def Get_VSA_GainImbalance(self):
-        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:GIMB?')
+        rdStr = self.queryFloat(':CALC2:MARK:FUNC:DDEM:STAT:GIMB?')
         return rdStr
 
     def Get_VSA_IQOffset(self):
-        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:OOFF?')
+        rdStr = self.queryFloat(':CALC2:MARK:FUNC:DDEM:STAT:OOFF?')
         return rdStr
 
     def Get_VSA_IQSkew(self):
-        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:IQSK?')
+        rdStr = self.queryFloat(':CALC2:MARK:FUNC:DDEM:STAT:IQSK?')
         return rdStr
 
     def Get_VSA_MagnitudeError(self):
-        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:MERR?')
+        rdStr = self.queryFloat(':CALC2:MARK:FUNC:DDEM:STAT:MERR?')
         return rdStr
 
     def Get_VSA_Meas_Params(self):
-        EVM     = float(self.Get_VSA_EVM())
-        PhaseEr = float(self.Get_VSA_PhaseError())
-        MagEr   = float(self.Get_VSA_MagnitudeError())
-        FreqEr  = float(self.Get_VSA_CarrierFreqError())
-        IQOff   = float(self.Get_VSA_IQOffset())
+        EVM     = self.Get_VSA_EVM()
+        PhaseEr = self.Get_VSA_PhaseError()
+        MagEr   = self.Get_VSA_MagnitudeError()
+        FreqEr  = self.Get_VSA_CarrierFreqError()
+        IQOff   = self.Get_VSA_IQOffset()
         return f'{EVM:.4f},{PhaseEr:.4f},{MagEr:.4f},{FreqEr:.4f},{IQOff:.4f}'
 
     def Get_VSA_MER(self):
-        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:SNR?')
+        rdStr = self.queryFloat(':CALC2:MARK:FUNC:DDEM:STAT:SNR?')
         return rdStr
 
     def Get_VSA_PhaseError(self):
-        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:PERR?')
+        rdStr = self.queryFloat(':CALC2:MARK:FUNC:DDEM:STAT:PERR?')
         return rdStr
 
     def Get_VSA_ResultSumamry(self):
@@ -65,7 +70,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
         return rdStr
 
     def Get_VSA_Rho(self):
-        rdStr = self.query(':CALC2:MARK:FUNC:DDEM:STAT:RHO?')
+        rdStr = self.queryFloat(':CALC2:MARK:FUNC:DDEM:STAT:RHO?')
         return rdStr
 
     def Get_VSA_symbol_rate(self):
@@ -103,10 +108,10 @@ class VSA(VSA):                                 #pylint: disable=E0102
 
     def Set_VSA_EqualizerState(self,sState):
         """ ON; OFF"""
-        if (sState == 'ON') or (sState == 1):
+        if sState in ('ON', 1):
             self.write(f':SENS:DDEM:EQU:STAT ON')
-        else:
-            self.write(f':SENS:DDEM:EQU:STAT ON')
+        elif sState in ('OFF',0):
+            self.write(f':SENS:DDEM:EQU:STAT OFF')
 
     def Set_VSA_Filter_Alpha(self,alpha):
         """ Alpha Value """
