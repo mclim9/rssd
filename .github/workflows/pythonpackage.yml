@@ -60,4 +60,8 @@ jobs:
         coverage run -a -m unittest discover -b -v -p test.test_HW_VSA_*
         coverage run -a -m unittest discover -b -v -p test.test_HW_VSG_*
         coverage run -a -m unittest discover -b -v -p test.test_HW_VST_*
-        
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
