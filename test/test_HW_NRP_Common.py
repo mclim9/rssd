@@ -1,8 +1,5 @@
 ###############################################################################
-### Rohde & Schwarz Driver Test
-### Purpose: rssd.nrq_common.py driver test
-### Author:  mclim
-### Date:    2018.08.23
+### Purpose: rssd.self.NRP.common.py driver test
 ###              _   ___        __  _____         _   
 ###             | | | \ \      / / |_   _|__  ___| |_ 
 ###             | |_| |\ \ /\ / /    | |/ _ \/ __| __|
@@ -13,53 +10,60 @@
 ### User Entry
 ###############################################################################
 host = '192.168.1.40'              #Get local machine name
-#host = 'NRQ6-101507.local'                #Get local machine name
+#host = 'NRP8-101507.local'                #Get local machine name
 
 ###############################################################################
 ### Code Start
 ###############################################################################
 import unittest
-from rssd.NRQ.Common import NRQ
+from rssd.NRP.Common import PMr
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                      #run before each test
-        self.NRQ6 = NRQ().jav_OpenTest(host)
+        self.NRP8 = PMr().jav_OpenTest(host)
 
     def tearDown(self):                         #Run after each test
-        self.assertEqual(self.NRQ6.jav_Error()[0],'0')
-        self.NRQ6.jav_Close()
+        self.assertEqual(self.NRP8.jav_Error()[0],'0')
+        self.NRP8.jav_Close()
 
 ###############################################################################
 ### <Test>
 ###############################################################################
-    def test_NRQ_Connect(self):
-        if self.NRQ6.connected: self.assertEqual(self.NRQ6.Make,"ROHDE&SCHWARZ")
+    def test_NRP_List(self):
+        self.NRP8.Get_AvailableNRP()
 
-    def test_NRQ_Freq(self):
+    def test_NRP_Freq(self):
         SetVal = 1e9
-        self.NRQ6.Set_Freq(SetVal)
-        GetVal = self.NRQ6.Get_Freq()
-        if self.NRQ6.connected: self.assertEqual(SetVal,int(GetVal))
+        self.NRP8.Set_Freq(SetVal)
+        GetVal = self.NRP8.Get_Freq()
+        if self.NRP8.connected: self.assertEqual(SetVal,int(GetVal))
 
-    def test_NRQ_IQ_RecLength(self):
-        SetVal = 2468
-        self.NRQ6.Set_IQ_RecLength(SetVal)
-        GetVal = self.NRQ6.Get_IQ_RecLength()
-        if self.NRQ6.connected: self.assertEqual(SetVal,int(GetVal))
+    def test_NRP_Power(self):
+        self.NRP8.Set_Freq(6e9)                              # Set Frequency
+        self.NRP8.Set_AverageMode(1)                         # Auto Averaging OFF
+        self.NRP8.Set_Average(10)                            # Avg Count = 4
+        self.NRP8.Set_PowerOffset(5)
+        self.NRP8.Set_PowerOffsetState(1)
+        self.NRP8.Set_InitImm()
+        GetVal = self.NRP8.Get_Average()
+        GetVal = self.NRP8.Get_Power()
 
-    def test_NRQ_IQ_SamplingRate(self):
-        SetVal = 12345678
-        self.NRQ6.Set_IQ_SamplingRate(SetVal)
-        GetVal = self.NRQ6.Get_IQ_SamplingRate()
-        if self.NRQ6.connected: self.assertTrue(SetVal<int(GetVal))
+    def test_NRPM_Power(self):
+        self.NRP8.Set_Freq(6e9)                              # Set Frequency
+        self.NRP8.Set_AverageMode(1)                         # Auto Averaging OFF
+        self.NRP8.Set_Average(10)                            # Avg Count = 4
+        self.NRP8.Set_PowerOffset(5)
+        self.NRP8.Set_PowerOffsetState(1)
+        self.NRP8.Set_InitImm()
+        self.NRP8.Set_NRPM_LED(1)
+        self.NRP8.Set_NRPM_LED(0)
+        GetVal = self.NRP8.Get_NRPM_PowerAll()
 
-    def test_NRQ_Power(self):
-        GetVal = self.NRQ6.Get_Power()
 
 ###############################################################################
 ### </Test>
 ###############################################################################
 if __name__ == '__main__':
-#coverage run -a -m unittest -b -v test_HW_NRQ_Common
+#coverage run -a -m unittest -b -v test_HW_NRP_Common
     suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
     unittest.TextTestRunner(verbosity=4).run(suite)

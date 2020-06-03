@@ -1,11 +1,6 @@
 # -*- coding: future_fstrings -*-
 #####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-###
 ### Purpose : NRP Power Sensor
-### Author  : Martin C Lim
-### Date    : 2018.05.18
-### Requird : python -m pip install pyvisa
 ###
 ### VISAFmt : USB0::0x0AAD::0x0138::100961::INSTR
 ###           <VS>::<Manu>::<Modl>::<SerN>::INSTR
@@ -29,7 +24,7 @@ class PMr(jaVisa):
         self.Model = "NRP"
 
     #####################################################################
-    ### NRP Common
+    ### NRP Get Methods
     #####################################################################
     def Get_AvailableNRP(self):
         resList = self.jav_reslist()
@@ -40,21 +35,19 @@ class PMr(jaVisa):
         outp = self.queryInt('SENS:AVER:COUN?')
         return outp
 
-    def Set_Average(self,iAvg):
-        self.write('SENS:AVER:COUN %d'%iAvg)
-
-    def Set_AverageMode(self,bAuto):
-        if bAuto == 0:
-            self.write('SENS:AVER:COUN:AUTO OFF')
-        else:
-            self.write('SENS:AVER:COUN:AUTO ON')
-
     def Get_Freq(self):
         outp = self.query(':SENS:FREQ?')
         return outp
 
-    def Set_Freq(self,fFreq):
-        self.query('SENS:FREQ %f;*OPC?'%fFreq)
+    def Get_BufferedMeas(self,bState):
+        if (bState == 1) or (bState == 'ON'):
+            self.write('SENS:BUFF:STAT ON')                #Configure a buffered measurement
+        else:
+            self.write('SENS:BUFF:STAT ON')                #Configure a buffered measurement
+
+    def Get_EventStatus(self):
+        outp = self.query('STAT:OPER:MEAS:EVEN?')
+        return outp
 
     def Get_Offset(self):
         ### Offset = Loss
@@ -70,7 +63,7 @@ class PMr(jaVisa):
         outp = self.queryFloat('FETCH?')
         return outp
 
-    def Get_PowerAll(self):
+    def Get_NRPM_PowerAll(self):
         ### NRP3M
         self.write('UNIT:POW DBM')
         # self.write('SENS:FUNC "POW:AVG"')
@@ -81,65 +74,64 @@ class PMr(jaVisa):
         outp = self.queryFloat('FETCH:ALL?')
         return outp
 
-    def Set_PowerOffset(self,fOffset):
-        self.write('SENS:CORR:OFFS:STAT ON')
-        self.write('SENS:CORR:OFFS %f'%fOffset)
+#####################################################################
+### NRP Set Methods
+#####################################################################
+    def Set_Average(self,iAvg):
+        self.write('SENS:AVER:COUN %d'%iAvg)
 
-    def Set_PowerOffsetState(self,bState):
-        if (bState == 1) or (bState == 'ON'):
-            self.write('SENS:CORR:OFFS:STAT ON')
+    def Set_AverageMode(self,bAuto):
+        if bAuto == 0:
+            self.write('SENS:AVER:COUN:AUTO OFF')
         else:
-            self.write('SENS:CORR:OFFS:STAT OFF')
+            self.write('SENS:AVER:COUN:AUTO ON')
+
+    def Set_BufferSize(self,iSize):
+        self.write('SENS:BUFF:SIZE %d'%iSize)                #Buffer size is randomly selected to 17
+
+    def Set_Freq(self,fFreq):
+        self.query('SENS:FREQ %f;*OPC?'%fFreq)
 
     def Set_InitImm(self):
         outp = self.query('INIT:IMM;*OPC?')
         return outp
 
-#####################################################################
-### NRP Trigger
-#####################################################################
+    #####################################################################
+    ### NRPM
+    ###    - NRP-ZKU    USB cable (3.0m) to R&S®NRPxxS(N)
+    ###    - NRPM3      OTA power sensor
+    ###    - NRPM-ZKD3 Interface cable; R&S®NRPM3 to R&S®NRPM-ZD3
+    ###    - NRPM-ZD3  Cable feedthrough for anechoic chamber
+    ###    - NRPM-Axx  OTA Antenna module: A66(27-75)
+    #####################################################################
+    def Set_NRPM_LED(self,sState,iSensor=1):
+        if sState in (1,'ON'):
+            self.write('SYST:LED:CHAN%d:COL 255'%iSensor)
+        elif sState in (0,'OFF'):
+            self.write('SYST:LED:CHAN%d:COL 0'%iSensor)
+
+    def Set_PowerOffset(self,fOffset):
+        self.write('SENS:CORR:OFFS:STAT ON')
+        self.write('SENS:CORR:OFFS %f'%fOffset)
+
+    def Set_PowerOffsetState(self,sState):
+        if sState in (1,'ON'):
+            self.write('SENS:CORR:OFFS:STAT ON')
+        elif sState in (0,'OFF'):
+            self.write('SENS:CORR:OFFS:STAT OFF')
+
     def Set_TriggerSource(self,sSource):
-        # BUS; EXT2
+        """BUS; EXT2"""
         self.write('TRIG:SOUR %s'%sSource)
 
-    def Set_TriggerAuto(self,bState):
-        if (bState == 1) or (bState == 'ON'):
-            self.write('TRIG:ATR:STAT ON')        #Auto-Trigger ON
-        else:
-            self.write('TRIG:ATR:STAT OFF')      #Auto-Trigger OFF
+    def Set_TriggerAuto(self,sState):
+        if sState in (1,'ON'):
+            self.write('TRIG:ATR:STAT ON')          #Auto-Trigger ON
+        elif sState in (0,'OFF'):
+            self.write('TRIG:ATR:STAT OFF')         #Auto-Trigger OFF
 
     def Set_TriggerCount(self,iNum):
         self.write('TRIG:COUN %d'%iNum)
-
-#####################################################################
-### NRP Advanced
-#####################################################################
-    def Get_EventStatus(self):
-        outp = self.query('STAT:OPER:MEAS:EVEN?')
-        return outp
-
-    def Set_BufferSize(self,iSize):
-        self.write('SENS:BUFF:SIZE %d'%iSize)                #Buffer size is randomly selected to 17
-
-    def Get_BufferedMeas(self,bState):
-        if (bState == 1) or (bState == 'ON'):
-            self.write('SENS:BUFF:STAT ON')                #Configure a buffered measurement
-        else:
-            self.write('SENS:BUFF:STAT ON')                #Configure a buffered measurement
-
-#####################################################################
-### NRPM
-###    - NRP-ZKU    USB cable (3.0m) to R&S®NRPxxS(N)
-###    - NRPM3      OTA power sensor
-###    - NRPM-ZKD3 Interface cable; R&S®NRPM3 to R&S®NRPM-ZD3
-###    - NRPM-ZD3  Cable feedthrough for anechoic chamber
-###    - NRPM-Axx  OTA Antenna module: A66(27-75)
-#####################################################################
-    def Set_Sys_LED(self,bState,iSensor=1):
-        if bState == 1:
-            self.write('SYST:LED:CHAN%d:COL 255'%iSensor)
-        else:
-            self.write('SYST:LED:CHAN%d:COL 0'%iSensor)
 
 #####################################################################
 ### Run if Main
