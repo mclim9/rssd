@@ -1,5 +1,13 @@
 Release History
 =====================================================================
+- RSSD 2020.06.1
+  - Test
+    - Integrated GitHub Action Lint & Test
+    - Integrated Coveralls into github Actions
+  - VNA
+    - Refactor from test.
+    - Chg " to '
+- 
 - RSSD 2020.06.0
   - 5GNR methods streamlined between VSG; VSA; RCT
   - VSA
