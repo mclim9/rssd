@@ -230,15 +230,14 @@ class VSG(VSG):                             #pylint: disable=E0102
 
     def Get_5GNR_RBMax(self):
         odata = []
-        rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S15K:NRB?')
-        odata.append([15,int(rdStr)])
-
-        rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S30K:NRB?')
-        odata.append([30,int(rdStr)])
-        rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S60K:NRB?')
-        odata.append([60,int(rdStr)])
-        rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S120K:NRB?')
-        odata.append([120,int(rdStr)])
+        rdStr = self.queryInt(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S15K:NRB?')
+        odata.append([15,rdStr])
+        rdStr = self.queryInt(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S30K:NRB?')
+        odata.append([30,rdStr])
+        rdStr = self.queryInt(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S60K:NRB?')
+        odata.append([60,rdStr])
+        rdStr = self.queryInt(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:S120K:NRB?')
+        odata.append([120,rdStr])
         return odata
 
     def Get_5GNR_PhaseCompensate(self):
@@ -271,14 +270,12 @@ class VSG(VSG):                             #pylint: disable=E0102
         self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:MOD {sMod}')
 
     def Set_5GNR_BWP_Ch_ResBlock(self,iRB):
-        ### 5GNR-->Scheduling-->PUSCH-->No. RBs
+        """5GNR-->Scheduling-->PUSCH-->No. RBs"""
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        #self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBN %d'%iRB)
         self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBN {iRB}')
 
     def Set_5GNR_BWP_Ch_ResBlockOffset(self,iRBO):
-        ### 5GNR-->Scheduling-->PUSCH-->No. RBs
-        #self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBOF %d'%%(self.alloc,iRBO))
+        """5GNR-->Scheduling-->PUSCH-->RB Offset"""
         self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:RBOF {iRBO}')
 
     def Set_5GNR_BWP_Corset_ResBlock(self, iRB):
