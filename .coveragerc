@@ -5,7 +5,7 @@ cover_pylib = False
 [paths]
 source =
     src/
-    https://github.com/mclim9/rssd
+    rssd/
 
 [report]
 # Regexes for lines to exclude from consideration
