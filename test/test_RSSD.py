@@ -116,11 +116,6 @@ class TestGeneral(unittest.TestCase):
         self.FSW = VSA()
         self.assertEqual(self.FSW.Model,"FSW")
 
-    def test_VSE_ADemod(self):
-        from rssd.VSE.ADemod import VSE             #pylint:disable=E0611,E0401
-        self.VSE = VSE()        
-        self.assertEqual(self.VSE.Model,"VSE")
-
     def test_VSE_Common(self):
         from rssd.VSE.Common import VSE             #pylint:disable=E0611,E0401
         self.VSE = VSE()        
