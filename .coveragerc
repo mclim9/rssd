@@ -1,6 +1,6 @@
 [run]
-relative_files = True
-cover_pylib = False
+relative_files = 1
+cover_pylib = 0
 
 [paths]
 source =
@@ -8,6 +8,11 @@ source =
     rssd/
 
 [report]
+omit = 
+    */python?.?/*
+    */site-packages/*
+    */pypy/*
+
 # Regexes for lines to exclude from consideration
 exclude_lines =
     pragma: no cover
