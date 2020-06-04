@@ -90,8 +90,7 @@ class TestGeneral(unittest.TestCase):
         getVal = self.SMW.Get_WLAN_Standard()
         if self.SMW.connected: self.assertEqual(setVal,getVal)
 
-    def test_SMW_WLAN_Set_Bad(self):
-        """Test exception"""
+    def test_SMW_WLAN_Set_Bad(self):            #Test exception
         setVal = 'BAD'
         self.SMW.Set_WLAN_BBState('OFF')
         self.SMW.Set_WLAN_Standard(setVal)
