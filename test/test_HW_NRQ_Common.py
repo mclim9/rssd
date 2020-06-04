@@ -35,6 +35,13 @@ class TestGeneral(unittest.TestCase):
     def test_NRQ_Connect(self):
         if self.NRQ6.connected: self.assertEqual(self.NRQ6.Make,"ROHDE&SCHWARZ")
 
+    def test_NRQ_Example(self):
+        self.NRQ6.Set_Freq(1e9)
+        self.NRQ6.Set_Attn(10)
+        self.NRQ6.Set_Attn(0)
+        # self.NRQ6.Get_IQtoIQW()             #Output to file
+        self.NRQ6.Get_IQ_Data()             #Output to varable.
+
     def test_NRQ_Freq(self):
         SetVal = 1e9
         self.NRQ6.Set_Freq(SetVal)
