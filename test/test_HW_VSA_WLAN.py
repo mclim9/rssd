@@ -42,6 +42,10 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_WLAN_Modulation()
         self.assertEqual(self.FSW.jav_Error()[0],'0')
 
+    def test_FSW_WLAN_EVM(self):
+        self.FSW.Init_WLAN_EVM()
+        self.FSW.Get_Params_WLAN_EVM()
+
     def test_FSW_WLAN_SEM(self):
         self.FSW.Init_WLAN_SEM()
         self.FSW.Get_WLAN_SEM()

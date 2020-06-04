@@ -36,11 +36,12 @@ class VSA(VSA):                        #pylint: disable=E0102
     def Get_Params_WLAN_EVM(self,header=0):
         """Retrieve Parameters for test logs"""
         if header != 1:
+            Burst = self.Get_WLAN_BurstCount()
             Power = self.Get_WLAN_PPDUPwr()
             EVM   = self.Get_WLAN_EVM()
-            outStr = f"{Power:6.3f},{EVM:.2f}"
+            outStr = f"{Burst},{Power:6.3f},{EVM:.2f}"
         else:
-            outStr = 'PPDUPwr,EVM'
+            outStr = 'BurstCnt,PPDUPwr,EVM'
         return outStr
 
     def Get_WLAN_BurstCount(self):
