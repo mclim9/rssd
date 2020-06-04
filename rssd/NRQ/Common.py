@@ -77,7 +77,8 @@ class NRQ(jaVisa):
         self.write('SENS:TRAC:IQ:DATA:FORM IQPAIR')
         self.write('FORM:DATA REAL,32')
         self.write('INIT:IMM')
-        self.write('FETCH?')
+        rdStr = self.query('FETCH?')
+        return rdStr
 
     def Get_IQtoIQW(self):
         ####################################################################
