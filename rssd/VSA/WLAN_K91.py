@@ -93,7 +93,13 @@ class VSA(VSA):                        #pylint: disable=E0102
     def Get_WLAN_Standard(self):
         #0:A 1:B 2/3:J 4:G 6:N 7:N-MIMO 8:AC 9:P 10:AX
         rdStr = self.queryInt(f':CONF:STAN?')
-        if rdStr == 6:
+        if rdStr == 0:
+            rdStr = 'A'
+        elif rdStr == 1:
+            rdStr = 'B'
+        elif rdStr == 4:
+            rdStr = 'G'
+        elif rdStr == 6:
             rdStr = 'N'
         elif rdStr == 8:
             rdStr = 'AC'
@@ -146,7 +152,7 @@ class VSA(VSA):                        #pylint: disable=E0102
         self.write(f'CONF:WLAN:DUTC TX{iAnt}')
 
     def Set_WLAN_Modulation(self,iMod):
-        self.write(f':CONF:LTE:{self.ldir}:SUBF0:ALL:MOD {iMod}')
+        self.write(f':CONF:LTE:UL:SUBF0:ALL:MOD {iMod}')
 
     def Set_WLAN_MCS(self,iMCS):
         # iMCS of 0 sets VSA to auto detect
@@ -160,7 +166,13 @@ class VSA(VSA):                        #pylint: disable=E0102
         """AC N AX"""
         #0:A 1:B 2/3:J 4:G 6:N 7:N-MIMO 8:AC 9:P 10:AX
         sStd.upper()
-        if sStd == 'N':
+        if sStd == 'A':
+            self.write(f':CONF:STAN 0')
+        elif sStd == 'B':
+            self.write(f':CONF:STAN 1')
+        elif sStd == 'G':
+            self.write(f':CONF:STAN 4')
+        elif sStd == 'N':
             self.write(f':CONF:STAN 6')
         elif sStd == 'AC':
             self.write(f':CONF:STAN 8')
