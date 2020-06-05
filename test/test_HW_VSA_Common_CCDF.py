@@ -35,6 +35,7 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_SweepCont(0)
         self.FSW.Set_CCDF_BW(10e6)
         self.FSW.Set_CCDF_Samples(1e6)
+        self.FSW.Set_InitImm()
         getVal = self.FSW.Get_CCDF()
 
 ###############################################################################
