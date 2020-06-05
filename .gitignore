@@ -37,3 +37,4 @@ rssd/VSA_Leveling.py
 htmlcov
 .coveralls.yml
 test/.coverage
+/*.coverage
