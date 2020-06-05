@@ -32,26 +32,26 @@ class TestGeneral(unittest.TestCase):
     def test_FSW_VSA_EQ(self):
         self.FSW.Set_VSA_EqualizerState(0)
         getVal = self.FSW.Get_VSA_EqualizerState()
-        if self.FSW.connected: self.assertEqual(getVal, 'OFF')
+        if self.FSW.connected: self.assertEqual(getVal, '0')
         self.FSW.Set_VSA_EqualizerState('OFF')
         getVal = self.FSW.Get_VSA_EqualizerState()
-        if self.FSW.connected: self.assertEqual(getVal, 'OFF')
+        if self.FSW.connected: self.assertEqual(getVal, '0')
         self.FSW.Set_VSA_EqualizerState(1)
         getVal = self.FSW.Get_VSA_EqualizerState()
-        if self.FSW.connected: self.assertEqual(getVal, 'ON')
+        if self.FSW.connected: self.assertEqual(getVal, '1')
         self.FSW.Set_VSA_EqualizerState('ON')
         getVal = self.FSW.Get_VSA_EqualizerState()
-        if self.FSW.connected: self.assertEqual(getVal, 'ON')
+        if self.FSW.connected: self.assertEqual(getVal, '1')
 
     def test_FSW_VSA_Get(self):
         self.FSW.Get_VSA_IQImbalance()
         self.FSW.Get_VSA_GainImbalance()
-        self.FSW.Get_VSA_IQSkew()
+        # self.FSW.Get_VSA_IQSkew()
         self.FSW.Get_VSA_MER()
         self.FSW.Get_VSA_Rho()
         self.FSW.Get_VSA_ResultSumamry()
         self.FSW.Get_VSA_symbol_rate()
-        self.FSW.Get_VSA_SymbolRateError()
+        # self.FSW.Get_VSA_SymbolRateError()
 
     def test_FSW_VSA_Meas(self):
         self.FSW.Set_VSA_Capture_Time(10e-3)

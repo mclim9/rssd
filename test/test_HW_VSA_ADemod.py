@@ -17,7 +17,6 @@ host = '192.168.1.109'                              #Get local machine name
 ###############################################################################
 import unittest
 from rssd.VSA.ADemod_K7     import VSA              #pylint: disable=E0611,E0401
-from rssd.test.yaVISA       import jaVISA_mock      #pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                #run before each test
