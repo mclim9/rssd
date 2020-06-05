@@ -31,6 +31,7 @@ class TestGeneral(unittest.TestCase):
 ### <Test>
 ###############################################################################
     def test_FSW_Harm_Common(self):
+        self.FSW.Set_In_YIG('OFF')
         self.FSW.Set_Harm_num(3)
         self.FSW.Set_Harm_adjust()
         getVal = self.FSW.Get_Harm()
