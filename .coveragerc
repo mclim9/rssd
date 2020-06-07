@@ -12,6 +12,7 @@ omit =
     */python?.?/*
     */site-packages/*
     */pypy/*
+    */examples/*
 
 # Regexes for lines to exclude from consideration
 exclude_lines =
