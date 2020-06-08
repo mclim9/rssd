@@ -195,7 +195,7 @@ class VSA(jaVisa):
         outStr += self.Get_Params_Sweep(header)+"," if (swp==1) else ""
         outStr += self.Get_Params_System(header)+","if (sys==1) else ""
         outStr += self.Get_Params_Trace(header)+"," if (trc==1) else ""
-        return outStr
+        return outStr[0:-1]
 
     def Get_Params_Amp(self,header=0):
         """Retrieve Parameters for test logs"""
@@ -206,6 +206,15 @@ class VSA(jaVisa):
             outStr  = f'{attn:2d},{prea},{refl:7.3f}'
         else:
             outStr = 'Attn,PreAmp,RefLvl'
+        return outStr
+
+    def Get_Params_MkrBand(self,header=0):
+        """Retrieve Parameters for test logs"""
+        if header != 1:
+            BndMkr  = self.Get_Mkr_Band()
+            outStr  = f'{BndMkr[0]:.0f},{BndMkr[1]:.3f}'
+        else:
+            outStr = 'MkrFreq,MkrBndPwr'
         return outStr
 
     # def Get_Params_EVM(self):
