@@ -37,10 +37,14 @@ class timer():                                                       #pylint: di
         self.curTest += 1
         return deltaTimes
 
-    def deltaTimeTxt(self):
-        outStr = ""
-        for each in self.deltaTimes():
-            outStr += f'{each:2,.3f},'
+    def Get_Params_Time(self, header=0):
+        if header != 1:
+            outStr = ""
+            for each in self.deltaTimes():
+                outStr += f'{each:2,.3f},'
+            outStr = outStr[0:-1]
+        else:
+            outStr = 'deltattime1,totalTime,Hrs2Done'
         return outStr
 
     def suite_start(self):
@@ -52,11 +56,12 @@ class timer():                                                       #pylint: di
 #####################################################################
 if __name__ == "__main__":
     ### this won't be run when imported
-    asdf = timer()
-    asdf.tick()
-    time.sleep(0.6)
-    asdf.start()
+    TMR = timer()
+    print(TMR.Get_Params_Time(1))
+    TMR.start()
     time.sleep(1.2)
-    asdf.tick()
-    adf =asdf.deltaTimeTxt()
+    TMR.tick()
+    time.sleep(0.6)
+    TMR.tick()
+    print(TMR.Get_Params_Time())
     
