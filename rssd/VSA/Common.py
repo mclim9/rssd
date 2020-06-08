@@ -687,7 +687,7 @@ class VSA(jaVisa):
         #AUTO | SPEed | DYN
         self.write(f':SENS:SWE:OPT {sOpt}')
 
-    def Set_SweepCont(self,sState):
+    def Set_SweepCont(self, sState):
         """0 | 1 """
         if sState in (1, '1', 'ON'):
             self.write('INIT:CONT ON')                      #Continuous Sweep
