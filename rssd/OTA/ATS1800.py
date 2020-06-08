@@ -18,7 +18,7 @@
 ###             \__,_|_| |_|\__\___||___/\__\___|\__,_|
 ###
 ### Terms:  Azimuth:    Θθ; Theta; Turntable;
-###         Elevation:  Φφ; Phi; ATS1000 Arm;
+###         Elevation:  Φφ; Phi; Cradle;
 ### OTA:    ATS1500     Az over El;
 ###         ATS1800     Az over El;
 ###############################################################################
@@ -58,10 +58,6 @@ class OTA(OTA):
         rdStr = self.query(f'CONT:ELEV:SPE?')
         return rdStr
 
-    def Get_IDN(self):
-        rdStr = self.query(f'*IDN?')
-        return rdStr
-
     def Get_SysStat(self):
         rdStr = self.query('SYST:STAT?')
         return rdStr
@@ -81,7 +77,7 @@ class OTA(OTA):
         self.query(f'CONT:AZIM:STAR')
 
     def Set_AzimuthSpeed(self,speed):
-        #Speed: xx degree/sec
+        """Speed: 1 to 150 degree/sec"""
         self.query(f'CONT:AZIM:SPE {speed}')
 
     def Set_AzimuthStop(self):
@@ -92,7 +88,7 @@ class OTA(OTA):
         self.query(f'CONT:ELEV:STAR')
 
     def Set_ElevateSpeed(self,speed):
-        #Speed: xx degree/sec
+        """Speed: 1 to 150 degree/sec"""
         self.query(f'CONT:ELEV:SPE {speed}')
 
     def Set_ElevateStop(self):
@@ -104,6 +100,4 @@ class OTA(OTA):
 if __name__ == "__main__":
     ATS1800 = OTA()
     ATS1800.jav_Open('192.168.1.50',port=200)
-    # print(ATS1800.Get_ElevateAngle())
-    # print(ATS1800.Get_AzimuthAngle())
     print(ATS1800.Get_IDN())
