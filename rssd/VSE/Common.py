@@ -56,8 +56,9 @@ class VSE(VSA):
     #####################################################################
     ### VSE Time/Sweep
     #####################################################################
-    def Set_SweepCont(self,iON):
-        if iON in (1,'ON'):
+    def Set_SweepCont(self,sState):
+        """0 | 1 """
+        if sState in (1, '1', 'ON'):
             self.write('INIT:SEQ:MODE CONT')            #Continuous Sweep
         else:
             self.write('INIT:SEQ:MODE SING')            #Single Sweep
