@@ -1,5 +1,28 @@
 Release History
 =====================================================================
+- RSSD 2020.06.2
+  - VSA
+    - NF refactored for clarity and testing
+    - Common: 
+      - Del Freq_Step, Get_Params_EVM
+      - Add Get_Params_MkrBand
+    - VSA_K70: Chg query to queryFloat
+    - WLAN_K91 add A,B,G Get/Set_WLAN_Standard
+  - Examples
+    - VSA_BWMarker updated w/ RSI.Timer.
+  - Test
+    - NPR & NRQ tests added
+    - OTA tests added
+    - RCT.5GNR add Phase competnstaion and TransPrecoding tests.
+    - VSA
+      - Common add ACLR tests
+      - Add VSA.VSA_K70 tests 
+      - Add VSA.WLAN tests
+      - Add VSA.Transient_K60 tests
+    - VSG 
+      - Chg javisa.jav_OpenTest()
+    - VST tests added.
+    - VNA tests added
 - RSSD 2020.06.1
   - Test
     - Integrated GitHub Action Lint & Test
@@ -7,7 +30,6 @@ Release History
   - VNA
     - Refactor from test.
     - Chg " to '
-- 
 - RSSD 2020.06.0
   - 5GNR methods streamlined between VSG; VSA; RCT
   - VSA
