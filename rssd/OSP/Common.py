@@ -35,6 +35,7 @@ class OSP(jaVisa):
     def Get_SW_SP6T(self,slot=11,sw=1):
         """ Slot, Switch """
         # ROUT:CLOS? (@F01A11(0161))
+        CurrState = 1000                    # default test value
         for pos in range(0,7):
             state = self.queryInt(f'ROUT:CLOS? (@F01A{slot:02d}({pos:02d}{sw:02d}))')
             if state == 1:
