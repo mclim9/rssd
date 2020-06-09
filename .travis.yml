@@ -35,6 +35,7 @@ script:
   - coverage run -a -m unittest discover -b -v -p test_HW_NRQ_*
   - coverage run -a -m unittest discover -b -v -p test_HW_NRP_*
   - coverage run -a -m unittest discover -b -v -p test_HW_OTA_*
+  - coverage run -a -m unittest discover -b -v -p test_HW_OSP_*
   - coverage run -a -m unittest discover -b -v -p test_HW_VNA_*
   - coverage run -a -m unittest discover -b -v -p test_HW_VSA_*
   - coverage run -a -m unittest discover -b -v -p test_HW_VSG_*
