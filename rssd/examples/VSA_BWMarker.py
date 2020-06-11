@@ -40,6 +40,7 @@ FSW.Set_Mkr_Freq(Freq)
 FSW.Set_Mkr_Band(100e6)
 FSW.Set_YIG('OFF')
 FSW.Set_SweepCont(0)
+FSW.Set_Autolevel()
 # FSW.Set_Trig1_Source('Ext')
 
 ################################################################################
