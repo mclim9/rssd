@@ -2,7 +2,6 @@
 ###############################################################################
 ### Purpose:Test rssd.iqdata.py
 ###############################################################################
-import os
 import unittest
 from rssd.iqdata      import IQ             # pylint: disable=E0611,E0401
 
