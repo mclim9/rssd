@@ -33,14 +33,14 @@ script:
   - coverage run -a -m unittest -b -v test.test_FileIO
   - coverage run -a -m unittest -b -v test.test_iqData
   - coverage run -a -m unittest -b -v test.test_yaVISA
-  - coverage run -a -m unittest discover -b -v -p test_HW_NRQ_*
-  - coverage run -a -m unittest discover -b -v -p test_HW_NRP_*
-  - coverage run -a -m unittest discover -b -v -p test_HW_OTA_*
-  - coverage run -a -m unittest discover -b -v -p test_HW_OSP_*
-  - coverage run -a -m unittest discover -b -v -p test_HW_VNA_*
-  - coverage run -a -m unittest discover -b -v -p test_HW_VSA_*
-  - coverage run -a -m unittest discover -b -v -p test_HW_VSG_*
-  - coverage run -a -m unittest discover -b -v -p test_HW_VST_*
+  - coverage run -a -m unittest discover -b -v -p test_HW_NRQ*
+  - coverage run -a -m unittest discover -b -v -p test_HW_NRP*
+  - coverage run -a -m unittest discover -b -v -p test_HW_OTA*
+  - coverage run -a -m unittest discover -b -v -p test_HW_OSP*
+  - coverage run -a -m unittest discover -b -v -p test_HW_VNA*
+  - coverage run -a -m unittest discover -b -v -p test_HW_VSA*
+  - coverage run -a -m unittest discover -b -v -p test_HW_VSG*
+  - coverage run -a -m unittest discover -b -v -p test_HW_VST*
 
 after_success:
   - coveralls
