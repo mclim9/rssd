@@ -17,12 +17,6 @@ class PNA(jaVisa):
     ############################################################################
     ### FSW Get
     ############################################################################
-    def Get_AmpSettings(self):
-        #,Attn,PreAmp,RefLvl,
-        attn = self.Get_AttnMech()
-        refl = self.Get_RefLevel()
-        return f'{attn:2d},{refl:7.3f}'
-
     def Get_AttnMech(self):
         out = self.queryInt('INP:ATT?')
         return out
@@ -42,6 +36,10 @@ class PNA(jaVisa):
     def Get_IFOvld(self):
         self.Set_InitImm()
         rdStr = self.query("STAT:QUES:POW:COND?").strip()
+        return rdStr
+
+    def Get_Harm_Values(self):
+        rdStr = 'TBD'
         return rdStr
 
     def Get_Mkr_Freq(self,iNum=1,iWind=1):
@@ -97,11 +95,11 @@ class PNA(jaVisa):
         self.write('HCOP:IMM')           #Create File
 
     def Get_SweepPoints(self):
-        rdStr = self.queryInt(':SENS:SWE:POIN?')                 #Number of trace points
+        rdStr = self.queryInt(':SENS:SWE:POIN?')            #Number of trace points
         return rdStr
 
     def Get_SweepTime(self):
-        rdStr = self.queryFloat('SENS:SWE:TIME?')                 #Sweep/Capture Time
+        rdStr = self.queryFloat('SENS:SWE:TIME?')           #Sweep/Capture Time
         return rdStr
 
     def Get_SweepType(self):
@@ -130,8 +128,12 @@ class PNA(jaVisa):
         self.Set_Channel("Spectrum")
         self.write('CALC:MARK:FUNC:HARM ON')
 
-    def Init_IQ(self):
-        self.Set_Channel("IQ")
+    def Init_PhaseNoise(self):
+        self.Set_Channel("Spectrum")
+        self.write('CALC:MARK:FUNC:HARM ON')
+
+    def Init_Spectral(self):
+        self.Set_Channel("Spectrum")
 
     ###########################################################################
     ### Set Methods
@@ -148,7 +150,7 @@ class PNA(jaVisa):
 
     def Set_Autolevel_Proto(self,sState):
     ### Used by WLAN; K96.  Please use ADJ:LEV;
-        self.write('CONF:POW:AUTO %s;*WAI'%sState)      #ON|OFF|1|0
+        self.write('CONF:POW:AUTO %s;*WAI'%sState)          #ON|OFF|1|0
 
     def Set_Channel(self,Chan,sName=""):
         """ SAN, IQ, NR5G, LTE, WLAN, PNOISE, NOISE, SPUR, ADEM, DDEM, V5GT, AMPL """
@@ -163,18 +165,18 @@ class PNA(jaVisa):
         self.query(":INST:SEL '%s';*OPC?"%sName)
 
     def Set_DisplayUpdate(self,state):
-        self.write('SYST:DISP:UPD %s'%state)      #Display Update State
+        self.write('SYST:DISP:UPD %s'%state)                #Display Update State
 
     def Set_Freq(self,fFreq):
         self.write(':SENS:FREQ:CENT %.0f HZ'%fFreq)
 
-    def Set_FreqStart(self,fFreq):                                  #done
+    def Set_FreqStart(self,fFreq):                          #done
         self.write(':SENS:FREQ:STAR %f'%fFreq)
 
     def Set_FreqStep(self,fFreq):
         self.write(':SENS:FREQ:STEP %f'%fFreq)
 
-    def Set_FreqStop(self,fFreq):                                   #done
+    def Set_FreqStop(self,fFreq):                           #done
         self.write(':SENS:FREQ:STOP %f'%fFreq)
 
     def Set_Harm_num(self, num):
@@ -188,7 +190,7 @@ class PNA(jaVisa):
         self.query('INIT:IMM;*OPC?')
 
     def Set_Input(self,sType):
-        self.write('INP:SEL %s'%sType)                  #RF|AIQ|DIQ|FILE
+        self.write('INP:SEL %s'%sType)                      #RF|AIQ|DIQ|FILE
 
     def Set_Mkr_AllOff(self,iWind=1):
         self.write(':CALC%d:MARK:AOFF'%(iWind))
@@ -238,18 +240,18 @@ class PNA(jaVisa):
     def Set_SweepCont(self,iON):
         ''' 0 1 '''
         if iON == 1:
-            self.write('INIT:CONT ON')                  #Continuous Sweep
+            self.write('INIT:CONT ON')                      #Continuous Sweep
         else:
-            self.write('INIT:CONT OFF')                 #Single Sweep
+            self.write('INIT:CONT OFF')                     #Single Sweep
 
     def Set_SweepPoints(self,iNum):
-        self.write(':SENS:SWE:POIN %f'%iNum)            #Number of trace points
+        self.write(':SENS:SWE:POIN %f'%iNum)                #Number of trace points
 
     def Set_Trace_Avg(self,sType,trace=1):
         """LIN VID POW"""
         self.write('DISP:TRAC%d:MODE AVER'%trace)
         self.write('SENS:DET1:FUNC AVER')
-        self.write('SENS:AVER:TYPE %s'%sType)           #LIN|VID
+        self.write('SENS:AVER:TYPE %s'%sType)               #LIN|VID
 
     def Set_Trace_AvgCount(self,iAvg):
         self.write('SENS:SWE:COUN %d'%(iAvg))
@@ -261,12 +263,18 @@ class PNA(jaVisa):
         """APE; NEG; POS; QPE; SAMP; RMS; CAV; CRMS"""
         self.write('SENS:WIND%d:DET %s'%(iWind,sDetect))
 
-    def Set_Xcorr(self,iNum):                                                  #done
+    def Set_VidBW(self,fFreq):
+        if fFreq == 0:
+            self.write(':SENS:BAND:VID:AUTO ON')
+        else:
+            self.write(':SENS:BAND:VID %f'%fFreq)
+
+    def Set_Xcorr(self,iNum):                               #done
         self.write(f':SENS:SWE:XFAC {iNum}')
 
-    def Set_XcorrOpt(self,iState):                                             #done
+    def Set_XcorrOpt(self,State):                           #done
         """1 0"""
-        if (iState == 1):
+        if State in (1, '1', 'ON'):
             self.write(f':SENS:SWE:XOPT:STAT ON')
         else:
             self.write(f':SENS:SWE:XOPT:STAT OFF')
