@@ -144,6 +144,7 @@ class jaVisa(object):
         #rmList = rm.list_resources()                       #List VISA Resources
         try:
             self.K2 = rm.open_resource(sVISAStr)            #Create Visa Obj
+                                                            # '@py' for pyvisa-py
             self.K2.timeout = 5000                          #Timeout, millisec
             self.jav_IDN()
             self.jav_fileout(fily, self.dataIDN)
