@@ -12,12 +12,13 @@ class VSA(VSA):
     """ Rohde & Schwarz Vector Signal Analyzer Transient Object """
     def __init__(self):
         super(VSA, self).__init__()        #Python 2/3
+        self.QRange     = 'ALL'
 
     #####################################################################
-    ### FSW Common Query
+    ### Transient Analysis Get
     #####################################################################
     def Get_TA_HopTable(self):
-        self.write('SENS:SIGN:MOD HOP')
+        self.write(f'SENS:SIGN:MOD HOP')
         TATable = self.query('CALC:HOPD:TABL:RES? 1,3').split(',')
         numEle = 27
         print("Table size: %d"%(len(TATable)))
@@ -29,7 +30,7 @@ class VSA(VSA):
 
     def Get_TA_ChirpTable(self):
         #Manual 11.9.2
-        self.write('SENS:SIGN:MOD CHIR')
+        self.write(f'SENS:SIGN:MOD CHIR')
         TATable = self.query('CALC:CHRD:TABL:RES? 1,2').split(',')
         numEle = 27
         print("Table size: %d"%(len(TATable)))
@@ -41,78 +42,79 @@ class VSA(VSA):
 
     def Get_TA_ChirpStat(self):
         #Manual 11.9.2
-        TATable = self.query('CALC:CHRD:STAT:DATA?').split(',')
-        print(TATable)
+        """Returns large table"""
+        TATable = self.queryFloatArry('CALC:CHRD:STAT:DATA?')
+        return TATable
 
     def Get_TA_ChirpStats_TimeBegin(self):
         # Chirp Stat Col2
         #Manual 11.9.2  CURR | ALL
-        QRange = 'ALL'
-        print(self.query('SENS:CHIR:TIM:BEG:AVER? %s'%QRange))
-        print(self.query('SENS:CHIR:TIM:BEG:SDEV? %s'%QRange))
-        print(self.query('SENS:CHIR:TIM:BEG:MAX? %s'%QRange))
-        print(self.query('SENS:CHIR:TIM:BEG:MIN? %s'%QRange))
-        print()
+        rdStr = self.query(f'SENS:CHIR:TIM:BEG:AVER? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:TIM:BEG:SDEV? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:TIM:BEG:MAX? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:TIM:BEG:MIN? {self.QRange}')
+        print(rdStr)
+        return rdStr
 
     def Get_TA_ChirpStats_TimeLength(self):
         # Chirp Stat Col3
         #Manual 11.9.2  CURR | ALL
-        QRange = 'ALL'
-        print(self.query('SENS:CHIR:TIM:LENG:AVER? %s'%QRange))
-        print(self.query('SENS:CHIR:TIM:LENG:SDEV? %s'%QRange))
-        print(self.query('SENS:CHIR:TIM:LENG:MAX? %s'%QRange))
-        print(self.query('SENS:CHIR:TIM:LENG:MIN? %s'%QRange))
-        print()
+        rdStr = self.query(f'SENS:CHIR:TIM:LENG:AVER? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:TIM:LENG:SDEV? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:TIM:LENG:MAX? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:TIM:LENG:MIN? {self.QRange}')
+        print(rdStr)
+        return rdStr
 
     def Get_TA_ChirpStats_Rate(self):
         # Chirp Stat Col4
         #Manual 11.9.2  CURR | ALL
-        QRange = 'ALL'
-        print(self.query('SENS:CHIR:TIM:RATE:AVER? %s'%QRange))
-        print(self.query('SENS:CHIR:TIM:RATE:SDEV? %s'%QRange))
-        print(self.query('SENS:CHIR:TIM:RATE:MAX? %s'%QRange))
-        print(self.query('SENS:CHIR:TIM:RATE:MIN? %s'%QRange))
-        print()
+        rdStr = self.query(f'SENS:CHIR:TIM:RATE:AVER? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:TIM:RATE:SDEV? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:TIM:RATE:MAX? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:TIM:RATE:MIN? {self.QRange}')
+        print(rdStr)
+        return rdStr
 
     def Get_TA_ChirpStats_StateDev(self):
         # Chirp Stat Col5
         #Manual 11.9.2  CURR | ALL
-        QRange = 'ALL'
-        print(self.query('SENS:CHIR:FREQ:CHER:AVER? %s'%QRange))
-        print(self.query('SENS:CHIR:FREQ:CHER:SDEV? %s'%QRange))
-        print(self.query('SENS:CHIR:FREQ:CHER:MAX? %s'%QRange))
-        print(self.query('SENS:CHIR:FREQ:CHER:MIN? %s'%QRange))
-        print()
+        rdStr = self.query(f'SENS:CHIR:FREQ:CHER:AVER? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:FREQ:CHER:SDEV? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:FREQ:CHER:MAX? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:FREQ:CHER:MIN? {self.QRange}')
+        print(rdStr)
+        return rdStr
 
     def Get_TA_ChirpStats_AvgFreq(self):
         # Chirp Stat Col6
         #Manual 11.9.2  CURR | ALL
-        QRange = 'ALL'
-        print(self.query('SENS:CHIR:FREQ:FREQ:AVER? %s'%QRange))
-        print(self.query('SENS:CHIR:FREQ:FREQ:SDEV? %s'%QRange))
-        print(self.query('SENS:CHIR:FREQ:FREQ:MAX? %s'%QRange))
-        print(self.query('SENS:CHIR:FREQ:FREQ:MIN? %s'%QRange))
-        print()
+        rdStr = self.query(f'SENS:CHIR:FREQ:FREQ:AVER? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:FREQ:FREQ:SDEV? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:FREQ:FREQ:MAX? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:FREQ:FREQ:MIN? {self.QRange}')
+        print(rdStr)
+        return rdStr
 
     def Get_TA_ChirpStats_Bandwidth(self):
         # Chirp Stat Col7
         #Manual 11.9.2  CURR | ALL
-        QRange = 'ALL'
-        print(self.query('SENS:CHIR:FREQ:BWID:AVER? %s'%QRange))
-        print(self.query('SENS:CHIR:FREQ:BWID:SDEV? %s'%QRange))
-        print(self.query('SENS:CHIR:FREQ:BWID:MAX? %s'%QRange))
-        print(self.query('SENS:CHIR:FREQ:BWID:MIN? %s'%QRange))
-        print()
+        rdStr = self.query(f'SENS:CHIR:FREQ:BWID:AVER? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:FREQ:BWID:SDEV? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:FREQ:BWID:MAX? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:FREQ:BWID:MIN? {self.QRange}')
+        print(rdStr)
+        return rdStr
 
     def Get_TA_ChirpStats_FreqDevAvg(self):
         # Chirp Stat Col13
         #Manual 11.9.2  CURR | ALL
-        QRange = 'ALL'
-        print(self.query('SENS:CHIR:FREQ:AVGF:AVER? %s'%QRange))
-        print(self.query('SENS:CHIR:FREQ:AVGF:SDEV? %s'%QRange))
-        print(self.query('SENS:CHIR:FREQ:AVGF:MAX? %s'%QRange))
-        print(self.query('SENS:CHIR:FREQ:AVGF:MIN? %s'%QRange))
-        print()
+        rdStr = self.query(f'SENS:CHIR:FREQ:AVGF:AVER? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:FREQ:AVGF:SDEV? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:FREQ:AVGF:MAX? {self.QRange}')
+        rdStr = self.query(f'SENS:CHIR:FREQ:AVGF:MIN? {self.QRange}')
+        print(rdStr)
+        return rdStr
 
     def Get_TA_TestStuff(self):
         TATable = self.query('CALC:CHRD:STAT:DATA?').split(',')
@@ -133,7 +135,7 @@ class VSA(VSA):
         """CHIR HOP"""
         if sMode == 'HOP':
             self.write(':SENS:SIGN:MOD HOP')
-        elif sMode == 'CHIR':
+        elif sMode in ('CHIR','CHIRP'):
             self.write(':SENS:SIGN:MOD CHIR')
         else:
             print('K60 Mode Not supported')
