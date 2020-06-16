@@ -34,6 +34,7 @@ class TestGeneral(unittest.TestCase):
 
     def test_FSW_LTE_Get_DL(self):
         self.FSW.Set_LTE_Direction('DL')
+        self.FSW.Set_LTE_Duplex('FDD')
         nullVal = self.FSW.Get_LTE_Direction()
         nullVal = self.FSW.Get_LTE_Duplex()
         nullVal = self.FSW.Get_LTE_ChBW()
@@ -43,6 +44,7 @@ class TestGeneral(unittest.TestCase):
 
     def test_FSW_LTE_Get_UL(self):
         self.FSW.Set_LTE_Direction('UL')
+        self.FSW.Set_LTE_Duplex('FDD')
         nullVal = self.FSW.Get_LTE_Direction()
         nullVal = self.FSW.Get_LTE_Duplex()
         nullVal = self.FSW.Get_LTE_ChBW()
@@ -67,6 +69,7 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_Freq(2e9)
         self.FSW.Set_LTE_EVMUnit('DB')
         self.FSW.Set_LTE_Duplex('TDD')
+        self.FSW.Set_LTE_Duplex('FDD')
         self.FSW.Set_LTE_SubFrameCount(2)
         self.FSW.Set_LTE_Direction('UL')
         self.FSW.Set_LTE_ChBW(20)
