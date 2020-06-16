@@ -57,13 +57,13 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Get_VSA_symbol_rate()
         # self.FSW.Get_VSA_SymbolRateError()
 
-    def test_FSW_VSA_Meas(self):
-        self.FSW.Set_VSA_Capture_Time(10e-6)
-        self.FSW.Set_VSA_Capture_Length(100)
-        self.FSW.Set_VSA_EqualizerState(1)
+    def test_FSW_VSA_Meas(self): #error
         self.FSW.Set_VSA_Symbol_Rate(1e6)
         self.FSW.Set_VSA_Filter_Type('RRC')
-        self.FSW.Set_VSA_Filter_Alpha(.2)
+        self.FSW.Set_VSA_Filter_Alpha(0.2)
+        self.FSW.Set_VSA_Capture_Time(1e-3)
+        self.FSW.Set_VSA_Capture_Length(500)
+        self.FSW.Set_VSA_EqualizerState(1)
         self.FSW.Set_VSA_Result_Length(200)
         self.FSW.Set_VSA_Result_Length('MAX')
         self.FSW.Get_VSA_Meas_Params()
