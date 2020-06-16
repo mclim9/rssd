@@ -29,6 +29,11 @@ class VSA(VSA):                                 #pylint: disable=E0102
         rdStr = self.queryFloat(':CALC2:MARK:FUNC:DDEM:STAT:CFER?')
         return rdStr
 
+    def Get_VSA_Capture_Length(self):
+        '''Get Capture Symbols'''
+        rdStr = self.queryInt(f':SENS:DDEM:RLEN:SYMB?')
+        return rdStr
+
     def Get_VSA_IQImbalance(self):
         rdStr = self.queryFloat(':CALC2:MARK:FUNC:DDEM:STAT:IQIM?')
         return rdStr
@@ -165,9 +170,10 @@ class VSA(VSA):                                 #pylint: disable=E0102
         self.write(f':SENS:DDEM:SRAT {rate}')
 
     def Set_VSA_Result_Length(self,dLength):
-        """integer length or 'MAX' """
+        """integer symbol length or 'MAX' """
+        maxLen = self.Get_VSA_Capture_Length()
         if dLength == 'MAX':
-            self.write(':SENS:DDEM:TIME 64000')                     # Result Length
+            self.write(f':SENS:DDEM:TIME {maxLen}')                 # Result Length
             self.write(':CALC:ELIN:STAT ON')                        # Full Evaluation Range
         else:
             self.write(f':SENS:DDEM:TIME {int(dLength)}')           # Result Length
