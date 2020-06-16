@@ -56,6 +56,9 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_LTE_CC(2)
         getVal = self.FSW.Get_LTE_CC()
         if self.FSW.connected: self.assertEqual(getVal,'2')
+        self.FSW.Set_LTE_CC(1)
+        getVal = self.FSW.Get_LTE_CC()
+        if self.FSW.connected: self.assertEqual(getVal,'1')
 
     def test_FSW_LTE_Direction(self):
         self.FSW.Set_LTE_Direction('UL')
