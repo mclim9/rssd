@@ -8,6 +8,8 @@ Release History
       - Add Get_Params_MkrBand
     - VSA_K70: Chg query to queryFloat
     - WLAN_K91 add A,B,G Get/Set_WLAN_Standard
+  - VNA
+    - Chg dChan input --> self.dChan
   - Examples
     - VSA_BWMarker updated w/ RSI.Timer.
   - Test
