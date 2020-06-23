@@ -49,7 +49,7 @@ class VNA(jaVisa):
         """ Save State """
         self.write(f'MMEM:STOR:STAT 1,"{sFName}"')
 
-    def Save_Trace_CSV(self, sTrace, sFName):
+    def Save_Trace_CSV(self, sFName):
         # self.write(f'MMEM:STOR:TRAC:CHAN "{sTrace}","{sFName}.csv",FORM,LOGP,POIN,COMM')
         self.write(f"MMEM:STOR:TRAC:CHAN ALL,'{sFName}.csv'")
 
