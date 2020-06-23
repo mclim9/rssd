@@ -32,6 +32,10 @@ class TestGeneral(unittest.TestCase):
         self.OSPxx0.Get_OSP_Info()
         self.OSPxx0.Get_OSP_Modules()
 
+    def test_OSP_CompatibilityMode(self):
+        self.OSPxx0.Set_CompatabilityMode(1)
+        self.OSPxx0.Set_CompatabilityMode(0)
+
     def test_OSP_SP6T(self):
         setVal = 1
         self.OSPxx0.Set_SW(11, 1, setVal)

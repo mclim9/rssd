@@ -1,20 +1,29 @@
 Release History
 =====================================================================
 - RSSD 2020.06.2
+  - OTA
+    - ATS1800 weblink added.
   - VSA
     - NF refactored for clarity and testing
     - Common: 
       - Del Freq_Step, Get_Params_EVM
       - Add Get_Params_MkrBand
-    - VSA_K70: Chg query to queryFloat
+    - LTE: Minor updates.
+    - VSA_K70: 
+      - Chg query to queryFloat
+      - Fix VSA_Result_Length
+      - Add Get_VSA_Capture_Length
     - WLAN_K91 add A,B,G Get/Set_WLAN_Standard
   - VNA
     - Chg dChan input --> self.dChan
+  - jaVISA
+    - Add support for pyvisa py
   - Examples
     - VSA_BWMarker updated w/ RSI.Timer.
   - Test
     - NPR & NRQ tests added
     - OTA tests added
+    - OSP tests added
     - RCT.5GNR add Phase competnstaion and TransPrecoding tests.
     - VSA
       - Common add ACLR tests
@@ -25,6 +34,7 @@ Release History
       - Chg javisa.jav_OpenTest()
     - VST tests added.
     - VNA tests added
+    - iqData tests added
 - RSSD 2020.06.1
   - Test
     - Integrated GitHub Action Lint & Test
