@@ -53,6 +53,10 @@ class TestGeneral(unittest.TestCase):
         getVal = self.ATS1800.Get_ElevateRunning()
         if self.ATS1800.connected : self.assertEqual(setVal, getVal)
 
+    def test_OTA_Stop(self):
+        self.ATS1800.Set_AzimuthStop()
+        self.ATS1800.Set_ElevateStop()
+
     def test_OTA_SystemStat(self):
         self.ATS1800.Get_SysStat()
 

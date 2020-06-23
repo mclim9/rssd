@@ -39,6 +39,7 @@ class TestGeneral(unittest.TestCase):
         setVal = 10
         # self.ATS1000.Set_AzimuthAngle(setVal)
         # getVal = self.ATS1000.Get_AzimuthAngle()
+        getVal = self.ATS1000.Get_AzimuthRunning()
         if self.ATS1000.connected : self.assertEqual(setVal, getVal)
 
     def test_OTA_Elevation(self):
@@ -49,7 +50,12 @@ class TestGeneral(unittest.TestCase):
         setVal = 10
         self.ATS1000.Set_ElevateAngle(setVal)
         getVal = self.ATS1000.Get_ElevateAngle()
+        getVal = self.ATS1000.Get_ElevateRunning()
         if self.ATS1000.connected : self.assertEqual(setVal, getVal)
+
+    def test_OTA_Stop(self):
+        self.ATS1000.Set_AzimuthStop()
+        self.ATS1000.Set_ElevateStop()
 
     def test_OTA_SystemStat(self):
         self.ATS1000.Get_SysStat()
