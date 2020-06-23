@@ -43,10 +43,6 @@ jobs:
 
     - name: Lint with pylint
       run: |
-        # # stop the build if there are Python syntax errors or undefined names
-        # flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         python -m pylint rssd
 
     - name: Test with pytest
@@ -60,6 +56,7 @@ jobs:
         coverage run -a -m unittest discover -b -v -p test_HW_OSP*
         coverage run -a -m unittest discover -b -v -p test_HW_OTA*
         coverage run -a -m unittest discover -b -v -p test_HW_PNA*
+        coverage run -a -m unittest discover -b -v -p test_HW_RCT*
         coverage run -a -m unittest discover -b -v -p test_HW_VNA*
         coverage run -a -m unittest discover -b -v -p test_HW_VSA*
         coverage run -a -m unittest discover -b -v -p test_HW_VSE*
