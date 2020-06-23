@@ -18,7 +18,7 @@ class VST(object):
         self.Freq      = 2.5e9
         self.SWM_Out  = 0
         self.LTE_Dir    = 'DL'
-        self.LTE_ChBW  = 100        #MHz
+        self.LTE_ChBW   = 5        #MHz
         self.LTE_RB     = 66        #RB
         self.LTE_RBO    = 0         #RB Offset
         self.LTE_Mod    = 'QAM64'   #QPSK; QAM16; QAM64; QAM256

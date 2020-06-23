@@ -41,6 +41,9 @@ class TestGeneral(unittest.TestCase):
     def test_VST_Set_LTE_All(self):
         self.VST.Set_LTE_All()
 
+    def test_VST_jav_Clear(self):
+        self.VST.jav_Clear()
+
 ###############################################################################
 ### </Test>
 ###############################################################################

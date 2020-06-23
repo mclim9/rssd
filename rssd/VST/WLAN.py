@@ -18,7 +18,7 @@ class VST(object):
         self.Freq      = 2.5e9
         self.SWM_Out   = 0
         self.WLAN_Std  = 'N'
-        self.WLAN_ChBW = 100        #MHz
+        self.WLAN_ChBW = 20        #MHz
         self.WLAN_MCS  = 1
         self.WLAN_Mod  = 'QAM64'    #QPSK; QAM16; QAM64; QAM256
 

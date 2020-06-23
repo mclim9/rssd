@@ -135,7 +135,7 @@ class VSA(VSA):                        #pylint: disable=E0102
         self.cc = iCC
 
     def Set_LTE_ChBW(self,iBW):
-        self.write(f':CONF:LTE:{self.ldir}:BW BW{iBW:02d}_00')
+        self.write(f':CONF:LTE:{self.ldir}:CC:BW BW{iBW:d}_00')
 
     def Set_LTE_Direction(self,sDir):
         # UL or DL

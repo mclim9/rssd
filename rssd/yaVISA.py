@@ -164,6 +164,7 @@ class jaVisa(object):
             self.write      = mock.write
             self.query      = mock.query
             self.jav_Error  = mock.jav_Error
+            self.jav_Clear  = mock.jav_Clear
             self.connected  = 0
         self.jav_ClrErr()
         self.dLastErr = ""

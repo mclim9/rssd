@@ -10,7 +10,6 @@
 ###############################################################################
 ### User Entry
 ###############################################################################
-host    = '10.0.0.7'                                    #Get local machine name
 SMW_IP  = '192.168.1.114'
 FSW_IP  = '192.168.1.109'
 
@@ -40,6 +39,9 @@ class TestGeneral(unittest.TestCase):
 
     def test_VST_Set_WLAN_All(self):
         self.VST.Set_WLAN_All()
+
+    def test_VST_jav_Clear(self):
+        self.VST.jav_Clear()
 
 ###############################################################################
 ### </Test>
