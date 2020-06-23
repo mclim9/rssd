@@ -62,6 +62,7 @@ jobs:
         coverage run -a -m unittest discover -b -v -p test_HW_PNA*
         coverage run -a -m unittest discover -b -v -p test_HW_VNA*
         coverage run -a -m unittest discover -b -v -p test_HW_VSA*
+        coverage run -a -m unittest discover -b -v -p test_HW_VSE*
         coverage run -a -m unittest discover -b -v -p test_HW_VSG*
         coverage run -a -m unittest discover -b -v -p test_HW_VST*.py
 

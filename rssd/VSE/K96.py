@@ -71,7 +71,7 @@ class VSE(VSE):
         ### Code Start
         #######################################################################
         if debug==1: print('    Autolvl EVM: ')
-        self.Set_Autolevel("ON")
+        self.Set_Autolevel()
         EVM_Curr = self.Get_EVM()                       #Set initial RefLvl & Attn
         RefLvl = self.Get_RefLevel()
         MAttn  = self.Get_AttnMech()
@@ -83,7 +83,7 @@ class VSE(VSE):
         if debug==1: print('    Attenu Swp: ')
         EVM_Prev = 1.00
         i=0
-        self.Set_Autolevel("OFF")                       #Manually Set RefLvl & Attn
+        self.Set_Autolevel()                            #Manually Set RefLvl & Attn
         while (i <= MAttn) & (i < 30):
             MechAttn = MAttn - i
             self.Set_AttnMech(MAttn - i)
@@ -99,9 +99,9 @@ class VSE(VSE):
                 i = i + 1
             else:
                 if debug==1: print("        Break")
-                i = i - 1                               #Previous value
+                i = i - 1                                       #Previous value
                 break
-        MechAttn = MAttn - i + Backoff                  #MechAttn Used for next step
+        MechAttn = MAttn - i + Backoff                          #MechAttn Used for next step
         if (MechAttn < 0):
             MechAttn= 0
         self.Set_AttnMech(MechAttn)
@@ -112,7 +112,7 @@ class VSE(VSE):
         #print('    RefLvl Swp: ')
         EVM_Prev = 1.00
         i=0
-        self.Set_Autolevel("OFF")                               #Manually Set RefLvl & Attn
+        self.Set_Autolevel()                                    #Manually Set RefLvl & Attn
         for x in range(0):                                      #pylint: disable=W0612
             self.Set_RefLevel(RefLvl - i)
             EVM_Curr = self.Get_EVM()
@@ -126,10 +126,10 @@ class VSE(VSE):
                 EVM_Prev = EVM_Curr
                 i = i + 1
             else:
-                i = i - 1                               #Previous value
+                i = i - 1                                       #Previous value
                 self.Set_RefLevel(RefLvl - i)
                 break
-        self.EVM_Wait()
+        self.K96_EVM_Wait()
 
 ###############################################################################
 ### Run if Main
