@@ -23,23 +23,17 @@ from rssd.VSE.Common import VSE
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                            #Run before each test
-        self.VSE = VSE()
-        try:
-            self.VSE.VISA_Open(host)
-            self.VSE.VISA_Reset()
-            self.VSE.VISA_ClrErr()
-            self.VSE.dLastErr = ""
-        except:
-            pass
+        self.VSE = VSE().jav_OpenTest(host)
 
     def tearDown(self):                         #Run after each test
+        self.assertEqual(self.VSE.jav_Error()[0],'0')
         self.VSE.jav_Close()
 
 ###############################################################################
 ### <Test>
 ###############################################################################
     def test_VSE_Connect(self):
-        self.assertEqual(self.VSE.Make,"Rohde&Schwarz")
+        if self.VSE.connected == 1: self.assertEqual(self.VSE.Make,"Rohde&Schwarz")
         self.assertEqual(self.VSE.Model,"VSE")
 
     def test_VSE_IQ_Settings(self): 
@@ -48,11 +42,10 @@ class TestGeneral(unittest.TestCase):
         self.VSE.Set_SamplingRate(123e6)
         self.VSE.Set_SweepTime(1.234e-6)
         rlen = self.VSE.Get_IQ_RecLength()
-        self.assertEqual(rlen,123)
+        if self.VSE.connected == 1: self.assertEqual(rlen,123)
 
     def test_VSE_IQ_Data2File(self):
-        self.VSE.Get_IQ_Data()
-        self.assertEqual(self.VSE.VISA_Error()[0],"0")
+        if self.VSE.connected == 1: self.VSE.Get_IQ_Data()
 
     # def test_VSE_Marker(self):        
     #     self.VSE.Set_Mkr_Peak()
