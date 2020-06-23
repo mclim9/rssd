@@ -13,7 +13,7 @@ class VNA(jaVisa):
     def __init__(self):
         super(VNA,self).__init__()          #Python2/3
         self.Model = "VNA"
-        self.dChan = ''
+        self.dChan = 1
 
     #####################################################################
     ### VNA GET Functions Alphabetical
@@ -26,18 +26,18 @@ class VNA(jaVisa):
         rdStr = self.query(f':SOUR:POW:CORR:STAT?')
         return rdStr
 
-    def Get_Trace_Names(self,dChan=1):
-        rdStr = self.query(f':CALC{dChan}:PAR:CAT?')
+    def Get_Trace_Names(self):
+        rdStr = self.query(f':CALC{self.dChan}:PAR:CAT?')
         return rdStr
 
     #####################################################################
     ### VNA SAVE Functions Alphabetical
     #####################################################################
-    def Save_Cal(self, sFName, dChan=1):
+    def Save_Cal(self, sFName):
         """ Save calibration to cal manager """
         if not sFName.lower().endswith(f'.cal'):
             sFName += ".cal"
-        self.write(f':MMEM:STOR:CORR {dChan},"{sFName}"')
+        self.write(f':MMEM:STOR:CORR {self.dChan},"{sFName}"')
 
     def Save_Screen(self,sFName):
         """ Save Sceen to BMP """
@@ -49,11 +49,12 @@ class VNA(jaVisa):
         """ Save State """
         self.write(f'MMEM:STOR:STAT 1,"{sFName}"')
 
-    def Save_Trace_CSV(self,sFName,dChan=1):
-        self.write(f'MMEM:STOR:TRAC:CHAN {dChan},"{sFName}.csv"')
+    def Save_Trace_CSV(self, sTrace, sFName):
+        # self.write(f'MMEM:STOR:TRAC:CHAN "{sTrace}","{sFName}.csv",FORM,LOGP,POIN,COMM')
+        self.write(f"MMEM:STOR:TRAC:CHAN ALL,'{sFName}.csv'")
 
-    def Save_Trace_SxP(self,sFName,dChan=1):                        #MMM
-        self.write(f'MMEM:STOR:TRAC:CHAN {dChan},"{sFName}.s2p"')
+    def Save_Trace_SxP(self, sFName):                        #MMM
+        self.write(f"MMEM:STOR:TRAC:CHAN 1,'C:\\Rohde&Schwarz\\Nwa\\{sFName}.s2p'")
         #self.write(f':MMEM:STOR:TRAC:PORT %d,'%s.s2p',COMP,1,2"%(dChan,sFName))
 
     #####################################################################
@@ -66,23 +67,35 @@ class VNA(jaVisa):
     #     self.write(f':MMEM:LOAD:CORR:RES %d,%s"%(dChan,sName))     #Resolve Cal Group
     #     self.write(f':MMEM:LOAD:CORR %s"%(sName))                  #Load cal group.
 
-    def Set_FreqStart(self,fFreq,dChan=1):
-        self.write(f':SENS{dChan}:FREQ:STAR {fFreq}')
+    def Set_FreqStart(self,fFreq):
+        self.write(f':SENS{self.dChan}:FREQ:STAR {fFreq}')
 
-    def Set_FreqStop(self,fFreq,dChan=1):
-        self.write(f':SENS{dChan}:FREQ:STOP {fFreq}')            #RF Freq
+    def Set_FreqStop(self,fFreq):
+        self.write(f':SENS{self.dChan}:FREQ:STOP {fFreq}')            #RF Freq
 
-    def Set_IFBW(self,fFreq,dChan=1):
-        self.write(f'SENS{dChan}:BAND {fFreq}')
+    def Set_IFBW(self,fFreq):
+        self.write(f'SENS{self.dChan}:BAND {fFreq}')
 
     def Set_InitImm(self):
         self.query(f'INIT:IMM;*OPC?')
 
-    def Set_PowerStart(self,fPwr,dChan=1):
-        self.write(f':SOUR{dChan}:POW:STAR {fPwr} dBm')
+    def Set_Mkr_Coupled(self, state):
+        if state in (1,'1', 'ON'):
+            self.write(f'CALC{self.dChan}:MARK:COUP ON')
+        elif state in (0,'0', 'OFF'):
+            self.write(f'CALC{self.dChan}:MARK:COUP OFF')
 
-    def Set_PowerStop(self,fPwr,dChan=1):
-        self.write(f':SOUR{dChan}:POW:STOP {fPwr} dBm')
+    def Set_Mkr_Frq(self, frq, mkr=1):
+        # self.write(f'CALC{self.dChan}:MARK{mkr} ON')
+        # self.write(f'CALC{self.dChan}:MARK{mkr} {frq}')
+        self.write(f'CALC:MARK{mkr}:STAT ON')
+        self.write(f'CALC:MARK{mkr}:X {frq:.0f}')
+
+    def Set_PowerStart(self, fPwr):
+        self.write(f':SOUR{self.dChan}:POW:STAR {fPwr} dBm')
+
+    def Set_PowerStop(self, fPwr):
+        self.write(f':SOUR{self.dChan}:POW:STOP {fPwr} dBm')
 
     def Set_Pwrcal_Init(self):
         self.write(f':SOUR:POW:CORR:COLL:FLAT ON')      #Flatness Cal
@@ -90,13 +103,13 @@ class VNA(jaVisa):
         self.write(f':SOUR:POW:CORR:COLL:VER ON')       #Verification Sweep
         self.write(f':SOUR:POW:CORR:COLL:METH PMON')    #PMON | RFAF | RRON
 
-    def Set_Pwrcal_NumReading(self,iNum,dChan=1):
-        self.write(f':SOUR{dChan}:POW:CORR:NRE {iNum}')
+    def Set_Pwrcal_NumReading(self, iNum):
+        self.write(f':SOUR{self.dChan}:POW:CORR:NRE {iNum}')
 
-    def Set_Pwrcal_Measure(self,iPort,dChan=1):
-        self.write(f':SOUR{dChan}:POW:CORR:ACQ PORT,{iPort}')
+    def Set_Pwrcal_Measure(self, iPort):
+        self.write(f':SOUR{self.dChan}:POW:CORR:ACQ PORT,{iPort}')
 
-    def Set_Pwrcal_Rx(self,Source,Port):
+    def Set_Pwrcal_Rx(self, Source, Port):
         # CORR:POW:ACQ <What to Cal> <Port>,<SourceTYpe>,<Port#>,<AWAV/NOM>
         self.write(f':CORR:POW:ACQ BWAV,{Port},PORT,{Source},AWAV')
         self.query('CORR:POW:AWAV?')
@@ -110,35 +123,35 @@ class VNA(jaVisa):
         elif sState in (0, 'OFF'):
             self.write(f'INIT:CONT OFF')                             #Single Sweep
 
-    def Set_SweepPoints(self,dPoints,dChan=1):
-        self.write(f':SENS{dChan}:SWE:POIN {dPoints}')              #RF Freq
+    def Set_SweepPoints(self,dPoints):
+        self.write(f':SENS{self.dChan}:SWE:POIN {dPoints}')              #RF Freq
 
-    def Set_SweepTime(self,fSwpTime,dChan=1):
+    def Set_SweepTime(self,fSwpTime):
         """Seconds. 0=Auto"""
         if fSwpTime == 0:
-            self.write(f':SENS{dChan}:SWE:TIME:AUTO ON')           #Auto
+            self.write(f':SENS{self.dChan}:SWE:TIME:AUTO ON')           #Auto
         else:
-            self.write(f':SENS{dChan}:SWE:TIME {fSwpTime}')         #Sweep/Capture Time
+            self.write(f':SENS{self.dChan}:SWE:TIME {fSwpTime}')         #Sweep/Capture Time
 
-    def Set_Trace_Avg(self,sState,dChan=1):
+    def Set_Trace_Avg(self,sState):
         if sState in (1, 'ON'):
-            self.write(f':SENS{dChan}:AVER:STAT ON')
+            self.write(f':SENS{self.dChan}:AVER:STAT ON')
         if sState in (1, 'ON'):
-            self.write(f':SENS{dChan}:AVER:STAT OFF')
+            self.write(f':SENS{self.dChan}:AVER:STAT OFF')
 
-    def Set_Trace_AvgCount(self,iAvg,dChan=1):
-        self.write(f':SENS{dChan}:AVER:COUN {iAvg}')
+    def Set_Trace_AvgCount(self,iAvg):
+        self.write(f':SENS{self.dChan}:AVER:COUN {iAvg}')
 
     def Set_Trace_DelAll(self):
         self.write(f'CALC:PAR:DEL:ALL')
 
-    def Set_Trace_MeasAdd(self,sMeas,dChan=1):
+    def Set_Trace_MeasAdd(self,sMeas):
         # S11/S21/S12/S22 ..... Sxxyy
         # Y11/Y21/Y12/Y22 ..... Yxxyy
         # A1D2/A1D4/A2D1  ..... A<port>G<port>
         # B1D2/B1D4/B2D1  ..... B<port>G<port>
         # IP3UI/IP3UO      ..... IP<order:3|5|7|9><side:U|L><DUT:I|O>
-        self.write(f'CALC{dChan}:PAR:SDEF "{sMeas}","{sMeas}"')     #<TrcName>,<Measurement>
+        self.write(f'CALC{self.dChan}:PAR:SDEF "{sMeas}","{sMeas}"')     #<TrcName>,<Measurement>
         self.write(f'DISP:WIND1:TRAC:EFE "{sMeas}"')                #Displays Trace
 
     def Set_Trace_MeasAdd_AWave(self,APort,GenPort):
@@ -160,8 +173,11 @@ class VNA(jaVisa):
     def Set_Trace_MeasAdd_PwrMtr(self,GenPort):
         self.Set_Trace_MeasAdd(f'Pmtr{1}D{GenPort}')
 
-    def Set_Trace_MeasDel(self,sTrcName,dChan=1):
-        self.write(f'CALC{dChan}:PAR:DEL "{sTrcName}"')
+    def Set_Trace_MeasDel(self,sTrcName):
+        self.write(f'CALC{self.dChan}:PAR:DEL "{sTrcName}"')
+
+    def Set_Trace_Select(self,sTrcName):
+        self.write(f'CALC{self.dChan}:PAR:SEL "{sTrcName}"')
 
 #####################################################################
 ### Run if Main
