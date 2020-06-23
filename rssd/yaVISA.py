@@ -34,7 +34,7 @@ class jaVisa(object):
     def delay(self,sec):
         time.sleep(sec)
 
-    def jav_Clear(self):
+    def jav_Clear(self):                #pylint:disable=E0202
         self.K2.clear()
 
     def jav_Close(self):
