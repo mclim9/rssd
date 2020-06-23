@@ -10,7 +10,7 @@
 ###############################################################################
 ### User Entry
 ###############################################################################
-host = '192.168.1.109'                              #Get local machine name
+host = '10.0.0.13'                              #Get local machine name
 
 ###############################################################################
 ### Code Start
@@ -29,16 +29,26 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
-    def test_VNA_PowerCal(self):
+    def test_VNA_Markers(self):
+        self.VNA.Set_Mkr_Coupled(1)
+        self.VNA.Set_Mkr_Frq(2.4e9,1)
+        self.VNA.Set_Mkr_Frq(2.5e9,2)
+
+    def test_VNA_PowerCal_Tx(self):
         self.VNA.Set_FreqStart(1e9)
         self.VNA.Set_FreqStop(6e9)
         self.VNA.Set_SweepPoints(601)
         self.VNA.Set_Pwrcal_Init()
         self.VNA.Set_Pwrcal_Tolerance(0.1)
         self.VNA.Set_Pwrcal_NumReading(10)
+        # self.VNA.Set_Pwrcal_Rx(1,2)
         self.VNA.Set_Pwrcal_Measure(2)                      #Initiate Power cal
         getVal = self.VNA.Get_Pwrcal_State()                #Pwr Cal Tx State
         getVal = self.VNA.Get_Pwrcal_Rx_State()             #Pwr Cal Rx State
+
+    def test_VNA_PowerSweep(self):
+        self.VNA.Set_PowerStart(-60)
+        self.VNA.Set_PowerStop(-10)
 
     def test_VNA_SParam(self):
         self.VNA.Set_SweepCont(0)
@@ -68,6 +78,9 @@ class TestGeneral(unittest.TestCase):
     def test_VNA_TraceChanges(self):
         self.VNA.Set_Trace_MeasAdd_BWave(1,2)
         self.VNA.Set_Trace_MeasAdd_PwrMtr(1)
+        self.VNA.Set_Trace_MeasAdd_SParam(2,1)
+        self.VNA.Set_Trace_Select('S21')
+        self.VNA.Set_Trace_MeasDel('S21')
         self.VNA.Set_Trace_DelAll()
         self.VNA.Set_Trace_MeasAdd_AWave(1,2)
 
