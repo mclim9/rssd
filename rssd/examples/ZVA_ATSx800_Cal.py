@@ -31,11 +31,12 @@ ZVA.Set_FreqStart(FreqStart)
 ZVA.Set_FreqStop(FreqStop)
 ZVA.Set_SweepPoints(SwpPt)
 ZVA.Set_Trace_Select('S21')
+ZVA.Set_InitImm()
 ZVA.Set_Mkr_Coupled(1)
 ZVA.Set_Mkr_Frq(2.4e9,1)
 ZVA.Set_Mkr_Frq(2.8e9,2)
 ZVA.Set_Mkr_Frq(3.9e9,3)
-ZVA.Save_Trace_CSV('S21','test')
+ZVA.Save_Trace_CSV('test')
 # ZVA.Save_Trace_SxP('TEstS2p')
 
 ###############################################################################

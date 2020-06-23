@@ -45,15 +45,18 @@ class VNA(jaVisa):
         self.write(f'MMEM:NAME "{sFName}.BMP"')
         self.write('HCOP:DEST "MMEM"; :HCOP')
 
-    def Save_State(self,sFName):
+    def Save_State(self, sFName):
         """ Save State """
         self.write(f'MMEM:STOR:STAT 1,"{sFName}"')
 
     def Save_Trace_CSV(self, sFName):
-        # self.write(f'MMEM:STOR:TRAC:CHAN "{sTrace}","{sFName}.csv",FORM,LOGP,POIN,COMM')
-        self.write(f"MMEM:STOR:TRAC:CHAN ALL,'{sFName}.csv'")
+        """Save Data in dB Phase CSV format"""
+        # self.write(f'MMEM:STOR:TRAC:CHAN "{sTrace}","{sFName}.csv",FORM, LOGP, POIN, COMM')
+        # self.write(f'MMEM:STOR:TRAC:CHAN "{sTrace}","{sFName}.csv",UNF, COMP, POIN, COMM')
+        self.write(f"MMEM:STOR:TRAC:CHAN ALL,'{sFName}.csv', UNF, LOGP, POIN, COMM")
 
     def Save_Trace_SxP(self, sFName):                        #MMM
+        """Save SxP data.  Ch must contain All (x^x) S-Parameter traces"""
         self.write(f"MMEM:STOR:TRAC:CHAN 1,'C:\\Rohde&Schwarz\\Nwa\\{sFName}.s2p'")
         #self.write(f':MMEM:STOR:TRAC:PORT %d,'%s.s2p',COMP,1,2"%(dChan,sFName))
 
