@@ -28,6 +28,7 @@ class jaVisa(object):
         self.EOL        = '\n'
         self.f          = ''    # file log object
         self.dLastErr   = ''
+        self.VISA       = ''    # '@py' for pyvisa-py
         self.K2         = 'NoVISA'
 
     def delay(self,sec):
@@ -140,11 +141,10 @@ class jaVisa(object):
         GPIB::<Addr>::INSTR
         ASRL1::INSTR
         """
-        rm = visa.ResourceManager()                         #Create Resource Manager
+        rm = visa.ResourceManager(self.VISA)                #Create Resource Manager
         #rmList = rm.list_resources()                       #List VISA Resources
         try:
             self.K2 = rm.open_resource(sVISAStr)            #Create Visa Obj
-                                                            # '@py' for pyvisa-py
             self.K2.timeout = 5000                          #Timeout, millisec
             self.jav_IDN()
             self.jav_fileout(fily, self.dataIDN)
@@ -257,7 +257,7 @@ class jaVisa(object):
 
 if __name__ == "__main__":
     RS = jaVisa()
-    ipaddress   = '192.168.1.160'
+    ipaddress   = '192.168.1.109'
     port        = 5025
     RS.debug    = 1
     # RS.jav_logscpi()
