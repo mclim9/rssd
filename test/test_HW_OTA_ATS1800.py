@@ -28,14 +28,18 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
+    def test_OTA_Init(self):
+        self.ATS1800.Init_Measurement()
+
     def test_OTA_Azimuth(self):
         setVal = 10
         self.ATS1800.Set_AzimuthSpeed(setVal)
-        # getVal = self.ATS1800.Get_AzimuthSpeed()
-        # if self.ATS1800.connected : self.assertEqual(setVal, getVal)
+        getVal = self.ATS1800.Get_AzimuthSpeed()
+        if self.ATS1800.connected : self.assertEqual(setVal, getVal)
         setVal = 10
         self.ATS1800.Set_AzimuthAngle(setVal)
         getVal = self.ATS1800.Get_AzimuthAngle()
+        getVal = self.ATS1800.Get_AzimuthRunning()
         if self.ATS1800.connected : self.assertEqual(setVal, getVal)
 
     def test_OTA_Elevation(self):
@@ -46,8 +50,11 @@ class TestGeneral(unittest.TestCase):
         setVal = 10
         self.ATS1800.Set_ElevateAngle(setVal)
         getVal = self.ATS1800.Get_ElevateAngle()
+        getVal = self.ATS1800.Get_ElevateRunning()
         if self.ATS1800.connected : self.assertEqual(setVal, getVal)
 
+    def test_OTA_SystemStat(self):
+        self.ATS1800.Get_SysStat()
 
 ###############################################################################
 ### </Test>

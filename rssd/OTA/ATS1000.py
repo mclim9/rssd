@@ -55,10 +55,6 @@ class OTA(OTA):
     def Get_ElevateSpeed(self):
         return 'TBD'
 
-    def Get_IDN(self):
-        rdStr = self.query(f'*IDN?')
-        return rdStr
-
     def Get_SysStat(self):
         return 'TBD'
 

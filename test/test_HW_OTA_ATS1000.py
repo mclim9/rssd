@@ -28,6 +28,9 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
+    def test_OTA_Init(self):
+        self.ATS1000.Init_Measurement()
+
     def test_OTA_Azimuth(self):
         setVal = 10
         self.ATS1000.Set_AzimuthSpeed(setVal)
@@ -48,6 +51,8 @@ class TestGeneral(unittest.TestCase):
         getVal = self.ATS1000.Get_ElevateAngle()
         if self.ATS1000.connected : self.assertEqual(setVal, getVal)
 
+    def test_OTA_SystemStat(self):
+        self.ATS1000.Get_SysStat()
 
 ###############################################################################
 ### </Test>

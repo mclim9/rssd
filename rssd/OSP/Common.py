@@ -48,7 +48,10 @@ class OSP(jaVisa):
             F01Mxx --> F01A1x nomenclature
             ON OFF 1 0
         """
-        self.write(f'CONF:COMP {sState}')
+        if sState in (1,'1','ON'):
+            self.write(f'CONF:COMP ON')
+        elif sState in (0,'0','OFF'):
+            self.write(f'CONF:COMP OFF')
 
     def Set_SW(self,slot=11,sw=1,pos=1):
         # ROUT:CLOS (@F01A11(0161))
