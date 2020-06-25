@@ -246,13 +246,12 @@ class RCT(RCT):
         return rdStr
 
 
-    def Get_5GNR_Params(self,amp,swp,sys,trc,header=0):                 #pylint: disable=R0913
+    def Get_5GNR_Params(self,amp,swp,sys,header=0):                 #pylint: disable=R0913
         """Amp,Sweep,System,Trace"""
         outStr = ""
         outStr += self.Get_5GNR_Params_Amp(header)+","   if (amp==1) else ""
         outStr += self.Get_5GNR_Params_Sweep(header)+"," if (swp==1) else ""
         outStr += self.Get_5GNR_Params_System(header)+","if (sys==1) else ""
-        outStr += self.Get_5GNR_Params_Trace(header)+"," if (trc==1) else ""
         return outStr
 
     def Get_5GNR_Params_Amp(self,header=0):
@@ -269,7 +268,7 @@ class RCT(RCT):
     def Get_5GNR_Params_Sweep(self,header=0):
         # SwpTime,SwpPts,SwpType,SwpOpt,
         if header != 1:
-            Time    = '<N/A>'
+            Time    = 1.212904298
             Points  = '<N/A>'
             Type    = '<N/A>'
             Opt     = '<N/A>'
@@ -281,7 +280,7 @@ class RCT(RCT):
     def Get_5GNR_Params_System(self,header=0):
         if header != 1:
             error  = self.jav_Error()
-            ext    = self.Get_System_ErrorExt().replace('"','')
+            ext    = self.jav_Error()
             outStr = f'{error[0]:>4},{error[1]:10.10},{ext:10.10}'
         else:
             outStr  = 'ErrNo,ErrMsg,ExtError'
