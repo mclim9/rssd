@@ -43,6 +43,11 @@ class TestGeneral(unittest.TestCase):
         getVal = self.CMP.Get_5GNR_FreqRange()
         if self.CMP.connected: self.assertEqual(getVal,'HIGH')
 
+    def test_CMP_5GNR_Get(self):
+        self.CMP.Get_AmpSettings()
+        self.CMP.Get_5GNR_CC_Offset()
+        self.CMP.Get_5GNR_Params(1,1,0)
+
     def test_CMP_5GNR_Get_UL(self):
         self.CMP.Set_5GNR_Direction('UL')
         # nullVal = self.CMP.Get_5GNR_CC_Freq()
@@ -88,8 +93,10 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.CMP.Get_5GNR_BWP_Ch_PTRS_Pow()
         nullVal = self.CMP.Get_5GNR_BWP_Ch_PTRS_RE_Offset()
 
-    # def test_CMP_5GNR_Set_UL(self):
-    #     self.CMP.Set_5GNR_Direction('UL')
+    def test_CMP_5GNR_Set_DL(self):
+        self.CMP.Set_5GNR_Direction('DL')
+        self.CMP.Get_5GNR_Direction()
+        self.CMP.Get_5GNR_SSB_SubSpace()
     #     self.CMP.Set_5GNR_CC_Num(1)
     #     self.CMP.Set_5GNR_TransPrecoding('OFF')
     #     self.CMP.Set_5GNR_PhaseCompensate('OFF')
