@@ -261,7 +261,7 @@ class VSG(VSG):                             #pylint: disable=E0102
     def Set_5GNR_BBState(self,iEnable):
         """ON OFF"""
         if (iEnable == 1) or (iEnable == 'ON'):
-            self.jav_OPC_Wait(':SOUR1:BB:NR5G:STAT 1')
+            self.jav_Wait(':SOUR1:BB:NR5G:STAT 1')
 #            self.query(f'*OPC?')          # Wait for calculation
         else:
             self.write(f':SOUR1:BB:NR5G:STAT 0')
