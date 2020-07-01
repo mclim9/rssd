@@ -80,10 +80,11 @@ class PMr(jaVisa):
     def Set_Average(self,iAvg):
         self.write('SENS:AVER:COUN %d'%iAvg)
 
-    def Set_AverageMode(self,bAuto):
-        if bAuto == 0:
+    def Set_AverageMode(self,sState):
+        """ON | OFF"""
+        if sState in (1,'1','ON'):
             self.write('SENS:AVER:COUN:AUTO OFF')
-        else:
+        elif sState in (0,'0','OFF'):
             self.write('SENS:AVER:COUN:AUTO ON')
 
     def Set_BufferSize(self,iSize):
@@ -105,9 +106,10 @@ class PMr(jaVisa):
     ###    - NRPM-Axx  OTA Antenna module: A66(27-75)
     #####################################################################
     def Set_NRPM_LED(self,sState,iSensor=1):
-        if sState in (1,'ON'):
+        """ON | OFF"""
+        if sState in (1,'1','ON'):
             self.write('SYST:LED:CHAN%d:COL 255'%iSensor)
-        elif sState in (0,'OFF'):
+        elif sState in (0,'0','OFF'):
             self.write('SYST:LED:CHAN%d:COL 0'%iSensor)
 
     def Set_PowerOffset(self,fOffset):
@@ -115,9 +117,10 @@ class PMr(jaVisa):
         self.write('SENS:CORR:OFFS %f'%fOffset)
 
     def Set_PowerOffsetState(self,sState):
-        if sState in (1,'ON'):
+        """ON | OFF"""
+        if sState in (1,'1','ON'):
             self.write('SENS:CORR:OFFS:STAT ON')
-        elif sState in (0,'OFF'):
+        elif sState in (0,'0','OFF'):
             self.write('SENS:CORR:OFFS:STAT OFF')
 
     def Set_TriggerSource(self,sSource):
@@ -125,9 +128,10 @@ class PMr(jaVisa):
         self.write('TRIG:SOUR %s'%sSource)
 
     def Set_TriggerAuto(self,sState):
-        if sState in (1,'ON'):
+        """ON | OFF"""
+        if sState in (1,'1','ON'):
             self.write('TRIG:ATR:STAT ON')          #Auto-Trigger ON
-        elif sState in (0,'OFF'):
+        elif sState in (0,'0','OFF'):
             self.write('TRIG:ATR:STAT OFF')         #Auto-Trigger OFF
 
     def Set_TriggerCount(self,iNum):
