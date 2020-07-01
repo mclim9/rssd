@@ -81,7 +81,7 @@ class FileIO(object):
 if __name__ == "__main__":
     ### this won't be run when imported
     FileIO = FileIO()
-    FileIO.Init("FileIO.csv")
+    FileIO.init("FileIO.csv")
     FileIO.write("Hello World")
     FileIO.write_raw("Hello Worldd")
     data = FileIO.readcsv()
