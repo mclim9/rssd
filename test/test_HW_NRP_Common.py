@@ -29,6 +29,12 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
+    def test_NRP_Gets(self):
+        self.NRP8.Get_BufferedMeas('ON')
+        self.NRP8.Get_BufferedMeas('OFF')
+        self.NRP8.Get_EventStatus()
+        self.NRP8.Get_Offset()
+
     def test_NRP_List(self):
         self.NRP8.Get_AvailableNRP()
 
@@ -38,13 +44,21 @@ class TestGeneral(unittest.TestCase):
         GetVal = self.NRP8.Get_Freq()
         if self.NRP8.connected: self.assertEqual(SetVal,int(GetVal))
 
+    def test_NRP_Trigger(self):
+        self.NRP8.Set_TriggerAuto(0)
+        self.NRP8.Set_TriggerCount(10)
+        self.NRP8.Set_TriggerSource('BUS')
+        self.NRP8.Set_TriggerAuto(1)
+
     def test_NRP_Power(self):
         self.NRP8.Set_Freq(6e9)                              # Set Frequency
-        self.NRP8.Set_AverageMode(1)                         # Auto Averaging OFF
+        self.NRP8.Set_AverageMode(1)                         # Auto Averaging ON
         self.NRP8.Set_Average(10)                            # Avg Count = 4
         self.NRP8.Set_PowerOffset(5)
         self.NRP8.Set_PowerOffsetState(1)
         self.NRP8.Set_InitImm()
+        self.NRP8.Set_AverageMode(0)                         # Auto Averaging OFF
+        self.NRP8.Set_PowerOffsetState(0)
         GetVal = self.NRP8.Get_Average()
         GetVal = self.NRP8.Get_Power()
 
@@ -58,6 +72,7 @@ class TestGeneral(unittest.TestCase):
         self.NRP8.Set_NRPM_LED(1)
         self.NRP8.Set_NRPM_LED(0)
         GetVal = self.NRP8.Get_NRPM_PowerAll()
+
 
 
 ###############################################################################
