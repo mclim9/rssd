@@ -37,7 +37,7 @@ class TestGeneral(unittest.TestCase):
         getVal = self.ATS1000.Get_AzimuthSpeed()
         if self.ATS1000.connected : self.assertEqual(setVal, getVal)
         setVal = 10
-        # self.ATS1000.Set_AzimuthAngle(setVal)
+        self.ATS1000.Set_AzimuthAngle(setVal)
         # getVal = self.ATS1000.Get_AzimuthAngle()
         getVal = self.ATS1000.Get_AzimuthRunning()
         if self.ATS1000.connected : self.assertEqual(setVal, getVal)
@@ -59,6 +59,7 @@ class TestGeneral(unittest.TestCase):
 
     def test_OTA_SystemStat(self):
         self.ATS1000.Get_SysStat()
+        self.ATS1000.Get_CxAngle()
 
 ###############################################################################
 ### </Test>
