@@ -85,10 +85,10 @@ class jaVisa(object):
         self.write("*ESE 1")                                #Event Status Enable
         self.write("*SRE 32")                               #ServiceReqEnable-Bit5:Std Event
         self.write(InCMD + ";*OPC")                         #Initiate Read.  *OPC will trigger ESR
-        read = "0"
-        while (int(read) & 1) != 1:                         #Loop until done
+        read = 0
+        while (read & 1) != 1:                              #Loop until done
             try:
-                read = self.query("*ESR?").strip()          #Poll EventStatReg-Bit0:Op Complete  (STB?)
+                read = self.queryInt("*ESR?")               #Poll EventStatReg-Bit0:Op Complete  (STB?)
             except:
                 if self.debug: print("jav_OPCWai:*ESR? Error")
             time.sleep(0.5)
@@ -141,7 +141,7 @@ class jaVisa(object):
 
     def jav_logscpi(self):
         self.f = rssd.FileIO()                              #pylint:disable=E1101
-        self.f.Init("yaVISA")                               #pylint:disable=W0612
+        self.f.init("yaVISA")                               #pylint:disable=W0612
 
     def jav_read_raw(self):
         # return self.K2.read()
