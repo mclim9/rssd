@@ -1,10 +1,6 @@
 # -*- coding: future_fstrings -*-
 #####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-###
 ### Purpose: NRQ Common Functions
-### Author : Martin C Lim
-### Date   : 2018.02.01
 #####################################################################
 from rssd.yaVISA import jaVisa
 
@@ -22,8 +18,12 @@ class NRQ(jaVisa):
         return ChList
 
     def Set_DisplayUpdate(self,state):
-        # Param: ON|OFF
-        self.write('SYST:DISP:UPD %s'%state)                #Display Update State
+        """ON|OFF"""
+        if state in (1,'1','ON'):
+            self.write('SYST:DISP:UPD ON')                  #Display Update State
+        elif state in (0,'0','OFF'):
+            self.write('SYST:DISP:UPD OFF')                 #Display Update State
+
 
     #####################################################################
     ### NRQ Common Settings
@@ -54,7 +54,7 @@ class NRQ(jaVisa):
     #####################################################################
     def Get_IQ_SamplingRate(self):
         # SamplingRate = IQ_BW / 0.8
-        iRead = self.queryFloat(':SENS:BAND:SRAT?')                   #Sampling Rate
+        iRead = self.queryFloat(':SENS:BAND:SRAT?')             #Sampling Rate
         return iRead
 
     def Set_IQ_SamplingRate(self,fFreq):
@@ -71,6 +71,7 @@ class NRQ(jaVisa):
         self.write('SENS:TRAC:IQ:RLEN %d'%iLen)
 
     def Get_IQ_Data(self):
+        """ NRQ IQ Data --> Variable """
         self.write('SENS:FUNC “XTIM:VOLT:IQ”')
         self.write('SENS:BAND:TYPE SRAT')
         self.write('TRIG:SOUR IMM')
@@ -81,9 +82,7 @@ class NRQ(jaVisa):
         return rdStr
 
     def Get_IQtoIQW(self):
-        ####################################################################
-        """ Get the IQ data and store to IQW file to process in VSE """
-        ####################################################################
+        """ NRQ IQ data --> IQW file to process in VSE """
         self.write("SENS:FUNC 'XTIM:VOLT:IQ'")
         self.write("SENS:TRAC:IQ:DATA:FORM IQPAIR")
         self.write("FORM:DATA REAL,32")
