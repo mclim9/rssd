@@ -185,7 +185,7 @@ class jaVisa(object):
         self.f = rssd.FileIO()                              #pylint:disable=E1101
         DataFile = self.f.init("yaVISA")                    #pylint:disable=W0612
 
-    def jav_read_raw(self):
+    def jav_read_raw(self):                                 #pylint: disable=E0202
         return self.K2.read_raw()
 
     def jav_write_raw(self,SCPI):
