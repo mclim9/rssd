@@ -68,7 +68,7 @@ class jaVISA_mock(object):                          #pylint: disable=R0205
         pass
 
     def jav_read_raw(self):
-        pass
+        return b'1234567890'
 
     def jav_write_raw(self,SCPI):                   #pylint: disable=R0201,W0613
         pass

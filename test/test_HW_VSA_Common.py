@@ -42,10 +42,10 @@ class TestGeneral(unittest.TestCase):
         self.FSW.jav_IDN()
         if self.FSW.connected: self.assertEqual(self.FSW.Make,"Rohde&Schwarz")  # Valuecompare
 
-    # def test_FSW_ChannelManagement(self):
-        # getVal = self.FSW.Get_ChannelName()
-        # getVal = self.FSW.Get_Channels()
-        # self.FSW.Init_IQ()
+    def test_FSW_ChannelManagement(self):
+        if self.FSW.connected: getVal = self.FSW.Get_ChannelName()
+        getVal = self.FSW.Get_Channels()
+        self.FSW.Init_IQ()
         # # self.FSW.Set_ChannelName('IQ','IQ_Test')
         # self.FSW.Set_ChannelSelect('Spectrum')
 

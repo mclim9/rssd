@@ -42,10 +42,11 @@ class TestGeneral(unittest.TestCase):
     def test_FSW_Get_IQData(self):
         self.FSW.Set_IQ_RecLength(10)
         self.FSW.Set_SweepCont(0)
-        if self.FSW.connected: getVal = self.FSW.Get_IQ_Data()
-        # getVal = self.FSW.Get_IQ_Data_Ascii()
-        if self.FSW.connected: getVal = self.FSW.Get_IQ_Data_Ascii2()
-        if self.FSW.connected: getVal = self.FSW.Get_IQ_Data_Bin()
+        getVal = self.FSW.Get_IQ_Data()
+        if self.FSW.connected == 0: getVal = self.FSW.Get_IQ_Data_Ascii(2)
+        # if self.FSW.connected == 1: getVal = self.FSW.Get_IQ_Data_Ascii(5)
+        getVal = self.FSW.Get_IQ_Data_Ascii2()
+        if self.FSW.connected == 1: getVal = self.FSW.Get_IQ_Data_Bin()
 
     def test_FSW_Set_IQ_ALCR(self):
         self.FSW.Set_IQ_ACLR(9e6,10e6)

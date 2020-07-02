@@ -85,7 +85,7 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_5GNR_BWP_Ch_ResBlockOffset()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_SymbNum()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_SymbOff()
-        # nullVal = self.FSW.Get_5GNR_BWP_Center()
+        if self.FSW.connected: nullVal = self.FSW.Get_5GNR_BWP_Center()
         ### "=DMRS="
         nullVal = self.FSW.Get_5GNR_BWP_Ch_DMRS_Config()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_DMRS_Mapping()
@@ -131,7 +131,7 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_5GNR_BWP_Ch_ResBlockOffset()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_SymbNum()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_SymbOff()
-        # nullVal = self.FSW.Get_5GNR_BWP_Center()
+        if self.FSW.connected: nullVal = self.FSW.Get_5GNR_BWP_Center()
         ### "=DMRS="
         nullVal = self.FSW.Get_5GNR_BWP_Ch_DMRS_Config()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_DMRS_Mapping()
@@ -184,7 +184,7 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_5GNR_BWP_Corset_ResBlock(66)
         self.FSW.Set_5GNR_BWP_Ch_ResBlockOffset(0)
         self.FSW.Set_5GNR_BWP_Ch_Modulation('QPSK')
-        # self.FSW.Set_5GNR_SSB()
+
 ###############################################################################
 ### </Test>
 ###############################################################################

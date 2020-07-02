@@ -80,9 +80,7 @@ class VSA(jaVisa):
         return rdStr
 
     def Get_IQ_Data(self,sFilename="file.iqw"):
-        ####################################################################
-        ### Get the IQ data and store to IQW file to process in VSE
-        ####################################################################
+        """ IQ data --> IQW file for VSE"""
         self.write("FORM REAL,32")
         self.write("TRAC:IQ:DATA:FORM IQP")
         self.write("TRAC:IQ:DATA?")
@@ -122,6 +120,7 @@ class VSA(jaVisa):
         return CSVd
 
     def Get_IQ_Data_Ascii2(self):
+        """Return IQ data as CSV string"""
         CSVd = ""
         self.write('FORMAT:DATA ASCII')
         self.write('TRAC:IQ:DATA:FORM IQP')
@@ -134,7 +133,7 @@ class VSA(jaVisa):
         self.write('FORMAT:DATA REAL,32')
         self.write('TRAC:IQ:DATA:FORM IQP')
         self.write('TRAC:IQ:DATA:MEM?')
-        rdStr = self.K2.read_raw()
+        rdStr = self.jav_read_raw()
         numBytes = int(chr(rdStr[1]))                   # Number of Bytes
         numIQ    = int(rdStr[2:2+numBytes])
         IQBytes  = rdStr[(numBytes+2):-1]               # Remove Header

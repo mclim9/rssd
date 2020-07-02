@@ -160,12 +160,13 @@ class jaVisa(object):
         self.connected      = 1
         if self.K2 == 'NoVISA':
             mock = jaVISA_mock()
-            self.jav_Open   = mock.jav_Open
-            self.write      = mock.write
-            self.query      = mock.query
-            self.jav_Error  = mock.jav_Error
-            self.jav_Clear  = mock.jav_Clear
-            self.connected  = 0
+            self.jav_Open       = mock.jav_Open
+            self.write          = mock.write
+            self.query          = mock.query
+            self.jav_Clear      = mock.jav_Clear
+            self.jav_Error      = mock.jav_Error
+            self.jav_read_raw   = mock.jav_read_raw
+            self.connected      = 0
         self.jav_ClrErr()
         self.dLastErr = ""
         return self
