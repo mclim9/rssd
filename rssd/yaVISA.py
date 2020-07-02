@@ -233,7 +233,7 @@ class jaVisa(object):
             strArry = self.query(cmd).split(',')
             return [float(i) for i in strArry]
         except:
-            return [-9999.9999, -888.888, -777.777]
+            return [-9999.9999, -888.888, -777.777, -666.666, -555.555, -444.444]
 
     def queryInt(self,cmd):
         try:
