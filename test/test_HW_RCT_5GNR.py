@@ -61,30 +61,30 @@ class TestGeneral(unittest.TestCase):
         ### "=User="
         nullVal = self.CMP.Get_5GNR_BWP_SubSpace()
         nullVal = self.CMP.Get_5GNR_BWP_Count()
-        if self.CMP.connected: self.CMP.Get_5GNR_BWP_ResBlock()
-        if self.CMP.connected: self.CMP.Get_5GNR_BWP_ResBlockOffset()
+        self.CMP.Get_5GNR_BWP_ResBlock()
+        self.CMP.Get_5GNR_BWP_ResBlockOffset()
         ### "==Ch=="
-        if self.CMP.connected: self.CMP.Get_5GNR_BWP_Ch_Modulation()
-        if self.CMP.connected: self.CMP.Get_5GNR_BWP_Ch_ResBlock()
-        if self.CMP.connected: self.CMP.Get_5GNR_BWP_Ch_ResBlockOffset()
-        if self.CMP.connected: self.CMP.Get_5GNR_BWP_Ch_SymbNum()
-        if self.CMP.connected: self.CMP.Get_5GNR_BWP_Ch_SymbOff()
+        self.CMP.Get_5GNR_BWP_Ch_Modulation()
+        self.CMP.Get_5GNR_BWP_Ch_ResBlock()
+        self.CMP.Get_5GNR_BWP_Ch_ResBlockOffset()
+        self.CMP.Get_5GNR_BWP_Ch_SymbNum()
+        self.CMP.Get_5GNR_BWP_Ch_SymbOff()
         nullVal = self.CMP.Get_5GNR_BWP_Center()
         ### "=DMRS="
         nullVal = self.CMP.Get_5GNR_BWP_Ch_DMRS_Mapping()
         nullVal = self.CMP.Get_5GNR_BWP_Ch_DMRS_1stDMRSSym()
 
         nullVal = self.CMP.Get_5GNR_BWP_Ch_DMRS_Config()
-        if self.CMP.connected: self.CMP.Get_5GNR_BWP_Ch_DMRS_AddPosition()
+        self.CMP.Get_5GNR_BWP_Ch_DMRS_AddPosition()
 
         nullVal = self.CMP.Get_5GNR_BWP_Ch_DMRS_MSymbLen()
-        if self.CMP.connected: self.CMP.Get_5GNR_BWP_Ch_DMRS_CDMGroup()
-        if self.CMP.connected: self.CMP.Get_5GNR_BWP_Ch_DMRS_Antenna()
-        if self.CMP.connected: self.CMP.Get_5GNR_BWP_Ch_DMRS_RelPwr()
+        self.CMP.Get_5GNR_BWP_Ch_DMRS_CDMGroup()
+        self.CMP.Get_5GNR_BWP_Ch_DMRS_Antenna()
+        self.CMP.Get_5GNR_BWP_Ch_DMRS_RelPwr()
         
         nullVal = self.CMP.Get_5GNR_BWP_Ch_DMRS_SeqGenMeth()
-        if self.CMP.connected: self.CMP.Get_5GNR_BWP_Ch_DMRS_SeqGenSeed()
-        if self.CMP.connected: self.CMP.Get_5GNR_BWP_Ch_DMRS_SeqGen_n_SCID()
+        self.CMP.Get_5GNR_BWP_Ch_DMRS_SeqGenSeed()
+        self.CMP.Get_5GNR_BWP_Ch_DMRS_SeqGen_n_SCID()
 
         ### "=PTRS="
         nullVal = self.CMP.Get_5GNR_BWP_Ch_PTRS_State()
