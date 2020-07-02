@@ -30,8 +30,6 @@ install:
 script:
   # - python -m unittest -v test.test_RSSD
   - coverage run    -m unittest -b -v test.test_RSSD
-  - coverage run -a -m unittest -b -v test.test_FileIO
-  - coverage run -a -m unittest -b -v test.test_iqData
   - coverage run -a -m unittest -b -v test.test_yaVISA
   - coverage run -a -m unittest discover -b -v -p test_HW_NRQ*
   - coverage run -a -m unittest discover -b -v -p test_HW_NRP*
@@ -44,6 +42,7 @@ script:
   - coverage run -a -m unittest discover -b -v -p test_HW_VSE*
   - coverage run -a -m unittest discover -b -v -p test_HW_VSG*
   - coverage run -a -m unittest discover -b -v -p test_HW_VST*
+  - coverage run -a -m unittest discover -b -v -p test_SW*
 
 after_success:
   - coveralls

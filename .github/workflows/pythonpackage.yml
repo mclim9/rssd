@@ -49,7 +49,6 @@ jobs:
       run: |
         # pytest
         coverage run -m unittest -v test.test_RSSD
-        coverage run -a -m unittest -v test.test_FileIO
         coverage run -a -m unittest -v test.test_yaVISA
         coverage run -a -m unittest discover -b -v -p test_HW_NRQ*
         coverage run -a -m unittest discover -b -v -p test_HW_NRP*
@@ -62,6 +61,7 @@ jobs:
         coverage run -a -m unittest discover -b -v -p test_HW_VSE*
         coverage run -a -m unittest discover -b -v -p test_HW_VSG*
         coverage run -a -m unittest discover -b -v -p test_HW_VST*.py
+        coverage run -a -m unittest discover -b -v -p test_SW*
 
     # - name: Coveralls
     #   uses: coverallsapp/github-action@master
