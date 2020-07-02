@@ -88,10 +88,10 @@ class jaVisa(object):
         self.write("*SRE 32")                               #ServiceReqEnable-Bit5:Std Event
         self.write(InCMD + ";*OPC")                         #Initiate Read.  *OPC will trigger ESR
         #print ('    OPC Wait: ' +InCMD)
-        read = "0"
-        while (int(read) & 1) != 1:                         #Loop until done
+        read = 0
+        while (read & 1) != 1:                              #Loop until done
             try:
-                read = self.query("*ESR?").strip()          #Poll EventStatReg-Bit0:Op Complete  (STB?)
+                read = self.queryInt("*ESR?")               #Poll EventStatReg-Bit0:Op Complete  (STB?)
             except:
                 if self.debug: print("jav_OPCWai:*ESR? Error")
             time.sleep(0.5)
@@ -182,7 +182,7 @@ class jaVisa(object):
 
     def jav_logscpi(self):
         self.f = rssd.FileIO()                              #pylint:disable=E1101
-        DataFile = self.f.Init("yaVISA")                    #pylint:disable=W0612
+        DataFile = self.f.init("yaVISA")                    #pylint:disable=W0612
 
     def jav_read_raw(self):
         return self.K2.read_raw()
@@ -267,6 +267,6 @@ if __name__ == "__main__":
     # RS.jav_openvisa(f'TCPIP::{ipaddress}::instr0::INSTR')     #VXI11
     # RS.jav_openvisa(f'TCPIP::{ipaddress}::{port}::SOCKET')    #Socket
 
-    print(RS.query("*IDN?"))
+    RS.jav_OPC_Wait('INIT:IMM')
     RS.jav_Close()
     
