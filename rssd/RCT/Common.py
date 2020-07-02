@@ -121,7 +121,7 @@ class RCT(jaVisa):
         self.Init_Meas_Power()
         self.Set_Meas_UserMargin(0)
         self.Set_Meas_Expected_Nom_Power(40)
-        pwr = self.Get_Meas_FFT_Power()
+        pwr = self.Get_Meas_Power()
         print(pwr)
         self.Set_Meas_Expected_Nom_Power(pwr + 2)
 

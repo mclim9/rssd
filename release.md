@@ -16,6 +16,7 @@
 - NRP Add coverage
 - ATS1000 Add coverage
 - RCT_5GNR add coverage
+- RCT_Common add coverage
 
 ## RSSD 2020.06.2
 - OTA
