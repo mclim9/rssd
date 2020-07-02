@@ -10,7 +10,7 @@
 ###############################################################################
 ### User Entry
 ###############################################################################
-host = '192.168.1.109'                              #Get local machine name
+host = '192.168.1.108'                              #Get local machine name
 
 ###############################################################################
 ### Code Start
@@ -38,10 +38,6 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_ACLR_NumAdj(2)
         self.FSW.Get_ACLR()
 
-    def test_FSW_Connect(self):
-        self.FSW.jav_IDN()
-        if self.FSW.connected: self.assertEqual(self.FSW.Make,"Rohde&Schwarz")  # Valuecompare
-
     def test_FSW_ChannelManagement(self):
         if self.FSW.connected: getVal = self.FSW.Get_ChannelName()
         getVal = self.FSW.Get_Channels()
@@ -60,6 +56,10 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Get_IFOvld()
         self.FSW.Get_ACLR()
         self.FSW.Set_DisplayUpdate('ON')
+
+    def test_FSW_Connect(self):
+        self.FSW.jav_IDN()
+        if self.FSW.connected: self.assertEqual(self.FSW.Make,"Rohde&Schwarz")  # Valuecompare
 
     def test_FSW_Freq(self):
         self.FSW.Set_FreqStart(10e6)
@@ -93,11 +93,24 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_In_YIG('ON')
         self.FSW.Set_In_HPFilter('ON')
 
-    def test_FSW_Marker(self):
+    def test_FSW_Marker_dB(self):
         self.FSW.Set_Mkr_Peak()
         getVal = self.FSW.Get_Mkr_Freq()
         getVal = self.FSW.Get_Mkr_XY()
         getVal = self.FSW.Get_Mkr_Y()
+
+    def test_FSW_Marker_Noise(self):
+        self.FSW.Get_Mkr_Noise()
+
+    def test_FSW_Marker_Time(self):
+        self.FSW.Set_Span(0)
+        self.FSW.Get_Mkr_TimeDomain()
+        self.FSW.Set_Span(900e6)
+
+    def test_FSW_Trigger(self):
+        self.FSW.Set_Trig1_Source('IMM')
+        self.FSW.Set_Trig2_Dir('OUT')
+        self.FSW.Set_Trig2_OutType('DEV')
 
     def test_FSW_Sys_Overload(self):
         getVal = self.FSW.Get_Ovld_Stat()
