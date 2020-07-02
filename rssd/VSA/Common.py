@@ -167,8 +167,8 @@ class VSA(jaVisa):
     def Get_Mkr_TimeDomain(self,iNum=1,iWind=1):
       # self.write(':CALC:MARK%d:FUNC:SUMM:STAT ON'%iNum)
         #MkrFreq = self.query(':CALC%d:MARK%d:X?'%(iWind,iNum)).strip()
-        MkrPwr  = self.query(':CALC%d:MARK%d:FUNC:SUMM:RMS:RES?'%(iWind,iNum)).strip()
-        return float(MkrPwr)
+        MkrPwr  = self.queryFloat(f':CALC{iWind}:MARK{iNum}:FUNC:SUMM:RMS:RES?')
+        return MkrPwr
 
     def Get_Mkr_XY(self,iNum=1,iWind=1):
         ValX = self.query(':CALC%d:MARK%d:X?'%(iWind,iNum)).strip()
@@ -737,15 +737,16 @@ class VSA(jaVisa):
         self.write('TRIG:SEQ:SOUR %s'%sDetect)
 
     def Set_Trig2_Dir(self,sDir):
+        """OUT | INP """
         if sDir == 'OUT':
             self.write('OUTP:TRIG2:DIR OUTP')
         else:
             self.write('OUTP:TRIG2:DIR INP')
 
     def Set_Trig2_OutType(self,sDir):
-        #DEV : Device
-        #TARM: Trigger Armed
-        #UDEF: User Defined
+        """DEV : Device
+        TARM: Trigger Armed
+        UDEF: User Defined"""
         self.write(f'OUTP:TRIG2:OTYP {sDir}')
 
     def Set_VidBW(self,fFreq):
