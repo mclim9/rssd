@@ -66,11 +66,6 @@ class TestGeneral(unittest.TestCase):
         self.CMW = RCT()
         self.assertEqual(self.CMW.Model,"CMW-GPRF")
 
-    def test_RCT_GPRF(self):
-        from rssd.RCT.GPRF import RCT               #pylint:disable=E0611,E0401
-        self.CMW = RCT()
-        self.assertEqual(self.CMW.Model,"CMW-GPRF")
-
     def test_VNA_Common(self):
         from rssd.VNA.Common import VNA             #pylint:disable=E0611,E0401
         self.VNA = VNA()        
