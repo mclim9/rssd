@@ -40,6 +40,6 @@ class TestGeneral(unittest.TestCase):
 ### </Test>
 ###############################################################################
 if __name__ == '__main__':
-    # unittest.main()
+    # coverage run -a -m unittest -b -v test_HW_VSA_Common_Harm
     suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
     unittest.TextTestRunner(verbosity=2).run(suite)
