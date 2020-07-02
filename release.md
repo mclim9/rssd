@@ -7,6 +7,7 @@
   - Add state 0,'0','Off' for all
 - VSG
   - Chg Set_5GNR_BBState from jav_OPC_Wait to jav_Wait
+- RST.NR5G_K601 chg from query('MMM').split() to queryFloatArry
 
 ### Examples
 - Add SMW_5GNR_HARQ_Setup.py
@@ -17,6 +18,8 @@
 - ATS1000 Add coverage
 - RCT_5GNR add coverage
 - RCT_Common add coverage
+- VSA_Common add coverage
+- VSA_CommonIQ add coverage
 
 ## RSSD 2020.06.2
 - OTA

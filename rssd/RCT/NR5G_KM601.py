@@ -82,59 +82,59 @@ class RCT(RCT):
 
     def Get_5GNR_BWP_Ch_DMRS_AddPosition(self):
         """ 0 to 3 """
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:BWP:PUSC:DMTA?  BWP{self.BWP}').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:BWP:PUSC:DMTA?  BWP{self.BWP}')
         return rdStr[1]
 
     def Get_5GNR_BWP_Ch_DMRS_Antenna(self):
         """ 1 to 0 """
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:ADD?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:ADD?')
         return rdStr[3]
 
     def Get_5GNR_BWP_Ch_DMRS_CDMGroup(self):
         """ 1 to 3 """
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:ADD?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:ADD?')
         return rdStr[1]
 
     def Get_5GNR_BWP_Ch_DMRS_Config(self):
         """ 1 to 2 """
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:BWP:PUSC:DMTA? BWP{self.BWP}').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:BWP:PUSC:DMTA? BWP{self.BWP}')
         return rdStr[0]
 
     def Get_5GNR_BWP_Ch_DMRS_Mapping(self):
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?')
         return rdStr[0]
 
     def Get_5GNR_BWP_Ch_DMRS_MSymbLen(self):
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:ADD?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:ADD?')
         return rdStr[0]
 
     def Get_5GNR_BWP_Ch_DMRS_RelPwr(self):
         """ -10 to 10 """
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:ADD?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:ADD?')
         return rdStr[2]
 
     def Get_5GNR_BWP_Ch_DMRS_SeqGenMeth(self):
         """CellID DMRS"""
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:SGEN?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:SGEN?')
         return rdStr[0]
 
     def Get_5GNR_BWP_Ch_DMRS_SeqGenSeed(self):
         """ 0 to 655535 """
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:SGEN?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:SGEN?')
         return rdStr[1]
 
     def Get_5GNR_BWP_Ch_DMRS_SeqGen_n_SCID(self):
         """ 0 to 1 """
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:SGEN?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC:SGEN?')
         return rdStr[2]
 
     def Get_5GNR_BWP_Ch_Modulation(self):
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?')
         return rdStr[5]
 
     def Get_5GNR_BWP_Ch_Mapping(self):
         """PUSCH Mapping"""
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?')
         return rdStr[0]
 
     def Get_5GNR_BWP_Ch_PTRS_K(self):
@@ -162,19 +162,19 @@ class RCT(RCT):
 
     def Get_5GNR_BWP_Ch_ResBlock(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?')
         return rdStr[3]
 
     def Get_5GNR_BWP_Ch_ResBlockOffset(self):
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?')
         return rdStr[4]
 
     def Get_5GNR_BWP_Ch_SymbNum(self):
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?')
         return rdStr[1]
 
     def Get_5GNR_BWP_Ch_SymbOff(self):
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:ALL{self.alloc}:PUSC?')
         return rdStr[2]
 
     def Get_5GNR_BWP_Count(self):
@@ -183,20 +183,15 @@ class RCT(RCT):
 
     def Get_5GNR_BWP_ResBlock(self):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:BWP? BWP{self.BWP}').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:BWP? BWP{self.BWP}')
         return rdStr[2]
 
     def Get_5GNR_BWP_ResBlockOffset(self):
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:BWP? BWP{self.BWP}').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:BWP? BWP{self.BWP}')
         return rdStr[3]
 
-    # def Get_5GNR_BWP_SlotNum(self):
-    #     ### Number of slots
-    #     rdStr = self.query(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:SLOT?')
-    #     return rdStr
-
     def Get_5GNR_BWP_SubSpace(self):
-        rdStr = self.query(f'CONF:NRMM:MEAS:CC{self.cc}:BWP? BWP{self.BWP}').split(',')
+        rdStr = self.queryFloatArry(f'CONF:NRMM:MEAS:CC{self.cc}:BWP? BWP{self.BWP}')
         return rdStr[0]
 
     def Get_5GNR_CC_Offset(self):
