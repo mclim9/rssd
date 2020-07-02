@@ -244,7 +244,8 @@ class VSA(VSA):                                 #pylint: disable=E0102
         return rdStr
 
     def Get_5GNR_TM_Cat(self):
-        rdStr = self.query(f'MMEM:LOAD:TMOD:CC{self.cc}:CAT?').split(',')
+        rdStr = 'Command not available'
+        # rdStr = self.query(f'MMEM:LOAD:TMOD:CC{self.cc}:CAT?').split(',')
         return rdStr
 
     def Get_5GNR_TransPrecoding(self):
@@ -260,6 +261,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
     #####################################################################
     def Init_5GNR(self):
         self.Set_Channel('NR5G')
+        self.write(f'CONF:NR5G:MEAS EVM')
 
     def Init_5GNR_Meas(self,sMeas):
         """ EVM; ESPectrum; ACLR; TAER"""
@@ -416,9 +418,6 @@ class VSA(VSA):                                 #pylint: disable=E0102
         else:
             print('Set_5GNR_FreqRange invalid parameter')
 
-    def Set_5GNR_Parameters(self,sDir):
-        self.Set_5GNR_Direction(sDir)
-
     def Set_5GNR_PhaseCompensate(self,state):
         """ 'ON' | 'OFF' """
         if (state == "ON") or (state == 1):
@@ -449,6 +448,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
         self.write(f':SENS:NR5G:FRAM:SLOT {dSubFrame}')
 
     def Set_5GNR_TM(self, file):
+        """NR-FR1-TM1_1__FDD_15MHz_30kHz"""
         self.query(f'MMEM:LOAD:TMOD:CC{self.cc} "{file}";*OPC?')
 
     def Set_5GNR_TransPrecoding(self,sState):

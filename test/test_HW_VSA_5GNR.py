@@ -9,7 +9,7 @@
 ###############################################################################
 ### User Entry
 ###############################################################################
-host = '192.168.1.109'                              #Get local machine name
+host = '192.168.1.108'                              #Get local machine name
 
 ###############################################################################
 ### Code Start
@@ -36,6 +36,21 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_5GNR_Direction('DL')
         getVal = self.FSW.Get_5GNR_Direction()
         if self.FSW.connected: self.assertEqual(getVal,'DL')
+
+    def test_FSW_5GNR_Ex_Meas_Multi_CC(self):
+        self.FSW.Init_5GNR_Meas('EVM')
+        # Configure setup
+        self.FSW.Set_5GNR_CellID(1)
+        self.FSW.Set_5GNR_SubFrameCount(2)
+        self.FSW.Set_5GNR_Result_View('ALL')        # Multi CC results
+        self.FSW.Set_5GNR_EVMUnit('DB')
+        self.FSW.Get_5GNR_Params_EVM()
+
+    def test_FSW_5GNR_Ex_SEM(self):
+        self.FSW.Init_5GNR_SEM()
+        self.FSW.Set_5GNR_SEM_Freq(20e9)
+        self.FSW.Set_5GNR_SEM_SubBlockNum(1)
+        self.FSW.Get_5GNR_SEM()
 
     def test_FSW_5GNR_FreqRange(self):
         self.FSW.Set_5GNR_Direction('UL')
@@ -133,6 +148,11 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_Pow()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_RE_Offset()
 
+    def test_FSW_5GNR_InstrState(self):
+        self.FSW.Get_5GNR_TM_Cat()
+        self.FSW.Set_5GNR_TM('NR-FR1-TM1_1__FDD_15MHz_30kHz')
+        self.FSW.Set_5GNR_savesetting('test')
+
     def test_FSW_5GNR_Set_DL(self):
         self.FSW.Set_5GNR_Direction('DL')
         self.FSW.Set_5GNR_CC_Num(1)
@@ -146,7 +166,7 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_5GNR_BWP_ResBlockOffset(0)
         self.FSW.Set_5GNR_BWP_Ch_ResBlock(66)
         self.FSW.Set_5GNR_BWP_Corset_ResBlock(66)
-        #self.FSW.Set_5GNR_BWP_Ch_ResBlockOffset(NR_RBO)
+        self.FSW.Set_5GNR_BWP_Ch_ResBlockOffset(0)
         self.FSW.Set_5GNR_BWP_Ch_Modulation('QPSK')
         # self.FSW.Set_5GNR_SSB()
 
@@ -162,10 +182,9 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_5GNR_BWP_ResBlockOffset(0)
         self.FSW.Set_5GNR_BWP_Ch_ResBlock(66)
         self.FSW.Set_5GNR_BWP_Corset_ResBlock(66)
-        #self.FSW.Set_5GNR_BWP_Ch_ResBlockOffset(NR_RBO)
+        self.FSW.Set_5GNR_BWP_Ch_ResBlockOffset(0)
         self.FSW.Set_5GNR_BWP_Ch_Modulation('QPSK')
         # self.FSW.Set_5GNR_SSB()
-
 ###############################################################################
 ### </Test>
 ###############################################################################
