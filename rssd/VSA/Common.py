@@ -362,9 +362,9 @@ class VSA(jaVisa):
         self.query(':SENS:ADJ:LEV;*OPC?')
         # self.jav_OPC_Wait(':SENS:ADJ:LEV')
 
-    def Set_Autolevel_Proto(self,sState):
-    ### Used by WLAN; K96.  Please use ADJ:LEV;
-        self.write('CONF:POW:AUTO %s;*WAI'%sState)      #ON|OFF|1|0
+    # def Set_Autolevel_Proto(self,sState):
+    # ### Used by WLAN; K96.  Please use ADJ:LEV;
+    #     self.write('CONF:POW:AUTO %s;*WAI'%sState)      #ON|OFF|1|0
 
     def Set_Autolevel_IFOvld(self):
         ####################################################################
@@ -372,7 +372,7 @@ class VSA(jaVisa):
         # """ Optimise level for Mixer Input => Optimal EVM """
         # """ Optimises for signals using IF gain as well as 1dB steps """
         ####################################################################
-        optmix = 10                            # Optimal mixer level
+        optmix = 10                         # Optimal mixer level
         self.Set_SweepCont(0)
         self.Set_Autolevel()
         level = self.Get_Mkr_TimeDomain()
@@ -392,37 +392,37 @@ class VSA(jaVisa):
         self.Set_AttnMech(rfatt)            #Set Attenuation
 
         reflev = maxmix + rfatt
-        self.Set_RefLevel(reflev)          #Set RefLevel
+        self.Set_RefLevel(reflev)           #Set RefLevel
 
-        ifovl = self.Get_Ovld_Stat()      #Check Overload
+        ifovl = self.Get_Ovld_Stat()        #Check Overload
         print ("Inital: Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
 
         # """ Optimising for attenuation """
         while ifovl != 0:
-            print ("ATloop: Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
+            print (f"Atnloop: Ovl:{ifovl} Attn:{rfatt} RfLvl:{reflev}")
             rfatt = rfatt + 1
             self.Set_AttnMech(rfatt)
 
             reflev = maxmix + rfatt
             self.Set_RefLevel(reflev)
-
-            # """ Check if there is IF Overload """
-            ifovl = self.Get_Ovld_Stat()
+            ifovl = self.Get_Ovld_Stat()    #Check Overload
+            if reflev > 30:
+                break
 
         # """ Optimising for reference level """
         while reflev > (-20 - gain) and ifovl == 0:
-            print ("RefLop: Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
+            print (f"Refloop: Ovl:{ifovl} Attn:{rfatt} RfLvl:{reflev}")
             reflev = reflev - 1
             self.Set_RefLevel(reflev)
-
-            # """ Check if there is IF Overload """
-            ifovl = self.Get_Ovld_Stat()
+            ifovl = self.Get_Ovld_Stat()    #Check Overload
+            if reflev > 30:
+                break
 
         # """ Final check for IF Overload """
         if ifovl != 0:
             reflev = reflev + 1
             self.Set_RefLevel(reflev)
-        print ("Final : Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
+        print (f"Final : Ovl:{ifovl} Attn:{rfatt} RfLvl:{reflev}")
 
     def Set_Autolevel_IQIF(self,tables):
         VSAL.Optimise_FSx_Level(self,tables)
