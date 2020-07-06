@@ -21,6 +21,7 @@ class TestGeneral(unittest.TestCase):
     def setUp(self):                      #run before each test
         self.CMP = RCT().jav_OpenTest(host)
         self.CMP.Init_5GNR()
+
     def tearDown(self):                         #Run after each test
         self.assertEqual(self.CMP.jav_Error()[0],'0')
         self.CMP.jav_Close()
@@ -43,10 +44,39 @@ class TestGeneral(unittest.TestCase):
         getVal = self.CMP.Get_5GNR_FreqRange()
         if self.CMP.connected: self.assertEqual(getVal,'HIGH')
 
-    def test_CMP_5GNR_Get(self):
+    def test_CMP_5GNR_Ex_EVM_Set(self):
+        self.CMP.Set_5GNR_Freq(7e9)
+        self.CMP.Set_5GNR_ExpPwr(-50)
+        self.CMP.Set_5GNR_UserMargin(0)
+        self.CMP.Set_5GNR_MixerOff(0)
+        self.CMP.Set_5GNR_ExtAttn(0)
+        self.CMP.Set_5GNR_FreqRange(2)       # Function does not exist
+        self.CMP.Set_5GNR_Path('P1.RRH.RF1')
+        self.CMP.Set_5GNR_BWP_Frame_Periodicity(2)
+        self.CMP.Set_5GNR_BWP_Frame_SlotConfig(0,0,8,0)
+        self.CMP.Set_5GNR_ChannelBW(100)
+        self.CMP.Set_5GNR_CellID(1)
+        self.CMP.Set_5GNR_BWP_Ch_DMRS_1stDMRSSym(2)
+        # CMP.Set_5GNR_NumBWP()
+        self.CMP.Set_5GNR_BWP_ResBlock(66, 0)
+        self.CMP.write(f'CONF:NRMM:MEAS:CC1:BWP:PUSC:DMTA BWP0, 1, 2, 1')   #Config; AddPos; MaxLength
+        self.CMP.write(f'CONF:NRMM:MEAS:CC1:BWP:PUSC:DMTB BWP0, 1, 2, 1')   #Config; AddPos; MaxLength
+        self.CMP.Set_5GNR_TransPrecoding('OFF')
+        self.CMP.Set_5GNR_PUSCH(66, 0, 'QPSK')
+        self.CMP.write(f'CONF:NRMM:MEAS:CC1:ALL1:PUSC:ADD 1, 2, 3, 0')      #Len; CDM; Pwr; Ant
+        self.CMP.write(f'CONF:NRMM:MEAS:CC1:ALL1:PUSC:SGEN CID, 0, 0')      #SeqType; DMRSID; N_SCID
+        self.CMP.Set_5GNR_EVM_MeasOnExcept('ON')
+        self.CMP.Set_5GNR_EVM_AvgCount(20)
+        self.CMP.Set_5GNR_Trigger_Source('Free Run (Fast Sync)')
+
+
+    def test_CMP_5GNR_Ex_EVM_Get(self):
         self.CMP.Get_AmpSettings()
         self.CMP.Get_5GNR_CC_Offset()
-        self.CMP.Get_5GNR_Params(1,1,0)
+        self.CMP.Get_5GNR_Params(1,1,1,1)           # Get Headers
+        self.CMP.Get_5GNR_Params(1,1,1,0)           # Get Data
+        self.CMP.Get_5GNR_Params_EVM(1)             # Get Headers
+        # self.CMP.Get_5GNR_Params_EVM(0)           # Get Data
 
     def test_CMP_5GNR_Get_UL(self):
         self.CMP.Set_5GNR_Direction('UL')

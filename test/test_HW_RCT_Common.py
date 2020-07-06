@@ -33,26 +33,30 @@ class TestGeneral(unittest.TestCase):
         self.CMP.Set_Gen_Port('P1.IFOut')
         self.CMP.Set_Gen_Port_State('ON')
         self.CMP.Set_Gen_Freq(6e9)
+        self.CMP.Set_Gen_RFPwr(-50)
         self.CMP.Set_Gen_Mode('ARB')
         self.CMP.Set_Gen_ArbWv('Test.wv')
         self.CMP.Set_Gen_ArbExec()
-        self.CMP.Set_Gen_RFPwr(-50)
         self.CMP.Set_Gen_RFState('ON')
-
-    def test_RCT_Ex_GenGet(self):
-        self.CMP.Get_Gen_ArbWv()
-        self.CMP.Get_Gen_Freq()
-        self.CMP.Get_Gen_Mode()
-        self.CMP.Get_Gen_Port()
 
     def test_RCT_Ex_GenCW(self):
         self.CMP.Init_Gen()
         self.CMP.Set_Gen_Port('P1.IFOut')
         self.CMP.Set_Gen_Port_State('ON')
         self.CMP.Set_Gen_Freq(6e9)
-        self.CMP.Set_Gen_Mode('CW')
         self.CMP.Set_Gen_RFPwr(-50)
+        self.CMP.Set_Gen_Mode('CW')
         self.CMP.Set_Gen_RFState('ON')
+
+    def test_RCT_Ex_GenListMode(self):
+        self.CMP.Init_Gen()
+        self.CMP.Set_Gen_Port('P1.IFOut')
+        self.CMP.Set_Gen_Port_State('ON')
+        self.CMP.Set_Gen_Freq(6e9)
+        self.CMP.Set_Gen_RFPwr(-50)
+        self.CMP.Set_Gen_ListMode('ON')
+        self.CMP.Set_Gen_RFState('ON')
+        self.CMP.Set_Gen_ListMode('OFF')
 
     def test_RCT_Ex_MeasFFT(self):
         self.CMP.Init_Meas_FFT()
@@ -75,6 +79,15 @@ class TestGeneral(unittest.TestCase):
         self.CMP.Set_Meas_Pwr_MLength(100e-6)
         self.CMP.Set_Meas_RFBW(100e6)
         self.CMP.Get_Meas_Power()
+
+    def test_RCT_Get_Gen(self):
+        self.CMP.Get_Gen_ArbWv()
+        self.CMP.Get_Gen_Freq()
+        self.CMP.Get_Gen_Mode()
+        self.CMP.Get_Gen_Port()
+
+    def test_RCT_Get_Meas(self):
+        self.CMP.Get_Meas_Port()
 
     def test_RCT_System(self):
         self.CMP.Get_Options()

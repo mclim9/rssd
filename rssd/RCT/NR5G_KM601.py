@@ -481,10 +481,9 @@ class RCT(RCT):
 
     def Set_5GNR_TransPrecoding(self, sState):
         """ SC-FDMA or DFT-S-OFDM  """
-        sState = str(sState)
-        if   (sState == 'ON')  or (sState == "1"):
+        if sState in  (1, '1','ON'):
             self.write(f'CONF:NRMM:MEAS:CC{self.cc}:BWP:PUSC:DFTP BWP{self.BWP}, ON')
-        elif (sState == 'OFF') or (sState == "0"):
+        elif sState in  (0, '0','OFF'):
             self.write(f'CONF:NRMM:MEAS:CC{self.cc}:BWP:PUSC:DFTP BWP{self.BWP}, OFF')
         else:
             print('Error Set_5GNR_TransPrecoding')
