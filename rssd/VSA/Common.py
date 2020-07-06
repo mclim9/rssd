@@ -608,6 +608,7 @@ class VSA(jaVisa):
         self.write(f':CALC{iWind}:DELT{iNum}:FUNC:BPOW:MODE RPOW')
 
     def Set_Mkr_BandSetRef(self):
+        """Autolevel w/ BandMarkers"""
         self.Set_AttnAuto()
         self.Set_SweepCont(0)
         self.Set_InitImm()                                   # Take Sweep
