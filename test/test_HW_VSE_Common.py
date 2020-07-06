@@ -47,7 +47,17 @@ class TestGeneral(unittest.TestCase):
     def test_VSE_IQ_Data2File(self):
         if self.VSE.connected == 1: self.VSE.Get_IQ_Data()
 
-    # def test_VSE_Marker(self):        
+    def test_VSE_Input(self):
+        self.VSE.Set_Input('RF')
+        self.VSE.Set_Input('FILE')
+        self.VSE.Set_File_InputIQT('Test')
+
+    def test_VSE_Sweep(self):
+        self.VSE.Set_SweepCont('OFF')
+        self.VSE.Set_InitImm()
+        self.VSE.Set_SweepCont('ON')
+
+    # def test_VSE_Marker(self):
     #     self.VSE.Set_Mkr_Peak()
     #     self.VSE.Get_Mkr_Freq()
     #     self.assertEqual(self.VSE.dLastErr,"")

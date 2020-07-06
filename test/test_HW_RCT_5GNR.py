@@ -77,6 +77,7 @@ class TestGeneral(unittest.TestCase):
         self.CMP.Get_5GNR_Params(1,1,1,0)           # Get Data
         self.CMP.Get_5GNR_Params_EVM(1)             # Get Headers
         # self.CMP.Get_5GNR_Params_EVM(0)           # Get Data
+        self.CMP.Get_5GNR_EVM()
 
     def test_CMP_5GNR_Get_UL(self):
         self.CMP.Set_5GNR_Direction('UL')

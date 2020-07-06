@@ -32,7 +32,8 @@ class VSE(VSA):
     ### VSE Input
     #####################################################################
     def Set_Input(self,sType):
-        self.write('INP:SEL %s'%sType)                  #RF|FILE
+        """RF|FILE"""
+        self.write('INP:SEL {sType}')
 
     def Set_File_InputIQT(self,sFilename):
         ABW = '10MHz'
@@ -60,8 +61,10 @@ class VSE(VSA):
         """0 | 1 """
         if sState in (1, '1', 'ON'):
             self.write('INIT:SEQ:MODE CONT')            #Continuous Sweep
-        else:
+        elif sState in (0, '0', 'OFF'):
             self.write('INIT:SEQ:MODE SING')            #Single Sweep
+        else:
+            print('Set_SweepCont error')
 
     #####################################################################
     ### VSE IQ Analyzer
