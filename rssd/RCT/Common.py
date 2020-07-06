@@ -20,6 +20,14 @@ class RCT(jaVisa):
         rdStr = self.query('SOUR:GPRF:GEN:ARB:FILE?')
         return rdStr
 
+    def Get_Gen_Freq(self):                                                     #val
+        rdStr = self.query('SOUR:GPRF:GEN:RFS:FREQ?')
+        return rdStr
+
+    def Get_Gen_Mode(self):                                                     #val
+        rdStr = self.query('SOUR:GPRF:GEN:BBM?')
+        return rdStr
+
     def Get_Gen_Port(self):                                                     #val
         rdStr = self.query('ROUT:GPRF:GEN:SPAT?')
         return rdStr
@@ -118,6 +126,7 @@ class RCT(jaVisa):
             self.query('SOUR:GPRF:GEN:STAT OFF;*OPC?')
 
     def Set_Meas_Autolevel(self):
+        """ExpNomPwr=MeasPwr and UserMargin=0"""
         self.Init_Meas_Power()
         self.Set_Meas_UserMargin(0)
         self.Set_Meas_Expected_Nom_Power(40)
@@ -151,8 +160,8 @@ class RCT(jaVisa):
         self.write(f'CONF:GPRF:MEAS:POW:MLEN {length}')
 
     def Set_Meas_RefLevl(self,fRefLvl):                                         #Val
-        ### ENP = Expected Nominal Power
-        self.write(f'CONF:GPRF:MEAS:RFS:ENP {fRefLvl}')
+        """ENP = Expected Nominal Power"""
+        self.Set_Meas_Expected_Nom_Power(fRefLvl)
 
     def Set_Meas_Span(self,fFreq):
         """ 10; 20; 40; 80; 160; 250; 500; 1000 MHz allowed """

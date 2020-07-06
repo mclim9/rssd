@@ -36,7 +36,7 @@ class TestGeneral(unittest.TestCase):
         if self.NRQ6.connected: self.assertEqual(self.NRQ6.Make,"ROHDE&SCHWARZ")
 
     def test_NRQ_Example(self):
-        self.NRQ6.Set_DisplayUpdate('OFF')
+        self.NRQ6.Set_DisplayUpdate('ON')
         self.NRQ6.Set_Freq(1e9)
         self.NRQ6.Set_Attn(10)
         self.NRQ6.Set_Attn(0)
@@ -53,7 +53,8 @@ class TestGeneral(unittest.TestCase):
         self.NRQ6.Get_Channels()
 
     def test_NRQ_IQ_2IQW(self):
-        if self.NRQ6.connected: self.NRQ6.Get_IQtoIQW()
+        self.NRQ6.Set_DisplayUpdate('OFF')
+        self.NRQ6.Get_IQtoIQW()
 
     def test_NRQ_IQ_RecLength(self):
         SetVal = 2468

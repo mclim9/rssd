@@ -28,7 +28,7 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
-    def test_CMP_Ex_GenArb(self):
+    def test_RCT_Ex_GenArb(self):
         self.CMP.Init_Gen()
         self.CMP.Set_Gen_Port('P1.IFOut')
         self.CMP.Set_Gen_Port_State('ON')
@@ -39,7 +39,13 @@ class TestGeneral(unittest.TestCase):
         self.CMP.Set_Gen_RFPwr(-50)
         self.CMP.Set_Gen_RFState('ON')
 
-    def test_CMP_Ex_GenCW(self):
+    def test_RCT_Ex_GenGet(self):
+        self.CMP.Get_Gen_ArbWv()
+        self.CMP.Get_Gen_Freq()
+        self.CMP.Get_Gen_Mode()
+        self.CMP.Get_Gen_Port()
+
+    def test_RCT_Ex_GenCW(self):
         self.CMP.Init_Gen()
         self.CMP.Set_Gen_Port('P1.IFOut')
         self.CMP.Set_Gen_Port_State('ON')
@@ -48,7 +54,7 @@ class TestGeneral(unittest.TestCase):
         self.CMP.Set_Gen_RFPwr(-50)
         self.CMP.Set_Gen_RFState('ON')
 
-    def test_CMP_Ex_MeasFFT(self):
+    def test_RCT_Ex_MeasFFT(self):
         self.CMP.Init_Meas_FFT()
         self.CMP.Set_Meas_Freq(6e9)
         self.CMP.Set_Meas_Port('P1.IFIn')
@@ -58,7 +64,7 @@ class TestGeneral(unittest.TestCase):
         self.CMP.Set_Meas_RFBW(10e6)
         self.CMP.Set_Meas_Span(100e6)
 
-    def test_CMP_Ex_MeasPwr(self):
+    def test_RCT_Ex_MeasPwr(self):
         self.CMP.Init_Meas_Power()
         self.CMP.Set_Meas_Freq(6e9)
         self.CMP.Set_Meas_UserMargin(0)
@@ -69,6 +75,10 @@ class TestGeneral(unittest.TestCase):
         self.CMP.Set_Meas_Pwr_MLength(100e-6)
         self.CMP.Set_Meas_RFBW(100e6)
         self.CMP.Get_Meas_Power()
+
+    def test_RCT_System(self):
+        self.CMP.Get_Options()
+        self.CMP.Init_Syst()
 
 ###############################################################################
 ### </Test>
