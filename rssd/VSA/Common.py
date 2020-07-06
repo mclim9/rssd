@@ -468,8 +468,9 @@ class VSA(jaVisa):
         self.write('SENS:CORR:FRES:Input1:USER:SLIS1:SEL "%s"'%sFile)
 
     def Set_EQ_State(self,sState):
-        FSW.write('SENS:CORR:FRES:Input1:USER:PRES')
-        self.write('SENS:CORR:FRES:Input1:USER:STATe %s'%sState)
+        """ON | OFF"""
+        self.write('SENS:CORR:FRES:Input1:USER:PRES')
+        self.write('SENS:CORR:FRES:Input1:USER:STATe {sState}')
 
     def Set_Freq(self,fFreq):
         """Hz"""
@@ -754,11 +755,6 @@ class VSA(jaVisa):
             self.write(':SENS:BAND:VID:AUTO ON')
         else:
             self.write(':SENS:BAND:VID %f'%fFreq)
-
-    def Set_YIG(self,sState):
-        """ON|OFF|1|0"""
-        self.write('INP:FILT:YIG:STAT %s;*WAI'%sState)
-
 
 #####################################################################
 ### Run if Main

@@ -43,7 +43,7 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_IQ_RecLength(10)
         self.FSW.Set_SweepCont(0)
         getVal = self.FSW.Get_IQ_Data()
-        if self.FSW.connected == 0: getVal = self.FSW.Get_IQ_Data_Ascii(2)
+        getVal = self.FSW.Get_IQ_Data_Ascii(6)
         # if self.FSW.connected == 1: getVal = self.FSW.Get_IQ_Data_Ascii(5)
         getVal = self.FSW.Get_IQ_Data_Ascii2()
         if self.FSW.connected == 1: getVal = self.FSW.Get_IQ_Data_Bin()

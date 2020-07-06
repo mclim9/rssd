@@ -45,21 +45,36 @@ class TestGeneral(unittest.TestCase):
         # # self.FSW.Set_ChannelName('IQ','IQ_Test')
         # self.FSW.Set_ChannelSelect('Spectrum')
 
-    def test_FSW_CommonSettings(self):
+    def test_FSW_Connect(self):
+        self.FSW.jav_IDN()
+        if self.FSW.connected: self.assertEqual(self.FSW.Make,"Rohde&Schwarz")  # Valuecompare
+
+    def test_FSW_Ex_SpectralSettings(self):
         self.FSW.Set_Freq(1e6)
         self.FSW.Set_RefLevel(10)
         self.FSW.Set_ResBW(1e6)
         self.FSW.Set_VidBW(1e6)
         self.FSW.Set_Span(100e6)
         self.FSW.Set_AttnMech(10)
+        self.FSW.Get_IFOvld()
+        self.FSW.Get_ACLR()
+        self.FSW.Set_DisplayUpdate('ON')
+
+    def test_FSW_Ex_SpectralSettings_Auto(self):
+        self.FSW.Set_Freq(1e6)
+        self.FSW.Set_ResBW(0)
+        self.FSW.Set_VidBW(0)
+        self.FSW.Set_Span(100e6)
+        self.FSW.Set_Autolevel()
         self.FSW.Set_AttnAuto()
         self.FSW.Get_IFOvld()
         self.FSW.Get_ACLR()
         self.FSW.Set_DisplayUpdate('ON')
 
-    def test_FSW_Connect(self):
-        self.FSW.jav_IDN()
-        if self.FSW.connected: self.assertEqual(self.FSW.Make,"Rohde&Schwarz")  # Valuecompare
+    def test_FSW_Equalizer(self):
+        self.FSW.Set_EQ_File('Test')
+        self.FSW.Set_EQ_State('ON')
+        self.FSW.Set_EQ_State('OFF')
 
     def test_FSW_Freq(self):
         self.FSW.Set_FreqStart(10e6)
@@ -79,6 +94,8 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_Params_Trace()
         nullVal = self.FSW.Get_Params_System(1)
         nullVal = self.FSW.Get_Params_System()
+        nullVal = self.FSW.Get_Params_MkrBand(1)
+        nullVal = self.FSW.Get_Params_MkrBand()
         nullVal = self.FSW.Get_Params(1,1,1,1,0)
 
     def test_FSW_GetScreenshot(self):
@@ -91,10 +108,14 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_Freq(1e9)
         self.FSW.Set_Input('RF')
         self.FSW.Set_In_YIG('ON')
+        self.FSW.Set_In_YIG('OFF')
         self.FSW.Set_In_HPFilter('ON')
 
     def test_FSW_Marker_dB(self):
+        self.FSW.Set_Mkr_AllOff()
         self.FSW.Set_Mkr_Peak()
+        self.FSW.Set_Mkr_On(2)
+        self.FSW.Set_Mkr_Next(2)
         getVal = self.FSW.Get_Mkr_Freq()
         getVal = self.FSW.Get_Mkr_XY()
         getVal = self.FSW.Get_Mkr_Y()
@@ -104,8 +125,12 @@ class TestGeneral(unittest.TestCase):
 
     def test_FSW_Marker_Time(self):
         self.FSW.Set_Span(0)
-        self.FSW.Get_Mkr_TimeDomain()
+        self.FSW.Set_SweepTime(0.010)
+        self.FSW.Set_Mkr_Time(0.001)
+        rdStr = self.FSW.Get_Mkr_TimeDomain()
+        if self.FSW.connected: self.assertEqual(rdStr, 0.001)
         self.FSW.Set_Span(900e6)
+        self.FSW.Set_SweepTime(0)                           #Auto Sweeptime
 
     def test_FSW_Trigger(self):
         self.FSW.Set_Trig1_Source('IMM')
