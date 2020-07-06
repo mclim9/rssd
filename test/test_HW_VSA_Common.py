@@ -30,6 +30,10 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
+    def test_FSW_Autolevel(self):
+        self.FSW.Set_Autolevel()
+        self.FSW.Set_Autolevel_IFOvld()
+
     def test_FSW_ACLR(self):
         self.FSW.Init_ACLR()
         self.FSW.Set_ACLR_AdjBW(95e6)
@@ -42,8 +46,8 @@ class TestGeneral(unittest.TestCase):
         if self.FSW.connected: getVal = self.FSW.Get_ChannelName()
         getVal = self.FSW.Get_Channels()
         self.FSW.Init_IQ()
-        # # self.FSW.Set_ChannelName('IQ','IQ_Test')
-        # self.FSW.Set_ChannelSelect('Spectrum')
+        if self.FSW.connected: self.FSW.Set_ChannelName('IQ','IQ_Test')
+        if self.FSW.connected: self.FSW.Set_ChannelSelect('Spectrum')
 
     def test_FSW_Connect(self):
         self.FSW.jav_IDN()
@@ -119,6 +123,11 @@ class TestGeneral(unittest.TestCase):
         getVal = self.FSW.Get_Mkr_Freq()
         getVal = self.FSW.Get_Mkr_XY()
         getVal = self.FSW.Get_Mkr_Y()
+
+    def test_FSW_Marker_dB(self):
+        self.FSW.Set_Mkr_AllOff()
+        self.FSW.Set_Mkr_BandSetRef()
+        self.FSW.Set_Mkr_BandDelta(1e9)
 
     def test_FSW_Marker_Noise(self):
         self.FSW.Get_Mkr_Noise()
