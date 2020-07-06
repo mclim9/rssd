@@ -17,8 +17,6 @@ Avg     = 0
 Repeat  = 1
 PwrArry = range(-50,0,2)
 
-
-
 ###############################################################################
 ### Code Overhead
 ###############################################################################
@@ -36,7 +34,7 @@ VSG = VSG().jav_Open(VSG_IP,OFile)                  #Create VSG Object
 ###############################################################################
 #VSA.Set_DisplayUpdate("OFF")
 VSA.Set_Param_Couple_All()
-VSA.Set_YIG('OFF')
+VSA.Set_In_YIG('OFF')
 VSA.Set_Freq(Freq)
 
 VSA.Init_IQ()                                       #FSW IQ Channel

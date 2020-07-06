@@ -110,7 +110,7 @@ VSA.Set_Trace_AvgCount(Avg)
 VSA.Set_Trace_Detector('RMS')
 VSA.Set_SweepOpt(SweMode)
 VSA.Set_SweepType(SweType)
-VSA.Set_YIG('OFF')
+VSA.Set_In_YIG('OFF')
 # VSA.Set_Trig1_Source('Ext')
 
 ##########################################################

@@ -50,7 +50,7 @@ VSA.Set_SweepTime(MeasTim)
 VSA.Set_Trace_Avg('LIN')
 VSA.Set_Trace_AvgCount(Avg)
 VSA.Set_Trace_Detector('RMS')
-VSA.Set_YIG('OFF')
+VSA.Set_In_YIG('OFF')
 # VSA.Set_Trig1_Source('Ext')
 
 ###############################################################################
