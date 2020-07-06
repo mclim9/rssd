@@ -470,7 +470,7 @@ class VSA(jaVisa):
     def Set_EQ_State(self,sState):
         """ON | OFF"""
         self.write('SENS:CORR:FRES:Input1:USER:PRES')
-        self.write('SENS:CORR:FRES:Input1:USER:STATe {sState}')
+        self.write(f'SENS:CORR:FRES:Input1:USER:STATe {sState}')
 
     def Set_Freq(self,fFreq):
         """Hz"""
