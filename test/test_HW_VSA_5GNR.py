@@ -110,6 +110,13 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_Pow()
         nullVal = self.FSW.Get_5GNR_BWP_Ch_PTRS_RE_Offset()
 
+    def test_FSW_5GNR_Get_Misc(self):
+        self.FSW.Get_5GNR_ACLR()
+        self.FSW.Get_5GNR_BWP_SlotNum()
+        self.FSW.Get_5GNR_CC_Offset()
+        self.FSW.Get_5GNR_Meas_ACLR()
+
+
     def test_FSW_5GNR_Get_UL(self):
         self.FSW.Set_5GNR_Direction('UL')
         nullVal = self.FSW.Get_5GNR_CC_Freq()
@@ -152,6 +159,8 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Get_5GNR_TM_Cat()
         self.FSW.Set_5GNR_TM('NR-FR1-TM1_1__FDD_15MHz_30kHz')
         self.FSW.Set_5GNR_savesetting('test')
+        self.FSW.Set_5GNR_AllocFile('test')         #mmm
+        self.FSW.Set_5GNR_AllocFileSave('test')     #mmm
 
     def test_FSW_5GNR_Set_DL(self):
         self.FSW.Set_5GNR_Direction('DL')
@@ -169,6 +178,16 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_5GNR_BWP_Ch_ResBlockOffset(0)
         self.FSW.Set_5GNR_BWP_Ch_Modulation('QPSK')
         # self.FSW.Set_5GNR_SSB()
+
+    def test_FSW_5GNR_Set_DMRS(self):
+        self.FSW.Set_5GNR_BWP_Ch_DMRS_1stDMRSSym(2)
+        self.FSW.Set_5GNR_BWP_Ch_DMRS_AddPosition(0)
+        self.FSW.Set_5GNR_BWP_Ch_DMRS_Config(1)
+        self.FSW.Set_5GNR_BWP_Ch_DMRS_Mapping('A')
+        self.FSW.Set_5GNR_BWP_Ch_DMRS_MSymbLen(1)
+        self.FSW.Set_5GNR_BWP_Ch_DMRS_RelPwr(0)
+        self.FSW.Set_5GNR_BWP_Ch_DMRS_SeqGenMeth('NICD')
+        self.FSW.Set_5GNR_BWP_Ch_DMRS_SeqGenSeed(0)
 
     def test_FSW_5GNR_Set_UL(self):
         self.FSW.Set_5GNR_Direction('UL')

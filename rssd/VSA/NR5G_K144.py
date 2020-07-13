@@ -328,7 +328,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
             print('Get_5GNR_BWP_Ch_DMRS_SeqGenSeed Method?')
 
     def Set_5GNR_BWP_Ch_Modulation(self,sMod):
-        # QPSK; QAM16; QAM64; QAM256; PITB
+        """QPSK; QAM16; QAM64; QAM256; PITB"""
         self.write(f':CONF:NR5G:{self.sdir}:FRAM1:BWP0:SLOT0:ALL0:MOD {sMod}')
 
     def Set_5GNR_BWP_Ch_ResBlock(self,iRB):
@@ -354,6 +354,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
         self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:RBOF {iRBO}')
 
     def Set_5GNR_BWP_SubSpace(self,iSubSp):
+        """15 30 60 120"""
         self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SSP SS{iSubSp}')
 
     def Set_5GNR_CC_Num(self,iNumCC):
@@ -374,7 +375,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
         self.write(f'CONF:NR5G:{self.sdir}:CC{self.cc}:PLC:CID {iCellID}')
 
     def Set_5GNR_ChannelBW(self,iBW):
-        ### 5;10;15;20;25;30;40;50;60;70;80;90;100;200;400
+        """5;10;15;20;25;30;40;50;60;70;80;90;100;200;400"""
         self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:BW BW{iBW}')
 
     def Set_5GNR_Direction(self,sDirection):
