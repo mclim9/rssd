@@ -271,7 +271,7 @@ class VSA(jaVisa):
         self.write('HCOP:IMM')           #Create File
 
     def Get_SweepOpt(self):
-        #AUTO | SPEed | DYN
+        """AUTO | SPEed | DYN"""
         rdStr = self.query(':SENS:SWE:OPT?')
         return rdStr
 
@@ -284,7 +284,7 @@ class VSA(jaVisa):
         return rdStr
 
     def Get_SweepType(self):
-        #AUTO | SWE | FFT
+        """AUTO | SWE | FFT"""
         rdStr = self.query(':SENS:SWE:TYPE?')
         return rdStr
 

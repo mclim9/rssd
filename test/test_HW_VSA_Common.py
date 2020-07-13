@@ -124,10 +124,11 @@ class TestGeneral(unittest.TestCase):
         getVal = self.FSW.Get_Mkr_XY()
         getVal = self.FSW.Get_Mkr_Y()
 
-    def test_FSW_Marker_dB(self):
+    def test_FSW_Marker_BanddB(self):
         self.FSW.Set_Mkr_AllOff()
         self.FSW.Set_Mkr_BandSetRef()
         self.FSW.Set_Mkr_BandDelta(1e9)
+        self.FSW.Get_Mkr_Band()
 
     def test_FSW_Marker_Noise(self):
         self.FSW.Get_Mkr_Noise()
@@ -145,6 +146,18 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_Trig1_Source('IMM')
         self.FSW.Set_Trig2_Dir('OUT')
         self.FSW.Set_Trig2_OutType('DEV')
+    
+    def test_FSW_TraceAvg(self):
+        self.FSW.Set_Trace_Avg('LIN')
+        self.FSW.Set_Trace_AvgCount(10)
+        self.FSW.Set_Trace_Detector('RMS')
+        self.FSW.Set_Trace_Mode('WRIT')
+        self.FSW.Set_Trace_AvgOff()
+
+    def test_FSW_Sweep(self):
+        self.FSW.Set_SweepPoints(1001)
+        self.FSW.Set_SweepType('AUTO')
+        self.FSW.Set_SweepOpt('AUTO')
 
     def test_FSW_Sys_Overload(self):
         getVal = self.FSW.Get_Ovld_Stat()
