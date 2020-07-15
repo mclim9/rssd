@@ -3,23 +3,35 @@
 
 ## RSSD 2020.06.3
 ### Driver
-- NRP
-  - Add state 0,'0','Off' for all
+- NRP chg  state 0,'0','Off' for all
+- NRQ chg  state 0,'0','Off' for all
 - VSG
   - Chg Set_5GNR_BBState from jav_OPC_Wait to jav_Wait
-- RST.NR5G_K601 chg from query('MMM').split() to queryFloatArry
+- RST
+  - GPRF functions moved to COMMON
+  - NR5G_K601 chg from query('MMM').split() to queryFloatArr
+    - allows testing
 
 ### Examples
 - Add SMW_5GNR_HARQ_Setup.py
 - Add ZVA_ATSx800_Cal
+- Add VSG_Power_Sensor_Sweep
+- Add AAA_SCPI_2_File.py
 
-### Test
+### Test-90%
 - NRP Add coverage
+- NRQ Add coverage
 - ATS1000 Add coverage
 - RCT_5GNR add coverage
 - RCT_Common add coverage
+- VSA_5GNR add coverage
 - VSA_Common add coverage
+  - Add Mkr tests
+  - Add Equalizer tests
+  - Add Auto RBW; VBW; tests
 - VSA_CommonIQ add coverage
+- test_SW_yaVISA_socket test added
+- test_SW_yaVISA test added
 
 ## RSSD 2020.06.2
 - OTA

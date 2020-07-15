@@ -1,11 +1,13 @@
 ###############################################################################
-### Overhead
+### Record SCPI into file
 ###############################################################################
 from rssd.VSG.NR5G_K144     import VSG                              #pylint: disable=E0611,E0401
 from rssd.VSA.NR5G_K144     import VSA                              #pylint: disable=E0611,E0401
 from rssd.RCT.NR5G_KM601    import RCT                              #pylint: disable=E0611,E0401
 from rssd.FileIO            import FileIO                           #pylint: disable=E0611,E0401
-from rssd.RSI.time          import timer                            #pylint: disable=E0611,E0401
+
+CMP  = RCT().jav_Open('192.168.1.160')                              #Create instrument Object
+CMP.jav_logscpi()                                                   #Log SCPI to file
 
 class dataClass():
     def __init__(self):
@@ -23,9 +25,10 @@ class dataClass():
         self.Rx             = ''
         self.pwr            = -100
 
-NR5G        = dataClass()
-CMP = RCT().jav_Open('192.168.1.160')                              #Create CMP Object
-CMP.jav_logscpi()
+###############################################################################
+### SCPI Code we want to log
+###############################################################################
+NR5G = dataClass()
 CMP.Init_5GNR()
 CMP.Set_5GNR_Path('P1.RRH.RF1')
 CMP.Set_Meas_Port('P1.RRH.RF1')
