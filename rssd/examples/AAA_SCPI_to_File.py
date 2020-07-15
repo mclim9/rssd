@@ -1,10 +1,10 @@
 ###############################################################################
 ### Record SCPI into file
 ###############################################################################
-from rssd.VSG.NR5G_K144     import VSG                              #pylint: disable=E0611,E0401
-from rssd.VSA.NR5G_K144     import VSA                              #pylint: disable=E0611,E0401
+# from rssd.VSG.NR5G_K144     import VSG                              #pylint: disable=E0611,E0401
+# from rssd.VSA.NR5G_K144     import VSA                              #pylint: disable=E0611,E0401
 from rssd.RCT.NR5G_KM601    import RCT                              #pylint: disable=E0611,E0401
-from rssd.FileIO            import FileIO                           #pylint: disable=E0611,E0401
+# from rssd.FileIO            import FileIO                           #pylint: disable=E0611,E0401
 
 CMP  = RCT().jav_Open('192.168.1.160')                              #Create instrument Object
 CMP.jav_logscpi()                                                   #Log SCPI to file
