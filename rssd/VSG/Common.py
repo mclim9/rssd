@@ -119,12 +119,12 @@ class VSG(jaVisa):
     def Init_Wideband(self):
         self.write('SOUR:POW:ATT:DIG 3')            #Set Digital Attenuation
         self.write('POW:ALC:STATE AUTO')            #Turn ALC ON|OFF|OFFT|AUTO|
-        self.write('SOUR:POW:ALC:DAMP AUTO')      #Turn Driver AMP ON|OFF|AUTO
-        self.write('SOUR:BB:IQG DB8')                #Baseband IQ gain
+        self.write('SOUR:POW:ALC:DAMP AUTO')        #Turn Driver AMP ON|OFF|AUTO
+        self.write('SOUR:BB:IQG DB8')               #Baseband IQ gain
 
         ## Not so critical
         self.write('SOUR:AWGN:STAT 0')              #Turn AWGN off (default)
-        self.write('BBIN:STAT OFF')                  #Turn BB Input off(default)
+        self.write('BBIN:STAT OFF')                 #Turn BB Input off(default)
 
     #####################################################################
     ### SMW Settting Methods
@@ -257,7 +257,10 @@ class VSG(jaVisa):
 
     def Set_RFState(self,sState):
         ''' 0 1 '''
-        self.query('OUTP %s;*OPC?'%sState)
+        if sState in (1,'1','ON'):
+            self.query('OUTP 1;*OPC?')
+        if sState in (0,'0','OFF'):
+            self.query('OUTP 0;*OPC?')
 
     def Set_Setting(self,sSettingFile):
         """*.savrcltxt SettingFile"""
