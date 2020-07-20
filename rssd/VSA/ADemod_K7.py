@@ -28,9 +28,13 @@ class VSA(VSA):
     #####################################################################
     ### ADemod Set
     #####################################################################
+    def Set_Adem_Coupling(self,sCouple):
+        """AC DC"""
+        self.write(f'SENS:ADEM:AF:COUP {sCouple}')
+
     def Set_Adem_dbw(self,iBW):
         """100Hz - MaxBW: Values is rounded up: 1;3;5;"""
-        self.write('SENS:BWID:DEM %d'%iBW)
+        self.write(f'SENS:BWID:DEM {iBW}')
 
     def Set_Adem_LPassStat(self,on):
         """LPass Filter: on"""
@@ -52,6 +56,22 @@ class VSA(VSA):
     def Set_Adem_LPassManual(self,fBW):
         """0 to 3MHz"""
         self.write(f'SENSe:FILT:LPASS:FREQ:MAN {fBW}')
+
+    def Set_Adem_PM_Unit(self,sUnit):
+        """DEG RAD"""
+        self.write(f'UNIT:ANGL {sUnit}')
+
+    def Set_Adem_PM_Scale(self,iRet):
+        """Degrees per reticle"""
+        self.write(f'DISP:TRAC1:Y:PDIV {iRet}')
+
+    def Set_Adem_PM_RefPos(self,iRefPos):
+        """PM Reference position: 0-100"""
+        self.write(f'DISP:TRAC:Y:SCAL:RPOS {iRefPos}PCT')
+
+    def Set_Adem_PM_RefVal(self,iRefVal):
+        """PM Reference Value: PM degrees"""
+        self.write(f'DISP:TRAC:Y:SCAL:RVAL {iRefVal}')
 
 #####################################################################
 ### Run if Main
