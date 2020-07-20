@@ -46,8 +46,8 @@ class TestGeneral(unittest.TestCase):
         if self.FSW.connected: getVal = self.FSW.Get_ChannelName()
         getVal = self.FSW.Get_Channels()
         self.FSW.Init_IQ()
-        if self.FSW.connected: self.FSW.Set_ChannelName('IQ','IQ_Test')
-        if self.FSW.connected: self.FSW.Set_ChannelSelect('Spectrum')
+        self.FSW.Set_ChannelName('IQ','IQ_Test')
+        self.FSW.Set_ChannelSelect('Spectrum')
 
     def test_FSW_Connect(self):
         self.FSW.jav_IDN()
@@ -63,6 +63,7 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Get_IFOvld()
         self.FSW.Get_ACLR()
         self.FSW.Set_DisplayUpdate('ON')
+        self.FSW.Set_Ref_Source('INT')
 
     def test_FSW_Ex_SpectralSettings_Auto(self):
         self.FSW.Set_Freq(1e6)

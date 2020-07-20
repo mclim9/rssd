@@ -40,6 +40,16 @@ class TestGeneral(unittest.TestCase):
         getVal = self.FSW.Get_Adem_dbw()
         if self.FSW.connected: self.assertEqual(getVal, 3e6)
 
+    def test_FSW_ADemod_PM(self):
+        self.FSW.Set_Freq(28e9)                          # RF Freq
+        self.FSW.Set_Adem_dbw(200e3)                # Demod BW
+        self.FSW.Set_Adem_Coupling('AC')            # Coupling
+        self.FSW.Set_Adem_PM_Unit('DEG')            # Units
+        self.FSW.Set_Adem_PM_Scale(4)               # Y Scaling
+        self.FSW.Set_Adem_PM_RefPos(50)             # Phase Reference Position
+        self.FSW.Set_Adem_PM_RefVal(1)              # Phase Reference Value
+        self.FSW.Set_In_YIG('ON')                        # YIG ON
+
 ###############################################################################
 ### </Test>
 ###############################################################################
