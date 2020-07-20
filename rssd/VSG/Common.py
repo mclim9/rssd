@@ -14,7 +14,8 @@ class VSG(jaVisa):
     """ Rohde & Schwarz Vector Signal Generator Object """
     def __init__(self):
         super(VSG,self).__init__()     #Python2/3
-        self.Model = "SMW"
+        self.Model  = "SMW"
+        self.NRP    = 2
 
     #####################################################################
      ### SMW Get
@@ -77,7 +78,6 @@ class VSG(jaVisa):
             if rdStr[i][0].find(filterKey) > -1:
                 outList.append(rdStr[i][0])
         return outList
-
 
     def Get_PowerPEP(self,RF=1):
         SCPI = self.queryFloat('SOUR%d:POW:PEP?'%RF)
@@ -231,6 +231,17 @@ class VSG(jaVisa):
         """RunMode: LIVE LEARned """
         self.write(f'SOUR:LIST:RMOD {sMode}')
 
+    def Set_NRP_Freq(self, Freq):
+        """Frequency if NRP in USER mode"""
+        self.write(f':SENS{self.NRP}:POW:FREQ {Freq}')
+
+    def Set_NRP_Mode(self, sMode):
+        """USER | A"""
+        if sMode == "USER":
+            self.write(f':SENS{self.NRP}:POW:SOUR USER')
+        else:
+            self.write(f':SENS{self.NRP}:POW:SOUR A')
+
     def Set_OS_Dir(self,sDir):
         self.write(f'MMEMory:CDIRectory "/var/user/{sDir}"')
 
@@ -251,6 +262,18 @@ class VSG(jaVisa):
 
     def Set_PhaseDelta(self,fPhase):
         self.write(':SOUR1:PHASE %d'%(fPhase))
+
+    def Set_Ref_Source(self,sSource):
+        """Ext Int"""
+        self.write(f':SOUR1:ROSC:SOUR {sSource}')
+
+    def Set_Ref_Freq(self,sFreq):
+        """10MHZ 100MHZ 1GHz"""
+        self.write(f':SOUR1:ROSC:EXT:FREQ {sFreq}')
+
+    def Set_Ref_SyncBW(self,sBW):
+        """WIDE NARR"""
+        self.write(f':SOUR1:ROSC:EXT:SBAN {sBW}')    #SMW WIDE(Vary less)|NARR(varys more) bandwidth
 
     def Set_RFPwr(self,fPow):
         self.write('SOUR:POW %f'%fPow)
