@@ -664,6 +664,10 @@ class VSA(jaVisa):
         else:
             self.Set_Preamp('OFF')
 
+    def Set_Ref_Source(self,sSource):
+        """INT EXT E10 E100 E1000 EAUT"""
+        self.write(f'ROSC:SOUR {sSource}')
+
     def Set_RefLevel(self,fReflevel):
         self.write('DISP:WIND:TRAC:Y:SCAL:RLEV %fdBm'%fReflevel)
 
