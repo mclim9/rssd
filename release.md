@@ -1,7 +1,7 @@
 # Release History
 =====================================================================
 
-## RSSD 2020.06.3
+## RSSD 2020.07.0
 ### Driver
 - NRP chg  state 0,'0','Off' for all
 - NRQ chg  state 0,'0','Off' for all
@@ -9,6 +9,7 @@
   - Adem add methods
 - VSG
   - Chg Set_5GNR_BBState from jav_OPC_Wait to jav_Wait
+  - Add PM methods
 - RST
   - GPRF functions moved to COMMON
   - NR5G_K601 chg from query('MMM').split() to queryFloatArr
@@ -19,6 +20,7 @@
 - Add ZVA_ATSx800_Cal
 - Add VSG_Power_Sensor_Sweep
 - Add AAA_SCPI_2_File.py
+- Add 
 
 ### Test-90%
 - NRP Add coverage

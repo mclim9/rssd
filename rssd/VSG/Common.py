@@ -30,8 +30,8 @@ class VSG(jaVisa):
 
     def Get_ArbTime(self):
         Fs = self.Get_ArbClockFreq()
-        Points = self.query('BB:ARB:WAV:POIN?').strip()
-        WvTime = int(Points)/int(Fs)
+        Points = self.queryInt('BB:ARB:WAV:POIN?')
+        WvTime = Points/int(Fs)
         return WvTime
 
     def Get_ArbInfo(self):
