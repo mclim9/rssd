@@ -40,10 +40,10 @@ class TestGeneral(unittest.TestCase):
         getVal = self.FSW.Get_IQ_SamplingRate()
 
     def test_FSW_Get_IQData(self):
-        self.FSW.Set_IQ_RecLength(10)
+        self.FSW.Set_IQ_RecLength(100)
         self.FSW.Set_SweepCont(0)
         getVal = self.FSW.Get_IQ_Data()
-        getVal = self.FSW.Get_IQ_Data_Ascii(6)
+        getVal = self.FSW.Get_IQ_Data_Ascii(10)         # Get 10IQ at a time
         # if self.FSW.connected == 1: getVal = self.FSW.Get_IQ_Data_Ascii(5)
         getVal = self.FSW.Get_IQ_Data_Ascii2()
         if self.FSW.connected == 1: getVal = self.FSW.Get_IQ_Data_Bin()
@@ -59,6 +59,7 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_IQ_Adv_WindowLenth(101)
         self.FSW.Set_IQ_Adv_FFTLenth(4096+1)
         self.FSW.Set_IQ_Adv_Window('P5')
+        self.FSW.Set_IQ_WideBandMax(80e6)
 
     def test_FSW_Set_IQSpectrum(self):
         self.FSW.Set_IQ_SpectrumWindow()

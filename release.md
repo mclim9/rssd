@@ -5,6 +5,8 @@
 ### Driver
 - NRP chg  state 0,'0','Off' for all
 - NRQ chg  state 0,'0','Off' for all
+- VSA
+  - Adem add methods
 - VSG
   - Chg Set_5GNR_BBState from jav_OPC_Wait to jav_Wait
 - RST

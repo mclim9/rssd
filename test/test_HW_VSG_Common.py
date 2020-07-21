@@ -10,7 +10,7 @@
 ### User Entry
 ###############################################################################
 host = '10.0.0.7'                                       #Get local machine name
-host = '192.168.1.114'
+host = '192.168.1.115'
 
 ###############################################################################
 ### Code Start
@@ -45,7 +45,8 @@ class TestGeneral(unittest.TestCase):
         self.SMW.Set_ArbState(1)
         self.SMW.Set_ArbState(0)
         getVal = self.SMW.Get_ArbName()
-        # nulVal = self.SMW.Get_ArbInfo()
+        if self.SMW.connected: self.SMW.Get_ArbTime()
+        self.SMW.Get_ArbInfo()
         nulVal = self.SMW.Get_PowerInfo()
         if self.SMW.connected: self.assertTrue(getVal.find(setVal) > -1)
 

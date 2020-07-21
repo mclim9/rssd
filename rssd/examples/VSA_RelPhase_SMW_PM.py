@@ -7,9 +7,9 @@
 ### User Entry
 ###############################################################################
 SwpTim      = 150                   # Time, msec
-MkrOffset   = 25                    # mSec 6.4kHz:90  3.2:80 1.6:70
-Delay       = 10                    # mSec Delay between
-DemodBW     = 6.4                   # Demodulation BW, kHz
+MkrOffset   = 2                    # mSec 6.4kHz:90  3.2:80 1.6:70
+Delay       = 1                    # mSec Delay between
+DemodBW     = 100                   # Demodulation BW, kHz
 NumMkrs     = 5                     # Number of phase averages
 traceAvg    = 2                     # Number of trace averages
 SwpTim      = (NumMkrs+2)*Delay     # mSec FSW Sweep time
@@ -34,19 +34,10 @@ FSW = VSA().jav_Open(FSW_IP,OFile)          # Create FSW Object
 ###############################################################################
 ### Function Definition
 ###############################################################################
-def MeasRelPhase(FSW, SMW, x):
-    count = 0
+def MeasRelPhase(FSW):
     leaveLoop = 0
-    while True:
-        SMW.Set_PhaseDelta((x-1)*10)        # Initial Phase Shift
-        SMW.delay(Delay/1000)
+    for i in range(10):
         FSW.write('INIT:IMM')               # Initiate Sweep
-        SMW.delay(Delay/1000)
-        for i in range(NumMkrs + 2):
-            SMW.delay(Delay/1000)
-            SMW.Set_PhaseDelta((x)*10)      # Initial Phase Shift
-            SMW.delay(Delay/1000)
-            SMW.Set_PhaseDelta((x-1)*10)    # Initial Phase Shift
 
         mkrArry = []
         for mkr in range(NumMkrs):          # Read Markers
@@ -55,7 +46,6 @@ def MeasRelPhase(FSW, SMW, x):
         deltaArry = []                      # Calculate Deltas
         for i in range(len(mkrArry)-1):
             deltaArry.append(abs(mkrArry[i]-mkrArry[i+1]))
-            # print("%6.3f - %6.3f = %6.3f"%(mkrArry[i],mkrArry[i+1],deltaArry[i]))  # debug
 
         #######################################################################
         ### Measurement Error Checking
@@ -66,9 +56,6 @@ def MeasRelPhase(FSW, SMW, x):
             else:
                 AvgAvg = sum(deltaArry) / float(len(deltaArry))
                 leaveLoop = 1
-
-        count = count + 1
-        if (count > 10): break              # Quit if too many retests.
         if leaveLoop:   break
     return AvgAvg
 
@@ -99,12 +86,18 @@ SMW.Set_Ref_Freq('10MHZ')
 SMW.Set_Ref_SyncBW('WIDE')                  # Oscilator locking BW
 SMW.Set_RFState('ON')
 
+SMW.write(':SOUR1:LFO1:SHAP PULS')          # Set LF1 shape to Pulse (square wave)
+SMW.write(':SOUR1:LFO1:SHAP:PULS:PER 0.002')# Set Pulse Period to 2mSec
+SMW.write(':SOUR1:LFO1:SHAP:PULS:DCYC 50')  # Set Pulse Duty cycle 50%
+SMW.write(':SOUR1:PM1:SOUR LF1')            # Set PM source LF1
+SMW.write(':SOUR1:PM1:DEV 0.174532')        # Set PM Deviation 0.174532 radian
+
 ###############################################################################
 ### FSW-Analog Demodulation
 ###############################################################################
 FSW.Set_Channel('ADEM')
 FSW.write('LAY:REPL:WIND "1","XTIM:PM"')    # PM Demod window
-FSW.Set_SweepCont('OFF')                    # Single sweep
+FSW.Set_SweepCont('ON')                     # Single sweep
 FSW.Set_Ref_Source('INT')                   # Reference
 FSW.Set_Freq(28e9)                          # RF Freq
 FSW.Set_SweepTime(SwpTim/1000)              # Sweep Time
@@ -129,7 +122,7 @@ for mkr in range(NumMkrs):                  # Create markers
 for phaseAngle in range(1,3):
     phaseMeas = []
     for numAvg in range(traceAvg):
-        phaseMeas.append(MeasRelPhase(FSW, SMW, phaseAngle))
+        phaseMeas.append(MeasRelPhase(FSW))
     finalPhase = sum(phaseMeas) / float(len(phaseMeas))
     OutStr = ("%6.1f,%2d,%6.3f"%(DemodBW,phaseAngle*10,finalPhase))
     OFile.write(OutStr)

@@ -572,7 +572,7 @@ class VSA(jaVisa):
         self.Set_SweepTime(fSwpTime)
 
     def Set_IQ_WideBandMax(self,fFreq):
-        """Hz"""
+        """80 160 320 500 1200 MHz"""
         self.write('TRAC:IQ:WBAN:STAT ON')                  #Wideband reduction activated
         self.write('TRAC:IQ:WBAN:MBW %f; *WAI'%fFreq)
 
