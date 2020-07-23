@@ -60,8 +60,10 @@ class VSG(jaVisa):
     def Get_NRPPower(self,NRP=2):
         self.write(':INIT%d:POW:CONT 1'%(NRP))
         self.write('SENS%d:UNIT DBM'%(NRP))
-        self.write('SENS%d:TYPE?'%(NRP))
-        SCPI = self.queryFloat(':READ%d:POW?'%(NRP))
+        self.query('SENS%d:TYPE?'%(NRP))
+        SCPI = self.queryFloat(f':READ{NRP}:POW?')
+        if SCPI < -198: SCPI = self.queryFloat(f':READ{NRP}:POW?')
+        if SCPI < -198: SCPI = self.queryFloat(f':READ{NRP}:POW?')
         return SCPI
 
     def Get_OS_Dir(self):
