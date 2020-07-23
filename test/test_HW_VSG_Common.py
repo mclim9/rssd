@@ -100,6 +100,16 @@ class TestGeneral(unittest.TestCase):
         self.SMW.Set_ListMode_TrigSource('ESTEP')
         self.SMW.Set_ListMode_TrigSource('ESING')
 
+    def test_SMW_NRP(self):
+        self.SMW.Set_NRP_Mode('USER')
+        self.SMW.Set_NRP_Freq(100e6)
+        self.SMW.Get_NRPPower()
+
+    def test_SMW_Optimize(self):
+        if self.SMW.connected: self.SMW.Set_OptimizeIQ()        # timeout setting
+        if self.SMW.connected: self.SMW.Set_OptimizeLevel()     # timeout setting
+        if self.SMW.connected: self.SMW.Set_OptimizeAll()       # timeout setting
+
     def test_SMW_PhaseDelta(self):
         setVal = -10
         self.SMW.Set_PhaseDelta(setVal)
@@ -110,6 +120,10 @@ class TestGeneral(unittest.TestCase):
         getVal = self.SMW.Get_PowerRMS()
         self.assertEqual(self.SMW.jav_Error()[0],'0')
         if self.SMW.connected: self.assertEqual(setVal,getVal)
+    
+    def test_SMW_PM(self):
+        self.SMW.Set_PM_Source('LF1')
+        self.SMW.Set_PM_State('ON')
 
     def test_SMW_SysConfigAll(self):
         getVal = self.SMW.Get_SysC_All()
@@ -120,4 +134,4 @@ class TestGeneral(unittest.TestCase):
 if __name__ == '__main__':
     # unittest.main()
     suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    unittest.TextTestRunner(verbosity=1).run(suite)
