@@ -1,6 +1,14 @@
 # Release History
 =====================================================================
 ## RSSD 2020.0x.0
+### Test
+- jaVISA
+  - add jav_Error jav_write_raw & jav_read_raw
+- VSG
+  - Common add pm; nrp; optimize tests
+- VSA
+  - LTE add SEM & EVM tests
+  - NF add coverage
 
 ## RSSD 2020.07.0
 ### Driver
