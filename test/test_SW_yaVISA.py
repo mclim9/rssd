@@ -32,6 +32,7 @@ class TestGeneral(unittest.TestCase):
 
     def test_yaVISA_Clear(self):
         self.instr.jav_Clear()
+        self.instr.jav_Error()
 
     def test_yaVISA_Delay(self):
         self.instr.delay(0.1)
@@ -52,6 +53,10 @@ class TestGeneral(unittest.TestCase):
         self.instr.queryFloatArry('')
         self.instr.queryInt('')
         self.instr.queryIntArry('')
+
+    def test_yaVISA_Raw(self):
+        self.instr.jav_write_raw(b'1234')
+        self.instr.jav_read_raw()
 
     def test_yaVISA_Reset(self):
         self.instr.jav_Reset()

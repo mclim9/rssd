@@ -166,6 +166,7 @@ class jaVisa(object):
             self.jav_Clear      = mock.jav_Clear
             self.jav_Error      = mock.jav_Error
             self.jav_read_raw   = mock.jav_read_raw
+            self.jav_write_raw  = mock.jav_write_raw
             self.connected      = 0
         self.jav_ClrErr()
         self.dLastErr = ""
@@ -188,7 +189,7 @@ class jaVisa(object):
     def jav_read_raw(self):                                 #pylint: disable=E0202
         return self.K2.read_raw()
 
-    def jav_write_raw(self,SCPI):
+    def jav_write_raw(self,SCPI):                           #pylint: disable=E0202
         self.K2.write_raw(SCPI)
 
     def jav_reslist(self):
