@@ -68,6 +68,13 @@ class TestGeneral(unittest.TestCase):
         getVal = self.FSW.Get_LTE_Direction()
         if self.FSW.connected: self.assertEqual(getVal,'DL')
 
+    def test_FSW_LET_Meas(self):
+        self.FSW.Get_LTE_EVMParams()
+        self.FSW.Get_EVM_n_Params()
+        self.FSW.Get_EVM()
+        self.FSW.Get_LTE_CrestFactor()
+        self.FSW.Get_LTE_ChPwr()
+
     def test_FSW_LTE_Set_UL(self):
         self.FSW.Set_Freq(2e9)
         self.FSW.Set_LTE_EVMUnit('DB')
@@ -79,6 +86,10 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_LTE_ResBlock(66)
         self.FSW.Set_LTE_ResBlockOffset(0)
         self.FSW.Set_LTE_Modulation('QPSK')
+
+    def test_FSW_LTE_SEM(self):
+        self.FSW.Init_LTE_SEM()
+        # self.FSW.Get_LTE_SEM()
 
 ###############################################################################
 ### </Test>
