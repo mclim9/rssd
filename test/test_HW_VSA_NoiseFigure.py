@@ -36,6 +36,7 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Set_NF_Single_Freq(20e9)
         self.FSW.Set_NF_Single_Meas()
         self.FSW.Set_NF_Single_Coupled_To_List('ON')
+        self.FSW.Set_NF_ENR_Cal_Type('RES')
 
     def test_FSW_NoiseFigure_Sweep(self):
         ### Must be in FreqConfig-->Tuning Mode-->Sweep prior to test
@@ -65,9 +66,17 @@ class TestGeneral(unittest.TestCase):
         nullVal = self.FSW.Get_NF_PCold()
 
     def test_FSW_NF_Get_Extra(self):
-        # nullVal = self.FSW.Get_NF_CalCold()
-        # nullVal = self.FSW.Get_NF_CalHot()
-        pass
+        nullVal = self.FSW.Get_NF_CalCold()
+        nullVal = self.FSW.Get_NF_CalHot()
+        self.FSW.Get_YFactor()
+
+    def test_FSW_NF_States(self):
+        self.FSW.Set_NF_2ndCorr_State(1)
+        self.FSW.Set_NF_2ndCorr_State(0)
+        self.FSW.Set_NF_Cal_State(1)
+        self.FSW.Set_NF_Cal_State(0)
+        self.FSW.Set_NF_Single_Coupled_To_List(1)
+        self.FSW.Set_NF_Single_Coupled_To_List(0)
 
 ###############################################################################
 ### </Test>
