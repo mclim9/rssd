@@ -26,6 +26,24 @@ class VNA(jaVisa):
         rdStr = self.query(f':SOUR:POW:CORR:STAT?')
         return rdStr
 
+    def Get_Trace_Data(self):
+        """Retrive Formatted Data: Data Only"""
+        self.write('FORM ASCII')
+        rdStr = self.queryFloatArry(f':CALC{self.dChan}:DATA:DALL? FDAT')
+        return rdStr
+
+    def Get_Trace_Data_All(self):
+        """Retrive Formatted Data: Memory & Data"""
+        self.write('FORM ASCII')
+        rdStr = self.queryFloatArry(f':CALC{self.dChan}:DATA:ALL? FDAT')
+        return rdStr
+
+    # def Get_Trace_Data_CAll(self):
+    #     """Retrive Formatted Data: nxn matrix S-Param"""
+    #     self.write('FORM ASCII')
+    #     rdStr = self.queryFloatArry(f':CALC{self.dChan}:DATA:CALL? FDAT')
+    #     return rdStr
+
     def Get_Trace_Names(self):
         rdStr = self.query(f':CALC{self.dChan}:PAR:CAT?')
         return rdStr
@@ -187,7 +205,8 @@ class VNA(jaVisa):
 #####################################################################
 if __name__ == "__main__":
     # this won't be run when imported
-    ZVA = VNA().jav_openvisa('TCPIP0::192.168.1.30::INSTR')
+    ZVA = VNA().jav_openvisa('TCPIP0::10.0.0.13::INSTR')
     #ZVA.Test_PwrCal()
-    print(ZVA.Get_Pwrcal_State())
+    data = ZVA.Get_Trace_Data()
+    print(len(data))
     ZVA.jav_Close()
