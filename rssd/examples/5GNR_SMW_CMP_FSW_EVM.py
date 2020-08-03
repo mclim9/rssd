@@ -5,11 +5,11 @@
 SMW_IP      = '192.168.1.114'
 FSW_IP      = '192.168.1.109'
 CMP_IP      = '192.168.1.160'
-UserDir     = '2020.05.12-CMPEval'
-FSW_Rx      = False
-freqArry    = [24.250e9, 26e9, 28e9, 39e9]
-pwrArry     = range(-40,10,1)                                       #Power Array
-comment     = '-PhTimTracking-SMWIQ'
+UserDir     = '2020.07.30-Autolevel'
+FSW_Rx      = True
+freqArry    = [28e9]
+pwrArry     = range(-50,10,2)                                       #Power Array
+comment     = '-Autolevel'
 
 ###############################################################################
 ### Overhead
@@ -74,7 +74,7 @@ def NR5G_Rx_Init():
 def NR5G_Rx_Config(sSetting):
     if FSW_Rx:
         sSetting = sSetting.split('.nr5g')[0]
-        FSW.Set_5GNR_AllocFile(f'C:\\R_S\\instr\\user\\Demo\\2020.05-CMPEval\\{sSetting}.allocation')
+        FSW.Set_5GNR_AllocFile(f'C:\\R_S\\instr\\user\\Demo\\2020.07.30-Autolevel\\{sSetting}.allocation')
         FSW.Set_5GNR_FrameCount('OFF')
         FSW.Set_Trig1_Source('EXT')
         FSW.Set_SweepTime(3e-3)
@@ -113,9 +113,9 @@ def NR5G_Rx_SetFreq(freq):
 
 def NR5G_Rx_SetLevel(NR5G):
     if FSW_Rx:
-        # FSW.Set_SweepCont(1)
-        # FSW.Set_Autolevel()
-        FSW.Set_5GNR_AutoEVM()
+        FSW.Set_SweepCont(1)
+        FSW.Set_Autolevel()
+        # FSW.Set_5GNR_AutoEVM()
     else:
         CF  = SMW.Get_CrestFactor()
         CMP.Init_Meas_Power()
@@ -153,6 +153,9 @@ OFile.write(Header)
 ### Instr Init
 NR5G        = dataClass()
 SMW.Set_OS_Dir(UserDir)
+SMW.Set_5GNR_BBState(1)
+SMW.Set_RFPwr(-50)
+SMW.Set_RFState(1)
 saveArry = SMW.Get_OS_FileList('savrcltxt')
 saveArry = SMW.Get_OS_FileList('nr5g')
 NR5G_Rx_Init()
@@ -170,7 +173,7 @@ for saveState in saveArry:
         for pwr in pwrArry:
             TMR.start()
             SMW.Set_RFPwr(pwr)
-            SMW.Set_OptimizeAll()
+            # SMW.Set_OptimizeAll()
             NR5G.pwr = pwr
             NR5G_Rx_SetLevel(NR5G)
             TMR.tick()
@@ -179,9 +182,9 @@ for saveState in saveArry:
 
             ### Log Data
             LoopParam   = f'{saveState},{NR5G.Rx},{freq},{pwr:3d}'
-            # NR5GParam   = f'{NR5G.ChBW},{NR5G.RB},{NR5G.SubSp},{NR5G.Mod},{NR5G.TF}'
+            NR5GParam   = f'{NR5G.ChBW},{NR5G.RB},{NR5G.SubSp},{NR5G.Mod},{NR5G.TF}'
             AttnParam   = FSW.Get_Params_Amp() if FSW_Rx else CMP.Get_5GNR_Params_Amp(0)
-            TimeParam   = TMR.deltaTimeTxt()
+            TimeParam   = TMR.Get_Params_Time()
             OutStr      = f'{LoopParam},{AttnParam},{EVM},{TimeParam}'
             OFile.write(OutStr)
 SMW.Set_RFPwr(-100)
