@@ -209,7 +209,7 @@ class VSA(VSA):                                 #pylint: disable=E0102
             EVMPhyS = self.Get_5GNR_EVM_PhysSig()
             outStr  = f"{Crest:6.3f},{Power:6.3f},{EVMAll:.2f},{EVMPhyC:.2f},{EVMPhyS:.2f}"
         else:
-            outStr  = 'K144_Cres,K144Pwr,5GEVM_All,EVM_PhyCh,EVM_PhySig'
+            outStr  = 'K144_Cres,K144Pwr,5GEVM_All,EVM_PhyCh(PxSCH),EVM_PhySig(DMRS)'
         return outStr
 
     def Get_5GNR_FreqRange(self):

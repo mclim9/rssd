@@ -173,7 +173,7 @@ class jaVisa(object):
             if self.dataIDN != "":
                 cmd = cmd + '\n'
                 self.K2.sendall(cmd.encode())               #Write if connected
-                sOut = self.K2.recv(2048).strip()           #read socket
+                sOut = self.K2.recv(10000).strip()           #read socket
                 read = sOut.decode()
         except:
             if self.debug: print("jav_RdErr : %s-->%s"%(self.Model,cmd))
