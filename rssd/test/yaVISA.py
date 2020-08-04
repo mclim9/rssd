@@ -1,4 +1,5 @@
 # -*- coding: future_fstrings -*-
+#pylint: disable=R0201,W0613
 #####################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ###
@@ -10,7 +11,7 @@
 ###          logSCPI --> file for
 #####################################################################
 class jaVISA_mock(object):                          #pylint: disable=R0205
-    ### Instrument Common functions
+    """Instrument Common functions"""
     def __init__(self):
         self.dataIDN    = ""    # Raw IDN String
         self.Make       = ""    # IDN Make
@@ -21,22 +22,22 @@ class jaVISA_mock(object):                          #pylint: disable=R0205
         self.EOL        = '\n'
         self.f          = ''    # file log object
 
-    def delay(self,sec):                            #pylint: disable=R0201,W0613
+    def delay(self,sec):
         pass
 
-    def jav_Clear(self):                            #pylint: disable=R0201,W0613
+    def jav_Clear(self):
         pass
 
-    def jav_Close(self):                            #pylint: disable=R0201,W0613
+    def jav_Close(self):
         pass
 
-    def jav_ClrErr(self):                           #pylint: disable=R0201,W0613
+    def jav_ClrErr(self):
         return "no Error"
 
-    def jav_Error(self):                            #pylint: disable=R0201,W0613
+    def jav_Error(self):
         return '0,No Error'
 
-    def jav_IDN(self,prnt=1):                       #pylint: disable=R0201,W0613
+    def jav_IDN(self,prnt=1):                       #pragma: no cover
         self.dataIDN    = "test"                    #Temp for self.query
         self.Make       = 'MakeTest'
         self.Model      = 'ModelTest'
@@ -45,25 +46,25 @@ class jaVISA_mock(object):                          #pylint: disable=R0205
         if self.debug: print('jav_IDN    : %s'%(self.dataIDN))
         return self.dataIDN
 
-    def jav_OPC_Wait(self, InCMD):                  #pylint: disable=R0201,W0613
+    def jav_OPC_Wait(self, InCMD):
         return 0.0
 
-    def jav_Open(self, IPAddr, fily=''):            #pylint: disable=R0201,W0613
+    def jav_Open(self, IPAddr, fily=''):
         return self
 
-    def jav_openvisa(self, sVISAStr, fily=''):      #pylint: disable=R0201,W0613
+    def jav_openvisa(self, sVISAStr, fily=''):
         return self
 
     def jav_read_raw(self):
         return b'1234567890'
 
-    def jav_write_raw(self,SCPI):                   #pylint: disable=R0201,W0613
+    def jav_write_raw(self,SCPI):
         pass
 
-    def query(self,cmd):                            #pylint: disable=R0201,W0613
+    def query(self,cmd):
         return "<notRead>"
 
-    def write(self,cmd):                            #pylint: disable=R0201,W0613
+    def write(self,cmd):
         pass
 
 if __name__ == "__main__":
