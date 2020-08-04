@@ -38,7 +38,7 @@ class VST(object):
             odata[1].append(self.SMW.Get_WLAN_PPDU())
             odata[1].append(self.SMW.Get_WLAN_MCS())
             odata[1].append(self.SMW.Get_WLAN_Modulation())
-        except:
+        except:                                                                 #pragma: no cover
             pass
 
         try:
@@ -49,7 +49,7 @@ class VST(object):
             odata[2].append(self.FSW.Get_WLAN_PPDU())
             odata[2].append(self.FSW.Get_WLAN_MCS())
             odata[2].append(self.FSW.Get_WLAN_Modulation())
-        except:
+        except:                                                                 #pragma: no cover
             pass
         print('SMW/FSW Values: %d %d'%(len(odata[2]),len(odata[2])))
 
@@ -60,7 +60,7 @@ class VST(object):
         for i in range(len(data[0])):
             try:
                 print("%s\t%s\t%s"%(data[0][i],data[1][i],data[2][i]))
-            except:
+            except:                                                             #pragma: no cover
                 try:
                     print("%s\t%s\t%s"%(data[0][i],data[1][i],'<notRead>'))
                 except:
@@ -93,8 +93,8 @@ class VST(object):
             self.SMW.Set_WLAN_Standard(self.WLAN_Std)
             self.SMW.Set_WLAN_MCS(self.WLAN_MCS)
             self.SMW.Set_WLAN_BBState('ON')
-            self.SMW.Set_RFState('ON')                      #Turn RF Output on
-        except:
+            self.SMW.Set_RFState('ON')                                          #Turn RF Output on
+        except:                                                                 #pragma: no cover
             print("WLAN_SetSettings: SMW Error")
 
         try:
@@ -104,7 +104,7 @@ class VST(object):
             self.FSW.Set_WLAN_Standard(self.WLAN_Std)
             self.FSW.Set_WLAN_ChBW(self.WLAN_ChBW)
             self.FSW.Set_WLAN_MCS(self.WLAN_MCS)
-        except:
+        except:                                                                 #pragma: no cover
             print("WLAN_SetSettings: FSW Error")
         return 0
 
