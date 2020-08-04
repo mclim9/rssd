@@ -33,7 +33,7 @@ class OTA(jaVisa):
         self.EOL   = '\x00'
         self.cmdWait = 0.05     #Seconds
 
-    def query(self,cmd):
+    def query(self,cmd):                            #pragma: no cover
         cmd = cmd + self.EOL
         self.K2.read_termination = '\x00'
         self.K2.write_termination = '\x00'

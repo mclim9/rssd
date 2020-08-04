@@ -84,7 +84,7 @@ class VSE(VSE):
         EVM_Prev = 1.00
         i=0
         self.Set_Autolevel()                            #Manually Set RefLvl & Attn
-        while (i <= MAttn) & (i < 30):
+        while (i <= MAttn) & (i < 30):                  #pragma: no cover
             MechAttn = MAttn - i
             self.Set_AttnMech(MAttn - i)
             EVM_Curr = self.Get_EVM()
@@ -113,7 +113,7 @@ class VSE(VSE):
         EVM_Prev = 1.00
         i=0
         self.Set_Autolevel()                                    #Manually Set RefLvl & Attn
-        for x in range(0):                                      #pylint: disable=W0612
+        for x in range(0):                                      #pragma: no cover
             self.Set_RefLevel(RefLvl - i)
             EVM_Curr = self.Get_EVM()
             if debug==1: print("        Ref:%.2f MAttn:%.0f EVM:%.2f"%(RefLvl-i, MechAttn, EVM_Curr))
