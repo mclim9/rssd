@@ -1,21 +1,20 @@
+"""Parse R&S SYST:DFPR String"""
+# pylint: disable=bad-whitespace,invalid-name
 ##########################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Title  : Timing SCPI Commands Example
-### Author : mclim
-##########################################################
+from xml.etree      import ElementTree as ET
+from rssd.yaVISA    import jaVisa
+from rssd.FileIO    import FileIO
+
 ### User Entry
 ##########################################################
-IPaddr = '192.168.1.114'
+IPaddr = '10.0.0.25'
 
 ##########################################################
 ### Code Begin
 ##########################################################
-from rssd.yaVISA    import jaVisa
-from rssd.FileIO    import FileIO
-from xml.etree      import ElementTree as ET
 
 OFile   = FileIO().makeFile(__file__)
-K2      = jaVisa().jav_openvisa(f'TCPIP0::{IPaddr}::INSTR',OFile)  #Create VISA object
+K2      = jaVisa().jav_openvisa(f'TCPIP0::{IPaddr}::INSTR', OFile)  #Create VISA object
 rdStr   = K2.query('SYST:DFPR?')
 XMLstr  = '<' + rdStr.split('<',1)[1]
 # print(XMLstr)

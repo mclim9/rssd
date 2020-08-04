@@ -33,7 +33,7 @@ class VSE(VSA):
     #####################################################################
     def Set_Input(self,sType):
         """RF|FILE"""
-        self.write('INP:SEL {sType}')
+        self.write(f'INP:SEL {sType}')
 
     def Set_File_InputIQT(self,sFilename):
         ABW = '10MHz'
