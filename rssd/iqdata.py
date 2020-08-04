@@ -21,7 +21,7 @@ import os
 import re
 import math
 import time
-# import array                            # dataConvert
+# import array                          # dataConvert
 import struct
 from datetime import datetime           # writeXml, writeWv
 import tarfile                          # readIqTar, writeIqTar
@@ -30,7 +30,7 @@ import xml.etree.ElementTree as ET      # readIqTar
 class IQ(object):
     """ Util IQ Converting Object """
     def __init__(self):
-        self.iqData = [complex(1,1)]                #Complex IQ Data
+        self.iqData = [complex(1,1)]    #Complex IQ Data
         self.iiqqList = []
         self.iqiqList = []
         self.NumberOfSamples = 0
@@ -67,7 +67,7 @@ class IQ(object):
     #     self.iiqqList.append([ iq.imag for iq in self.iqData])
     #     return self.iiqqList
 
-    def writeIqw(self, FileName):               # Verified 2020.0115
+    def writeIqw(self, FileName):                                               # Verified 2020.0115
         """writes an IQW file (file of binary floats).
         self.iqData can be a list of complex or list of floats.
         Note: IIIQQQ is a deprecated format, don't use it for new files.
@@ -86,7 +86,7 @@ class IQ(object):
             return 0
         return self.NumberOfSamples
 
-    def readIqw(self, FileName, iqiq = True):                                  # Verified 2020.0115
+    def readIqw(self, FileName, iqiq = True):                                   # Verified 2020.0115
         """Reads an IQW (iiqq or iqiq) file--> self.__iXXq2complex__ --> self.iqData
          - If iqiq is True, samples are read pairwise (IQIQIQ)
          - else, samples are read, i first then q (IIIQQQ)
@@ -124,13 +124,10 @@ class IQ(object):
             power.append(abs(self.iqiqList[2*n]**2 + self.iqiqList[2*n+1]**2))
         scaling = math.sqrt(max(power))
 
-        # normalize to magnitude 1
-        self.iqiqList = [iq / scaling for iq in self.iqiqList]
-        #calculate rms in dB (below full scale)
-        rms = math.sqrt(sum(power)/self.NumberOfSamples)/scaling
-        rms = abs(20*math.log10(rms))
-        # Convert to int16
-        self.iqiqList = [math.floor(iq * 32767 +.5) for iq in self.iqiqList]
+        self.iqiqList = [iq / scaling for iq in self.iqiqList]                  # normalize to magnitude 1
+        rms = math.sqrt(sum(power)/self.NumberOfSamples)/scaling                # calculate rms in dB (below full scale)
+        rms = abs(20*math.log10(rms))                                           # Convert to dB
+        self.iqiqList = [math.floor(iq * 32767 +.5) for iq in self.iqiqList]    # Convert to int16
 
         try:
             file = open(FileName, "wb")
@@ -155,7 +152,7 @@ class IQ(object):
             return 0
         return self.NumberOfSamples
 
-    def readWv(self,FileName):                  # Verified 2020.0115
+    def readWv(self,FileName):                                                          # Verified 2020.0115
         """Reads a WV file --> self.__iqiq2complex__ --> self.iqData"""
         try:
             file = open(FileName, "rb")
@@ -194,17 +191,17 @@ class IQ(object):
         xmlfile.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
         xmlfile.write("<?xml-stylesheet type=\"text/xsl\" href=\"open_IqTar_xml_file_in_web_browser.xslt\"?>\n")
         xmlfile.write("<RS_IQ_TAR_FileFormat fileFormatVersion=\"2\" xsi:noNamespaceSchemaLocation=\"http://www.rohde-schwarz.com/file/RsIqTar.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n")
-        xmlfile.write("<Name>Python iq.tar writer (self.iqData.py)</Name>\n")       #Optional
-        xmlfile.write("<Comment>RS WaveForm, TheAE-RA</Comment>\n")                 #Optional
+        xmlfile.write("<Name>Python iq.tar writer (self.iqData.py)</Name>\n")           #Optional
+        xmlfile.write("<Comment>RS WaveForm, TheAE-RA</Comment>\n")                     #Optional
         xmlfile.write("<DateTime>"+ datetime.now(None).isoformat() +"</DateTime>\n")
         xmlfile.write("<Samples>" + str(self.NumberOfSamples) + "</Samples>\n")
         xmlfile.write("<Clock unit=\"Hz\">" + str(self.fSamplingRate) + "</Clock>\n")
         xmlfile.write("<Format>complex</Format>\n")
         xmlfile.write("<DataType>float32</DataType>\n")
-        xmlfile.write("<ScalingFactor unit=\"V\">1</ScalingFactor>\n")              #Optional
-        xmlfile.write("<NumberOfChannels>1</NumberOfChannels>\n")                   #Optional
+        xmlfile.write("<ScalingFactor unit=\"V\">1</ScalingFactor>\n")                  #Optional
+        xmlfile.write("<NumberOfChannels>1</NumberOfChannels>\n")                       #Optional
         xmlfile.write("<DataFilename>" + filenameiqw+ "</DataFilename>\n")
-        # xmlfile.write("<UserData></UserData>\n")                                  #Optional
+        # xmlfile.write("<UserData></UserData>\n")                                      #Optional
         xmlfile.write("</RS_IQ_TAR_FileFormat>\n")
         xmlfile.close()
         return 1
@@ -269,7 +266,7 @@ class IQ(object):
         self.iqData = [sample * scaling for sample in self.iqData]                      #Apply scaling factor
 
 
-    def main(self):
+    def main(self):     #pragma: no cover
         #for testing only
         filename = "C:\\Users\\lim_m\\ownCloud\\ATE\\AA_Code\\DSP_python\\DSP_python\\SampleWv\\CW_10tones_32MHz_100usec.iq.tar"
 
@@ -291,7 +288,7 @@ class IQ(object):
         speed = self.NumberOfSamples/1e6/duration
         print("Total: %d samples in %2.2f ms. writeSpeed: %f MSamples/s"%(self.NumberOfSamples,duration*1e3,speed))
 
-def dataConvert():
+def dataConvert():                          #pragma: no cover
     ''' binary to float32 conversion '''
     # numpy.frombuffer dtype=float32()
     sampledata = b'\x0E\x78\x94\xB7'
@@ -301,6 +298,5 @@ def dataConvert():
     # print("Float=",array.frombytes(sampledata)) #Little Endian
 
 if __name__ == "__main__":
-    # execute only if run as a script
     # IQ().main()
     dataConvert()
