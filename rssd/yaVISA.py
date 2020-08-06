@@ -209,7 +209,7 @@ class jaVisa(object):
 
     def jav_reslist(self):
         try:
-            rm = visa.ResourceManager()                             #Create Resource Manager
+            rm = pyvisa.ResourceManager()                           #Create Resource Manager
             rmList = rm.list_resources()                            #List VISA Resources
         except:
             rmList =["No VISA"]
