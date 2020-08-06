@@ -1,5 +1,6 @@
 from __future__ import print_function
 #coding: future_fstrings
+#pylint: disable=import-outside-toplevel
 ###############################################################################
 ### Rohde & Schwarz SCPI Driver Software Test
 ### Purpose: Import Library-->Create Object-->Catch obvious typos.
