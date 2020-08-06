@@ -11,7 +11,7 @@
 
 import time
 # import pyvisa as visa
-import visa
+import pyvisa
 import rssd.FileIO
 from rssd.test.yaVISA       import jaVISA_mock
 from rssd.RSI.time          import timer
@@ -25,7 +25,7 @@ class jaVisa(object):
         self.Device     = ""    # IDN Device
         self.Version    = ""    # IDN Version
         self.debug      = 1     # Print or not.
-        self.EOL        = '\n'
+        self.EOL        = '\r\n'
         self.f          = ''    # log file object
         self.dLastErr   = ''
         self.VISA       = ''    # '@py' for pyvisa-py
@@ -56,8 +56,8 @@ class jaVisa(object):
                 RdStr = self.query("SYST:ERR?").strip()
                 ErrList.append(RdStr)
                 RdStrSplit = RdStr.split(',')
-                if RdStr == "<notRead>": break                      #No readstring
-                if RdStrSplit[0] == "0": break                      #Read 0 error:R&S
+                if RdStr == "<notRead>" : break                     #No readstring
+                if RdStrSplit[0] == "0" : break                     #Read 0 error:R&S
                 if RdStrSplit[0] == "+0": break                     #Read 0 error:Other
                 self.dLastErr = RdStr
                 if self.debug: print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
@@ -133,11 +133,10 @@ class jaVisa(object):
         #  VISA: 'TCPIP0::'+IP_Address+'::inst0'
         #  VISA: 'TCPIP0::'+IP_Address+'::hislip0'
         #  VISA: 'TCPIP0::'+IP_Address+'::hislip0::INSTR'
-        try:
-            self.jav_openvisa('TCPIP0::'+IPAddr+'::hislip0::INSTR',fily)
-        except:
-            print('VISA Openerror.  Using Raw Socket')
-            self.jav_openvisa('TCPIP::'+IPAddr+'::5025::SOCKET',fily)
+        self.jav_openvisa('TCPIP0::'+IPAddr+'::hislip0::INSTR',fily)
+        # except:
+        #     print('VISA Openerror.  Using Raw Socket')
+        #     self.jav_openvisa('TCPIP::'+IPAddr+'::5025::SOCKET',fily)
         return self
 
     def jav_openvisa(self, sVISAStr, fily=''):
@@ -150,13 +149,15 @@ class jaVisa(object):
         """
         TMR = timer()
         TMR.start()
-        rm = visa.ResourceManager(self.VISA)                        #Create Resource Manager
+        rm = pyvisa.ResourceManager(self.VISA)                          #Create Resource Manager
         TMR.tick()
-        #rmList = rm.list_resources()                               #List VISA Resources
+        #rmList = rm.list_resources()                                   #List VISA Resources
         try:
-            # self.K2 = rm.open_resource(sVISAStr, open_timeout=500)  #Create Visa Obj
-            self.K2 = rm.open_resource(sVISAStr)                    #Create Visa Obj
-            self.K2.timeout = 5000                                  #Timeout, millisec
+            # self.K2 = rm.open_resource(sVISAStr, open_timeout=100)    #Create Visa Obj
+            self.K2 = rm.open_resource(sVISAStr)                        #Create Visa Obj
+            self.K2.timeout = 5000                                      #Timeout, millisec
+            # self.K2.write_termination = self.EOL
+            # self.K2.read_termination  = self.EOL
             self.jav_IDN()
             self.jav_fileout(fily, self.dataIDN)
             self.jav_ClrErr()
@@ -215,7 +216,7 @@ class jaVisa(object):
         return rmList
 
     def jav_scpilist(self,SCPIList):
-        ### Send SCPI list & Query if "?"
+        """Send SCPI list & Query if "?" """
         ### Collect read results into a list for return.
         OutList = []
         for cmd in SCPIList:
@@ -274,13 +275,13 @@ class jaVisa(object):
 
 if __name__ == "__main__":
     RS = jaVisa()
-    ipaddress   = '192.168.1.109'
+    ipaddress   = '10.0.0.10'
     RS.debug    = 1
     # RS.jav_logscpi()
     RS.jav_Open(ipaddress)                                          #Default HiSlip
     # RS.jav_openvisa(f'TCPIP::{ipaddress}::hislip0::INSTR')        #hislip
     # RS.jav_openvisa(f'TCPIP::{ipaddress}::instr0::INSTR')         #VXI11
     # RS.jav_openvisa(f'TCPIP::{ipaddress}::5025::SOCKET')          #Socket
-
-    RS.jav_OPC_Wait('INIT:IMM')
+    rdStr = RS.query('*IDN?')
+    print(rdStr)
     RS.jav_Close()
