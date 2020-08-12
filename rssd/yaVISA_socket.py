@@ -36,7 +36,7 @@ class jaVisa(object):
     def jav_Clear(self):
         """Clear VISA Errors"""
         #self.K2.clear()
-        pass
+        pass                                                        #pylint: disable=unnecessary-pass
 
     def jav_Close(self):
         """Close K2 Session"""
@@ -167,8 +167,8 @@ class jaVisa(object):
         self.write("*RST;*CLS;*WAI")
 
     def jav_logscpi(self):
-        self.f = rssd.FileIO()                                      #pylint:disable=E1101
-        self.f.init("yaVISA")                               #pylint:disable=W0612
+        self.f = rssd.FileIO()                                      #pylint:disable=E1102
+        self.f.init("yaVISA")                                       #pylint:disable=W0612
 
     def jav_read_raw(self):
         # return self.K2.read()
