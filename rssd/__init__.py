@@ -3,8 +3,8 @@
 __author__ = "Martin C Lim <martin.lim@rsa.rohde-schwarz.com>"
 # __all__ = ['FileIO', 'IQ', 'NRQ', 'OSP', 'PMr', 'RCT', 'VNA', 'VSA', 'VSE', 'VSG', 'jaVisa']
 
-# from .FileIO      import FileIO
-# from .iqdata      import IQ
+from .FileIO      import FileIO
+from .iqdata      import IQ
 # from .NRQ.Common  import NRQ
 # from .OSP.Common  import OSP
 # from .NRP.Common  import PMr
