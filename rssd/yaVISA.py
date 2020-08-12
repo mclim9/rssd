@@ -2,7 +2,8 @@
 ###############################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ### Purpose: Yet(Just) Another VISA wrapper
-### Requird: python -m pip install pyvisa
+### Author : Martin C Lim
+### Date   : 2017.09.01
 ### Descrip: Wrapper for common VISA commands
 ###          properties for: Make; Model; Version; IDN; last error
 ###          logSCPI --> file for
@@ -204,9 +205,6 @@ class jaVisa(object):
     def jav_read_raw(self):
         return self.K2.read_raw()
 
-    def jav_write_raw(self,SCPI):
-        self.K2.write_raw(SCPI)
-
     def jav_reslist(self):
         try:
             rm = pyvisa.ResourceManager()                           #Create Resource Manager
@@ -272,6 +270,9 @@ class jaVisa(object):
         except:
             if self.debug: print("jav_WrtErr: %s-->%s"%(self.Model,cmd))
         self.jav_fileout(self.f, "%s,%s"%(self.Model,cmd))
+
+    def jav_write_raw(self,SCPI):
+        self.K2.write_raw(SCPI)
 
 if __name__ == "__main__":
     RS = jaVisa()
