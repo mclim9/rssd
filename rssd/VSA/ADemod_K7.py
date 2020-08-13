@@ -42,7 +42,7 @@ class VSA(VSA):
             self.write('SENSe:FILT:LPASS:STAT ON')
         elif (on == 'OFF') or (on == 0):
             self.write('SENSe:FILT:LPASS:STAT OFF')
-        else:
+        else:                                                   #pragma: no cover
             print('State not supported, please set ON or OFF')
 
     def Set_Adem_LPassAbsolute(self,sBW):

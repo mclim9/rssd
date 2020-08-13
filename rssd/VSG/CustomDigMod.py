@@ -30,7 +30,7 @@ class VSG(VSG):                             #pylint: disable=E0102
             self.write(':SOUR1:BB:DM:STAT ON')
         elif (State == 0) or (State == 'OFF'):
             self.write(':SOUR1:BB:DM:STAT OFF')
-        else:
+        else:                                                   # pragma: no cover
             print('State not supported, please set ON or OFF')
 
 #####################################################################

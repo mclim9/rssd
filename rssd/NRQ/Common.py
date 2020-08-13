@@ -24,7 +24,6 @@ class NRQ(jaVisa):
         elif state in (0,'0','OFF'):
             self.write('SYST:DISP:UPD OFF')                 #Display Update State
 
-
     #####################################################################
     ### NRQ Common Settings
     #####################################################################
@@ -96,7 +95,7 @@ class NRQ(jaVisa):
         if self.Get_IQ_RecLength() < 125000000:
             digits = data[1]
             print(digits)
-        else:
+        else:                                                   # pragma: no cover
             digits = "10"
 
         # Don't need this but including for completeness
