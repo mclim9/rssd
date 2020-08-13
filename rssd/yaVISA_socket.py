@@ -69,6 +69,13 @@ class jaVisa(object):
         RdStr = self.query("SYST:ERR?").strip().split(',')
         return RdStr
 
+    def jav_fileout(self, fily, outstr):
+        try:
+            if fily != '':
+                fily.write(outstr.strip())
+        except:
+            pass
+
     def jav_IDN(self):
         """query *IDN?  Assign data to properties"""
         self.dataIDN = "Temp"                                       #Temp for self.query
@@ -85,6 +92,10 @@ class jaVisa(object):
         else:
             self.dataIDN = ""                                       #Reset if not read
         return self.dataIDN
+
+    def jav_logscpi(self):
+        self.f = rssd.FileIO()                                      #pylint:disable=E1101
+        self.f.init("yaVISA")                                       #pylint:disable=W0612
 
     def jav_OPC_Wait(self, InCMD):
         """ Wait based on *OPC """
@@ -108,23 +119,6 @@ class jaVisa(object):
         self.jav_ClrErr()
         return delta
 
-    def jav_Wait(self, InCMD):
-        """Brute Force Wait and check *OPC? """
-        start_time = time.time()
-        self.write(InCMD)                                           #Initiate Command
-        read = "0"
-        while (int(read) & 1) != 1:                                 #Loop until done
-            try:
-                read = self.queryInt("*OPC?")                       #See if we can get *OPC?
-            except:
-                pass
-            time.sleep(2)
-            delta = (time.time() - start_time)
-            if delta > 300:
-                if self.debug: print("jav_Wai   : timeout")
-                break
-        if self.debug: print('jav_Wai   : %0.2fsec'%(delta))
-        return delta
 
     def jav_Open(self, sIPAddr,fily='',port=5025):
         #*****************************************************************
@@ -156,24 +150,13 @@ class jaVisa(object):
             self.K2 = 'NoSOCKET'
         return self
 
-    def jav_fileout(self, fily, outstr):
-        try:
-            if fily != '':
-                fily.write(outstr.strip())
-        except:
-            pass
-
-    def jav_Reset(self):
-        self.write("*RST;*CLS;*WAI")
-
-    def jav_logscpi(self):
-        self.f = rssd.FileIO()                                      #pylint:disable=E1101
-        self.f.init("yaVISA")                                       #pylint:disable=W0612
-
     def jav_read_raw(self):
         # return self.K2.read()
         print('jav_read_raw socket not supported')
         return 9999
+
+    def jav_Reset(self):
+        self.write("*RST;*CLS;*WAI")
 
     def jav_reslist(self):
         print('Socket does not support Resource list')
@@ -190,6 +173,24 @@ class jaVisa(object):
                 ReadStr = self.query(cmd)
                 OutList.append(ReadStr)
         return OutList
+
+    def jav_Wait(self, InCMD):
+        """Brute Force Wait and check *OPC? """
+        start_time = time.time()
+        self.write(InCMD)                                           #Initiate Command
+        read = "0"
+        while (int(read) & 1) != 1:                                 #Loop until done
+            try:
+                read = self.queryInt("*OPC?")                       #See if we can get *OPC?
+            except:
+                pass
+            time.sleep(2)
+            delta = (time.time() - start_time)
+            if delta > 300:
+                if self.debug: print("jav_Wai   : timeout")
+                break
+        if self.debug: print('jav_Wai   : %0.2fsec'%(delta))
+        return delta
 
     def query(self,cmd):
         read ="<notRead>"

@@ -70,6 +70,13 @@ class jaVisa(object):
         RdStr = self.query("SYST:ERR?").strip().split(',')
         return RdStr
 
+    def jav_fileout(self, fily, outstr):
+        try:
+            if fily != '':
+                fily.write(outstr.strip())
+        except:
+            pass
+
     def jav_IDN(self):
         """query *IDN?  Assign data to properties"""
         self.dataIDN = "Temp"                                       #Temp for self.query
@@ -86,6 +93,10 @@ class jaVisa(object):
         else:
             self.dataIDN = ""                                       #Reset if not read
         return self.dataIDN
+
+    def jav_logscpi(self):
+        self.f = rssd.FileIO()                                      #pylint:disable=E1101
+        DataFile = self.f.init("yaVISA")                            #pylint:disable=W0612
 
     def jav_OPC_Wait(self, InCMD):
         """ Wait based on *OPC """
@@ -109,24 +120,6 @@ class jaVisa(object):
         self.jav_ClrErr()
         return delta
 
-    def jav_Wait(self, InCMD):
-        """Brute Force Wait and check *OPC? """
-        start_time = time.time()
-        self.write(InCMD)                                           #Initiate Command
-        read = "0"
-        while (int(read) & 1) != 1:                                 #Loop until done
-            try:
-                read = self.queryInt("*OPC?")                       #See if we can get *OPC?
-            except:
-                pass
-            time.sleep(2)
-            delta = (time.time() - start_time)
-            if delta > 300:
-                if self.debug: print("jav_Wai   : timeout")
-                break
-        if self.debug: print('jav_Wai   : %0.2fsec'%(delta))
-        return delta
-
     def jav_Open(self, IPAddr, fily=''):
         """Open VISA session"""
         #  VISA: 'TCPIP0::'+IP_Address+'::INSTR'
@@ -137,6 +130,25 @@ class jaVisa(object):
         # except:
         #     print('VISA Openerror.  Using Raw Socket')
         #     self.jav_openvisa('TCPIP::'+IPAddr+'::5025::SOCKET',fily)
+        return self
+
+    def jav_OpenTest(self, host):
+        self.debug = 0
+        self.VISA  = '@py'
+        self.jav_Open(host)
+        self.connected      = 1
+        if self.K2 == 'NoVISA':
+            mock = jaVISA_mock()
+            self.jav_Open       = mock.jav_Open
+            self.write          = mock.write
+            self.query          = mock.query
+            self.jav_Clear      = mock.jav_Clear
+            self.jav_Error      = mock.jav_Error
+            self.jav_read_raw   = mock.jav_read_raw
+            self.jav_write_raw  = mock.jav_write_raw
+            self.connected      = 0
+        self.jav_ClrErr()
+        self.dLastErr = ""
         return self
 
     def jav_openvisa(self, sVISAStr, fily=''):
@@ -168,41 +180,11 @@ class jaVisa(object):
         asdf = TMR.Get_Params_Time()
         return self
 
-    def jav_OpenTest(self, host):
-        self.debug = 0
-        self.VISA  = '@py'
-        self.jav_Open(host)
-        self.connected      = 1
-        if self.K2 == 'NoVISA':
-            mock = jaVISA_mock()
-            self.jav_Open       = mock.jav_Open
-            self.write          = mock.write
-            self.query          = mock.query
-            self.jav_Clear      = mock.jav_Clear
-            self.jav_Error      = mock.jav_Error
-            self.jav_read_raw   = mock.jav_read_raw
-            self.jav_write_raw  = mock.jav_write_raw
-            self.connected      = 0
-        self.jav_ClrErr()
-        self.dLastErr = ""
-        return self
-
-    def jav_fileout(self, fily, outstr):
-        try:
-            if fily != '':
-                fily.write(outstr.strip())
-        except:
-            pass
+    def jav_read_raw(self):
+        return self.K2.read_raw()
 
     def jav_Reset(self):
         self.write("*RST;*CLS;*WAI")
-
-    def jav_logscpi(self):
-        self.f = rssd.FileIO()                                      #pylint:disable=E1101
-        DataFile = self.f.init("yaVISA")                            #pylint:disable=W0612
-
-    def jav_read_raw(self):
-        return self.K2.read_raw()
 
     def jav_reslist(self):
         try:
@@ -223,6 +205,24 @@ class jaVisa(object):
                 ReadStr = self.query(cmd)
                 OutList.append(ReadStr)
         return OutList
+
+    def jav_Wait(self, InCMD):
+        """Brute Force Wait and check *OPC? """
+        start_time = time.time()
+        self.write(InCMD)                                           #Initiate Command
+        read = "0"
+        while (int(read) & 1) != 1:                                 #Loop until done
+            try:
+                read = self.queryInt("*OPC?")                       #See if we can get *OPC?
+            except:
+                pass
+            time.sleep(2)
+            delta = (time.time() - start_time)
+            if delta > 300:
+                if self.debug: print("jav_Wai   : timeout")
+                break
+        if self.debug: print('jav_Wai   : %0.2fsec'%(delta))
+        return delta
 
     def query(self,cmd):
         read ="<notRead>"
