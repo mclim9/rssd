@@ -11,7 +11,6 @@
 # pylint: disable=E0611,E0401,E0202
 
 import time
-# import pyvisa as visa
 import pyvisa
 import rssd.FileIO
 from rssd.test.yaVISA       import jaVISA_mock
@@ -20,15 +19,15 @@ from rssd.RSI.time          import timer
 class jaVisa(object):
     """Rohde & Schwarz VISA Class"""
     def __init__(self):
-        self.dataIDN    = ""    # Raw IDN String
-        self.Make       = ""    # IDN Make
-        self.Model      = ""    # IDN Model
-        self.Device     = ""    # IDN Device
-        self.Version    = ""    # IDN Version
-        self.debug      = 1     # Print or not.
+        self.dataIDN    = ""        # Raw IDN String
+        self.Make       = ""        # IDN Make
+        self.Model      = ""        # IDN Model
+        self.Device     = ""        # IDN Device
+        self.Version    = ""        # IDN Version
+        self.debug      = 1         # Print or not
         self.EOL        = '\r\n'
-        self.f          = ''    # log file object
-        self.dLastErr   = ''
+        self.f          = ''        # Log File Object
+        self.dLastErr   = ''        # Last error
         self.VISA       = ''    # '@py' for pyvisa-py
         self.K2         = 'NoVISA'
 

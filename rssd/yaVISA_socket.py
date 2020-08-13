@@ -15,8 +15,7 @@ import socket
 import rssd.FileIO
 
 class jaVisa(object):
-    ### Rohde & Schwarz VISA Class
-    ### Instrument Common functions
+    """Rohde & Schwarz VISA Class"""
     def __init__(self):
         self.dataIDN    = ""        # Raw IDN String
         self.Make       = ""        # IDN Make
@@ -72,7 +71,7 @@ class jaVisa(object):
 
     def jav_IDN(self):
         """query *IDN?  Assign data to properties"""
-        self.dataIDN = "Temp"                               #Temp for self.query
+        self.dataIDN = "Temp"                                       #Temp for self.query
         self.dataIDN = self.query("*IDN?").strip()
         if (self.dataIDN != "<notRead>") and ('<title>' not in self.dataIDN):          #Data Returned?
             IDNStr = self.dataIDN.split(',')
@@ -85,7 +84,6 @@ class jaVisa(object):
                 pass
         else:
             self.dataIDN = ""                                       #Reset if not read
-        if self.debug: print('jav_IDN   : %s'%(self.dataIDN))
         return self.dataIDN
 
     def jav_OPC_Wait(self, InCMD):
@@ -107,6 +105,7 @@ class jaVisa(object):
                 if self.debug: print("jav_OPCWai: timeout")
                 break
         if self.debug: print('jav_OPCWai: %0.2fsec'%(delta))
+        self.jav_ClrErr()
         return delta
 
     def jav_Wait(self, InCMD):
@@ -126,6 +125,7 @@ class jaVisa(object):
                 break
         if self.debug: print('jav_Wai   : %0.2fsec'%(delta))
         return delta
+
     def jav_Open(self, sIPAddr,fily='',port=5025):
         #*****************************************************************
         #*** Open raw socket Connection
@@ -167,7 +167,7 @@ class jaVisa(object):
         self.write("*RST;*CLS;*WAI")
 
     def jav_logscpi(self):
-        self.f = rssd.FileIO()                                      #pylint:disable=E1102
+        self.f = rssd.FileIO()                                      #pylint:disable=E1101
         self.f.init("yaVISA")                                       #pylint:disable=W0612
 
     def jav_read_raw(self):
@@ -242,6 +242,7 @@ class jaVisa(object):
 
     def jav_write_raw(self,SCPI):
         self.K2.write(SCPI)
+
 if __name__ == "__main__":
     RS = jaVisa().jav_Open_Basic("192.168.1.160",5025)
     RS.EOL = '\r\n'
