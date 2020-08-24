@@ -44,12 +44,6 @@ class TestGeneral(unittest.TestCase):
         GetVal = self.NRP8.Get_Freq()
         if self.NRP8.connected: self.assertEqual(SetVal,int(GetVal))
 
-    def test_NRP_Trigger(self):
-        self.NRP8.Set_TriggerAuto(0)
-        self.NRP8.Set_TriggerCount(10)
-        self.NRP8.Set_TriggerSource('BUS')
-        self.NRP8.Set_TriggerAuto(1)
-
     def test_NRP_Power(self):
         self.NRP8.Set_Freq(6e9)                              # Set Frequency
         self.NRP8.Set_AverageMode(1)                         # Auto Averaging ON
@@ -73,7 +67,14 @@ class TestGeneral(unittest.TestCase):
         self.NRP8.Set_NRPM_LED(0)
         GetVal = self.NRP8.Get_NRPM_PowerAll()
 
+    def test_NRP_Trigger(self):
+        self.NRP8.Set_TriggerAuto(0)
+        self.NRP8.Set_TriggerCount(10)
+        self.NRP8.Set_TriggerSource('BUS')
+        self.NRP8.Set_TriggerAuto(1)
 
+    def test_NRP_Send(self):
+        self.NRP8.Set_BufferSize(12)
 
 ###############################################################################
 ### </Test>
