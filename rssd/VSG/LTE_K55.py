@@ -6,10 +6,12 @@
 ### Author : Martin C Lim
 ### Date   : 2019.03.05
 ### Requird: python -m pip install rssd
-### Options: K55  LTE Rel  8 Initial Release
-###          K84  LTE Rel  9 Pos Ref Signal
-###          K85  LTE Rel 10 Carrier aggregation
-###          K112 LTE Rel 11
+### Options: K55  LTE Rel  8: LTE 20MHz 64QAM 
+###          K84  LTE Rel  9: MBMS & MBSFN generation
+###          K85  LTE Rel 10: CA; Enhanced SC-FDMA; UL MIMO
+###          K112 LTE Rel 11: TDD Config9&7
+###          K113 LTE Rel 12: DL 256QAM; TDD/FDD Mixed CA
+###          K119 LTE Rel 13/14/15: UL 256QAM; LAA
 #####################################################################
 from rssd.VSG.Common import VSG     #pylint: disable=E0611,E0401
 
