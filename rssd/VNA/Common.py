@@ -7,6 +7,7 @@
 ### Requird: python -m pip install rssd
 #####################################################################
 from rssd.yaVISA import jaVisa            # pylint: disable=E0611,E0401
+import math
 
 class VNA(jaVisa):
     """ Rohde & Schwarz Vector Network Analyzer Object """
@@ -14,6 +15,39 @@ class VNA(jaVisa):
         super(VNA,self).__init__()          #Python2/3
         self.Model = "VNA"
         self.dChan = 1
+
+    def __complex2dB__(self, data):
+        """Calculate Re/Im --> dB"""
+        outArry = []
+        if len(data) % 2 == 0:
+            for i in range(len(data)//2):
+                magnitude = math.sqrt(data[2*i] ** 2 + data[2*i+1] ** 2)
+                outArry.append(20 * math.log10(magnitude))
+        else:
+            print('Need even elements')
+        return outArry
+
+    def __complex2phase__(self, data):
+        """Calculate Re/Im --> phase"""
+        outArry = []
+        if len(data) % 2 == 0:
+            for i in range(len(data)//2):
+                phase = math.degrees(math.atan(data[2*i+1]/data[2*i])) 
+                outArry.append(phase)
+        else:
+            print('Need even elements')
+        return outArry
+
+    def __complex2dBm__(self, data):
+        """Calculate Re/Im --> dBm"""
+        outArry = []
+        if len(data) % 2 == 0:
+            for i in range(len(data)//2):
+                magnitude = math.sqrt((data[2*i] ** 2 + data[2*i+1] ** 2)/50)
+                outArry.append(20 * math.log10(magnitude) + 30)
+        else:
+            print('Need even elements')
+        return outArry
 
     #####################################################################
     ### VNA GET Functions Alphabetical
