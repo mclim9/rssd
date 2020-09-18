@@ -15,7 +15,7 @@
   - NRQ, Frequency Selective Power Sensor
 
 - Example code
-  - Automated test examples (see below table)
+  - Automated test examples, see below table
   - Instrument speed/repeatability evaluation
   - Proof of concept/Demo code
 
