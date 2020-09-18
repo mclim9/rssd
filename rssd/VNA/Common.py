@@ -6,8 +6,8 @@
 ### Date   : 2019.02.14
 ### Requird: python -m pip install rssd
 #####################################################################
-from rssd.yaVISA import jaVisa            # pylint: disable=E0611,E0401
 import math
+from rssd.yaVISA import jaVisa            # pylint: disable=E0611,E0401
 
 class VNA(jaVisa):
     """ Rohde & Schwarz Vector Network Analyzer Object """
