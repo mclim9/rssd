@@ -2,8 +2,6 @@
 #####################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ### Purpose: OSP Open Switch Platform Common Functions
-### Author : Martin C Lim
-### Date   : 2018.06.15
 #####################################################################
 from rssd.yaVISA import jaVisa
 
@@ -46,6 +44,7 @@ class OSP(jaVisa):
     def Set_CompatabilityMode(self,sState):
         """
             F01Mxx --> F01A1x nomenclature
+            F01M01 --> F01A11
             ON OFF 1 0
         """
         if sState in (1,'1','ON'):
