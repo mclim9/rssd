@@ -353,6 +353,14 @@ class VSA(VSA):                                 #pylint: disable=E0102
     def Set_5GNR_BWP_ResBlockOffset(self,iRBO):
         self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:RBOF {iRBO}')
 
+    def Set_5GNR_BWP_Ch_SymbNum(self, symb):
+        """Set BWP Ch Symbol Offset"""
+        self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:SCO {symb}')
+
+    def Set_5GNR_BWP_Ch_SymbOff(self, symb):
+        """Set BWP Ch Symbol Offset"""
+        self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:SOFF {symb}')
+
     def Set_5GNR_BWP_SubSpace(self,iSubSp):
         """15 30 60 120"""
         self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SSP SS{iSubSp}')

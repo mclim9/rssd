@@ -266,6 +266,9 @@ class VSG(VSG):                             #pylint: disable=E0102
         else:
             self.write(f':SOUR1:BB:NR5G:STAT 0')
 
+    def Set_5GNR_BWP_CellID(self, iCellID):
+        self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:CELL {iCellID}')
+
     def Set_5GNR_BWP_Ch_Modulation(self,sMod):
         self.write(f':SOUR1:BB:NR5G:SCH:CELL{self.cc}:SUBF{self.subF}:USER0:BWP0:ALL{self.alloc}:MOD {sMod}')
 
@@ -326,6 +329,10 @@ class VSG(VSG):                             #pylint: disable=E0102
             print('Subcarrier spacing not supported')
         self.write(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:TXBW:RES')
         self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:SCSP N{iSubSp}')
+
+    def Set_5GNR_BWP_Users(self,iUsers):
+        """Number of users"""
+        self.write(f':SOUR1:BB:NR5G:UBWP:NUS {iUsers}')
 
     def Set_5GNR_CC_Num(self,iCC):
         """ iCC, 1 start """
