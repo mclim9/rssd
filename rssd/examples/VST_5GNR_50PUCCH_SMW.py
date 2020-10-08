@@ -9,7 +9,7 @@ freqArry    = [28e9]
 ### Overhead
 ###############################################################################
 from rssd.VSG.NR5G_K144     import VSG
-from rssd.VSA.NR5G_K144     import VSA
+# from rssd.VSA.NR5G_K144     import VSA
 # from rssd.FileIO            import FileIO
 # from rssd.RSI.time          import timer
 
@@ -20,10 +20,10 @@ SMW.debug = 0
 # FSW = VSA().jav_Open(FSW_IP)                          #Create FSW Object
 # FSW.debug = 0
 
-def NR5G_Rx_Init():
-    """Start 5GNR Measurement Channel"""
-    FSW.Init_5GNR()
-    FSW.Set_5GNR_FrameCount('OFF')
+# def NR5G_Rx_Init():
+#     """Start 5GNR Measurement Channel"""
+#     FSW.Init_5GNR()
+#     FSW.Set_5GNR_FrameCount('OFF')
 
 ###############################################################################
 ### Code Start
@@ -69,4 +69,3 @@ for ch in range(0,10):
 # :SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER2:BWP0:ALL0:PUCCh:SHOPping 8
 
 SMW.Set_5GNR_BBState('ON')
-

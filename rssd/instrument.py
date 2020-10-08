@@ -5,11 +5,11 @@
 
 import time
 import rssd.FileIO
-from rssd.test.yaVISA       import jaVISA_mock
+# from rssd.test.yaVISA       import jaVISA_mock
 # from rssd.RSI.time          import timer
 from rssd.bus.socket        import jaSocket
 from rssd.bus.VISA          import jaVisa
-# from rssd.bus.test          import Test
+from rssd.bus.test          import jaTest
 
 class instrument(object):
     '''Rohde & Schwarz Instrument Class'''
@@ -125,21 +125,14 @@ class instrument(object):
             self.bus = jaVisa.open(f'TCPIP0::{address}::hislip0::INSTR')
         elif type == 'test':
             self.debug = 0
-            self.VISA  = '@py'
-            self.open(address)
             self.connected      = 1
             if self.bus == 'Nobus':
-                mock = jaVISA_mock()
-                self.open               = mock.open
-                self.write              = mock.write
-                self.query              = mock.query
-                self.SCPI_Clear         = mock.SCPI_Clear
-                self.SCPI_Error         = mock.SCPI_Error
-                self.SCPI_read_raw      = mock.SCPI_read_raw
-                self.SCPI_write_raw     = mock.SCPI_write_raw
-                self.connected          = 0
+                self.bus = jaTest.open('test')
             self.SCPI_ClrErr()
             self.dLastErr = ""
+        self.SCPI_IDN()
+        self.SCPI_file_write(self.dataIDN)
+        self.SCPI_ClrErr()
         return self
 
     def SCPI_read_raw(self):

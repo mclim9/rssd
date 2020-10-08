@@ -4,28 +4,13 @@
 
 from rssd.bus import bus
 
-class jaVISA_mock(bus):                          #pylint: disable=R0205
+class jaTest(bus):                          #pylint: disable=R0205
     """Instrument Common functions"""
     def __init__(self):
         self.EOL        = '\n'
 
     def Open(self, IPAddr, fily=''):
-        self.debug = 0
-        self.VISA  = '@py'
-        self.open(host)
-        self.connected      = 1
-        if self.bus == 'Nobus':
-            mock = jaVISA_mock()
-            self.open               = mock.open
-            self.write              = mock.write
-            self.query              = mock.query
-            self.instr_Clear        = mock.instr_Clear
-            self.instr_Error        = mock.instr_Error
-            self.instr_read_raw     = mock.instr_read_raw
-            self.instr_write_raw    = mock.instr_write_raw
-            self.connected          = 0
-        self.instr_ClrErr()
-        self.dLastErr = ""
+        self.connected          = 0
         return self
 
     def read_raw(self):
@@ -41,7 +26,7 @@ class jaVISA_mock(bus):                          #pylint: disable=R0205
         pass
 
 if __name__ == "__main__":
-    RS = jaVISA_mock()
+    RS = jaTest()
     RS.jav_openvisa(f'TCPIP::192.168.1.100::200::SOCKET')    #Socket
     print(RS.query("*IDN?"))
     RS.jav_Close()

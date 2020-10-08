@@ -418,9 +418,6 @@ class VSA(instrument):
             self.Set_RefLevel(reflev)
         print (f"Final : Ovl:{ifovl} Attn:{rfatt} RfLvl:{reflev}")
 
-    def Set_Autolevel_IQIF(self,tables):
-        VSAL.Optimise_FSx_Level(self,tables)
-
     #####################################################################
     ### FSW CCDF
     #####################################################################
