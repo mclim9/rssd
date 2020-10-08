@@ -3,7 +3,7 @@
 
 import pyvisa
 from rssd.RSI.time      import timer
-from rssd.bus           import bus
+from rssd.bus.bus       import bus
 
 class jaVisa(bus):
     """Rohde & Schwarz VISA Class"""

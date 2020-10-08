@@ -2,7 +2,7 @@
 #pylint: disable=R0201,W0613
 '''RSSD test bus class'''
 
-from rssd.bus import bus
+from rssd.bus.bus import bus
 
 class jaTest(bus):                          #pylint: disable=R0205
     """Instrument Common functions"""
