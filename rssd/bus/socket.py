@@ -2,9 +2,7 @@
 # pylint: disable=E0611,E0401,E0202
 '''RSSD Socket Bus Class'''
 
-import time
 import socket
-import rssd.FileIO
 from rssd.bus import bus
 
 class jaSocket(bus):
@@ -82,9 +80,7 @@ class jaSocket(bus):
         self.K2.write(SCPI)
 
 if __name__ == "__main__":
-    RS = jaVisa().jav_Open_Basic("192.168.1.160",5025)
+    RS = jaSocket().Open("192.168.1.160",5025)
     RS.EOL = '\r\n'
-    # RS = jaVisa().jav_Open_Basic("192.168.1.50",200)
-    # RS.EOL = '\x00'
     print(RS.query("*IDN?"))
     RS.jav_Close()

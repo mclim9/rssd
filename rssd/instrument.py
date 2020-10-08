@@ -1,15 +1,15 @@
 # -*- coding: future_fstrings -*-
-# pylint: disable=E0611,E0401,E0202
 '''RSSD instrument object'''
+#pylint: disable=too-many-function-args
+#pylint: disable=method-hidden,E0202
 
 import time
-import pyvisa
 import rssd.FileIO
 from rssd.test.yaVISA       import jaVISA_mock
-from rssd.RSI.time          import timer
+# from rssd.RSI.time          import timer
 from rssd.bus.socket        import jaSocket
 from rssd.bus.VISA          import jaVisa
-from rssd.bus.test          import Test
+# from rssd.bus.test          import Test
 
 class instrument(object):
     '''Rohde & Schwarz Instrument Class'''
@@ -113,7 +113,7 @@ class instrument(object):
         self.SCPI_ClrErr()
         return delta
 
-    def open(self, address, type = 'socket', param = 5025):
+    def open(self, address, type = 'socket', param = 5025):         #pylint: disable=redefined-builtin
         '''Open bus Sesion.  Return bus object'''
         if type == 'socket':
             self.bus = jaSocket.open(address)
@@ -213,7 +213,7 @@ class instrument(object):
             if self.dataIDN != "": self.bus.write(cmd)               #Write if connected
         except:
             if self.debug: print("SCPI_WrtErr: %s-->%s"%(self.Model,cmd))
-        self.SCPI_file_write(self.f, "%s,%s"%(self.Model,cmd))
+        self.SCPI_file_write(self.f, "%s,%s"%(self.Model,cmd))      
 
     def write_raw(self,SCPI):
         self.bus.write_raw(SCPI)

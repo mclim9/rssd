@@ -2,7 +2,8 @@
 from abc import ABC, abstractmethod
 
 class comm(ABC):
-    """abstract Rohde & Schwarz Instrument Class"""
+    """abstract Rohde & Schwarz Communication Bus Class"""
+
     @abstractmethod
     def close(self): pass
 
@@ -20,4 +21,3 @@ class comm(ABC):
 
     @abstractmethod
     def write_raw(self, SCPIstr): pass
-

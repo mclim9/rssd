@@ -1,10 +1,7 @@
 # -*- coding: future_fstrings -*-
-# pylint: disable=E0611,E0401,E0202
 '''RSSD VISA Bus class'''
 
-import time
 import pyvisa
-import rssd.FileIO
 from rssd.RSI.time      import timer
 from rssd.bus           import bus
 
@@ -22,13 +19,16 @@ class jaVisa(bus):
         except:
             pass
 
-    def open(self, sVISAStr, param):
+    def open(self, sVISAStr, param):            #pylint: disable=unused-argument
         """
-        TCPIP0::<IP_Address>::inst0::INSTR
-        TCPIP0::<IP_Address>::hislip0::INSTR
-        TCPIP0::<IP_Address>::5025::SOCKET
-        GPIB::<Addr>::INSTR
-        ASRL1::INSTR
+        Open VISA object w/ VISA String.
+
+        Examples:
+            TCPIP0::<IP_Address>::inst0::INSTR
+            TCPIP0::<IP_Address>::hislip0::INSTR
+            TCPIP0::<IP_Address>::5025::SOCKET
+            GPIB::<Addr>::INSTR
+            ASRL1::INSTR
         """
         TMR = timer()
         TMR.start()
@@ -42,7 +42,7 @@ class jaVisa(bus):
             # self.K2.write_termination = self.EOL
             # self.K2.read_termination  = self.EOL
             self.jav_IDN()
-            self.jav_fileout(fily, self.dataIDN)
+            self.jav_fileout(self.dataIDN)
             self.jav_ClrErr()
         except:
             if self.debug: print ('jav_OpnErr: ' + sVISAStr)
@@ -66,7 +66,7 @@ class jaVisa(bus):
         self.K2.write_raw(SCPI)
 
 if __name__ == "__main__":
-    RS = bus_yaVISA()
+    RS = jaVisa()
     ipaddress   = '10.0.0.10'
     RS.debug    = 1
     RS.jav_Open(ipaddress)                                          #Default HiSlip
