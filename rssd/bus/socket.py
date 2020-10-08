@@ -3,7 +3,7 @@
 '''RSSD Socket Bus Class'''
 
 import socket
-from rssd.bus import bus
+from rssd.bus.bus import bus
 
 class jaSocket(bus):
     """Rohde & Schwarz VISA Class"""
