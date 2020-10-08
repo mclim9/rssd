@@ -1,7 +1,7 @@
 # -*- coding: future_fstrings -*-
 from abc import ABC, abstractmethod
 
-class comm(ABC):
+class bus(ABC):
     """abstract Rohde & Schwarz Communication Bus Class"""
 
     @abstractmethod

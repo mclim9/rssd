@@ -51,4 +51,3 @@ for i in range(0,10):
 #     FSW.write(f':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER{i}:BWP0:ALL0:SYM 0')            # Symbol offset
 #     FSW.write(f':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER{i}:BWP0:ALL0:REP SLOT')         # Repitition
 #     FSW.write(f':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER{i}:BWP0:ALL0:PUCC:FS:CYCS 6')   # Initial Cyclic Shift
-
