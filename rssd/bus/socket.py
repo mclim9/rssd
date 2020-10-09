@@ -50,12 +50,7 @@ class jaSocket(bus):
             self.K2 = 'NoSOCKET'
         return self
 
-    def read_raw(self):
-        # return self.K2.read()
-        print('jav_read_raw socket not supported')
-        return 9999
-
-    def query(self,cmd):
+    def query(self, SCPIstr):
         read ="<notRead>"
         try:
             if self.dataIDN != "":
@@ -68,7 +63,12 @@ class jaSocket(bus):
         self.jav_fileout(self.f, "%s,%s,%s"%(self.Model,cmd,read))
         return read
 
-    def write(self,cmd):
+    def read_raw(self):
+        # return self.K2.read()
+        print('jav_read_raw socket not supported')
+        return 9999
+
+    def write(self, SCPIstr):
         try:
             out = cmd + self.EOL
             if self.dataIDN != "": self.K2.sendall(out.encode()) #Write if connected
@@ -76,7 +76,7 @@ class jaSocket(bus):
             if self.debug: print("jav_WrtErr: %s-->%s"%(self.Model,cmd))
         self.jav_fileout(self.f, "%s,%s"%(self.Model,cmd))
 
-    def write_raw(self,SCPI):
+    def write_raw(self, SCPIstr):
         self.K2.write(SCPI)
 
 if __name__ == "__main__":

@@ -19,7 +19,7 @@ class jaVisa(bus):
         except:
             pass
 
-    def open(self, sVISAStr, param):            #pylint: disable=unused-argument
+    def open(self, SCPIstr, param):            #pylint: disable=unused-argument
         """
         Open VISA object w/ VISA String.
 
@@ -62,7 +62,7 @@ class jaVisa(bus):
             rmList =["No VISA"]
         return rmList
 
-    def write_raw(self,SCPI):
+    def write_raw(self, SCPIstr):
         self.K2.write_raw(SCPI)
 
 if __name__ == "__main__":

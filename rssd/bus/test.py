@@ -13,16 +13,16 @@ class jaTest(bus):                          #pylint: disable=R0205
         self.connected          = 0
         return self
 
+    def query(self, SCPIstr):
+        return "<notRead>"
+
     def read_raw(self):
         return b'1234567890'
 
     def write_raw(self,SCPI):
         pass
 
-    def query(self,cmd):
-        return "<notRead>"
-
-    def write(self,cmd):
+    def write(self, SCPIstr):
         pass
 
 if __name__ == "__main__":
