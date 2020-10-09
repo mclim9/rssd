@@ -9,6 +9,7 @@ class jaVisa(bus):
     """Rohde & Schwarz VISA Class"""
     def __init__(self):
         self.VISA       = ''        # '@py' for pyvisa-py
+        self.debug      = 1
 
     def close(self):
         """Close VISA Session"""
@@ -19,7 +20,7 @@ class jaVisa(bus):
         except:
             pass
 
-    def open(self, resourceID, param):            #pylint: disable=unused-argument
+    def open(self, resourceID, param=0):            #pylint: disable=unused-argument
         """
         Open VISA object w/ VISA String.
 
@@ -51,6 +52,10 @@ class jaVisa(bus):
         asdf = TMR.Get_Params_Time()
         return self
 
+    def query(self, SCPIstr):
+        rdStr = self.K2.query(SCPIstr)
+        return rdStr
+
     def read_raw(self):
         return self.K2.read_raw()
 
@@ -62,17 +67,17 @@ class jaVisa(bus):
             rmList =["No VISA"]
         return rmList
 
+    def write(self, SCPIstr):
+        self.K2.write(SCPIstr)
+
     def write_raw(self, SCPIstr):
         self.K2.write_raw(SCPIstr)
 
 if __name__ == "__main__":
     RS = jaVisa()
     ipaddress   = '10.0.0.10'
-    RS.debug    = 1
-    RS.jav_Open(ipaddress)                                          #Default HiSlip
-    # RS.jav_openvisa(f'TCPIP::{ipaddress}::hislip0::INSTR')        #hislip
-    # RS.jav_openvisa(f'TCPIP::{ipaddress}::instr0::INSTR')         #VXI11
-    # RS.jav_openvisa(f'TCPIP::{ipaddress}::5025::SOCKET')          #Socket
-    rdStr = RS.query('*IDN?')
-    print(rdStr)
+    RS.open(f'TCPIP::{ipaddress}::hislip0::INSTR')        #hislip
+    # RS.open(f'TCPIP::{ipaddress}::instr0::INSTR')         #VXI11
+    # RS.open(f'TCPIP::{ipaddress}::5025::SOCKET')          #Socket
+    print(RS.query('*IDN?'))
     RS.jav_Close()
