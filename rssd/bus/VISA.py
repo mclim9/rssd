@@ -19,7 +19,7 @@ class jaVisa(bus):
         except:
             pass
 
-    def open(self, SCPIstr, param):            #pylint: disable=unused-argument
+    def open(self, resourceID, param):            #pylint: disable=unused-argument
         """
         Open VISA object w/ VISA String.
 
@@ -37,7 +37,7 @@ class jaVisa(bus):
         #rmList = rm.list_resources()                                   #List VISA Resources
         try:
             # self.K2 = rm.open_resource(sVISAStr, open_timeout=100)    #Create Visa Obj
-            self.K2 = rm.open_resource(sVISAStr)                        #Create Visa Obj
+            self.K2 = rm.open_resource(resourceID)                      #Create Visa Obj
             self.K2.timeout = 5000                                      #Timeout, millisec
             # self.K2.write_termination = self.EOL
             # self.K2.read_termination  = self.EOL
@@ -45,7 +45,7 @@ class jaVisa(bus):
             self.jav_fileout(self.dataIDN)
             self.jav_ClrErr()
         except:
-            if self.debug: print ('jav_OpnErr: ' + sVISAStr)
+            if self.debug: print ('jav_OpnErr: ' + resourceID)
             self.K2 = 'NoVISA'
         TMR.tick()
         asdf = TMR.Get_Params_Time()
@@ -63,7 +63,7 @@ class jaVisa(bus):
         return rmList
 
     def write_raw(self, SCPIstr):
-        self.K2.write_raw(SCPI)
+        self.K2.write_raw(SCPIstr)
 
 if __name__ == "__main__":
     RS = jaVisa()

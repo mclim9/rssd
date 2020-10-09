@@ -54,7 +54,7 @@ class jaSocket(bus):
         read ="<notRead>"
         try:
             if self.dataIDN != "":
-                cmd = cmd + '\n'
+                cmd = SCPIstr + '\n'
                 self.K2.sendall(cmd.encode())               #Write if connected
                 sOut = self.K2.recv(10000).strip()           #read socket
                 read = sOut.decode()
@@ -70,14 +70,14 @@ class jaSocket(bus):
 
     def write(self, SCPIstr):
         try:
-            out = cmd + self.EOL
+            out = SCPIstr + self.EOL
             if self.dataIDN != "": self.K2.sendall(out.encode()) #Write if connected
         except:
-            if self.debug: print("jav_WrtErr: %s-->%s"%(self.Model,cmd))
-        self.jav_fileout(self.f, "%s,%s"%(self.Model,cmd))
+            if self.debug: print("jav_WrtErr: %s-->%s"%(self.Model, SCPIstr))
+        self.jav_fileout(self.f, "%s,%s"%(self.Model, SCPIstr))
 
     def write_raw(self, SCPIstr):
-        self.K2.write(SCPI)
+        self.K2.write(SCPIstr)
 
 if __name__ == "__main__":
     RS = jaSocket().Open("192.168.1.160",5025)
