@@ -20,7 +20,7 @@ class jaSocket(bus):
         except:
             pass
 
-    def Open(self, sIPAddr, port):
+    def open(self, sIPAddr, port):
         #*****************************************************************
         #*** Open raw socket Connection
         #*****************************************************************

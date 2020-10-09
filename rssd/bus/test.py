@@ -9,7 +9,7 @@ class jaTest(bus):                          #pylint: disable=R0205
     def __init__(self):
         self.EOL        = '\n'
 
-    def Open(self, IPAddr, fily=''):
+    def open(self, IPAddr, fily=''):
         self.connected          = 0
         return self
 
@@ -24,9 +24,3 @@ class jaTest(bus):                          #pylint: disable=R0205
 
     def write(self, SCPIstr):
         pass
-
-if __name__ == "__main__":
-    RS = jaTest()
-    RS.jav_openvisa(f'TCPIP::192.168.1.100::200::SOCKET')    #Socket
-    print(RS.query("*IDN?"))
-    RS.jav_Close()
