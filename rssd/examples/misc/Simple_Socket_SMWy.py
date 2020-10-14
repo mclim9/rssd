@@ -1,17 +1,15 @@
 """ Rohde & Schwarz Automation for demonstration use."""
-#pylint: disable=E0611,E0401
 #pylint: disable=invalid-name
 ##########################################################
 ### User Entry
 ##########################################################
 import socket                       #Import socket module
-host = '192.168.58.109'             #Instrument IP address
+host = '192.168.58.114'             #Instrument IP address
 port = 5025                         #Instrument control port
 
 ##########################################################
 ### Code Begin
 ##########################################################
-
 def sQuery(SCPI):
     """Socket Query"""
     out = SCPI + "\n"
@@ -31,5 +29,7 @@ s = socket.socket()                 #Create a socket object
 s.connect((host, port))
 s.settimeout(1)                     #Timeout in seconds
 
-sWrite(':INP:FILE:PATH "C:\\LTE-TM11-20MHz.iq.tar"')
-sWrite(':INP:SEL FIQ')
+sWrite(':SOURce1:BB:NR5G:SCHed:CELL0:SUBF0:USER0:BWPart0:ALLoc0:PUSCh:TXSCheme:CDMData 1')
+print(sQuery(':SOURce1:BB:NR5G:SCHed:CELL0:SUBF0:USER0:BWPart0:ALLoc0:PUSCh:TXSCheme:CDMData?'))
+sWrite(':SOURce1:BB:NR5G:SCHed:CELL0:SUBF0:USER0:BWPart0:ALLoc0:PUSCh:DMRS:POWer -10')
+print(sQuery(':SOURce1:BB:NR5G:SCHed:CELL0:SUBF0:USER0:BWPart0:ALLoc0:PUSCh:DMRS:POWer?'))
