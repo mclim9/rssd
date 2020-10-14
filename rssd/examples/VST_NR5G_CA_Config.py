@@ -1,12 +1,10 @@
 ###############################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Title  : SCPI Commands Example
-### Author : mclim
-### Date   : 2020.03.12
-###
+### Rohde & Schwarz Automation for demonstration use.                       ###
 ###############################################################################
 ### User Entry
 ###############################################################################
+#pylint: disable=E0401
+#pylint: disable=E0611
 # SMW_IP  = '172.24.225.230'
 SMW_IP  = '192.168.58.114'
 FSW_IP  = '192.168.58.109'
@@ -14,20 +12,21 @@ VSG_ON  = 1
 Freq    = 39e9
 Pwr     = -10
 NumCC   = 10
-NR_Dir  = 'UP'
+NR_Dir  = 'DL'
 CCSpace = 99.96e6
+modu    = 'QAM64'
 CCStart = (1 - NumCC) * (CCSpace/2)
 
 ###############################################################################
 ### Code Overhead: Import and create objects
 ###############################################################################
 import timeit
-from rssd.VSG.NR5G_K144     import VSG              #pylint: disable=E0611,E0401
-from rssd.VSA.NR5G_K144     import VSA              #pylint: disable=E0611,E0401
-# from rssd.FileIO            import FileIO           #pylint: disable=E0611,E0401
+from rssd.VSG.NR5G_K144     import VSG
+from rssd.VSA.NR5G_K144     import VSA
+# from rssd.FileIO          import FileIO
 
-if VSG_ON: SMW = VSG().jav_Open(SMW_IP)             #Create SMW Object
-FSW = VSA().jav_Open(FSW_IP)                        #Create FSW Object
+if VSG_ON: SMW = VSG().jav_Open(SMW_IP)                 #Create SMW Object
+FSW = VSA().jav_Open(FSW_IP)                            #Create FSW Object
 
 ###############################################################################
 ### Code Start
@@ -50,7 +49,7 @@ FSW.Set_5GNR_FreqRange(2)
 FSW.Set_SweepCont(1)
 FSW.Set_5GNR_CC_Num(NumCC)
 FSW.Set_5GNR_CC_Capture('SING')
-FSW.Set_Freq(Freq + CCStart)                        # FSW Freq --> 1st CC
+FSW.Set_Freq(Freq + CCStart)                            # FSW Freq --> 1st CC
 
 for i in range(NumCC):
     Freq_CC = Freq + CCStart + (i * CCSpace)
@@ -60,6 +59,7 @@ for i in range(NumCC):
         SMW.Set_5GNR_CC_Offset(CCStart + (i * CCSpace))
         SMW.Set_5GNR_TransPrecoding('ON')
         SMW.Set_5GNR_PhaseCompensate_Freq(Freq_CC)
+        SMW.Set_5GNR_BWP_Ch_Modulation(modu)
     FSW.cc = i+1
     FSW.Set_5GNR_CC_Offset(i+1,i*CCSpace)
     FSW.Set_5GNR_TransPrecoding('ON')
@@ -67,6 +67,7 @@ for i in range(NumCC):
     FSW.Set_5GNR_PhaseCompensate_Freq(Freq_CC)
     FSW.Set_5GNR_CellID(i)
     FSW.Set_5GNR_BWP_SubSpace(120)
+    FSW.Set_5GNR_BWP_Ch_Modulation(modu)
 
 tick    = timeit.default_timer()
 if VSG_ON: SMW.Set_5GNR_BBState('ON')
