@@ -75,9 +75,8 @@ class jaVisa(bus):
         self.K2.write_raw(SCPIstr)
 
 if __name__ == "__main__":
-    RS = jaVisa()
     ipaddress   = '10.0.0.10'
-    RS.open(f'TCPIP::{ipaddress}::hislip0::INSTR')        #hislip
+    RS = jaVisa().open(f'TCPIP::{ipaddress}::hislip0::INSTR')        #hislip
     # RS.open(f'TCPIP::{ipaddress}::instr0::INSTR')         #VXI11
     # RS.open(f'TCPIP::{ipaddress}::5025::SOCKET')          #Socket
     print(RS.query('*IDN?'))
