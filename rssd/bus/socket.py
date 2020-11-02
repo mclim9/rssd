@@ -20,19 +20,20 @@ class jaSocket(bus):
         except:
             pass
 
-    def open(self, sIPAddr, port):
+    def open(self, resourceID, param):
         #*****************************************************************
         #*** Open raw socket Connection
         #*****************************************************************
+        '''resourceID = IPaddress'''
         self.K2 = socket.socket()
         try:
             self.K2.settimeout(1)
-            self.K2.connect((sIPAddr,port))
+            self.K2.connect((resourceID,param))
             self.jav_IDN()
             self.jav_fileout(self.dataIDN)
             self.jav_ClrErr()
         except:
-            if self.debug: print ('jav_OpnErr: ' + sIPAddr)
+            if self.debug: print ('jav_OpnErr: ' + resourceID)
             self.K2 = 'NoSOCKET'
         return self
 
@@ -80,7 +81,7 @@ class jaSocket(bus):
         self.K2.write(SCPIstr)
 
 if __name__ == "__main__":
-    RS = jaSocket().Open("192.168.1.160",5025)
+    RS = socket().Open("192.168.1.160",5025)
     RS.EOL = '\r\n'
     print(RS.query("*IDN?"))
     RS.jav_Close()
