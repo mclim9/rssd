@@ -9,7 +9,7 @@ class jaTest(bus):                          #pylint: disable=R0205
     def __init__(self):
         self.EOL        = '\n'
 
-    def open(self, IPAddr, fily=''):
+    def open(self, resourceID, param=None):
         self.connected          = 0
         return self
 
