@@ -12,7 +12,7 @@ class jaSocket(bus):
         self.EOL        = '\n'
         self.K2         = 'NoVISA'
 
-    def Close(self):
+    def close(self):
         """Close K2 Session"""
         try:
             errList = self.jav_ClrErr()
