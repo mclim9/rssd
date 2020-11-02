@@ -766,8 +766,8 @@ class VSA(jaVisa):
 #####################################################################
 if __name__ == "__main__":
     ### this won't be run when imported
-    FSW = VSA().jav_Open("192.168.1.109")
+    FSW = VSA().jav_Open("192.168.58.109")
     # print(FSW.Get_Param(1,0,1,1,1))
-    FSW.Set_Channel('iqasdf')
+    asdf = FSW.Get_Mkr_Freq()
     FSW.jav_ClrErr()
     del FSW

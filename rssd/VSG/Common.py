@@ -58,9 +58,9 @@ class VSG(jaVisa):
         return rdInt
 
     def Get_NRPPower(self,NRP=2):
-        self.write(':INIT%d:POW:CONT 1'%(NRP))
-        self.write('SENS%d:UNIT DBM'%(NRP))
-        self.query('SENS%d:TYPE?'%(NRP))
+        self.write(f':INIT{NRP}:POW:CONT 1')
+        self.write(f'SENS{NRP}:UNIT DBM')
+        self.query(f'SENS{NRP}:TYPE?')
         SCPI = self.queryFloat(f':READ{NRP}:POW?')
         if SCPI < -198: SCPI = self.queryFloat(f':READ{NRP}:POW?')
         if SCPI < -198: SCPI = self.queryFloat(f':READ{NRP}:POW?')
