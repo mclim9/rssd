@@ -19,6 +19,7 @@
 *.lnk
 *.code-workspace
 *.bat
+*.log
 
 ### Data files
 *.csv
