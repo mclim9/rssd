@@ -1,5 +1,6 @@
 # -*- coding: future_fstrings -*-
 # pylint: disable=E0611,E0401,E0202
+# pylint: disable=signature-differs
 '''RSSD Socket Bus Class'''
 
 import socket
@@ -81,7 +82,7 @@ class jaSocket(bus):
         self.K2.write(SCPIstr)
 
 if __name__ == "__main__":
-    RS = socket().Open("192.168.1.160",5025)
+    RS = jaSocket().open("192.168.1.160",5025)
     RS.EOL = '\r\n'
     print(RS.query("*IDN?"))
     RS.jav_Close()
