@@ -394,9 +394,9 @@ class VSG(VSG):                             #pylint: disable=E0102
     def Set_5GNR_PhaseCompensate(self,state):
         """ 'ON' | 'OFF' """
         if (state == "ON") or (state == 1):
-            self.write(f':SOUR:BB:NR5G:NODE:RFPH:STAT ON')
+            self.write(f':SOUR:BB:NR5G:NODE:RFPH:MODE AUTO')
         else:
-            self.write(f':SOUR:BB:NR5G:NODE:RFPH:STAT OFF')
+            self.write(f':SOUR:BB:NR5G:NODE:RFPH:MODE OFF')
 
     def Set_5GNR_PhaseCompensate_Freq(self,Freq):
         self.write(f':SOUR:BB:NR5G:NODE:CELL{self.cc}:PCFR {Freq}')
