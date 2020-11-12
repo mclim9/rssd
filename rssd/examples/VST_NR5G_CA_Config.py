@@ -1,5 +1,4 @@
-###############################################################################
-### Rohde & Schwarz Automation for demonstration use.                       ###
+"""5G NR FSW/SMW Carrier Aggregation Setup Example"""
 ###############################################################################
 ### User Entry
 ###############################################################################
@@ -9,10 +8,10 @@
 SMW_IP  = '192.168.58.114'
 FSW_IP  = '192.168.58.109'
 VSG_ON  = 1
-Freq    = 39e9
+Freq    = 10.3e9
 Pwr     = -10
-NumCC   = 10
-NR_Dir  = 'DL'
+NumCC   = 8
+NR_Dir  = 'UL'
 CCSpace = 99.96e6
 modu    = 'QAM64'
 CCStart = (1 - NumCC) * (CCSpace/2)

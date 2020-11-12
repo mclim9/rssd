@@ -224,11 +224,8 @@ class instrument(object):
         return OutList
 
 if __name__ == "__main__":
-    RS = instrument()
-    ipaddress   = '10.0.0.10'
+    RS = instrument().open('10.0.0.10')                 #Default HiSlip
     RS.debug    = 1
-    # RS.SCPI_logscpi()
-    RS.open(ipaddress)                                          #Default HiSlip
     rdStr = RS.query('*IDN?')
     print(rdStr)
     RS.SCPI_Close()
