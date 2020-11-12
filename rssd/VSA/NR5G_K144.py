@@ -329,7 +329,10 @@ class VSA(VSA):                                 #pylint: disable=E0102
 
     def Set_5GNR_BWP_Ch_Modulation(self,sMod):
         """QPSK; QAM16; QAM64; QAM256; PITB"""
-        self.write(f':CONF:NR5G:{self.sdir}:FRAM1:BWP0:SLOT0:ALL0:MOD {sMod}')
+        if self.sdir == 'DL':
+            self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:CW:MOD {sMod}')
+        else:
+            self.write(f':CONF:NR5G:{self.sdir}:CC{self.cc}:FRAM1:BWP0:SLOT0:ALL0:MOD {sMod}')
 
     def Set_5GNR_BWP_Ch_ResBlock(self,iRB):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
