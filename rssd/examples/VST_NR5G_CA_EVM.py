@@ -1,9 +1,4 @@
-###############################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Title  : 5G NR Carrier Aggregation Example
-### Author : mclim
-### Date   : 2020.03.12
-###
+"""5G NR FSW/SMW Carrier Aggregation Setup Example"""
 ###############################################################################
 ### User Entry
 ###############################################################################
@@ -23,8 +18,6 @@ DFT_S_OFDM  = 'ON'
 ### Code Overhead: Import and create objects
 ###############################################################################
 import timeit
-# import ctypes                                       #MessageBoxW
-# from datetime                   import datetime     #pylint: disable=E0611,E0401
 from rssd.FileIO                import FileIO       #pylint: disable=E0611,E0401
 from rssd.VST.NR5G_K144         import VST          #pylint: disable=E0611,E0401
 OFile = FileIO().makeFile(__file__)
@@ -75,7 +68,6 @@ for i in range(numMeas):                                            #LOOP: Measu
             for CC in range(NumCC):
                 NR5G.FSW.cc = CC+1
                 NR5G.FSW.Set_5GNR_CC_Offset(CC+1,CC*CCSpace)
-            #ctypes.windll.user32.MessageBoxW(0, "Verify", "Please Verify Waveform", 1)
             for pwr in pwrArry:                                     #LOOP: Power
                 tick = timeit.default_timer()                       #Tick Begin meas
                 NR5G.SMW.Set_RFPwr(pwr)
