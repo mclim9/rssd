@@ -9,11 +9,11 @@ SMW_IP  = '192.168.58.114'
 FSW_IP  = '192.168.58.109'
 VSG_ON  = 1
 Freq    = 10.3e9
-Pwr     = -10
-NumCC   = 8
+Pwr     = -5
+NumCC   = 14
 NR_Dir  = 'UL'
 CCSpace = 99.96e6
-modu    = 'QAM64'
+modu    = 'QPSK'
 CCStart = (1 - NumCC) * (CCSpace/2)
 
 ###############################################################################

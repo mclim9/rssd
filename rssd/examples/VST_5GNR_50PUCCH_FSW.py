@@ -48,11 +48,10 @@ for ch in range(44,50):
     FSW.write(f':CONF:NR5G:UL:CC1:FRAM1:BWP0:SLOT0:PUCC{ch}:RBC 1')                 # Number of RB
     FSW.write(f':CONF:NR5G:UL:CC1:FRAM1:BWP0:SLOT0:PUCC{ch}:RBOF {ch}')             # RB Offset
     FSW.write(f':CONF:NR5G:UL:CC1:FRAM1:BWP0:SLOT0:PUCC{ch}:SCO 2')                 # Number of Symbol
-    FSW.write(f':CONF:NR5G:UL:CC1:FRAM1:BWP0:SLOT0:PUCC{ch}:SOFF 0')               # Symbol Offset
-    # FSW.write(f':SOUR1:BB:NR5G:SCH:CELL0:SUBF0:USER{ch}:BWP0:ALL0:REP SLOT')      # Repitition
+    FSW.write(f':CONF:NR5G:UL:CC1:FRAM1:BWP0:SLOT0:PUCC{ch}:SOFF 0')                # Symbol Offset
 
     ## PUCCH Setting
-    # FSW.write(f':CONF:NR5G:UL:CC1:FRAM1:BWP0:SLOT0:PUCC{ch}:DMRS:ISFH ON')          # Intra Slot Freq Hop
+    # FSW.write(f':CONF:NR5G:UL:CC1:FRAM1:BWP0:SLOT0:PUCC{ch}:DMRS:ISFH OFF')          # Intra Slot Freq Hop
     # FSW.write(f':CONF:NR5G:UL:CC1:FRAM1:BWP0:SLOT0:PUCC{ch}:DMRS:HID NID')          # Hop ID type
     # FSW.write(f':CONF:NR5G:UL:CC1:FRAM1:BWP0:SLOT0:PUCC{ch}:DMRS:NID {ch * 2}')     # Hop ID num
     # FSW.write(f':CONF:NR5G:UL:CC1:FRAM1:BWP0:SLOT0:PUCC{ch}:DMRS:SHPR {272-ch}')    # 2nd Hop PBR

@@ -3,7 +3,7 @@
 
 import socket                                           #Import socket module
 import xml.etree.ElementTree as ET
-host = '192.168.1.109'                                  #Instrument IP address
+host = '192.168.58.109'                                  #Instrument IP address
 
 ###############################################################################
 ### Code Begin
