@@ -39,3 +39,4 @@ htmlcov
 .coveralls.yml
 test/.coverage
 /*.coverage
+rssd/examples/misc/*.txt

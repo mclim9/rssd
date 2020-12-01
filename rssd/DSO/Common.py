@@ -79,22 +79,22 @@ class DSO(jaVisa):
 
     def Set_ChCoupling(self,state, Ch=1):
         """ AC DC DCL """
-        self.write(f':CHAN{Ch}:COUP {state}')        #Display Update State
+        self.write(f':CHAN{Ch}:COUP {state}')           #Display Update State
 
     def Set_ChStatus(self,state, Ch=1):
         """ ON OFF """
-        self.write(f':CHAN{Ch}:STAT {state}')        #Display Update State
+        self.write(f':CHAN{Ch}:STAT {state}')           #Display Update State
 
     def Set_DisplayUpdate(self,state):
         """ ON OFF """
-        self.write(f'SYST:DISP:UPD {state}')        #Display Update State
+        self.write(f'SYST:DISP:UPD {state}')            #Display Update State
 
     def Set_SweepCont(self, state):
         """ ON OFF """
         if ('ON' in state.upper()) or (state == 1):
-            self.write(f'RUN')                      #Continuous
+            self.write(f'RUN')                          #Continuous
         else:
-            self.write(f'SING')                     #Single
+            self.write(f'SING')                         #Single
 
     def Set_TimeRef(self,sec):
         """ Seconds """
