@@ -2,16 +2,16 @@
 ###############################################################################
 ### User Entry
 ###############################################################################
-SMW_IP      = '192.168.1.114'
-FSW_IP      = '192.168.1.109'
-FreqArry    = [10e9, 20e9, 24e9, 28e9, 39e9]
-pwrArry     = range(-40,10,1)                                       #Power Array
+SMW_IP      = '192.168.58.114'
+FSW_IP      = '192.168.58.109'
+FreqArry    = range(9500000000, 12900000000, 400000000)
+pwrArry     = [-5]                              #Power Array
 NR_Dir      = 'UL'
-waveparam   = [[100,120,66,'64QAM']]                                 #ChBW, SubSp, RB, Mod
-NumCC       = 1
+waveparam   = [[100,120,66,'QPSK']]                #ChBW, SubSp, RB, Mod
+NumCC       = 14
 CCSpace     = 99.96e6
 CCStart     = (1 - NumCC) * (CCSpace/2)
-numMeas     = 1
+numMeas     = 7
 DFT_S_OFDM  = 'ON'
 
 ###############################################################################
@@ -49,7 +49,7 @@ NR5G.FSW.Set_5GNR_Direction(NR_Dir)
 NR5G.FSW.Set_SweepCont(0)
 NR5G.FSW.Set_5GNR_FreqRange(2)
 NR5G.FSW.Set_5GNR_CC_Num(NumCC)
-NR5G.FSW.Set_5GNR_SubFrameCount(1)
+NR5G.FSW.Set_5GNR_SubFrameCount(10)
 NR5G.FSW.Set_SweepTime(10.1e-3)
 NR5G.FSW.Set_5GNR_Result_View('ALL')
 
