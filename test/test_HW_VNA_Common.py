@@ -29,8 +29,14 @@ class TestGeneral(unittest.TestCase):
 ###############################################################################
 ### <Test>
 ###############################################################################
+    def test_VNA_Convert(self):
+        self.VNA.__complex2dB__([1,1])
+        self.VNA.__complex2phase__([1,1])
+        self.VNA.__complex2dBm__([1,1])
+
     def test_VNA_Markers(self):
         self.VNA.Set_Mkr_Coupled(1)
+        self.VNA.Set_Mkr_Coupled(0)
         self.VNA.Set_Mkr_Frq(2.4e9,1)
         self.VNA.Set_Mkr_Frq(2.5e9,2)
 
@@ -41,7 +47,7 @@ class TestGeneral(unittest.TestCase):
         self.VNA.Set_Pwrcal_Init()
         self.VNA.Set_Pwrcal_Tolerance(0.1)
         self.VNA.Set_Pwrcal_NumReading(10)
-        # self.VNA.Set_Pwrcal_Rx(1,2)
+        self.VNA.Set_Pwrcal_Rx(1,2)
         self.VNA.Set_Pwrcal_Measure(2)                      #Initiate Power cal
         getVal = self.VNA.Get_Pwrcal_State()                #Pwr Cal Tx State
         getVal = self.VNA.Get_Pwrcal_Rx_State()             #Pwr Cal Rx State
@@ -83,6 +89,10 @@ class TestGeneral(unittest.TestCase):
         self.VNA.Set_Trace_MeasDel('S21')
         self.VNA.Set_Trace_DelAll()
         self.VNA.Set_Trace_MeasAdd_AWave(1,2)
+
+    def test_VNA_TraceGet(self):
+        self.VNA.Get_Trace_Data()
+        self.VNA.Get_Trace_Data_All()
 
 ###############################################################################
 ### </Test>
