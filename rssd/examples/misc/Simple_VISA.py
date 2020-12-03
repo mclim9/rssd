@@ -1,9 +1,9 @@
 '''Rohde & Schwarz Automation for demonstration use.'''
 #pylint: disable=invalid-name, unused-import, using-constant-test
 import xml.etree.ElementTree as ET
-import visa                             #Import VISA module
+import pyvisa                             #Import VISA module
 
-host = '192.168.1.108'                  #Instrument IP address
+host = '192.168.58.115'                  #Instrument IP address
 
 ##########################################################
 ### Code Begin
@@ -38,7 +38,7 @@ def getSysInfo():
 ##########################################################
 ### Main Code
 ##########################################################
-rm = visa.ResourceManager()
+rm = pyvisa.ResourceManager()
 rmlist = rm.list_resources()
 VISA1 = rm.open_resource('TCPIP0::'+ host +'::inst0::INSTR')
 
