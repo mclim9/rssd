@@ -1,28 +1,28 @@
 '''Rohde & Schwarz Automation for demonstration use.'''
 #pylint: disable=invalid-name, unused-import, using-constant-test
 import xml.etree.ElementTree as ET
-import pyvisa                             #Import VISA module
+import pyvisa                               #Import VISA module
 
-host = '192.168.58.115'                  #Instrument IP address
+host = '192.168.58.30'                      #Instrument IP address
 
-##########################################################
+###############################################################################
 ### Code Begin
-##########################################################
-
+###############################################################################
 def vQuery(SCPI):
     '''VISA query'''
-    vOut = VISA1.query(SCPI)            #Query cmd
+    VISA1.read_termination = '\n'           # 0x0A for socket
+    vOut = VISA1.query(SCPI)                #Query cmd
     return vOut.strip()
 
 def vWrite(SCPI):
     '''VISA write'''
-    VISA1.write(SCPI)                   #Write cmd
+    VISA1.write(SCPI)                       #Write cmd
 
 def getSysInfo():
     '''Get System Info'''
     xmlIn = vQuery("SYST:DFPR?")
 
-    xmlIn = xmlIn[xmlIn.find('>')+1:]   #Remove header
+    xmlIn = xmlIn[xmlIn.find('>')+1:]       #Remove header
     root  = ET.fromstring(xmlIn)
     if 0:
         DData = root.find('DeviceData').items()
@@ -35,15 +35,16 @@ def getSysInfo():
     # print(os, osVer)
     print(dType, devID)
 
-##########################################################
+###############################################################################
 ### Main Code
-##########################################################
+###############################################################################
 rm = pyvisa.ResourceManager()
 rmlist = rm.list_resources()
-VISA1 = rm.open_resource('TCPIP0::'+ host +'::inst0::INSTR')
+VISA1 = rm.open_resource('TCPIP0::192.168.58.30::5025::SOCKET')
+# VISA1 = rm.open_resource('TCPIP0::192.168.58.114::inst0::INSTR')
 
 print("Info:" + vQuery("*IDN?"))
-#print("Opts:" + vQuery("*OPT?"))
-getSysInfo()
+print("Opts:" + vQuery("*OPT?"))
+# getSysInfo()
 
 VISA1.close()
