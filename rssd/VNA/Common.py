@@ -239,7 +239,7 @@ class VNA(jaVisa):
 #####################################################################
 if __name__ == "__main__":
     # this won't be run when imported
-    ZVA = VNA().jav_openvisa('TCPIP0::10.0.0.13::INSTR')
+    ZVA = VNA().jav_openvisa('TCPIP0::192.168.58.30::inst0::INSTR')
     #ZVA.Test_PwrCal()
     data = ZVA.Get_Trace_Data()
     print(len(data))
