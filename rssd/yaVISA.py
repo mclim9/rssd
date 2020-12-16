@@ -8,7 +8,7 @@
 ###          properties for: Make; Model; Version; IDN; last error
 ###          logSCPI --> file for
 ###############################################################################
-# pylint: disable=E0611,E0401,E0202
+# pylint: disable=E0611,E0401,E0202,'pointless-statement'
 
 import time
 import pyvisa
@@ -132,7 +132,7 @@ class jaVisa(object):
         #     self.jav_openvisa('TCPIP::'+IPAddr+'::5025::SOCKET',fily)
         return self
 
-    def jav_OpenTest(self, host):
+    def jav_OpenTest(self, host):    #pylint: disable='unused-argument'
         self.debug = 0
         self.VISA  = '@py'
         # self.jav_Open(host)
