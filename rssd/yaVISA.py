@@ -135,7 +135,8 @@ class jaVisa(object):
     def jav_OpenTest(self, host):
         self.debug = 0
         self.VISA  = '@py'
-        self.jav_Open(host)
+        # self.jav_Open(host)
+        self.K2 == 'NoVISA'
         self.connected      = 1
         if self.K2 == 'NoVISA':
             mock = jaVISA_mock()
