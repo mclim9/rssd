@@ -1,8 +1,7 @@
+import xml.etree.ElementTree as ET
 import argparse
-import sys
 import glob
 import regex
-import xml.etree.ElementTree as ET
 
 # Version of script    
 __version__ = "6"

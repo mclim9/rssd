@@ -7,7 +7,7 @@
 # SMW_IP  = '172.24.225.230'
 SMW_IP  = '192.168.58.114'
 FSW_IP  = '192.168.58.109'
-VSG_ON  = 0
+VSG_ON  = 1
 Freq    = 10.3e9
 Pwr     = -5
 NumCC   = 14

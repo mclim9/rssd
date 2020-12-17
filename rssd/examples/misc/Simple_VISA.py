@@ -3,8 +3,6 @@
 import xml.etree.ElementTree as ET
 import pyvisa                               #Import VISA module
 
-host = '192.168.58.30'                      #Instrument IP address
-
 ###############################################################################
 ### Code Begin
 ###############################################################################
@@ -40,11 +38,15 @@ def getSysInfo():
 ###############################################################################
 rm = pyvisa.ResourceManager()
 rmlist = rm.list_resources()
-VISA1 = rm.open_resource('TCPIP0::192.168.58.30::5025::SOCKET')
-# VISA1 = rm.open_resource('TCPIP0::192.168.58.114::inst0::INSTR')
+# VISA1 = rm.open_resource('TCPIP0::172.20.16.253::5025::SOCKET')
+VISA1 = rm.open_resource('TCPIP0::172.20.16.253::inst0::INSTR')
 
 print("Info:" + vQuery("*IDN?"))
-print("Opts:" + vQuery("*OPT?"))
+vWrite("CALC2:CHAN1:AVER:STAT 1")
+print("Opts:" + vQuery("CALC2:CHAN1:AVER:STAT?"))
+vWrite('CALC2:CHAN1:AVER:COUN 20000')
+print("Opts:" + vQuery("CALC2:CHAN1:AVER:COUN?"))
+# print("Opts:" + vQuery("CALC2:CHAN1:TRAC:AVER:STAT?"))
 # getSysInfo()
 
 VISA1.close()

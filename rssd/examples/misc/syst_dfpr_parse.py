@@ -1,5 +1,5 @@
 """Parse R&S SYST:DFPR String"""
-# pylint: disable=bad-whitespace,invalid-name
+# pylint: disable=invalid-name
 ##########################################################
 from xml.etree      import ElementTree as ET
 from rssd.yaVISA    import jaVisa
