@@ -1,9 +1,4 @@
-##########################################################
-### Rohde & Schwarz Automation for demonstration use.
-###
-### Purpose: Sweep FSW/SMW Frequncy
-### Author:  mclim
-### Date:    2018.05.17
+"""Sweep FSW/SMW Frequncy"""
 ##########################################################
 ### User Entry
 ##########################################################
@@ -20,7 +15,7 @@ Mixer = 0
 ### Code Start
 ##########################################################
 import time
-from rssd.FSW_Common    import VSA          #pylint:disable=
+from rssd.FSW_Common    import VSA
 from rssd.SMW_Common    import VSG
 from rssd.FileIO        import FileIO
 
