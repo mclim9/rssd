@@ -19,4 +19,3 @@ for i in range(numMeas):        #Loop: # of Measurements
     time.sleep(1)
     d = datetime.now() - tick
     print(f'{d.seconds:3d}.{d.microseconds:06d}')
-

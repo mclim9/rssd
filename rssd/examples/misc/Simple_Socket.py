@@ -2,7 +2,7 @@
 #pylint: disable=invalid-name
 
 import socket                                           #Import socket module
-import xml.etree.ElementTree as ET
+# import xml.etree.ElementTree as ET
 host = '192.168.58.30'                                  #Instrument IP address
 
 ###############################################################################
