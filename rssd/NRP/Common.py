@@ -24,8 +24,8 @@
 ### NRP-Z27  0x02F        NRP-Z56    0x019      NRP-Z98    0x052
 ### NRP-Z28  0x051        NRP-Z57    0x070
 #####################################################################
-from rssd.yaVISA import jaVisa
 import numpy as np
+from rssd.yaVISA import jaVisa
 
 class PMr(jaVisa):
     """ Rohde & Schwarz Power Meter Object """
