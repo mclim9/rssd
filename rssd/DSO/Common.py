@@ -31,7 +31,7 @@ class DSO(jaVisa):
         rdStr = self.query(f':TIM:RANG?')
         return rdStr
 
-    def Get_chState(self, ch=1):
+    def Get_ChState(self, ch=1):
         rdStr = self.query(f':chAN{ch}:STAT?')
         return rdStr
 
@@ -84,55 +84,55 @@ class DSO(jaVisa):
 ###  DSO Get Measurement Functions
 ###############################################################################
 
-    def Get_Meas_Res_Actual(self, mode, ch):
+    def Get_Meas_Res_Actual(self, mode, ch=1):
         """ HIGH LOW AMP MAX MIN PDELta MEAN RMS STDD POVershoot 
             AREA RTIMe FTIMe PPULse PER FREQ PULCnt DELay ..."""
         rdStr = self.query(f':MEAS{ch}:RES:ACT? {mode}')
         return rdStr
 
-    def Get_Meas_Res_Average(self, mode, ch):
+    def Get_Meas_Res_Average(self, mode, ch=1):
         """ HIGH LOW AMP MAX MIN PDELta MEAN RMS STDD POVershoot 
             AREA RTIMe FTIMe PPULse PER FREQ PULCnt DELay ..."""
         rdStr = self.query(f':MEAS{ch}:RES:AVG? {mode}')
         return rdStr
 
-    def Get_Meas_Res_Event_Count(self, mode, ch):
+    def Get_Meas_Res_Event_Count(self, mode, ch=1):
         """ HIGH LOW AMP MAX MIN PDELta MEAN RMS STDD POVershoot 
             AREA RTIMe FTIMe PPULse PER FREQ PULCnt DELay ..."""
         rdStr = self.query(f':MEAS{ch}:RES:EVTC? {mode}')
         return rdStr
 
-    def Get_Meas_Res_Negetive_Peak(self, mode, ch):
+    def Get_Meas_Res_Negetive_Peak(self, mode, ch=1):
         """ HIGH LOW AMP MAX MIN PDELta MEAN RMS STDD POVershoot 
             AREA RTIMe FTIMe PPULse PER FREQ PULCnt DELay ..."""
         rdStr = self.query(f':MEAS{ch}:RES:NPE? {mode}')
         return rdStr
 
-    def Get_Meas_Res_Positive_Peak(self, mode, ch):
+    def Get_Meas_Res_Positive_Peak(self, mode, ch=1):
         """ HIGH LOW AMP MAX MIN PDELta MEAN RMS STDD POVershoot 
             AREA RTIMe FTIMe PPULse PER FREQ PULCnt DELay ..."""
         rdStr = self.query(f':MEAS{ch}:RES:PPE? {mode}')
         return rdStr
 
-    def Get_Meas_Res_Reliability(self, mode, ch):
+    def Get_Meas_Res_Reliability(self, mode, ch=1):
         """ HIGH LOW AMP MAX MIN PDELta MEAN RMS STDD POVershoot 
             AREA RTIMe FTIMe PPULse PER FREQ PULCnt DELay ..."""
         rdStr = self.query(f':MEAS{ch}:RES:REL? {mode}')
         return rdStr
 
-    def Get_Meas_Res_RMS(self, mode, ch):
+    def Get_Meas_Res_RMS(self, mode, ch=1):
         """ HIGH LOW AMP MAX MIN PDELta MEAN RMS STDD POVershoot 
             AREA RTIMe FTIMe PPULse PER FREQ PULCnt DELay ..."""
         rdStr = self.query(f':MEAS{ch}:RES:RMS? {mode}')
         return rdStr
 
-    def Get_Meas_Res_Wave_Count(self, mode, ch):
+    def Get_Meas_Res_Wave_Count(self, mode, ch=1):
         """ HIGH LOW AMP MAX MIN PDELta MEAN RMS STDD POVershoot 
             AREA RTIMe FTIMe PPULse PER FREQ PULCnt DELay ..."""
         rdStr = self.query(f':MEAS{ch}:RES:WFMC? {mode}')
         return rdStr
 
-    def Get_Meas_Res_Std_Dev(self, mode, ch):
+    def Get_Meas_Res_Std_Dev(self, mode, ch=1):
         """ HIGH LOW AMP MAX MIN PDELta MEAN RMS STDD POVershoot 
             AREA RTIMe FTIMe PPULse PER FREQ PULCnt DELay ..."""
         rdStr = self.query(f':MEAS{ch}:RES:STDD? {mode}')
@@ -149,26 +149,26 @@ class DSO(jaVisa):
 #####################################################################
 ### DSO Set Functions
 #####################################################################
-    def Set_AcqTime(self,sec):
+    def Set_AcqTime(self, sec):
         """ Seconds """
         self.write(f':TIM:RANG {sec}')
 
     def Set_Autoset(self):
         self.write(f':AUT')
 
-    def Set_chCoupling(self,state, ch):
+    def Set_ChCoupling(self, state, ch=1):
         """ AC DC DCL """
         self.write(f':chAN{ch}:COUP {state}')        #Display Update State
 
-    def Set_chStatus(self,state, ch):
+    def Set_ChStatus(self, state, ch=1):
         """ ON OFF """
         self.write(f':chAN{ch}:STAT {state}')        #Display Update State
 
-    def Set_chState(self,state, ch):
+    def Set_ChState(self, state, ch=1):
         """ ON OFF """
         self.write(f':chAN{ch}:STAT {state}') 
 
-    def Set_DisplayUpdate(self,state):
+    def Set_DisplayUpdate(self, state):
         """ ON OFF """
         self.write(f'SYST:DISP:UPD {state}')        #Display Update State
 
@@ -182,58 +182,58 @@ class DSO(jaVisa):
         else:
             self.write(f'SING')                     #Single
 
-    def Set_TimeRef(self,sec):
+    def Set_TimeRef(self, sec):
         """ Seconds """
         self.write(f':TIM:REF {sec}')
 
-    def Set_TimeScale(self,sec):
+    def Set_TimeScale(self, sec):
         """ Seconds """
         self.write(f':TIM:SCAL {sec}')
 
-    def Set_TimeRes(self,sec):
+    def Set_TimeRes(self, sec):
         """ Seconds """
         self.write(f':ACQ:RES {sec}')
 
-    def Set_VoltOffset(self,volt, ch):
+    def Set_VoltOffset(self, volt, ch=1):
         """ Volts """
         self.write(f':chAN{ch}:OFFS {volt}')
 
-    def Set_VoltRange(self,volt, ch):
+    def Set_VoltRange(self, volt, ch=1):
         """ Volts """
         self.write(f':chAN{ch}:RANG {volt}')
 
-    def Set_VoltScale(self,volt, ch):
+    def Set_VoltScale(self, volt, ch=1):
         """ Volts """
         self.write(f':chAN{ch}:SCAL {volt}')
 
 ###############################################################################
 ###  DSO Set Cursor Functions
 ###############################################################################
-    def Set_Cursor_All_Off(self,ch):    
+    def Set_Cursor_All_Off(self,ch=1):    
         """  1 to 4 """
         self.write(f':CURS{ch}:AOFF') 
 
-    def Set_Cursor_State(self,state,ch):   
+    def Set_Cursor_State(self, state, ch=1):   
         """ ON OFF , 1 to 4 """
         self.write(f':CURS{ch}:STAT {state}') 
 
-    def Set_Cursor_Source(self,source,ch):   
+    def Set_Cursor_Source(self,source,ch=1):   
         """ ON OFF , Mx CxWx x = 1 to 4 """
         self.write(f':CURS{ch}:SOUR {source}') 
 
-    def Set_Cursor_Function(self,function,ch):   
+    def Set_Cursor_Function(self,function,ch=1):   
         """ HOR VERT PAIR ,  1 to 4 """
         self.write(f':CURS{ch}:FUNC {function}')
 
-    def Set_Cursor_Tracking(self,state,ch):   
+    def Set_Cursor_Tracking(self, state, ch=1):   
         """ ON OFF ,  1 to 4 """
         self.write(f':CURS{ch}:TRAC:STAT {state}')
 
-    def Set_Cursor_Style(self,style,ch):   
+    def Set_Cursor_Style(self, style,ch=1):   
         """ LINe LRHombus VLRHombus RHOMbus ,  1 to 4 """
         self.write(f':CURS{ch}:STYL {style}')
 
-    def Set_Cursor_Max_Peak(self,ch):   
+    def Set_Cursor_Max_Peak(self,ch=1):   
         """  1 to 4 """
         self.write(f':CURS{ch}:MAX:PEAK')
 
@@ -241,37 +241,37 @@ class DSO(jaVisa):
 ###  DSO Set Measurement Functions
 ###############################################################################
 
-    def Set_Meas_All_Off(self,ch):   
+    def Set_Meas_All_Off(self,ch=1):   
         """  1 to 8 """
         self.write(f':MEAS{ch}:AOFF')
 
-    def Set_Meas_All_On(self,ch):   
+    def Set_Meas_All_On(self,ch=1):   
         """  1 to 8 """
         self.write(f':MEAS{ch}:AON')
 
-    def Set_Meas_Additional(self, mode, state, ch):   
+    def Set_Meas_Additional(self, mode, state, ch=1):   
         """ HIGH LOW AMP MAX MIN PDELta MEAN RMS STDD POVershoot 
             AREA RTIMe FTIMe PPULse PER FREQ PULCnt DELay ..."""
         self.write(f':MEAS{ch}:ADD {mode} {state}')
 
-    def Set_Meas_Clear_Statistics(self, ch):   
+    def Set_Meas_Clear_Statistics(self, ch=1):
         """ Clear Statistics """
         self.write(f':MEAS{ch}:CLE')
 
-    def Set_Meas_Main(self, mode, ch):   
+    def Set_Meas_Main(self, mode, ch=1):   
         """ HIGH LOW AMP MAX MIN PDELta MEAN RMS STDD POVershoot 
             AREA RTIMe FTIMe PPULse PER FREQ PULCnt DELay ..."""
         self.write(f':MEAS{ch}:MAIN {mode}')
 
-    def Set_Meas_Enable(self, mode, ch):   
+    def Set_Meas_Enable(self, mode, ch=1):
         """ ON OFF, ch """
         self.write(f':MEAS{ch}:ENAB {mode}')
     
-    def Set_Meas_Source(self, mode, ch):   
+    def Set_Meas_Source(self, mode, ch=1):
         """ CxWx, ch """
         self.write(f':MEAS{ch}:ENAB {mode}')
 
-    def Set_Meas_Statistics(self,state,ch):   
+    def Set_Meas_Statistics(self, state, ch=1):   
         """ ON OFF , ch """
         self.write(f':MEAS{ch}:STAT:ENAB {state}')
 ###############################################################################
