@@ -11,16 +11,19 @@ port = 5025                         #Instrument control port
 ##########################################################
 ### Code Begin
 ##########################################################
-
 def sQuery(SCPI):
     """Socket Query"""
+    print(f'Write: {SCPI}')
     out = SCPI + "\n"
     s.sendall(out.encode())         #Write 'cmd'
     sOut = s.recv(2048).strip()     #read socket
-    return sOut.decode()
+    sOut = sOut.decode()
+    print(f'Query: {sOut}')
+    return sOut
 
 def sWrite(SCPI):
     """Socket Write"""
+    print(f'Write: {SCPI}')
     out = SCPI + "\n"
     s.sendall(out.encode())         #Write 'cmd'
 
@@ -31,5 +34,4 @@ s = socket.socket()                 #Create a socket object
 s.connect((host, port))
 s.settimeout(1)                     #Timeout in seconds
 
-sWrite(':INP:FILE:PATH "C:\\LTE-TM11-20MHz.iq.tar"')
-sWrite(':INP:SEL FIQ')
+sQuery('*IDN?')
