@@ -46,6 +46,8 @@ class TestGeneral(unittest.TestCase):
 
     def test_NRP_Power(self):
         self.NRP8.Set_Freq(6e9)                              # Set Frequency
+        self.NRP8.Set_Function('AVG')
+        self.NRP8.Set_InitCont('OFF')
         self.NRP8.Set_AverageMode(1)                         # Auto Averaging ON
         self.NRP8.Set_Average(10)                            # Avg Count = 4
         self.NRP8.Set_PowerOffset(5)
