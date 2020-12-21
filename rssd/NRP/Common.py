@@ -2,20 +2,30 @@
 #####################################################################
 ### Purpose : NRP Power Sensor
 ###
-### VISAFmt : USB0::0x0AAD::0x0138::100961::INSTR
+### VISAFmt : RSNRP::0x0138::100961::INSTR
 ###           <VS>::<Manu>::<Modl>::<SerN>::INSTR
-###           TCPIP0::NRPM3-900105::inst0
 ###
-### Product  |USB ID        Product  |USB ID
-### ---------|------        ---------|------
-### NRP8S     0x00E2        NRP33SN-V 0x0168
-### NRP8SN    0x0137        NRP40S    0x015F
-### NRP18S    0x0138        NRP40SN   0x0160
-### NRP18SN   0x0139        NRP50S    0x0161
-### NRP33S    0x0145        NRP50SN   0x0162
-### NRP33SN   0x0146        NRPM      0x0195
+### Product  |USB ID      Product  |USB ID
+### ---------|------      ---------|------
+### NRP8S     0x00E2      NRP33SN-V 0x0168
+### NRP8SN    0x0137      NRP40S    0x015F
+### NRP18S    0x0138      NRP40SN   0x0160
+### NRP18SN   0x0139      NRP50S    0x0161
+### NRP33S    0x0145      NRP50SN   0x0162
+### NRP33SN   0x0146      NRPM      0x0195
+###
+### Product  |USB ID      Product  |USB ID      Product  |USB ID
+### ---------|------      ---------|------      ---------|------
+### NRP-Z11  0x00C        NRP-Z31    0x02C      NRP-Z81    0x023
+### NRP-21   0x003        NRP-Z37    0x02D      NRP-Z85    0x083
+### NRP-Z22  0x013        NRP-Z51    0x016      NRP-Z86    0x095
+### NRP-Z23  0x014        NRP-Z52    0x017      NRP-Z91    0x021
+### NRP-Z24  0x015        NRP-Z55    0x018      NRP-Z92    0x062
+### NRP-Z27  0x02F        NRP-Z56    0x019      NRP-Z98    0x052
+### NRP-Z28  0x051        NRP-Z57    0x070
 #####################################################################
 from rssd.yaVISA import jaVisa
+import numpy as np
 
 class PMr(jaVisa):
     """ Rohde & Schwarz Power Meter Object """
@@ -36,14 +46,14 @@ class PMr(jaVisa):
         return outp
 
     def Get_Freq(self):
-        outp = self.query(':SENS:FREQ?')
+        outp = self.query(':SENS:FREQ?\n')
         return outp
 
     def Get_BufferedMeas(self,bState):
         if (bState == 1) or (bState == 'ON'):
-            self.write('SENS:BUFF:STAT ON')                #Configure a buffered measurement
+            self.write('SENS:POW:AVG:BUFF:STAT ON')                #Configure a buffered measurement
         else:
-            self.write('SENS:BUFF:STAT ON')                #Configure a buffered measurement
+            self.write('SENS:POW:AVG:BUFF:STAT ON')                #Configure a buffered measurement
 
     def Get_EventStatus(self):
         outp = self.query('STAT:OPER:MEAS:EVEN?')
@@ -57,12 +67,15 @@ class PMr(jaVisa):
         return outp
 
     def Get_Power(self):
-        self.write('UNIT:POW DBM')
-        self.write('SENS:FUNC "POW:AVG"')
-        self.write('INIT:IMM')
-        outp = self.queryFloat('FETCH?')
+        #self.write('UNIT:POW DBM')  # Not a function for NRP-Zxx
+        #self.write('SENS:FUNC "POW:AVG"')
+        self.write(':INIT:IMM')
+        outp = self.query('FETCH?\n')
+        self.write(':INIT:CONT OFF')
+        print('Done')
+        x = np.fromstring(outp,dtype=np.float, sep=',') #Convert String to Float
+        y = np.multiply(10,(np.log10(abs(np.multiply(x,1000))))) # Convert Watts to dBm
         return outp
-
     def Get_NRPM_PowerAll(self):
         ### NRP3M
         self.write('UNIT:POW DBM')
@@ -73,10 +86,12 @@ class PMr(jaVisa):
         self.query('INIT:IMM;*OPC?')
         outp = self.queryFloat('FETCH:ALL?')
         return outp
-
 #####################################################################
 ### NRP Set Methods
 #####################################################################
+    def Set_Aperture(self,fAPR):
+        self.write('SENS:POW:AVG:APER %f'%fAPR)
+
     def Set_Average(self,iAvg):
         self.write('SENS:AVER:COUN %d'%iAvg)
 
@@ -88,14 +103,21 @@ class PMr(jaVisa):
             self.write('SENS:AVER:COUN:AUTO ON')
 
     def Set_BufferSize(self,iSize):
-        self.write('SENS:BUFF:SIZE %d'%iSize)                #Buffer size is randomly selected to 17
+        self.write('SENS:POW:AVG:BUFF:SIZE %d'%iSize)                #Buffer size is randomly selected to 17
 
     def Set_Freq(self,fFreq):
-        self.query('SENS:FREQ %f;*OPC?'%fFreq)
+        self.write('SENS:FREQ %f'%fFreq)
+
+    def Set_Function(self,sFunc):
+        """ POW:AVG """
+        self.write('SENS:FUNC "%s"'%sFunc)
 
     def Set_InitImm(self):
-        outp = self.query('INIT:IMM;*OPC?')
-        return outp
+        self.write('INIT:IMM')
+        
+    def Set_InitCont(self,sState):
+        """ ON; OFF """
+        self.write('INIT:CONT %s' %sState)
 
     #####################################################################
     ### NRPM
@@ -124,7 +146,7 @@ class PMr(jaVisa):
             self.write('SENS:CORR:OFFS:STAT OFF')
 
     def Set_TriggerSource(self,sSource):
-        """BUS; EXT2"""
+        """BUS; EXT2; INT; IMM """
         self.write('TRIG:SOUR %s'%sSource)
 
     def Set_TriggerAuto(self,sState):
