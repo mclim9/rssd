@@ -44,7 +44,7 @@ jobs:
       run: |
         python -m pylint rssd
 
-    - name: Test with pytest
+    - name: Unit Test
       run: |
         # pytest
         coverage run -m unittest -v test.test_RSSD
