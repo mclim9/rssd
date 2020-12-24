@@ -62,6 +62,12 @@ jobs:
         coverage run -a -m unittest discover -b -v -p test_HW_VSG*
         coverage run -a -m unittest discover -b -v -p test_HW_VST*.py
         coverage run -a -m unittest discover -b -v -p test_SW*
+                
+    - name: Coveralls
+      uses: AndreMiras/coveralls-python-action@develop
+      with:
+        parallel: true
+        flag-name: Unit Test
 
   coveralls_finish:
     needs: test
