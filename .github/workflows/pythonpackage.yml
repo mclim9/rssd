@@ -11,7 +11,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -63,6 +62,15 @@ jobs:
         coverage run -a -m unittest discover -b -v -p test_HW_VSG*
         coverage run -a -m unittest discover -b -v -p test_HW_VST*.py
         coverage run -a -m unittest discover -b -v -p test_SW*
+
+  coveralls_finish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: AndreMiras/coveralls-python-action@develop
+      with:
+        parallel-finished: true
 
     # - name: Coveralls
     #   uses: coverallsapp/github-action@master
