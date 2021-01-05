@@ -1,11 +1,6 @@
+"""rssd.test.examples"""
+
 from __future__ import print_function
-#coding: future_fstrings
-###############################################################################
-### Rohde & Schwarz SCPI Driver Software Test
-### Purpose: rssd.test.examples
-###############################################################################
-### Code Start
-###############################################################################
 import unittest
 import rssd.test.yaVISA
 import rssd.test.FileIO

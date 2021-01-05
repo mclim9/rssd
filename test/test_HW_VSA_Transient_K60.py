@@ -1,22 +1,12 @@
-# # -*- coding: future_fstrings -*-
-###############################################################################
-### Purpose: rssd.VSA.ADemod_K7 test
-###              _   ___        __  _____         _
-###             | | | \ \      / / |_   _|__  ___| |_
-###             | |_| |\ \ /\ / /    | |/ _ \/ __| __|
-###             |  _  | \ V  V /     | |  __/\__ \ |_
-###             |_| |_|  \_/\_/      |_|\___||___/\__|
-###             Please connect instrument prior 2 test
-###############################################################################
-### User Entry
-###############################################################################
+"""rssd.VSA.ADemod_K7 test
+"""
 host = '192.168.1.109'                              #Get local machine name
 
 ###############################################################################
 ### Code Start
 ###############################################################################
 import unittest
-from rssd.VSA.Transient_K60     import VSA              #pylint: disable=E0611,E0401
+from rssd.VSA.Transient_K60     import VSA          #pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                #run before each test

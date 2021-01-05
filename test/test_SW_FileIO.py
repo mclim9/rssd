@@ -1,13 +1,5 @@
-# -*- coding: future_fstrings -*-
-###############################################################################
-### Rohde & Schwarz Software Test
-###
-### Purpose:Test FileIO.py
-### Author: mclim
-### Date:   2018.06.04
-###############################################################################
-### Code Start
-###############################################################################
+"""Test FileIO.py
+"""
 import os
 import unittest
 from rssd.FileIO      import FileIO             # pylint: disable=E0611,E0401

@@ -1,14 +1,7 @@
+"""test rssd.yaVISA_socket
+"""
 from __future__ import print_function
-#coding: future_fstrings
-###############################################################################
-### Rohde & Schwarz SCPI Driver Software Test
-### Purpose: Import Library-->Create Object-->Catch obvious typos.
-###          Tests do not require instrument.
-### Author:  mclim
-### Date:    2018.06.13
-###############################################################################
-### Code Start
-###############################################################################
+
 import unittest
 from rssd.yaVISA_socket import jaVisa
 

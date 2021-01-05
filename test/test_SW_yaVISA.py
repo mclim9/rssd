@@ -1,10 +1,6 @@
+""" rssd.yaVISA.py driver test
+"""
 from __future__ import print_function
-#coding: future_fstrings
-###############################################################################
-### Purpose: rssd.yaVISA.py driver test
-###############################################################################
-### Code Start
-###############################################################################
 import unittest
 from rssd.yaVISA import jaVisa
 
