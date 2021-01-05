@@ -1,9 +1,7 @@
-# -*- coding: future_fstrings -*-
-###############################################################################
-### Purpose:Test rssd.iqdata.py
-###############################################################################
+"""Test rssd.iqdata.py
+"""
 import unittest
-from rssd.iqdata      import IQ             # pylint: disable=E0611,E0401
+from rssd.iqdata      import IQ                 # pylint: disable=E0611,E0401
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                            #Run before each test
