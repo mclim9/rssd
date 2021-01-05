@@ -18,7 +18,7 @@ class VSE(VSE):
     ##########################################################################
     def Init_K96(self):
         self.Set_Channel('OFDMVSA')
-        time.sleep(10)
+        # time.sleep(10)
         self.write("SENS:DEM:FSYN DATA")                # Pilot and Data Aided
         self.write("SENS:TRAC:TIME ON")                 # Timing tracking ON
         self.write("SENS:TRAC:LEV ON")                  # Leveltracking ON
