@@ -117,7 +117,7 @@ class jaVisa(object):
         #*****************************************************************
         self.K2 = socket.socket()
         try:
-            self.K2.settimeout(1)
+            self.K2.settimeout(0.3)
             self.K2.connect((sIPAddr,port))
             self.jav_IDN()
             self.jav_fileout(fily, self.dataIDN)
