@@ -212,7 +212,7 @@ class jaVisa(object):
                 read = self.queryInt("*OPC?")                       #See if we can get *OPC?
             except:
                 pass
-            time.sleep(2)
+            time.sleep(1)
             delta = (time.time() - start_time)
             if delta > 300:
                 if self.debug: print("jav_Wai   : timeout")
