@@ -1,5 +1,5 @@
-from __future__ import print_function
 """Vector Signal Analyzer Transient Analysis Functions"""
+from __future__ import print_function
 from rssd.VSA.Common import VSA
 
 class VSA(VSA):
