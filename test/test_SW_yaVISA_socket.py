@@ -7,7 +7,7 @@ from rssd.yaVISA_socket import jaVisa
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                                #Run before each test
-        self.instr = jaVisa().jav_Open('www.google.com',port=8080)
+        self.instr = jaVisa().jav_Open('172.217.16.196',port=8080)
         self.instr.jav_ClrErr()
         print("",end="")
         self.instr.debug = 0
