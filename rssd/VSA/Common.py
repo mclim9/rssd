@@ -1,7 +1,4 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose: Vector Signal Analyzer Common Functions
+""" Vector Signal Analyzer Common Functions"""
 ### Author:  Martin C Lim
 ### Date:    2018.02.01
 #####################################################################

@@ -1,9 +1,4 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Title : RSSD utility
-### Author: Martin C Lim
-### Date  : 2019.05.01
-#####################################################################
+"""RSSD utility"""
 import argparse
 import sys
 import os

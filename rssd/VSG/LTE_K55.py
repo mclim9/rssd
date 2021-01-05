@@ -1,11 +1,5 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-###
-### Purpose: Vector Signal Generator LTE Functions
-### Author : Martin C Lim
-### Date   : 2019.03.05
-### Requird: python -m pip install rssd
+"""
+Vector Signal Generator LTE Functions
 ### Options: K55  LTE Rel  8: LTE 20MHz 64QAM 
 ###          K84  LTE Rel  9: MBMS & MBSFN generation
 ###          K85  LTE Rel 10: CA; Enhanced SC-FDMA; UL MIMO
@@ -13,6 +7,7 @@
 ###          K113 LTE Rel 12: DL 256QAM; TDD/FDD Mixed CA
 ###          K119 LTE Rel 13/14/15: UL 256QAM; LAA
 #####################################################################
+"""
 from rssd.VSG.Common import VSG     #pylint: disable=E0611,E0401
 
 class VSG(VSG):                     #pylint: disable=E0102

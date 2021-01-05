@@ -1,9 +1,4 @@
-# -*- coding: future_fstrings -*-
-######################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose : Vector Signal Explorer Analog Demod Functions
-### Author  : Martin C Lim
-### Date    : 2018.04.27
+"""Vector Signal Explorer Analog Demod Functions"""
 from rssd.VSA.Common import VSA
 
 class VSA(VSA):

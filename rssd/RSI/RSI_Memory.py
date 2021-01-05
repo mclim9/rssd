@@ -1,9 +1,4 @@
-# -*- coding: future_fstrings -*-
-###############################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose: Rohde & Scharz Instrument Functions
-### Author : Martin C Lim
-### Date   : 2019.05.10
+"""Rohde & Scharz Instrument Functions
 ###  _____  _____   ____ _______ ____ _________     _______  ______
 ### |  __ \|  __ \ / __ \__   __/ __ \__   __\ \   / /  __ \|  ____|
 ### | |__) | |__) | |  | | | | | |  | | | |   \ \_/ /| |__) | |__
@@ -18,6 +13,7 @@
 ###             \__,_|_| |_|\__\___||___/\__\___|\__,_|
 ###
 ###############################################################################
+"""
 import timeit
 from rssd.yaVISA import jaVisa
 

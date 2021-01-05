@@ -1,4 +1,3 @@
-# -*- coding: future_fstrings -*-
 # pylint: disable=E0611,E0401,E0202
 # pylint: disable=signature-differs
 '''RSSD Socket Bus Class'''

@@ -1,9 +1,5 @@
-# -*- coding: future_fstrings -*-
+"""OTA ATS1800; ATS1500 support
 ###############################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose: OTA ATS1800; ATS1500 support
-### Author : Martin C Lim
-### Date   : 20xx.xx.xx
 ###  _____  _____   ____ _______ ____ _________     _______  ______
 ### |  __ \|  __ \ / __ \__   __/ __ \__   __\ \   / /  __ \|  ____|
 ### | |__) | |__) | |  | | | | | |  | | | |   \ \_/ /| |__) | |__
@@ -21,7 +17,7 @@
 ###         Elevation:  Φφ; Phi; Cradle;
 ### OTA:    ATS1500     Az over El;
 ###         ATS1800     Az over El;
-###############################################################################
+###############################################################################"""
 from rssd.OTA.Common     import OTA           #pylint: disable=E0611,E0401
 
 class OTA(OTA):

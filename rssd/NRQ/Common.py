@@ -1,7 +1,4 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Purpose: NRQ Common Functions
-#####################################################################
+"""NRQ Common Functions"""
 from rssd.yaVISA import jaVisa
 
 class NRQ(jaVisa):

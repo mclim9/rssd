@@ -1,12 +1,4 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-###
-### Purpose: Vector Signal Analyzer Common Functions
-### Author:  Martin C Lim
-### Date:    2018.04.03
-### Requird: python -m pip install pyvisa
-#####################################################################
+"""Vector Signal Analyzer LTE Functions"""
 from datetime           import datetime     #pylint: disable=E0611,E0401
 from rssd.VSA.Common    import VSA          #pylint: disable=E0611,E0401
 

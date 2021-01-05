@@ -1,10 +1,6 @@
-# -*- coding: future_fstrings -*-
-################################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose: Radio Communication Tester(RCT) Functions
-### Author : Martin C Lim
-################################################################################
-from rssd.RCT.Common import RCT                                                 #pylint: disable=E0611,E0401
+""" Radio Communication Tester(RCT) Functions"""
+#pylint: disable=E0611,E0401
+from rssd.RCT.Common import RCT
 
 class RCT(RCT):
     """ Rohde & Schwarz Radio Comm Tester Object """

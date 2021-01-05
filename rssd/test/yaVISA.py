@@ -1,15 +1,5 @@
-# -*- coding: future_fstrings -*-
+"""Mock Yet(Just) Another VISA wrapper"""
 #pylint: disable=R0201,W0613
-#####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-###
-### Purpose: Yet(Just) Another VISA wrapper
-### Author:  Martin C Lim
-### Date:    2020.04.20
-### Descrip: jaVISA mockup
-###          properties for: Make; Model; Version; IDN; last error
-###          logSCPI --> file for
-#####################################################################
 class jaVISA_mock(object):                          #pylint: disable=R0205
     """Instrument Common functions"""
     def __init__(self):

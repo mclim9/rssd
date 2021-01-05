@@ -1,6 +1,13 @@
 # Release History
 =====================================================================
 ## RSSD 2020.0x.0
+### Driver
+- Removed future_fstring
+  - No longer works w/ python 2.7.x
+- DSO Updates
+  - Add Spectrum_K18
+- NPR updated w/ NRPZ
+
 ### Test
 - jaVISA
   - add jav_Error jav_write_raw & jav_read_raw

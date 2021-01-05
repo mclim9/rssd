@@ -1,10 +1,4 @@
-# -*- coding: future_fstrings -*-
-# #####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose : Vector Signal Demod Functions
-### Author  : Martin C Lim
-### Date    : 2019.10.23
-#####################################################################
+"""Vector Signal Demodulation Functions"""
 from rssd.VSA.Common import VSA                 #pylint: disable=E0611,E0401
 
 class VSA(VSA):                                 #pylint: disable=E0102

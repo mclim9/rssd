@@ -1,12 +1,5 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-###
-### Purpose: Vector Signal Generator Common Functions
-### Author : Martin C Lim
-### Date   : 2018.02.01
-### Requird: python -m pip install pyvisa
-#####################################################################
+"""Vector Signal Generator Common Functions
+"""
 from time           import sleep
 from rssd.yaVISA    import jaVisa        #pylint: disable=E0611,E0401
 

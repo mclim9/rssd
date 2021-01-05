@@ -1,6 +1,5 @@
-# -*- coding: future_fstrings -*-
-#pylint: disable=R0201,W0613
 '''RSSD test bus class'''
+#pylint: disable=R0201,W0613
 
 from rssd.bus.bus import bus
 

@@ -1,11 +1,4 @@
-# -*- coding: future_fstrings -*-
-###############################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose: Phase Noise Analyzer Common Functions
-### Author:  Martin C Lim
-### Date:    2019.07.02
-###
-###############################################################################
+"""Phase Noise Analyzer Common Functions"""
 from rssd.yaVISA import jaVisa              # pylint: disable=E0611,E0401
 
 class PNA(jaVisa):

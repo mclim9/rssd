@@ -1,8 +1,4 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose: OSP Open Switch Platform Common Functions
-#####################################################################
+"""OSP Open Switch Platform Common Functions"""
 from rssd.yaVISA import jaVisa
 
 class OSP(jaVisa):

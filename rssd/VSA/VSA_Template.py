@@ -1,4 +1,3 @@
-# -*- coding: future_fstrings -*-
 #####################################################################
 ### Rohde & Schwarz Automation for demonstration use.
 ### Purpose: Vector Signal Analyzer Common Functions

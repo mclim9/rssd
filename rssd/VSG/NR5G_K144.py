@@ -1,12 +1,4 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-###
-### Purpose: Vector Signal Generator 5G NR Functions
-### Author : Martin C Lim
-### Date   : 2018.02.01
-### Requird: python -m pip install rssd
-#####################################################################
+"""Vector Signal Generator 5G NR Functions"""
 from rssd.VSG.Common import VSG             #pylint: disable=E0611,E0401
 
 class VSG(VSG):                             #pylint: disable=E0102
