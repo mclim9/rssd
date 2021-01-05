@@ -1,11 +1,4 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-###
-### Title : Common file functions
-### Author: Martin C Lim
-### Date  : 2018.02.01
-#####################################################################
+"""Common file functions"""
 from datetime  import datetime
 import os
 

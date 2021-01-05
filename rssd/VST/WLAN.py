@@ -1,16 +1,7 @@
-# -*- coding: future_fstrings -*-
-##########################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose : FSW/SMW LTE Demo
-### Author  : mclim
-### Date    : 2019.03.05
-### Descrip : FSW 3.20-18.7.1.0 Beta
-###           SMW 4.30 SP2
-##########################################################
-### Code Overhead: Import and create objects
-##########################################################
-from rssd.VSG.WLAN_K54  import VSG  #pylint: disable=E0611,E0401
-from rssd.VSA.WLAN_K91  import VSA  #pylint: disable=E0611,E0401
+"""FSW/SMW LTE Demo"""
+#pylint: disable=E0611,E0401
+from rssd.VSG.WLAN_K54  import VSG
+from rssd.VSA.WLAN_K91  import VSA
 
 class VST(object):
     """ Rohde & Schwarz Vector Signal Transciever 802.11 Object """

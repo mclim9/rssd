@@ -1,13 +1,4 @@
-# -*- coding: future_fstrings -*-
-###############################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose: Yet(Just) Another VISA wrapper
-### Author : Martin C Lim
-### Date   : 2017.09.01
-### Descrip: Wrapper for common VISA commands
-###          properties for: Make; Model; Version; IDN; last error
-###          logSCPI --> file for
-###############################################################################
+"""Yet(Just) Another VISA wrapper"""
 # pylint: disable=E0611,E0401,E0202
 
 import time

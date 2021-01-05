@@ -1,8 +1,4 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose: Vector Signal Analyzer Common Functions
-#####################################################################
+"""Rohde & Schwarz Vector Signal Analyzer Common Functions"""
 from rssd.instrument import instrument      # pylint: disable=E0611,E0401
 
 class VSA(instrument):

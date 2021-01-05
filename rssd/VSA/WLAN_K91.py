@@ -1,6 +1,5 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-#  Rohde & Schwarz Automation for demonstration use.
+"""
+Vector Signal Analyzer 802.11 WLAN functions
 #  | Standrd  | Modu | Freqncy | Mode | PPDU | BW  | MIMO | BitRate  | SCS,KHz | Sym,uSec |
 #  | -------- | ---- | ------- | ---- | ---- | --- | ---- | -------- | ------- | -------- |
 #  | 802.11b  | DSSS | 2.4     | Legy | CCK  | 20  | SISO | 11Mbps   | n/a     | n/q      |
@@ -11,6 +10,7 @@
 #  | 802.11ax | OFDM | 2.4 5.4 | MixM | HE   | 160 | MIMO | 1201Mbps | 78.125  | 12.8 μs  |
 #  | 802.11be | OFDM | 2.4 5.4 | MixM | EHT  | 320 | MIMO | 11Gbps   | 78.125  | 12.8 μs  |
 ######################################################################
+"""
 from rssd.VSA.Common import VSA        #pylint: disable=E0611,E0401
 
 class VSA(VSA):                        #pylint: disable=E0102

@@ -1,17 +1,8 @@
-# -*- coding: future_fstrings -*-
-##########################################################
-### Rohde & Schwarz Automation for demonstration use.
-###
-### Purpose : FSW/SMW 5G NR Demo
-### Author  : mclim
-### Date    : 2018.07.05
-### Descrip : FSW 3.20-18.7.1.0 Beta
-###           SMW 4.30 SP2
-##########################################################
-### Code Overhead: Import and create objects
-##########################################################
-from rssd.VSG.Common import VSG  #pylint: disable=E0611,E0401
-from rssd.VSA.Common import VSA  #pylint: disable=E0611,E0401
+"""FSW/SMW 5G NR Demo
+"""
+#pylint: disable=E0611,E0401
+from rssd.VSG.Common import VSG
+from rssd.VSA.Common import VSA
 
 class VST(object):
     """ Rohde & Schwarz Vector Signal Transceiver Object """

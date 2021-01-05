@@ -1,10 +1,4 @@
-# -*- coding: future_fstrings -*-
-###############################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose: Radio Communication Tester(RCT) General Purpose RF(GPRF) Functions
-### Author : Martin C Lim
-### Date   : 2018.05.29
-###############################################################################
+"""Radio Communication Tester(RCT) General Purpose RF(GPRF) Functions"""
 import struct                                   # For IQ Manipulation
 from rssd.RCT.Common import RCT                 #pylint: disable=E0611,E0401
 

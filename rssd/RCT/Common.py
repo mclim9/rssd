@@ -1,10 +1,4 @@
-# -*- coding: future_fstrings -*-
-###############################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose: Radio Communication Tester(RCT) Functions
-### Author : Martin C Lim
-### Date   : 2018.05.29
-###############################################################################
+""" Radio Communication Tester(RCT) Functions"""
 from rssd.yaVISA import jaVisa              #pylint: disable=E0611,E0401
 
 class RCT(jaVisa):

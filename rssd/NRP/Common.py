@@ -1,5 +1,4 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
+"""
 ### Purpose : NRP Power Sensor
 ###
 ### VISAFmt : RSNRP::0x0138::100961::INSTR
@@ -22,8 +21,7 @@
 ### NRP-Z23  0x014        NRP-Z52    0x017      NRP-Z91    0x021
 ### NRP-Z24  0x015        NRP-Z55    0x018      NRP-Z92    0x062
 ### NRP-Z27  0x02F        NRP-Z56    0x019      NRP-Z98    0x052
-### NRP-Z28  0x051        NRP-Z57    0x070
-#####################################################################
+### NRP-Z28  0x051        NRP-Z57    0x070"""
 import numpy as np
 from rssd.yaVISA import jaVisa
 

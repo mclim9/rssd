@@ -1,4 +1,3 @@
-# -*- coding: future_fstrings -*-
 '''RSSD VISA Bus class'''
 # pylint: disable=signature-differs
 

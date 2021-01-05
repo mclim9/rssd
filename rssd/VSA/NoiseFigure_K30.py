@@ -1,8 +1,4 @@
-# -*- coding: future_fstrings -*-
-###############################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose : Vector Signal Analyzer Common Functions
-###############################################################################
+"""Vector Signal Analyzer Noise Figure K30 Functions"""
 from rssd.VSA.Common import VSA
 
 class VSA(VSA):

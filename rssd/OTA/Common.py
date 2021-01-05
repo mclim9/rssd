@@ -1,9 +1,5 @@
-# -*- coding: future_fstrings -*-
+"""OTA Common Functions
 ###############################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose: OTA Common Functions
-### Author : Martin C Lim
-### Date   : 20xx.xx.xx
 ###  _____  _____   ____ _______ ____ _________     _______  ______
 ### |  __ \|  __ \ / __ \__   __/ __ \__   __\ \   / /  __ \|  ____|
 ### | |__) | |__) | |  | | | | | |  | | | |   \ \_/ /| |__) | |__
@@ -22,7 +18,7 @@
 ### OTA:    ATS1000     Great Circle Cut; Turntable & Elevation Arm
 ###         ATS1500     Az over El;
 ###         ATS1800     Az over El;
-###############################################################################
+###############################################################################"""
 from rssd.yaVISA     import jaVisa           #pylint: disable=E0611,E0401
 
 class OTA(jaVisa):

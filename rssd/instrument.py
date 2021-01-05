@@ -1,4 +1,3 @@
-# -*- coding: future_fstrings -*-
 '''RSSD instrument object'''
 #pylint: disable=too-many-function-args
 #pylint: disable=method-hidden,E0202

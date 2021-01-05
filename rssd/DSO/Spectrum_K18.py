@@ -1,11 +1,4 @@
-# -*- coding: future_fstrings -*-
-###############################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose: Digital Storage Oscilloscope Spectrum Analysis Methods
-### Author : Martin C Lim
-### Date   : 2020.03.24
-###
-###############################################################################
+"""Digital Storage Oscilloscope Spectrum Analysis Methods"""
 from rssd.DSO.Common import DSO
 
 class DSO(DSO):

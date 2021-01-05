@@ -1,11 +1,5 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-###
-### Purpose: Vector Signal Generator Custom Digital Modulation
-### Author : Martin C Lim
-### Date   : 2019.12.06
-#####################################################################
+"""Vector Signal Generator Custom Digital Modulation
+"""
 from rssd.VSG.Common import VSG             #pylint: disable=E0611,E0401
 
 class VSG(VSG):                             #pylint: disable=E0102

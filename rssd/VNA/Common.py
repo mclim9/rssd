@@ -1,11 +1,4 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Purpose: Vector Network Analyzer Common Functions
-### Author : Martin C Lim
-### Date   : 2019.02.14
-### Requird: python -m pip install rssd
-#####################################################################
+"""Vector Network Analyzer Common Functions"""
 import math
 from rssd.yaVISA import jaVisa            # pylint: disable=E0611,E0401
 

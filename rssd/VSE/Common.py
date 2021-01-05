@@ -1,13 +1,4 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-###
-### Purpose: Vector Signal Explorer Common Functions
-### Author : Martin C Lim
-### Date   : 2018.03.28
-### Descrip: Add VSE functionality to FSW_Common base code
-### Strctr : pyvisa-->yavisa-->FSW_Common-->VSE_Common.py
-#####################################################################
+""" Vector Signal Explorer Common Functions"""
 from rssd.VSA.Common import VSA
 
 class VSE(VSA):

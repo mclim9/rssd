@@ -1,24 +1,19 @@
-# -*- coding: future_fstrings -*-
-#####################################################################
-### Rohde & Schwarz Automation for demonstration use.
-###
-### Purpose: Vector Signal Generator LTE Functions
-### Author : Martin C Lim
-### Date   : 2019.03.05
-### Options: K54  802.11 a/b/g/n
-###          K86  802.11 ac
-###          K141 802.11 ad
-###          K142 802.11 ax
-###
-### Standrd |Modu|Freqncy|Mode|PPDU|BW |MIMO|BitRate
-### --------|----|-------|----|----|---|----|-------
-### 802.11b  DSSS 2.4     Legy  CCK 20 SISO   11Mbps
-### 802.11a  OFDM     5.4 Legy         SISO   54Mbps
-### 802.11g  both 2.4 5.4 Legy   L     SISO   54Mbps
-### 802.11n  OFDM 2.4 5.4 GrnF  HT  40 MIMO  300Mbps
-### 802.11ac OFDM     5.4 MixM VHT 160 MIMO 1750Mbps
-### 802.11ax OFDM 2.4 5.4 MixM  HE 160 MIMO   11Gbps
-#####################################################################
+"""
+Purpose: Vector Signal Generator LTE Functions
+Options: K54  802.11 a/b/g/n
+         K86  802.11 ac
+         K141 802.11 ad
+         K142 802.11 ax
+
+Standrd |Modu|Freqncy|Mode|PPDU|BW |MIMO|BitRate
+--------|----|-------|----|----|---|----|-------
+802.11b  DSSS 2.4     Legy  CCK 20 SISO   11Mbps
+802.11a  OFDM     5.4 Legy         SISO   54Mbps
+802.11g  both 2.4 5.4 Legy   L     SISO   54Mbps
+802.11n  OFDM 2.4 5.4 GrnF  HT  40 MIMO  300Mbps
+802.11ac OFDM     5.4 MixM VHT 160 MIMO 1750Mbps
+802.11ax OFDM 2.4 5.4 MixM  HE 160 MIMO   11Gbps
+"""
 from rssd.VSG.Common import VSG     #pylint: disable=E0611,E0401
 
 class VSG(VSG):                     #pylint: disable=E0102
