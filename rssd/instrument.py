@@ -4,10 +4,8 @@
 
 import time
 import rssd.FileIO
-# from rssd.test.yaVISA       import jaVISA_mock
-# from rssd.RSI.time          import timer
-from rssd.bus.socket        import jaSocket
-from rssd.bus.VISA          import jaVisa
+from rssd.bus.jaSocket      import jaSocket
+from rssd.bus.jaVISA        import jaVisa
 from rssd.bus.test          import jaTest
 
 class instrument(object):
@@ -115,7 +113,7 @@ class instrument(object):
     def open(self, address, type = 'socket', param = 5025):         #pylint: disable=redefined-builtin
         '''Open bus Sesion.  Return bus object'''
         if type == 'socket':
-            self.bus = jaSocket.open(address)
+            self.bus = jaSocket.open(address, param)
         elif type == 'visa-socket':
             self.bus = jaVisa.open(f'TCPIP0::{address}::{param}::SOCKET')
         elif type == 'vxi11':
@@ -222,7 +220,7 @@ class instrument(object):
         return OutList
 
 if __name__ == "__main__":
-    RS = instrument().open('10.0.0.10')                 #Default HiSlip
+    RS = instrument().open('192.168.58.109')                 #Default HiSlip
     RS.debug    = 1
     rdStr = RS.query('*IDN?')
     print(rdStr)
