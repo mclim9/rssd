@@ -60,10 +60,10 @@ class TestGeneral(unittest.TestCase):
         self.SMW.Set_LTE_Direction('BAD')
         self.SMW.Set_LTE_Direction('UL')
         getVal = self.SMW.Get_LTE_Direction()
-        if self.connected: self.assertEqual(getVal,'UL')
+        if self.SMW.connected: self.assertEqual(getVal,'UL')
         self.SMW.Set_LTE_Direction('DL')
         getVal = self.SMW.Get_LTE_Direction()
-        if self.connected: self.assertEqual(getVal,'DL')
+        if self.SMW.connected: self.assertEqual(getVal,'DL')
 
     def test_SMW_LTE_Direction2(self):
         self.SMW.Set_LTE_Duplex('TDD')
