@@ -103,7 +103,7 @@ class NRQ(jaVisa):
         #     totalbytes = totalbytes + data [i]
         #     i += 1
 
-        iqfile = open ('nrq.iqw', "wb")
+        iqfile = open('nrq.iqw', "wb")
         iqfile.write(data[2 + int(digits):])
         iqfile.close()
 

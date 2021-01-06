@@ -108,7 +108,7 @@ for i in range(Repeat):
         TotTime     = f'{ALTime:2,.6f},{TestTime:2,.6f},{TotTime:2,.6f}'
         MeasData    = ACLR
         OutStr      = f'{LoopParam},{TotTime},{AmpParam},{SwpParam},{TrcParam},{SysParam},{MeasData}'
-        OFile.write (OutStr)
+        OFile.write(OutStr)
 
 # VSAL.WriteLevellingTables(Freq, table)
 SuiteTime = timeit.default_timer() - tick0

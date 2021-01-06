@@ -17,8 +17,8 @@ from rssd.VSG.NR5G_K144     import VSG
 from rssd.VSA.NR5G_K144     import VSA
 
 logging.basicConfig(level=logging.INFO, \
-    filename=os.path.splitext(__file__)[0] + '.csv', filemode='w', \
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+                    filename=os.path.splitext(__file__)[0] + '.csv', filemode='w', \
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ###############################################################################
 ### Code Start
 ###############################################################################

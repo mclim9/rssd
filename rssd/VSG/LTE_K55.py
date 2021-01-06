@@ -75,9 +75,8 @@ class VSG(VSG):                     #pylint: disable=E0102
         else:
             self.write(':SOUR1:BB:EUTR:STAT 0')
 
-
     def Set_LTE_CC(self,iCC):
-        self.write(''%())
+        # self.write(''%())
         if iCC > 0:
             self.write(f':SOUR:BB:EUTR:{self.ldir}:CA:STAT 1')
 

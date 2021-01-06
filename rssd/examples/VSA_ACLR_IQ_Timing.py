@@ -19,9 +19,7 @@ Avg     = 0
 Repeat  = 1
 PwrSweep = 59
 
-meth = {
-        # 0:'VSA.Set_AutoOpt_FSx_Level()',
-        0:'VSA.Set_Autolevel()',
+meth = {0:'VSA.Set_Autolevel()',
         1:'VSA.Set_Mkr_BandSetRef()'
         }
 
@@ -100,7 +98,7 @@ for i in range(Repeat):
             OutStr      = f'{LoopParam},{TotTime},{AmpParam},{SwpParam},{TrcParam},{SysParam},{MeasData}'
 
             # OutStr = f'{VSA.Model},{i},{Freq},{RBW},{MeasTim},{-50+pwr},{meth[autoMeth]},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{TotTime.seconds:3d}.{TotTime.microseconds:06d},{AmpSet},{SwpParam},{ACLR},{ChSpace}'
-            OFile.write (OutStr)
+            OFile.write(OutStr)
 SuiteTime = timeit.default_timer() - tick0
 print(f'Total Test time : {SuiteTime:2,.6f}')
 print(f'Time/Measurement: {SuiteTime/(Repeat*PwrSweep):2,.6f}')

@@ -170,7 +170,7 @@ class jaVisa(object):
             self.jav_fileout(fily, self.dataIDN)
             self.jav_ClrErr()
         except:
-            if self.debug: print ('jav_OpnErr: ' + sVISAStr)
+            if self.debug: print('jav_OpnErr: ' + sVISAStr)
             self.K2 = 'NoVISA'
         TMR.tick()
         asdf = TMR.Get_Params_Time()

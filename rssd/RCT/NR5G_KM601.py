@@ -236,7 +236,6 @@ class RCT(RCT):
         rdStr = '<notRead>'
         return rdStr
 
-
     def Get_5GNR_Params(self,amp,swp,sys,header=0):                 #pylint: disable=R0913
         """Amp,Sweep,System,Trace"""
         outStr = ""
@@ -352,7 +351,6 @@ class RCT(RCT):
            units: dB """
         self.write(f'CONF:NRMM:MEAS:RFS:UMAR {pwr} DB')
 
-
     def Set_5GNR_BWP_Ch_DMRS_1stDMRSSym(self,TAP):
         """2 3"""
         self.write(f'CONF:NRMM:MEAS:CC{self.cc}:TAP {TAP}')
@@ -391,7 +389,7 @@ class RCT(RCT):
     def Set_5GNR_BWP_ResBlock(self, iRB, iRBO):
         ### RB = (CHBw * 0.95) / (SubSp * 12)
         self.write(f'CONF:NRMM:MEAS:CCAL:TXBW:SCSP {self.scs}')
-        self.write(f'CONF:NRMM:MEAS:CC{self.cc}:BWP BWP{self.BWP}, {self.scs}, NORM, {iRB}, {iRBO}')#SCS; NORM; RB; RBO
+        self.write(f'CONF:NRMM:MEAS:CC{self.cc}:BWP BWP{self.BWP}, {self.scs}, NORM, {iRB}, {iRBO}')    #SCS; NORM; RB; RBO
 
     # def Set_5GNR_BWP_ResBlockOffset(self,iRBO):
     #     self.write(f':SOUR1:BB:NR5G:UBWP:USER0:CELL{self.cc}:{self.sdir}:BWP0:RBOF {iRBO}')

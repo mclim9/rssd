@@ -59,7 +59,7 @@ class FileIO(object):
 
     def write(self,inStr):
         if self.debug: print("FileOut    : %s"%inStr)
-        sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f") #Date String
+        sDate = datetime.now().strftime("%y%m%d-%H:%M:%S.%f")   #Date String
         with open(self.sFName, 'a') as csv_file:
             csv_file.write(f'{sDate},{inStr}\n')
 

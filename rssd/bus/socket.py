@@ -33,7 +33,7 @@ class jaSocket(bus):
             self.jav_fileout(self.dataIDN)
             self.jav_ClrErr()
         except:
-            if self.debug: print ('jav_OpnErr: ' + resourceID)
+            if self.debug: print('jav_OpnErr: ' + resourceID)
             self.K2 = 'NoSOCKET'
         return self
 
@@ -47,7 +47,7 @@ class jaSocket(bus):
             self.dataIDN = 'jav_Open_Basic'
             self.jav_fileout(fily, self.dataIDN)
         except:
-            if self.debug: print ('jav_OpnErr: ' + sIPAddr)
+            if self.debug: print('jav_OpnErr: ' + sIPAddr)
             self.K2 = 'NoSOCKET'
         return self
 
@@ -72,7 +72,7 @@ class jaSocket(bus):
     def write(self, SCPIstr):
         try:
             out = SCPIstr + self.EOL
-            if self.dataIDN != "": self.K2.sendall(out.encode()) #Write if connected
+            if self.dataIDN != "": self.K2.sendall(out.encode())            #Write if connected
         except:
             if self.debug: print("jav_WrtErr: %s-->%s"%(self.Model, SCPIstr))
         self.jav_fileout(self.f, "%s,%s"%(self.Model, SCPIstr))

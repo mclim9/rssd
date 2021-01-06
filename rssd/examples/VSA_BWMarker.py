@@ -63,7 +63,7 @@ for i in range(Repeat):
             LoopParam   = f'{i},{rbw:8.0f},{SwpTime:5.3f}'
             TotTime     = TMR.Get_Params_Time()
             OutStr      = f'{LoopParam},{FSW.Get_Params(1,1,1,1,0)},{MeasData},{TotTime}'
-            OFile.write (OutStr)
+            OFile.write(OutStr)
 
 ################################################################################
 ### Cleanup Automation

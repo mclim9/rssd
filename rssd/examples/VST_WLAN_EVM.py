@@ -70,7 +70,7 @@ for mod in ModArry:                                             #Loop: Standard
             Attn = WLAN.FSW.Get_AmpSettings()
             d = datetime.now() - tick
             OutStr = f'{freq},{pwr:3d},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{WLAN.WLAN_Std},{WLAN.WLAN_ChBW},{WLAN.WLAN_MCS},{Attn},{EVM},{d.seconds:3d}.{d.microseconds:06d}'
-            OFile.write (OutStr)
+            OFile.write(OutStr)
 
 ##########################################################
 ### Cleanup Automation

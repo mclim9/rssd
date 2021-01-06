@@ -67,7 +67,7 @@ SEM  = FSW.Get_5GNR_SEM()
 :FETC:CC1:ISRC:FRAM:SUMM:POW:AVER?
 :FETC:CC1:ISRC:SUMM:CRES:AVER?
 """
-OFile.write (f'{EVM},{ACLR},{SEM}')
+OFile.write(f'{EVM},{ACLR},{SEM}')
 
 ###############################################################################
 ### Cleanup Automation

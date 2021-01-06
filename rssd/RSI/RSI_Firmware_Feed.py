@@ -12,7 +12,7 @@ def parse_feed_firmware():
         # entry_parsed    = entry.published_parsed    # Time object
         # entry_content   = entry.summary
 
-        print (f"{entry_title[0:30]:32}[{entry_link:55}] {entry_published}")
+        print(f"{entry_title[0:30]:32}[{entry_link:55}] {entry_published}")
 
 def parse_feed_drivers():
     url = 'https://www.rohde-schwarz.com/us/rss-feeds/driver-feed_229510.rss'
@@ -23,7 +23,7 @@ def parse_feed_drivers():
         entry_link      = entry.link
         entry_published = entry.published           # Unicode string
 
-        print (f"{entry_title[0:30]:32}[{entry_link:55}] {entry_published}")
+        print(f"{entry_title[0:30]:32}[{entry_link:55}] {entry_published}")
 
 def parse_feed_appNote():
     url = 'https://www.rohde-schwarz.com/us/rss-feeds/application-note-feed_229508.rss'
@@ -33,7 +33,7 @@ def parse_feed_appNote():
         entry_title     = entry.title.replace('R&S®','')
         entry_link      = entry.link.replace('https://www.rohde-schwarz.com/us/applications','<RSA-Apps>')
 
-        print (f"{entry_title[0:40]:42}[{entry_link:55}]")
+        print(f"{entry_title[0:40]:42}[{entry_link:55}]")
 
 ###############################################################################
 ### Debug Main.  Won't run when imported

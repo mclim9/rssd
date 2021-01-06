@@ -136,7 +136,7 @@ def dataLoad():
     return OutObj
 
 def dataSave():
-    try: #Python3
+    try:    #Python3
         f = open(__file__ + ".csv",'wt', encoding='utf-8')
     except:
         f = open(__file__ + ".csv",'wb')
@@ -152,7 +152,7 @@ def windowLowerClear():
     lstBotWind.delete(0.0,END)
 
 def windowLowerWrite(inStr):
-    sDate = datetime.now().strftime("%y%m%d-%H%M%S.%f") #Date String
+    sDate = datetime.now().strftime("%y%m%d-%H%M%S.%f")             #Date String
     try:
         lstBotWind.insert(Tk.INSERT,"%s %s\n"%(sDate[:-3],inStr))   #Text moves down
         # lstBotWind.insert(END,"%s %s\n"%(sDate[:-3],inStr))         #Text moves up

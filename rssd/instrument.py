@@ -160,7 +160,6 @@ class instrument(object):
         if self.debug: print('SCPI_Wai   : %0.2fsec'%(delta))
         return delta
 
-
     def query(self,cmd):
         read ="<notRead>"
         try:

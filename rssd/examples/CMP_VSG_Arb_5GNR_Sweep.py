@@ -75,7 +75,7 @@ for i in range(numMeas):                                            #Loop: Repea
                 attn    = FSW.Get_AmpSettings()
                 s = datetime.now() - tick                          #Total test time
                 OutStr = f'{i},{CMP.Model},{freq:.0f},{evm},{NR5G.NR_ChBW},{NR5G.NR_TF},{NR5G.NR_SubSp},{NR5G.NR_Mod},{pwr:3d},{attn},{s.seconds:3d}.{s.microseconds:06d}'
-                OFile.write (OutStr)
+                OFile.write(OutStr)
             #end PwrLoop
         #end FreqLoop
     #end ParamLoop

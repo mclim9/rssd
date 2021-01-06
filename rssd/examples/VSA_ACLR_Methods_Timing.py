@@ -41,8 +41,7 @@ meth = {0:'Autolvl()',
         5:'SetReflvl()',
         6:'K18()'
         }
-meth = {
-        1:'SetReflvl()',
+meth = {1:'SetReflvl()',
         0:'K18()',
         }
 asdf=len(meth)

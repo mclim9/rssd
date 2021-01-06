@@ -48,8 +48,8 @@ instr.timeout = 5000                                    #Timeout, millisec
 # file_handler.setFormatter(formatter)
 # logger.addHandler(file_handler)
 logging.basicConfig(level=logging.DEBUG, \
-    filename=os.path.splitext(__file__)[0] + '.log', filemode='w', \
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+                    filename=os.path.splitext(__file__)[0] + '.log', filemode='w', \
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 arry = readSCPI()
 sendSCPI(arry)
 # getSysInfo()
