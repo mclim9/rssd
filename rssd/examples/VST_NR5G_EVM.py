@@ -100,7 +100,7 @@ for i in range(numMeas):                                            #Loop: Measu
                         d = datetime.now() - tick                   #Measurement only test time
                         s = datetime.now() - tickA                  #Total test time
                         OutStr = f'{i},{NR5G.FSW.Model},{freq:.0f},{EVM},{NR5G.NR_ChBW},{NR5G.NR_TF},{NR5G.NR_SubSp},{NR5G.NR_Mod},{pwr:3d},{subFram},{Attn},{AutoLvl},{ALTime.seconds:3d}.{ALTime.microseconds:06d},cf:{ccdf},{d.seconds:3d}.{d.microseconds:06d},{s.seconds:3d}.{s.microseconds:06d}'
-                        OFile.write (OutStr)
+                        OFile.write(OutStr)
 
 ##########################################################
 ### Cleanup Automation

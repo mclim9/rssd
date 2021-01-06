@@ -69,7 +69,6 @@ class TestGeneral(unittest.TestCase):
         self.CMP.Set_5GNR_EVM_AvgCount(20)
         self.CMP.Set_5GNR_Trigger_Source('Free Run (Fast Sync)')
 
-
     def test_CMP_5GNR_Ex_EVM_Get(self):
         self.CMP.Get_AmpSettings()
         self.CMP.Get_5GNR_CC_Offset()

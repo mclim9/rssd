@@ -57,7 +57,7 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Get_VSA_symbol_rate()
         # self.FSW.Get_VSA_SymbolRateError()
 
-    def test_FSW_VSA_Meas(self): #error
+    def test_FSW_VSA_Meas(self):        #error
         self.FSW.Set_VSA_Symbol_Rate(1e6)
         self.FSW.Set_VSA_Filter_Type('RRC')
         self.FSW.Set_VSA_Filter_Alpha(0.2)

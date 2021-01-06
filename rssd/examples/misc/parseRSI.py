@@ -8,20 +8,20 @@ __version__ = "6"
 # String variable to hold contents to be written to CSV file at the end
 csv_output_string = ""
 # Supported file types
-supported_file_types = ('.rsi', '.xml')
+supported_file_types =('.rsi', '.xml')
 
 class XmlNode():
     def __init__(self, xml_string=""):
         self.xml_string = xml_string
         
-        # Print the XML string (for debugging)
-        #print( "Extracted xml string:\n{0}".format( self.xml_string ) )
+        # Print the XML string(for debugging)
+        #print("Extracted xml string:\n{0}".format(self.xml_string))
         
         # Transform the XML string to an Element tree for easy parsing 
         self.root = ET.fromstring(self.xml_string)
 
     def printToScreen(self, output_string):
-        print( output_string )
+        print(output_string)
 
     def writeToCsv(self, output_string):
         global csv_output_string
@@ -29,7 +29,7 @@ class XmlNode():
 
     def printNset_AttributeFromNode(self, attribute_name):
         attribute_value = self.root.get(attribute_name)
-        self.printToScreen( "\t{0}:\t{1}".format(attribute_name, attribute_value))
+        self.printToScreen("\t{0}:\t{1}".format(attribute_name, attribute_value))
         self.writeToCsv("{0},".format(attribute_value))
 
     def printNset_AttributesFromElement(self, element_name, attributes_list):
@@ -39,8 +39,8 @@ class XmlNode():
         # Find attributes from element
         for attribute_name in attributes_list:
             attribute_value = element.get(attribute_name)
-            self.printToScreen( "\t{0}:\t{1}".format(attribute_name, attribute_value) )
-            self.writeToCsv( "{0},".format(attribute_value) )
+            self.printToScreen("\t{0}:\t{1}".format(attribute_name, attribute_value))
+            self.writeToCsv("{0},".format(attribute_value))
             
 
 # Parse the input argument & retrieve a list of file paths
@@ -56,7 +56,7 @@ def isFileTypeSupported(args):
     if args.file.endswith(supported_file_types):
         return True
     else:
-        print ( "ERROR: Only RSI or XML file extensions are currently supported!" )
+        print("ERROR: Only RSI or XML file extensions are currently supported!")
         return False
 
 
@@ -72,11 +72,11 @@ def getListOfFilesFromArgument(args):
         
         inputfiles_list = glob.glob(args.file)
         num_files_found = len(inputfiles_list)
-        if (num_files_found > 0):
+        if(num_files_found > 0):
             ext_name = args.file.split('.')[1]
-            print ( "Found {0} {1} file(s)".format(num_files_found, ext_name) )
+            print("Found {0} {1} file(s)".format(num_files_found, ext_name))
         else:
-            print ( "ERROR: {0} not found".format(args.file) )
+            print("ERROR: {0} not found".format(args.file))
             return
         
     return inputfiles_list
@@ -88,7 +88,7 @@ def getListOfFilesFromCurrentFolder():
     for file_type in supported_file_types:
         
         files_list = glob.glob('*' + file_type)
-        print ( "Found {0} {1} file(s)".format(len(files_list), file_type) )
+        print("Found {0} {1} file(s)".format(len(files_list), file_type))
                 
         inputfiles_list += files_list
     
@@ -96,13 +96,13 @@ def getListOfFilesFromCurrentFolder():
 
 
 def parseInputFile(i, inputfile):
-    print ('\n{0}) Loading {1}'.format(i, inputfile) )
+    print('\n{0}) Loading {1}'.format(i, inputfile))
     
     global csv_output_string
     csv_output_string += "\n\n%s\n" % inputfile
     
     # Open the file & read the contents into memory
-    with open(inputfile, mode='rb') as file: # b is important -> binary
+    with open(inputfile, mode='rb') as file:    # b is important -> binary
         fileContent_bytes = file.read()
         # To be compliant with Python 3, decode the binary bytes to string
         fileContent_string = fileContent_bytes.decode('utf_8', 'ignore')
@@ -112,9 +112,9 @@ def parseInputFile(i, inputfile):
     
     # Extract all XML nodes of type KeyInstallation
     xml_string_list = regex.findall(regex_pattern, fileContent_string, regex.S | regex.M, overlapped=True)
-    print ( "\tFound {0} option key XML node(s)".format(len(xml_string_list)) )
+    print("\tFound {0} option key XML node(s)".format(len(xml_string_list)))
     
-    #print( xml_string_list )        # Print the list of nodes found (for debugging)
+    #print(xml_string_list)        # Print the list of nodes found(for debugging)
     
     for j, xml_string in enumerate(xml_string_list, 1):
         node = XmlNode(xml_string)
@@ -135,7 +135,7 @@ def parseInputFile(i, inputfile):
 
 # Write CSV results to file
 def writeResultsToCsv(output_filename):
-    print ( "\nWriting results to %s" % output_filename )
+    print("\nWriting results to %s" % output_filename)
     with open(output_filename, 'w') as f:
         f.write(csv_output_string)
 
@@ -146,7 +146,7 @@ def main():
     inputfiles_list = getListOfFilesFromArgument(args)
     
     # If no input arguments given, search for files in local directory
-    if not (inputfiles_list):
+    if not(inputfiles_list):
         inputfiles_list = getListOfFilesFromCurrentFolder()
     
     # Loop through all RSI files & retrieve XML content

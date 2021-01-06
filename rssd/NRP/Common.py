@@ -28,7 +28,7 @@ from rssd.yaVISA import jaVisa
 class PMr(jaVisa):
     """ Rohde & Schwarz Power Meter Object """
     def __init__(self):
-        super(PMr,self).__init__()     #Python2/3
+        super(PMr,self).__init__()     # Python2/3
         self.Model = "NRP"
 
     #####################################################################
@@ -65,15 +65,16 @@ class PMr(jaVisa):
         return outp
 
     def Get_Power(self):
-        #self.write('UNIT:POW DBM')  # Not a function for NRP-Zxx
-        #self.write('SENS:FUNC "POW:AVG"')
+        # self.write('UNIT:POW DBM')  # Not a function for NRP-Zxx
+        # self.write('SENS:FUNC "POW:AVG"')
         self.write(':INIT:IMM')
         outp = self.query('FETCH?\n')
         self.write(':INIT:CONT OFF')
         print('Done')
-        x = np.fromstring(outp,dtype=np.float, sep=',') #Convert String to Float
-        y = np.multiply(10,(np.log10(abs(np.multiply(x,1000))))) # Convert Watts to dBm
+        x = np.fromstring(outp,dtype=np.float, sep=',')             # Convert String to Float
+        y = np.multiply(10,(np.log10(abs(np.multiply(x,1000)))))    # Convert Watts to dBm
         return outp
+
     def Get_NRPM_PowerAll(self):
         ### NRP3M
         self.write('UNIT:POW DBM')
@@ -84,6 +85,7 @@ class PMr(jaVisa):
         self.query('INIT:IMM;*OPC?')
         outp = self.queryFloat('FETCH:ALL?')
         return outp
+
 #####################################################################
 ### NRP Set Methods
 #####################################################################
@@ -112,10 +114,10 @@ class PMr(jaVisa):
 
     def Set_InitImm(self):
         self.write('INIT:IMM')
-        
+
     def Set_InitCont(self,sState):
         """ ON; OFF """
-        self.write('INIT:CONT %s' %sState)
+        self.write('INIT:CONT %s'%sState)
 
     #####################################################################
     ### NRPM
@@ -156,6 +158,7 @@ class PMr(jaVisa):
 
     def Set_TriggerCount(self,iNum):
         self.write('TRIG:COUN %d'%iNum)
+
 
 #####################################################################
 ### Run if Main

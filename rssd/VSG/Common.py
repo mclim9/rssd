@@ -11,7 +11,7 @@ class VSG(jaVisa):
         self.NRP    = 2
 
     #####################################################################
-     ### SMW Get
+    ### SMW Get
     #####################################################################
     def Get_ArbClockFreq(self):
         SCPI = self.queryFloat('SOUR:BB:ARB:CLOC?')
@@ -259,11 +259,11 @@ class VSG(jaVisa):
         self.write(':SOUR1:PHASE %d'%(fPhase))
 
     def Set_PM_State(self, State):
-        if State in (1 ,'1', 'ON'):
+        if State in (1, '1', 'ON'):
             self.write(':SOUR1:PM1:STAT ON')
         else:
             self.write(':SOUR1:PM1:STAT OFF')
-    
+
     def Set_PM_Source(self, Source):
         """LF1 LF2 EXT1 EXT2 NOIS INT EXT"""
         self.write(f':SOUR1:PM1:SOUR {Source}')

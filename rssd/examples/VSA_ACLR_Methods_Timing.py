@@ -129,7 +129,7 @@ for i in range(Repeat):
             eval(autoMeth)                                          # Dynamically call #pylint: disable=W0123
             ### <AUTOLEVEL> ###
 
-            tockA =  datetime.now()
+            tockA = datetime.now()
             VSA.write(':INIT:CONT OFF')                             # Single Sweep
             VSA.query(':INIT:IMM;*OPC?')                            # Take Sweep
             ACLR = VSA.query(':CALC:MARK:FUNC:POW:RES? MCAC')
@@ -140,7 +140,7 @@ for i in range(Repeat):
             ALTime = tockA - tick
             TotTime = tockB - tick
             OutStr = f'{VSA.Model},{i},{RBW},{MeasTim},{-50+pwr},{meth[autoMeth]},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{TotTime.seconds:3d}.{TotTime.microseconds:06d},{AmpSet},{SwpParam},{ACLR},{Freq},{ChBW}'
-            OFile.write (OutStr)
+            OFile.write(OutStr)
 
 ##########################################################
 ### Cleanup Automation
