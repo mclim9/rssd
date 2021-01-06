@@ -116,7 +116,6 @@ class TestGeneral(unittest.TestCase):
         self.FSW.Get_5GNR_CC_Offset()
         self.FSW.Get_5GNR_Meas_ACLR()
 
-
     def test_FSW_5GNR_Get_UL(self):
         self.FSW.Set_5GNR_Direction('UL')
         nullVal = self.FSW.Get_5GNR_CC_Freq()

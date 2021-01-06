@@ -26,6 +26,7 @@ class TestGeneral(unittest.TestCase):
     def tearDown(self):                                 #Run after each test
         self.assertEqual(self.SMW.jav_Error()[0],'0')
         self.SMW.jav_Close()
+
 ###############################################################################
 ### <Test>
 ###############################################################################
@@ -64,7 +65,7 @@ class TestGeneral(unittest.TestCase):
         getVal = self.SMW.Get_LTE_Direction()
         if self.connected: self.assertEqual(getVal,'DL')
 
-    def test_SMW_LTE_Direction(self):
+    def test_SMW_LTE_Direction2(self):
         self.SMW.Set_LTE_Duplex('TDD')
         self.SMW.Set_LTE_Duplex('TDD')
 

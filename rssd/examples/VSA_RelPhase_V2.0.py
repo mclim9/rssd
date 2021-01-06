@@ -69,7 +69,7 @@ def MeasRelPhase(FSW, SMW, x):
 
         count = count + 1
         if (count > 10): break              # Quit if too many retests.
-        if leaveLoop:   break
+        if leaveLoop: break
     return AvgAvg
 
 def rad2deg(radian):

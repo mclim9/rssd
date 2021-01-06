@@ -32,4 +32,3 @@ if __name__ == '__main__':
     # unittest.main()     #Run w/o test names
     suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
     unittest.TextTestRunner(verbosity=2).run(suite)
-    

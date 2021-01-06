@@ -38,7 +38,7 @@ def FileWrite(sOutput):
     f = open(savefile,'a+')
     f.write("%s,%s,%s\n"%(sDate,sHostname,sOutput))
     f.close()
-   
+
 def Socket_Query(IPAddr):
     try:
         s = socket.socket()
@@ -52,7 +52,7 @@ def Socket_Query(IPAddr):
         sRead = "###Socket Instrument not found###"
     print(IPAddr + ',' + sRead)
     FileWrite(IPAddr + ',' + sRead)
-    
+
 def VISA_Query(IPAddr):
     try:
         rm = visa.ResourceManager()

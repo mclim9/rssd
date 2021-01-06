@@ -23,7 +23,7 @@ class VSA(jaVisa):
         return ACLR
 
     def Get_Mkr_BandACLR(self):
-        for i in range(1,3+1):
+        for i in range(1, 3+1):
             if i == 1:
                 ACLR = f'{self.Get_Mkr_Band(i)[1]:7.3f}'
             else:
@@ -100,7 +100,7 @@ class VSA(jaVisa):
         #   totalbytes = totalbytes + data [i]
         #   i += 1
 
-        iqfile = open (sFilename, "wb")
+        iqfile = open(sFilename, "wb")
         iqfile.write(data[2 + int(digits):])
         iqfile.close()
 
@@ -162,7 +162,7 @@ class VSA(jaVisa):
         return [ValX, ValY]
 
     def Get_Mkr_TimeDomain(self,iNum=1,iWind=1):
-      # self.write(':CALC:MARK%d:FUNC:SUMM:STAT ON'%iNum)
+        # self.write(':CALC:MARK%d:FUNC:SUMM:STAT ON'%iNum)
         #MkrFreq = self.query(':CALC%d:MARK%d:X?'%(iWind,iNum)).strip()
         MkrPwr  = self.queryFloat(f':CALC{iWind}:MARK{iNum}:FUNC:SUMM:RMS:RES?')
         return MkrPwr
@@ -392,11 +392,11 @@ class VSA(jaVisa):
         self.Set_RefLevel(reflev)           #Set RefLevel
 
         ifovl = self.Get_Ovld_Stat()        #Check Overload
-        print ("Inital: Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
+        print("Inital: Ovl:%d Attn:%d RfLvl:%d"%(ifovl,rfatt,reflev))
 
         # """ Optimising for attenuation """
         while ifovl != 0:
-            print (f"Atnloop: Ovl:{ifovl} Attn:{rfatt} RfLvl:{reflev}")
+            print(f"Atnloop: Ovl:{ifovl} Attn:{rfatt} RfLvl:{reflev}")
             rfatt = rfatt + 1
             self.Set_AttnMech(rfatt)
 
@@ -408,7 +408,7 @@ class VSA(jaVisa):
 
         # """ Optimising for reference level """
         while reflev > (-20 - gain) and ifovl == 0:
-            print (f"Refloop: Ovl:{ifovl} Attn:{rfatt} RfLvl:{reflev}")
+            print(f"Refloop: Ovl:{ifovl} Attn:{rfatt} RfLvl:{reflev}")
             reflev = reflev - 1
             self.Set_RefLevel(reflev)
             ifovl = self.Get_Ovld_Stat()    #Check Overload
@@ -419,7 +419,7 @@ class VSA(jaVisa):
         if ifovl != 0:
             reflev = reflev + 1
             self.Set_RefLevel(reflev)
-        print (f"Final : Ovl:{ifovl} Attn:{rfatt} RfLvl:{reflev}")
+        print(f"Final : Ovl:{ifovl} Attn:{rfatt} RfLvl:{reflev}")
 
     def Set_Autolevel_IQIF(self,tables):
         VSAL.Optimise_FSx_Level(self,tables)
@@ -428,7 +428,7 @@ class VSA(jaVisa):
     ### FSW CCDF
     #####################################################################
     def Set_CCDF(self,sState):
-        self.write(f'CALC:STAT:CCDF {sState} ;*WAI') #ON|OFF|1|0
+        self.write(f'CALC:STAT:CCDF {sState} ;*WAI')        #ON|OFF|1|0
 
     def Set_CCDF_BW(self,BW):
         self.Set_ResBW(BW)

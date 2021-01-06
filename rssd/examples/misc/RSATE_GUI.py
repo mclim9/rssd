@@ -28,7 +28,7 @@ import RSATE_K96
 # *****************************************************************
 def btn_Button():
     pass
-    
+
 def btn_Waveforms():
     lstWaveF.delete(0,END)
     filez = tkFileDialog.askopenfilenames()
@@ -36,7 +36,7 @@ def btn_Waveforms():
     for i in fileList:
         lstWaveF.insert(END,i)
     lstWaveF.see(END)
- 
+
 def btn_ClearWaves():
     posi = lstWaveF.curselection()
     lstWaveF.delete(0,END)
@@ -48,10 +48,10 @@ def btn_SaveCond():
     RSVar.FreqArry = Entry3.get()
     RSVar.PwrArry  = Entry4.get()
     dataSave(RSVar)
-    
+
 def btn_Test():
     test.funcy(GUI,lstOutpt)
-    
+
 def btn_Clear():
     posi = lstOutpt.curselection()
     lstOutpt.delete(0,END)
@@ -62,17 +62,17 @@ def btn_RunLoops():
     RSVar.FreqArry = map(float,ArrayInput(Entry3.get()))
     RSVar.PwrArry  = map(float,ArrayInput(Entry4.get()))
     for i, item in enumerate(RSVar.WvArry):
-        head, tail = split(item)         
+        head, tail = split(item)
         RSVar.WvArry[i] = tail.split(".")[0]
     RSVar.GUI_Element = lstOutpt
     RSVar.GUI_Object = GUI
     RSATE_K96.main(RSVar)
     fprintf("RSATERun: Tests Done")
-    
+
 def menu_Open():
     asdf = tkFileDialog.askopenfilename()
     print(asdf)
-    
+
 def menu_Exit():
     global GUI
     btn_SaveCond()
@@ -90,7 +90,7 @@ def ArrayInput(stringIn):
         i = i.strip()
         OutputList.append(i)
     return OutputList
-    
+
 def fprintf(inStr):
     #print(inStr)
     try:
@@ -115,25 +115,25 @@ def dataLoad():
         data = RSATE()
         fprintf("DataLoad: Default")
     return data
-                      
+
 # *****************************************************************
 # Define GUI Widgets
 # *****************************************************************
 RSVar = copy.copy(dataLoad())
-GUI = Tkinter.Tk()                                            #Create GUI object
-GUI.title("Rohde Schwarz DemoATE")                      #GUI Title
-Lbl1 = Tkinter.Label(GUI, text="SMW IP")              #Create Label
-Entry1 = Tkinter.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs) #Create Entry background
-Entry1.insert(END, RSVar.SMW_IP)                         #Default Value
-Lbl2 = Tkinter.Label(GUI, text="FSW IP")              #Create Label
-Entry2 = Tkinter.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs) #Entry Background
-Entry2.insert(END, RSVar.FSW_IP)                         #Default Value
-Lbl3 = Tkinter.Label(GUI, text="Freq Array")         #Create Label
-Entry3 = Tkinter.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs) #Entry Background
-Entry3.insert(END, RSVar.FreqArry)                      #Default Value
-Lbl4 = Tkinter.Label(GUI, text="Power Array")        #Create Label
-Entry4 = Tkinter.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs) #Entry Background
-Entry4.insert(END, RSVar.PwrArry)                        #Default Value
+GUI = Tkinter.Tk()                                                                  #Create GUI object
+GUI.title("Rohde Schwarz DemoATE")                                                  #GUI Title
+Lbl1 = Tkinter.Label(GUI, text="SMW IP")                                            #Create Label
+Entry1 = Tkinter.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs)       #Create Entry background
+Entry1.insert(END, RSVar.SMW_IP)                                                    #Default Value
+Lbl2 = Tkinter.Label(GUI, text="FSW IP")                                            #Create Label
+Entry2 = Tkinter.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs)       #Entry Background
+Entry2.insert(END, RSVar.FSW_IP)                                                    #Default Value
+Lbl3 = Tkinter.Label(GUI, text="Freq Array")                                        #Create Label
+Entry3 = Tkinter.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs)       #Entry Background
+Entry3.insert(END, RSVar.FreqArry)                                                  #Default Value
+Lbl4 = Tkinter.Label(GUI, text="Power Array")                                       #Create Label
+Entry4 = Tkinter.Entry(GUI,bg=ColorBG, fg=ColorFG,insertbackground=ColorCurs)       #Entry Background
+Entry4.insert(END, RSVar.PwrArry)                                                   #Default Value
 btnWaveF = Tkinter.Button(GUI, width=btnWid, text = "Select *.WV", command = btn_Waveforms)
 btnWaveC = Tkinter.Button(GUI, width=btnWid, text = "Clear Waves", command = btn_ClearWaves)
 btnSaveC = Tkinter.Button(GUI, width=btnWid, text = "Save", command = btn_SaveCond)
@@ -141,14 +141,14 @@ btnClear = Tkinter.Button(GUI, width=btnWid, text = "Test", command = btn_Test)
 btnRunIt = Tkinter.Button(GUI, width=btnWid, text = "Run", command = btn_RunLoops)
 btnQuit  = Tkinter.Button(GUI, width=btnWid, text = "Quit", command = menu_Exit)
 lstOutpt = Tkinter.Listbox(GUI, width=textWindWid,bg=ColorBG, fg=ColorFG)
-srlOutpt = ttk.Scrollbar(GUI, orient=Tkinter.VERTICAL, command=lstOutpt.yview) #Create scrollbar S
-lstOutpt.config(yscrollcommand=srlOutpt.set)                #Link lstOutpt change to S
+srlOutpt = ttk.Scrollbar(GUI, orient=Tkinter.VERTICAL, command=lstOutpt.yview)      #Create scrollbar S
+lstOutpt.config(yscrollcommand=srlOutpt.set)                                        #Link lstOutpt change to S
 lstWaveF = Tkinter.Listbox(GUI,bg=ColorBG, fg=ColorFG,width=80)
-srlWaveF = ttk.Scrollbar(GUI, orient=Tkinter.VERTICAL, command=lstWaveF.yview) #Create scrollbar S
+srlWaveF = ttk.Scrollbar(GUI, orient=Tkinter.VERTICAL, command=lstWaveF.yview)      #Create scrollbar S
 for item in RSVar.WvArry:
     lstWaveF.insert(END, item)
 
-lstWaveF.config(yscrollcommand=srlWaveF.set)                #Link lstWaveF change to S
+lstWaveF.config(yscrollcommand=srlWaveF.set)                                        #Link lstWaveF change to S
 lstFrequ = Tkinter.Listbox(GUI,bg=ColorBG, fg=ColorFG)
 lstPower = Tkinter.Listbox(GUI,bg=ColorBG, fg=ColorFG)
 
@@ -169,11 +169,11 @@ btnRunIt.grid(row=btnRow,column=4)
 btnQuit.grid(row=btnRow,column=5)
 
 lstWaveF.grid(row=0,column=2,columnspan=4,rowspan=5)
-srlWaveF.grid(column=6,row=0,rowspan=5,sticky=(Tkinter.W,Tkinter.N,Tkinter.S))      
+srlWaveF.grid(column=6,row=0,rowspan=5,sticky=(Tkinter.W,Tkinter.N,Tkinter.S))
 #lstFrequ.grid(row=0,column=4,rowspan=5)
 #lstPower.grid(row=0,column=5,rowspan=5)
 lstOutpt.grid(row=btnRow-1,column=0,columnspan=maxCol)
-srlOutpt.grid(column=maxCol,row=btnRow-1, sticky=(Tkinter.W,Tkinter.N,Tkinter.S))      
+srlOutpt.grid(column=maxCol,row=btnRow-1, sticky=(Tkinter.W,Tkinter.N,Tkinter.S))
 
 # *****************************************************************
 # Define menu
