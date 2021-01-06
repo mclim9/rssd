@@ -45,7 +45,7 @@ for i in range(NumMeas):
     d = datetime.now() - tick
     sumTime += d.microseconds
     OutStr = f'{i},{ccdf},{d.seconds}.{d.microseconds}'
-    OFile.write (OutStr)
+    OFile.write(OutStr)
 
 ##########################################################
 ### Cleanup Automation

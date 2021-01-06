@@ -24,10 +24,10 @@ class DSO(DSO):
         rdStr = self.query(f':CALC:MATH{Ch}:FFT:FRAM:COV?')
         return rdStr
 
-   # def Get_SA_Timebase_Acquisition_Time(self,Ch):
-   #     """  1 to 8 """
-   #     rdStr = self.query(f':CALC:MATH{Ch}:FFT:FRAM:COV?')
-   #     return rdStr
+    def Get_SA_Timebase_Acquisition_Time(self,Ch):
+        """  1 to 8 """
+        rdStr = self.query(f':CALC:MATH{Ch}:FFT:FRAM:COV?')
+        return rdStr
 
     #####################################################################
     ### DSO Init Functions

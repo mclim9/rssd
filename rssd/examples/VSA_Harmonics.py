@@ -30,7 +30,7 @@ FSW.Set_Harm_adjust()
     # FSW.Set_ResBW(100)
 data = FSW.Get_Harm()
 OutStr = f'{freq},{data[0]},{data[1]},{data[2]}'
-OFile.write (OutStr)
+OFile.write(OutStr)
 
 ###############################################################################
 ### Cleanup Automation

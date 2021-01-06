@@ -47,7 +47,7 @@ for i in range(50):
     ### <\thing we are timing>
     tock = datetime.now()
     OutStr = '%f,%f,%d,%s'%(Fs/1e6,MeasTim,i,tock-tick)
-    OFile.write (OutStr)
+    OFile.write(OutStr)
 
 ##########################################################
 ### Cleanup Automation

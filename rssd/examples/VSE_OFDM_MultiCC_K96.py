@@ -77,14 +77,14 @@ for Freq in FreqArry:
     for Pwr in PwrArry:
         ### Set Power
         SMW.Set_RFPwr(Pwr)
-        FSW.Set_Autolevel_IFOvld()      #Maximize Dynamic Range
+        FSW.Set_Autolevel_IFOvld()          # Maximize Dynamic Range
 
         ### Measure EVM
-        FSW.Get_IQ_Data(IQFile)         #Save IQ Data to file
-        VSE.Set_InitImm()               #Update VSE
-        EVM_Meas = VSE.Get_EVM_Params() #Attn; RefLvl; Pwr; EVM
+        FSW.Get_IQ_Data(IQFile)             # Save IQ Data to file
+        VSE.Set_InitImm()                   # Update VSE
+        EVM_Meas = VSE.Get_EVM_Params()     # Attn; RefLvl; Pwr; EVM
         f.write(EVM_Meas)
-        VSE.jav_ClrErr()                #Clear Errors
+        VSE.jav_ClrErr()                    # Clear Errors
     #end PwrLoop
 #end FreqLoop
 

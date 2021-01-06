@@ -79,7 +79,7 @@ for Freq in FreqArry:
         ### Measure EVM
         FSW.Get_IQ_Data(IQFile)         #Save IQ Data to file
         VSE.Set_InitImm()               #Update VSE
-        EVM_Meas = VSE.Get_EVM_Params() #Attn; RefLvl; Pwr; EVM
+        EVM_Meas = VSE.Get_EVM_Params()     #Attn; RefLvl; Pwr; EVM
         f.write(EVM_Meas)
         VSE.jav_ClrErr()                #Clear Errors
     #end PwrLoop

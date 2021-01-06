@@ -40,7 +40,7 @@ bits  = np.array(iqdata*32767, dtype='>i2')                     # Convert to big
 ### ASCII + Binary
 cmd   = bytes(scpi, 'utf-8') + bits.tostring()                  # Add ASCII + Bin
 SMW.K2.write_raw(cmd)
-SMW.write('SOUR1:BB:ARB:WAV:CLOC "/var/user/test.wv",1.23456E6')# Set Fs/Clk Rate
+SMW.write('SOUR1:BB:ARB:WAV:CLOC "/var/user/test.wv",1.23456E6')  # Set Fs/Clk Rate
 SMW.write('BB:ARB:WAV:SEL "/var/user/test.wv"')                 # Select Arb File
 print(SMW.query('SYST:ERR?'))
 

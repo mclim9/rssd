@@ -87,7 +87,7 @@ SMW.Set_Ref_SyncBW('WIDE')                  # Oscilator locking BW
 SMW.Set_RFState('ON')
 
 SMW.write(':SOUR1:LFO1:SHAP PULS')          # Set LF1 shape to Pulse (square wave)
-SMW.write(':SOUR1:LFO1:SHAP:PULS:PER 0.002')# Set Pulse Period to 2mSec
+SMW.write(':SOUR1:LFO1:SHAP:PULS:PER 0.002')  # Set Pulse Period to 2mSec
 SMW.write(':SOUR1:LFO1:SHAP:PULS:DCYC 50')  # Set Pulse Duty cycle 50%
 SMW.write(':SOUR1:PM1:SOUR LF1')            # Set PM source LF1
 SMW.write(':SOUR1:PM1:DEV 0.174532')        # Set PM Deviation 0.174532 radian

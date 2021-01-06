@@ -99,7 +99,7 @@ for std in StdArry:                                             #Loop: Standard
                         SEM = 'NotTested'
                     d = datetime.now() - tick
                     OutStr = f'{freq},{pwr:3d},{ALTime.seconds:3d}.{ALTime.microseconds:06d},{WLAN.WLAN_Std},{WLAN.WLAN_ChBW},{WLAN.WLAN_MCS},{Attn},{EVM},{SEM},{ACLR},{d.seconds:3d}.{d.microseconds:06d}'
-                    OFile.write (OutStr)
+                    OFile.write(OutStr)
 
 ##########################################################
 ### Cleanup Automation

@@ -22,7 +22,7 @@ instr = jaVisa().jav_Open(instru_ip,port=5025)                  #Create Object
 tick = timeit.default_timer()
 rdStr = instr.query('*IDN?;*OPC?')
 TotTime = timeit.default_timer() - tick
-print( f'{TotTime:.6f},{rdStr}')
+print(f'{TotTime:.6f},{rdStr}')
 
 ###############################################################################
 ### Cleanup Automation

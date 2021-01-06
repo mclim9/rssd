@@ -33,7 +33,7 @@ for i in range(10):
     ### <\thing we are timing>
     ALTime.append(timeit.default_timer() - tick)
     OutStr = f'{i},{ALTime[i]:.6f},{rdStr}'
-    OFile.write (OutStr)
+    OFile.write(OutStr)
 
 print(f'Avg time  : {sum(ALTime) / float(len(ALTime))} secs')
 

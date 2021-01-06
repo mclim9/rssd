@@ -18,7 +18,7 @@ SMW = VSG().jav_Open(host)
 SMW.Set_Freq(10e9)                  # Set 10GHz
 SMW.Set_RFPwr(-30)                  # Output -30dBm
 SMW.Set_ListMode_File('list1.lsw')  # Select List File
-SMW.Set_ListMode_TrigSource('SING') # Single run
+SMW.Set_ListMode_TrigSource('SING')  # Single run
 SMW.Set_ListMode_RMode('LIVE')
 SMW.Set_ListMode_Dwell(1)           # Dwell time
 SMW.Set_RFState(1)                  # RF Output on.

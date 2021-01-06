@@ -14,7 +14,7 @@ LTE_Dir     = 'UL'
 waveparam   =[[20,100],
               [20,66]]
 subFArry    = [1]
-modArry     = ['QPSK', 'QAM64'] #QPSK; QAM16; QAM64; QAM256
+modArry     = ['QPSK', 'QAM64']     #QPSK; QAM16; QAM64; QAM256
 numMeas     = 1
 AutoLvl     = 0                #0:AutoRef 1:AutoLevel
 SCFDMA      = 'OFF'
@@ -92,7 +92,7 @@ for i in range(numMeas):                                        #Loop: Measureme
                         d = datetime.now() - tick       #Measurement only
                         t = datetime.now() - tickA      #Autolevel + Measurement
                         OutStr = f'{i},{LTE.FSW.Model},{freq},{EVM},{LTE.LTE_ChBW},{LTE.LTE_TF},{LTE.LTE_RB},{LTE.LTE_Mod},{pwr:3d},{subFram},{Attn},{AutoLvl},{ALTime.seconds:3d}.{ALTime.microseconds:06d},cf:{ccdf},{d.seconds:3d}.{d.microseconds:06d},{t.seconds:3d}.{t.microseconds:06d}'
-                        OFile.write (OutStr)
+                        OFile.write(OutStr)
 
 ##########################################################
 ### Cleanup Automation

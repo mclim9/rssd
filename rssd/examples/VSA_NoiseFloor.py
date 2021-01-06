@@ -43,7 +43,7 @@ for freq in (1,3.6,6):
             FSVA.jav_OPC_Wait('INIT:IMM')
             mkr = FSVA.Get_Mkr_Noise()
             OutStr = f'{freq},{preamp},{NC},{mkr[0]},{mkr[1]}'
-            OFile.write (OutStr)
+            OFile.write(OutStr)
 
 ###############################################################################
 ### Cleanup Automation

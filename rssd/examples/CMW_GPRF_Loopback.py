@@ -49,8 +49,8 @@ for port in ports:
     CMW.Set_Sys_RxPortLoss(port,0)
 CMW.Init_VSG()
 
-OFile.write ('\nDate,Iter,Freq,Pwr,MPwr,Port,Time,Diff')
-for r in range (0,repeat):          #Repeatability Loop
+OFile.write('\nDate,Iter,Freq,Pwr,MPwr,Port,Time,Diff')
+for r in range(0,repeat):          #Repeatability Loop
     print("Loop%d"%r)
     for cond in IArry:              #Condition Loop
         for i in [2]:               #Port Loop
@@ -68,7 +68,7 @@ for r in range (0,repeat):          #Repeatability Loop
             tock = datetime.now()
             MPwr = CMW.Get_ChPwr()[1]
             OutStr = '%d,%d,%.3f,%.3f,%d,%s,%f'%(r,freq,pwr,MPwr,i,tock-tick,pwr-MPwr)
-            OFile.write (OutStr)
+            OFile.write(OutStr)
             #CMW.Set_Gen_PortOFF(i)
             #exit()
         #end port loop

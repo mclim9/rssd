@@ -27,7 +27,7 @@ for SubF in range(SubFNum):                             # Loop through all slots
             numAlloc[SubF] += 1                         #   - Add Allocation
             RVI = RVPatt[RVIi%len(RVPatt)]              #   - Identify next RVI in RVPatt
             FrameInfo[SubF].append([SubF,Slot,RVI])     #   - Add SubFrame; Slot# and RVI into our Frame Definition
-            print(f'SubF:{SubF} Slot:{Slot} RVI:{RVI}') #   - Print for verification.
+            print(f'SubF:{SubF} Slot:{Slot} RVI:{RVI}')  #   - Print for verification.
             RVIi += 1
         currSlot += 1
 

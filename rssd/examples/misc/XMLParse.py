@@ -56,5 +56,3 @@ for swopt in root.iter('ActiveLicense'):
     except:
         pass
     print("")
-    
-    

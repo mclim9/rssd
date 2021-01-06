@@ -95,7 +95,7 @@ for i in range(numMeas):                                            #LOOP: Measu
                     EVM         = NR5G.FSW.Get_5GNR_Params_EVM()
                     TimeParam   = f'{ALTime:2,.3f},{TestTime:2,.3f},{TotTime:2,.3f}'
                     OutStr      = f'{LoopParam},{NR5GParam},{AttnParam},{EVM},{TimeParam}'
-                    OFile.write (OutStr)
+                    OFile.write(OutStr)
 
 ###############################################################################
 ### Cleanup Automation

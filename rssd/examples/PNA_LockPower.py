@@ -60,7 +60,7 @@ for i in range(numMeas):                                        #Loop: Measureme
             ffrq = FSWP.Get_Freq()
             fpwr = FSWP.Get_Power()
             OutStr = f'{i},{freq},{pwr:.2f},{ffrq},{fpwr},{lock},{mkr}'
-            OFile.write (OutStr)
+            OFile.write(OutStr)
             lockHist.append(int(lock))
             if (lockHist[-4:] == [2,0,0,0]):
                 break

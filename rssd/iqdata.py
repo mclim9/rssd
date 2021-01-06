@@ -42,7 +42,7 @@ class IQ(object):
             print("Expecting IQIQIQ order, input vector has odd number of samples!")
             return
         self.NumberOfSamples = len(iqiq) // 2
-        self.iqData = [ complex(iqiq[2*n], iqiq[2*n+1]) for n in range(self.NumberOfSamples)]
+        self.iqData = [complex(iqiq[2*n], iqiq[2*n+1]) for n in range(self.NumberOfSamples)]
 
     def __iiqq2complex__(self, iiqq):
         """Returns a complex list of I/Q samples from a single list containing IIIQQQ values"""
@@ -50,13 +50,13 @@ class IQ(object):
             print("Expecting IIIQQQ order, input vector has odd number of samples!")
             return
         self.NumberOfSamples = len(iiqq) // 2
-        self.iqData = [ complex(iiqq[n], iiqq[n+self.NumberOfSamples]) for n in range(self.NumberOfSamples)]
+        self.iqData = [complex(iiqq[n], iiqq[n+self.NumberOfSamples]) for n in range(self.NumberOfSamples)]
 
     def __complex2iqiq__(self):
         """Returns a list of I/Q samples from a complex list.
         iqiqlist = __complex2iqiq__(complexList)"""
         f= lambda iq,i: iq.real if i==0 else iq.imag
-        self.iqiqList = [ f(iq,i) for iq in self.iqData for i in range(2)]
+        self.iqiqList = [f(iq,i) for iq in self.iqData for i in range(2)]
 
         return self.iqiqList
 
@@ -82,7 +82,7 @@ class IQ(object):
             file.write(struct.pack("f"*len(self.iqiqList),*self.iqiqList))
             file.close()
         except:
-            print("File (" + FileName +") write error!" )
+            print("File (" + FileName +") write error!")
             return 0
         return self.NumberOfSamples
 
@@ -148,7 +148,7 @@ class IQ(object):
             file.write("}".encode("ASCII"))
             file.close()
         except:
-            print("File (" + FileName +") write error!" )
+            print("File (" + FileName +") write error!")
             return 0
         return self.NumberOfSamples
 
@@ -182,12 +182,12 @@ class IQ(object):
         res = re.search("CLOCK[ ]*:[ ]*(?P<SamplingRate>[0-9]*)",tags)
         self.fSamplingRate = float(res.group("SamplingRate"))
         data = list(struct.unpack("h"*self.NumberOfSamples*2, data[binaryStart:-1]))    #MMM data: IQ arry
-        data = list(map( lambda x: x/32767.0, data ))                                   #MMM consumes a lot of time
+        data = list(map(lambda x: x/32767.0, data))                                   #MMM consumes a lot of time
         self.__iqiq2complex__(data)
 
     def writeXml(self, filenameiqw, filenamexml):                                       # Verified  2020.0115
         """Function to write the xml part of the iq.tar"""
-        xmlfile = open (filenamexml, "w")
+        xmlfile = open(filenamexml, "w")
         xmlfile.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
         xmlfile.write("<?xml-stylesheet type=\"text/xsl\" href=\"open_IqTar_xml_file_in_web_browser.xslt\"?>\n")
         xmlfile.write("<RS_IQ_TAR_FileFormat fileFormatVersion=\"2\" xsi:noNamespaceSchemaLocation=\"http://www.rohde-schwarz.com/file/RsIqTar.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n")
@@ -229,7 +229,7 @@ class IQ(object):
             os.remove(os.path.join(path, binaryfile))
             os.remove(os.path.join(path, xmlfilename))
         except:
-            print("IqTar (" + FileName +") write error!" )
+            print("IqTar (" + FileName +") write error!")
             return 0
 
     def readIqTar(self,FileName):               # Verified 2020.0115
@@ -261,10 +261,9 @@ class IQ(object):
             self.readIqw(binaryfilename)
             os.remove(binaryfilename)
         except:
-            print("IqTar (" + FileName +") read error!" )
+            print("IqTar (" + FileName +") read error!")
 
         self.iqData = [sample * scaling for sample in self.iqData]                      #Apply scaling factor
-
 
     def main(self):     #pragma: no cover
         #for testing only
@@ -282,8 +281,8 @@ class IQ(object):
 
         start = time.time()
         self.writeIqTar(filename + '.iq.tar')
-        self.writeWv(   filename + '.wv')
-        self.writeIqw(  filename + '.iqw')
+        self.writeWv(filename + '.wv')
+        self.writeIqw(filename + '.iqw')
         duration = time.time() - start
         speed = self.NumberOfSamples/1e6/duration
         print("Total: %d samples in %2.2f ms. writeSpeed: %f MSamples/s"%(self.NumberOfSamples,duration*1e3,speed))
@@ -293,9 +292,9 @@ def dataConvert():                          #pragma: no cover
     # numpy.frombuffer dtype=float32()
     sampledata = b'\x0E\x78\x94\xB7'
     print('Data %s %d'%(sampledata,len(sampledata)))
-    print("Float=",struct.unpack("<f",sampledata)) #Little Endian
-    print("Float=",struct.unpack("<f",sampledata)) #Little Endian
-    # print("Float=",array.frombytes(sampledata)) #Little Endian
+    print("Float=",struct.unpack("<f",sampledata))  #Little Endian
+    print("Float=",struct.unpack("<f",sampledata))  #Little Endian
+    # print("Float=",array.frombytes(sampledata))   #Little Endian
 
 if __name__ == "__main__":
     # IQ().main()

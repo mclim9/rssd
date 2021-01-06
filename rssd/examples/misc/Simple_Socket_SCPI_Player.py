@@ -65,7 +65,7 @@ s = socket.socket()                                     # Create a socket object
 s.connect((host, 5025))
 s.settimeout(5)                                         # Timeout in seconds
 logging.basicConfig(level=logging.DEBUG, \
-    filename=os.path.splitext(__file__)[0] + '.log', filemode='w', \
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+                    filename=os.path.splitext(__file__)[0] + '.log', filemode='w', \
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 arry = readSCPI()
 sendSCPI(arry)

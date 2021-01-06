@@ -110,7 +110,6 @@ class jaVisa(object):
         self.jav_ClrErr()
         return delta
 
-
     def jav_Open(self, sIPAddr,fily='',port=5025):
         #*****************************************************************
         #*** Open raw socket Connection
@@ -123,7 +122,7 @@ class jaVisa(object):
             self.jav_fileout(fily, self.dataIDN)
             self.jav_ClrErr()
         except:
-            if self.debug: print ('jav_OpnErr: ' + sIPAddr)
+            if self.debug: print('jav_OpnErr: ' + sIPAddr)
             self.K2 = 'NoSOCKET'
         return self
 
@@ -137,7 +136,7 @@ class jaVisa(object):
             self.dataIDN = 'jav_Open_Basic'
             self.jav_fileout(fily, self.dataIDN)
         except:
-            if self.debug: print ('jav_OpnErr: ' + sIPAddr)
+            if self.debug: print('jav_OpnErr: ' + sIPAddr)
             self.K2 = 'NoSOCKET'
         return self
 
@@ -227,7 +226,7 @@ class jaVisa(object):
     def write(self,cmd):
         try:
             out = cmd + self.EOL
-            if self.dataIDN != "": self.K2.sendall(out.encode()) #Write if connected
+            if self.dataIDN != "": self.K2.sendall(out.encode())        #Write if connected
         except:
             if self.debug: print("jav_WrtErr: %s-->%s"%(self.Model,cmd))
         self.jav_fileout(self.f, "%s,%s"%(self.Model,cmd))

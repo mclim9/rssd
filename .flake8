@@ -25,13 +25,17 @@
 # E222  multiple spaces after operator
 # E226  missing whitespace around arithmetic operator
 # E225  missing whitespace around operator
+# E241  multiple spaces after ','
 # E251  unexpected spaces around keyword / parameter equals
 # E266  too many leading '#' for block comment
+# E271  multiple spaces after keyword
 # E272  multiple spaces before keyword
 # E305  expected 2 blank lines after class or function definition, found 1
 # E0401 Import Error
+# E502  the backslash is redundant between brackets
 # E0611 no-name-in-module
 # E701  multiple statements on one line (colon)
+# E704  multiple statements on one line (def)
 # E1101 Instance of '' has no 'Init' member
 # F541  f-string is missing placeholders
 # R0801 Similar lines in 3 files
@@ -57,15 +61,16 @@
 # E265  block comment should start with '# '
 # E402  module level import not at top of file
 # E501  line too long (100 > 79 characters)
+# E502  the backslash is redundant between brackets
 # E722  do not use bare 'except'
 # F401  '' imported but unused
 # F841  local variable 'y' is assigned to but never used
 ignore=C0103, C0114, C0115, C0116, C0301, C0303, C0321, C0325, C0326, C0411, C0413,
-        E0102, E116, E127, E203, E221, E222, E225, E226, E251, E272, E302, E266, E305, E0401, E0611, E701, E1101, 
+        E0102, E116, E127, E203, E221, E222, E225, E226, E241, E251, E266, E271, E272, E302, E305, E0401, E502, E0611, E701, E704, E731, E1101, 
         F541, 
         R0801, R0902, R0903,
         W0621, W0702, W1309, W0612, W0201, W0235, W291,
         R0201, R0205, R0904, R1714, R1725,
-        E115, E228, E231, E265, E262, E402, E501, E722, F401, F841, W293
+        E115, E228, E231, E265, E262, E402, E501, E502, E722, F401, F841, W293
 
 

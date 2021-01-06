@@ -39,6 +39,11 @@ jobs:
         python -m pip install --upgrade pip pylint wheel
         pip install -r requirements.txt
         pip install pytest coverage pyvisa-py
+        pip install flake8
+
+    - name: Lint with flake8
+      run: |
+        python -m flake8 rssd
 
     - name: Lint with pylint
       run: |

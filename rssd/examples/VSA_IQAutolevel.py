@@ -91,7 +91,7 @@ for i in range(Repeat):
         SysParam    = VSA.Get_Params_System()
         MeasData    = EVM
         OutStr      = f'{LoopParam},{TotTime},{AmpParam},{SysParam},{MeasData}'
-        OFile.write (OutStr)
+        OFile.write(OutStr)
 
 SuiteTime = timeit.default_timer() - tick0
 print(f'Total Test time : {SuiteTime:2,.6f}')

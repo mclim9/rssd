@@ -143,7 +143,6 @@ class DSO(jaVisa):
         #Configure instrument measurment
         pass
 
-
 #####################################################################
 ### DSO Set Functions
 #####################################################################
@@ -272,12 +271,14 @@ class DSO(jaVisa):
     def Set_Meas_Statistics(self, state, ch=1):   
         """ ON OFF , ch """
         self.write(f':MEAS{ch}:STAT:ENAB {state}')
+
 ###############################################################################
 ###  DSO Set Display Functions
 ###############################################################################
     def Set_Meas_Display_Position(self, mode):   
         """ PREView FLOAt DOCK """
         self.write(f':DISP:RES:DEF {mode}')
+
 
 ###############################################################################
 ### Debug Main.  Won't run when imported
@@ -286,4 +287,3 @@ if __name__ == "__main__":
     DSO_Inst = DSO().jav_Open("192.168.1.100")
     DSO_Inst.jav_IDN()
     DSO_Inst.jav_ClrErr()
-    
