@@ -1,5 +1,5 @@
 """Test rssd.bus.jaVISA"""
-ipaddress = '192.168.58.115'
+ipaddress = '192.168.58.114'
 
 ###############################################################################
 ### Code Start
@@ -15,6 +15,7 @@ class TestGeneral(unittest.TestCase):
 
     def tearDown(self):                             #Run after each test
         self.instr.close()
+
 
 ###############################################################################
 ### <Test>

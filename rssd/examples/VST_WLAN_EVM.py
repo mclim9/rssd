@@ -14,7 +14,7 @@ FreqArry    = [5.25e9,5.57e9]
 pwrArry     = [-20, -10, -5]
 pwrArry     = range(-50,10,3)       #Power Array
 ModArry     = [['AC', 80,11],       #Std,BW,MCS
-               ['AC',160,11]]      #Std,BW,MCS
+               ['AC',160,11]]       #Std,BW,MCS
 SweepTime   = 0.002
 
 ##########################################################
