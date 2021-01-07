@@ -7,9 +7,12 @@ class jaTest(bus):                          #pylint: disable=R0205
     """Instrument Common functions"""
     def __init__(self):
         self.EOL        = '\n'
+        self.connected          = 0
+
+    def close(self):
+        pass
 
     def open(self, resourceID, param=None):
-        self.connected          = 0
         return self
 
     def query(self, SCPIstr):
