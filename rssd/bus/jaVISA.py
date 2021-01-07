@@ -1,5 +1,4 @@
 '''RSSD VISA Bus class'''
-# pylint: disable=signature-differs
 import os
 import pyvisa
 import logging

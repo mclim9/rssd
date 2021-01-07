@@ -1,14 +1,15 @@
 '''RSSD instrument object'''
 #pylint: disable=too-many-function-args
 #pylint: disable=method-hidden,E0202
-
+import os
 import time
+import logging
 import rssd.FileIO
 from rssd.bus.jaSocket      import jaSocket
 from rssd.bus.jaVISA        import jaVisa
 from rssd.bus.test          import jaTest
 
-class instrument(object):
+class instr(object):
     '''Rohde & Schwarz Instrument Class'''
     def __init__(self):
         self.dataIDN   = ""         # Raw IDN String
@@ -16,12 +17,14 @@ class instrument(object):
         self.Model     = ""         # IDN Model
         self.Device    = ""         # IDN Device
         self.Version   = ""         # IDN Version
-        self.debug     = 1          # Print or not
         self.EOL       = '\r\n'
         self.f         = ''         # Log File Object
         self.dLastErr  = ''         # Last error
         self.bus       = 'Nobus'    # bus object
         self.connected = 0
+        logging.basicConfig(level=logging.INFO, \
+                            filename=os.path.splitext(__file__)[0] + '.log', filemode='w', \
+                            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     def delay(self,sec):
         '''delay in Sec'''
@@ -31,15 +34,15 @@ class instrument(object):
         '''Clear Errors'''
         self.bus.clear()
 
-    def SCPI_close(self):
+    def close(self):
         '''Close bus Session'''
         try:
-            errList = self.SCPI_ClrErr()
+            errList = self.SCPI_clrErr()
             self.bus.close()
             return errList
         except:
             pass
-
+            
     def SCPI_clrErr(self):
         '''Read all SYST:ERR messages'''
         ErrList = []
@@ -52,9 +55,9 @@ class instrument(object):
                 if RdStrSplit[0] == "0" : break                     #Read 0 error:R&S
                 if RdStrSplit[0] == "+0": break                     #Read 0 error:Other
                 self.dLastErr = RdStr
-                if self.debug: print("SCPI_ClrErr: %s-->%s"%(self.Model,RdStr))
+                logging.error(f'SCPI_ClrErr: {self.Model}-->{RdStr}')
         except:  #Instrument does not support SYST:ERR?
-            if self.debug: print("SCPI_ClrErr: %s-->SYST:ERR not Supported"%(self.Model))
+            logging.error('SCPI_ClrErr: {self.Model}-->SYST:ERR not Supported')
         return ErrList
 
     def SCPI_error(self):
@@ -100,36 +103,31 @@ class instrument(object):
             try:
                 read = self.queryInt("*ESR?")                       #Poll EventStatReg-Bit0:Op Complete  (STB?)
             except:
-                if self.debug: print("SCPI_OPCWai:*ESR? Error")
+                logging.error('SCP_OPCWai:*ESR? Error')
             time.sleep(0.5)
             delta = (time.time() - start_time)
             if delta > 300:
-                if self.debug: print("SCPI_OPCWai: timeout")
+                logging.error('SCP_OPCWai: timeout')
                 break
-        if self.debug: print('SCPI_OPCWai: %0.2fsec'%(delta))
-        self.SCPI_ClrErr()
+        logging.error(f'SCP_OPCWai: {delta:0.2f}sec')
+        self.SCPI_clrErr()
         return delta
 
     def open(self, address, type = 'socket', param = 5025):         #pylint: disable=redefined-builtin
         '''Open bus Sesion.  Return bus object'''
         if type == 'socket':
-            self.bus = jaSocket.open(address, param)
+            self.bus = jaSocket().open(address, param)
         elif type == 'visa-socket':
-            self.bus = jaVisa.open(f'TCPIP0::{address}::{param}::SOCKET')
+            self.bus = jaVisa().open(f'TCPIP0::{address}::{param}::SOCKET')
         elif type == 'vxi11':
-            self.bus = jaVisa.open(f'TCPIP0::{address}::instr0::INSTR')
+            self.bus = jaVisa().open(f'TCPIP0::{address}::instr0::INSTR')
         elif type == 'hislip':
-            self.bus = jaVisa.open(f'TCPIP0::{address}::hislip0::INSTR')
+            self.bus = jaVisa().open(f'TCPIP0::{address}::hislip0::INSTR')
         elif type == 'test':
-            self.debug = 0
-            self.connected      = 1
-            if self.bus == 'Nobus':
-                self.bus = jaTest.open('test')
-            self.SCPI_ClrErr()
-            self.dLastErr = ""
+            self.bus = jaTest().open('test')
         self.SCPI_IDN()
         self.SCPI_file_write(self.dataIDN)
-        self.SCPI_ClrErr()
+        self.SCPI_clrErr()
         return self
 
     def SCPI_read_raw(self):
@@ -153,9 +151,9 @@ class instrument(object):
             time.sleep(2)
             delta = (time.time() - start_time)
             if delta > 300:
-                if self.debug: print("SCPI_Wai   : timeout")
+                logging.error('SCPI_Wai   : timeout')
                 break
-        if self.debug: print('SCPI_Wai   : %0.2fsec'%(delta))
+        logging.error(f'SCPI_Wai   : {delta:0.2f}sec')
         return delta
 
     def query(self,cmd):
@@ -164,8 +162,8 @@ class instrument(object):
             if self.dataIDN != "":
                 read = self.bus.query(cmd).strip()                   #Write if connected
         except:
-            if self.debug: print("SCPI_RdErr : %s-->%s"%(self.Model,cmd))
-        self.SCPI_file_write(self.f, "%s,%s,%s"%(self.Model,cmd,read))
+            logging.error(f'SCPI_RdErr : {self.Model}-->{cmd}')
+        self.SCPI_file_write(f'{self.Model},{cmd},{read}')
         return read
 
     def queryFloat(self,cmd):
@@ -201,8 +199,8 @@ class instrument(object):
         try:
             if self.dataIDN != "": self.bus.write(cmd)               #Write if connected
         except:
-            if self.debug: print("SCPI_WrtErr: %s-->%s"%(self.Model,cmd))
-        self.SCPI_file_write(self.f, "%s,%s"%(self.Model,cmd))      
+            logging.error(f'SCPI_WrtErr : {self.Model}-->{cmd}')
+        self.SCPI_file_write(f'{self.Model},{cmd}')
 
     def write_raw(self,SCPI):
         self.bus.write_raw(SCPI)
@@ -220,8 +218,7 @@ class instrument(object):
         return OutList
 
 if __name__ == "__main__":
-    RS = instrument().open('192.168.58.109')                 #Default HiSlip
-    RS.debug    = 1
-    rdStr = RS.query('*IDN?')
+    RS = instr().open('192.168.58.115')                 #Default HiSlip
+    rdStr = RS.write_scpilist(['*IDN?','*IDN?','*IDN?'])
     print(rdStr)
-    RS.SCPI_Close()
+    RS.SCPI_close()
