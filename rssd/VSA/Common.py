@@ -291,8 +291,8 @@ class VSA(jaVisa):
 
     def Get_Trace_Data(self,trace=1):
         self.write('FORM ASCII ')
-        DataY = self.query('TRAC%d:DATA? TRACE1'%trace)
-        DataX = self.query('TRAC%d:DATA:X? TRACE1'%trace)
+        DataY = self.query(f'TRAC{trace}:DATA? TRACE1')
+        DataX = self.query(f'TRAC{trace}:DATA:X? TRACE1')
         return [DataX.split(','),DataY.split(',')]
 
     def Get_Trace_Detector(self,trace=1):
