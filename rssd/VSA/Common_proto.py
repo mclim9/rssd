@@ -1,7 +1,7 @@
 """Rohde & Schwarz Vector Signal Analyzer Common Functions"""
-from rssd.instrument import instrument      # pylint: disable=E0611,E0401
+from rssd.instrument import instr      # pylint: disable=E0611,E0401
 
-class VSA(instrument):
+class VSA(instr):
     """ Rohde & Schwarz Vector Signal Analyzer Object """
     def __init__(self):
         super(VSA, self).__init__()
@@ -753,8 +753,7 @@ class VSA(instrument):
 #####################################################################
 if __name__ == "__main__":
     ### this won't be run when imported
-    FSW = VSA().jav_Open("192.168.1.109")
-    # print(FSW.Get_Param(1,0,1,1,1))
-    FSW.Set_Channel('iqasdf')
-    FSW.jav_ClrErr()
-    del FSW
+    FSW = VSA().open("192.168.58.109")
+    print(FSW.query('*IDN?'))
+    FSW.SCPI_clrErr()
+    FSW.close
