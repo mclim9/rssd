@@ -18,7 +18,6 @@ class instr(object):
         self.Device    = ""         # IDN Device
         self.Version   = ""         # IDN Version
         self.EOL       = '\r\n'
-        self.f         = ''         # Log File Object
         self.dLastErr  = ''         # Last error
         self.bus       = 'Nobus'    # bus object
         self.connected = 0
@@ -67,8 +66,7 @@ class instr(object):
 
     def SCPI_file_write(self, outstr):
         '''Write SCPI to file if f object exists'''
-        if self.f != '':
-            self.f.write(outstr.strip())
+        logging.info(outstr.strip())
 
     def SCPI_IDN(self):
         '''query *IDN?  Assign data to properties'''
