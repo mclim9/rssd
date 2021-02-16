@@ -22,7 +22,7 @@ class instr(object):
         self.bus       = 'Nobus'    # bus object
         self.connected = 0
         logging.basicConfig(level=logging.INFO, \
-                            filename=os.path.splitext(__file__)[0] + '.log', filemode='w', \
+                            filename=os.path.splitext(__file__)[0] + '.log', filemode='a', \
                             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     def delay(self,sec):
@@ -82,27 +82,22 @@ class instr(object):
             except:
                 pass
         else:
-            self.dataIDN = ""                                       #Reset if not read
+            self.dataIDN = ""                                       # Reset if not read
         return self.dataIDN
 
     def SCPI_logscpi(self):
-        self.f = rssd.FileIO()                                      #pylint:disable=E1101
-        DataFile = self.f.init("yaVISA")                            #pylint:disable=W0612
+        self.f = rssd.FileIO()                                      # pylint:disable=E1101
+        DataFile = self.f.init("yaVISA")                            # pylint:disable=W0612
 
     def SCPI_read_OPC(self, InCMD):
         ''' Wait based on *OPC '''
         start_time = time.time()
-        self.write("*ESE 1")                                        #Event Status Enable
-        self.write("*SRE 32")                                       #ServiceReqEnable-Bit5:Std Event
-        self.write(InCMD + ";*OPC")                                 #Initiate Read.  *OPC will trigger ESR
-        #print ('    OPC Wait: ' +InCMD)
-        read = 0
-        while (read & 1) != 1:                                      #Loop until done
-            try:
-                read = self.queryInt("*ESR?")                       #Poll EventStatReg-Bit0:Op Complete  (STB?)
-            except:
-                logging.error('SCP_OPCWai:*ESR? Error')
-            time.sleep(0.5)
+        self.write("*ESE 1")                                        # Event Status Enable
+        self.write("*SRE 32")                                       # ServiceReqEnable-Bit5:Std Event
+        self.query('*ESR?')                                         # Clear ESR flag
+        self.write(f'{InCMD};*OPC')                                 # Initiate Read.  *OPC will trigger ESR
+        while (self.queryInt("*STB?") & 32) != 32:                  # Loop until done
+            time.sleep(0.1)
             delta = (time.time() - start_time)
             if delta > 300:
                 logging.error('SCP_OPCWai: timeout')
@@ -111,7 +106,7 @@ class instr(object):
         self.SCPI_clrErr()
         return delta
 
-    def open(self, address, type = 'socket', param = 5025):         #pylint: disable=redefined-builtin
+    def open(self, address, type = 'socket', param = 5025):         # pylint: disable=redefined-builtin
         '''Open bus Sesion.  Return bus object'''
         if type == 'socket':
             self.bus = jaSocket().open(address, param)
@@ -216,7 +211,6 @@ class instr(object):
         return OutList
 
 if __name__ == "__main__":
-    RS = instr().open('192.168.58.115')                 #Default HiSlip
-    rdStr = RS.write_scpilist(['*IDN?','*IDN?','*IDN?'])
-    print(rdStr)
-    RS.SCPI_close()
+    RS = instr().open('192.168.58.109')                 #Default HiSlip
+    RS.SCPI_read_OPC(':INIT:IMM')
+    RS.close()
