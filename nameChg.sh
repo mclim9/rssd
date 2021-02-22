@@ -1,7 +1,7 @@
 #!/bin/sh
 
 git filter-branch --env-filter '
-WRONG_EMAIL="email@emailer.com"
+WRONG_EMAIL="me@email.com"
 NEW_NAME="rsa23770"
 NEW_EMAIL="martin.lim@rsa.rohde-schwarz.com"
 
