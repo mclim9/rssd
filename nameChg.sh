@@ -1,4 +1,6 @@
 #!/bin/sh
+# ./nameChg.sh
+# https://devtut.github.io/git/rewriting-history-with-filter-branch.html
 
 git filter-branch --env-filter '
 WRONG_EMAIL="me@email.com"
