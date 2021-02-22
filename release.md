@@ -1,6 +1,11 @@
 # Release History
 =====================================================================
-## RSSD 2020.0x.0
+## RSSD 2020.02.11
+### Changes
+- Add bus for future use
+- flake8 linter
+- github actions testing.
+
 ### Driver
 - Removed future_fstring
   - No longer works w/ python 2.7.x
