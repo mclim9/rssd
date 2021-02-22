@@ -32,6 +32,7 @@
 *.rsi
 *.json
 *.zip
+*.sh
 rssd/VSA_Leveling.py
 
 ## Testing Files
