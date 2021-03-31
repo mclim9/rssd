@@ -3,7 +3,15 @@ from datetime           import datetime     #pylint: disable=E0611,E0401
 from rssd.VSA.Common    import VSA          #pylint: disable=E0611,E0401
 
 class VSA(VSA):                        #pylint: disable=E0102
-    """ Rohde & Schwarz Vector Signal Analyzer LTE Object """
+    """ Rohde & Schwarz Vector Signal Analyzer LTE Object
+        K100 3GPP LTE FDD Downlink
+        K101 3GPP LTE FDD Uplink
+        K102 3GPP LTE MIMO Downlink
+        K103 3GPP LTE MIMO Uplink
+        K104 3GPP LTE TDD Downlink
+        K105 3GPP LTE TDD Uplink
+        K106 3GPP LTE NB-IoT TDD Downlink
+        """
     def __init__(self):
         super(VSA, self).__init__()
         self.ldir = "DL"
