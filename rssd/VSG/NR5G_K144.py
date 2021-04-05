@@ -416,8 +416,9 @@ class VSG(VSG):                             #pylint: disable=E0102
 
     def Set_5GNR_savesetting(self, sName):
         self.query(f':SOUR:BB:NR5G:SETT:STOR "/var/user/{sName}";*OPC?')
-        # self.query(f':SOUR:BB:NR5G:WAV:CRE "/var/user/{sName}";*OPC?')
-        # self.delay(10)
+
+    def Set_5GNR_saveAllocation(self, sName):
+        self.query(f'SOUR1:BB:NR5G:ANAL:CONT "/var/user/{sName}";*OPC?')
 
 #####################################################################
 ### Run if Main
