@@ -1,10 +1,8 @@
-################################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Title  : Bandwidth Marker Test
+"""Bandwidth Marker Test"""
 ################################################################################
 ### User Entry
 ################################################################################
-FSW_IP  = '192.168.1.109'
+FSW_IP  = '192.168.58.109'
 Freq    = 9e9
 Span    = 110e6
 Avg     = 5
@@ -13,7 +11,6 @@ Avg     = 5
 Repeat  = 1
 swpTimeArry = [2e-3, 3e-3, 5e-3, 1e-2, 2e-2, 3e-2, 5e-2, 1e-1, 2e-1, 3e-1, 5e-1]
 rbwArry = [1e3, 3e3, 5e3, 1e4, 3e4, 5e4, 1e5, 3e5, 5e5, 1e6]
-# rbwArry = [0]
 
 ################################################################################
 ### Code Overhead
@@ -38,7 +35,7 @@ FSW.Set_Trace_Detector('RMS')
 FSW.Set_Span(Span)
 FSW.Set_Mkr_Freq(Freq)
 FSW.Set_Mkr_Band(100e6)
-FSW.Set_In_YIG('OFF')
+FSW.Set_In_YIG('ON')
 FSW.Set_SweepCont(0)
 FSW.Set_Autolevel()
 # FSW.Set_Trig1_Source('Ext')
