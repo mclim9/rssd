@@ -168,8 +168,8 @@ class VSA(jaVisa):
         return MkrPwr
 
     def Get_Mkr_XY(self,iNum=1,iWind=1):
-        ValX = self.query(':CALC%d:MARK%d:X?'%(iWind,iNum)).strip()
-        ValY = self.query(':CALC%d:MARK%d:Y?'%(iWind,iNum)).strip()
+        ValX = self.queryFloat(':CALC%d:MARK%d:X?'%(iWind,iNum))
+        ValY = self.queryFloat(':CALC%d:MARK%d:Y?'%(iWind,iNum))
         return [ValX, ValY]
 
     def Get_Mkr_Y(self,iNum=1,iWind=1):
@@ -211,6 +211,15 @@ class VSA(jaVisa):
             outStr  = f'{BndMkr[0]:.0f},{BndMkr[1]:.3f}'
         else:
             outStr = 'MkrFreq,MkrBndPwr'
+        return outStr
+
+    def Get_Params_Mkr(self,header=0):
+        """Retrieve Parameters for test logs"""
+        if header != 1:
+            BndMkr  = self.Get_Mkr_XY()
+            outStr  = f'{BndMkr[0]:.0f},{BndMkr[1]:.3f}'
+        else:
+            outStr = 'MkrFreq,MkrPwr'
         return outStr
 
     # def Get_Params_EVM(self):
