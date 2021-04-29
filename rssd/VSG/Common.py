@@ -156,27 +156,30 @@ class VSG(jaVisa):
         #  self.write('SOUR:BB:ARB:WSEG:NEXT:EXEC')
 
     def Set_ArbState(self,sState):
-        self.query(':SOUR:BB:ARB:STATE %s;*OPC?'%sState)
+        if sState in (1,'1','ON'):
+            self.query(':SOUR1:BB:ARB:STAT 1;*OPC?')
+        elif sState in (0,'0','OFF'):
+            self.query(':SOUR1:BB:ARB:STAT 0;*OPC?')
 
     def Set_ArbWv(self,InWv):
         self.query('BB:ARB:WAV:SEL "%s"; *OPC?'%InWv)
 
     def Set_BBState(self,sState):
         """'ON' 'OFF' 1 or 0"""
-        if (sState == "ON") or (sState == 1):
+        if sState in (1,'1','ON'):
             self.query(':SOUR1:BB:ARB:STAT 1;*OPC?')
-        elif (sState == "OFF") or (sState == 0):
+        elif sState in (0,'0','OFF'):
             self.query(':SOUR1:BB:ARB:STAT 0;*OPC?')
 
     def Set_Freq(self,freq):
         """Unit: Hz"""
-        self.write(':SOUR1:FREQ:CW %f'%freq)     #RF Freq
+        self.write(f':SOUR1:FREQ:CW {freq}')     #RF Freq
 
     def Set_IQMod(self,sState):
         """input: ON, OFF """
-        if (sState == 1) or (sState == 'ON'):
+        if sState in (1,'1','ON'):
             self.query('SOUR:IQ:STAT ON;*OPC?')
-        else:
+        elif sState in (0,'0','OFF'):
             self.query('SOUR:IQ:STAT OFF;*OPC?')
 
     def Set_ListMode_Dwell(self, sec):
