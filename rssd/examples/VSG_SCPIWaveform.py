@@ -1,13 +1,5 @@
-###############################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Title  : Raw Binary to SMW
-### Author : mclim
-### Date   : 2019.11.26
-###############################################################################
-### User Entry
-###############################################################################
+"""IQ --> SCPI --> SMW"""
 SMW_IP   = '192.168.1.114'
-# SMW_IP   = '10.0.0.7'
 
 ###############################################################################
 ### Code Overhead: Import and create objects
@@ -31,16 +23,18 @@ IData = [0.1,0.2,0.3]
 QData = [0.4,0.5,0.6]
 
 ### ASCII
-scpi  = ':MMEM:DATA:UNPR "NVWFM://var//user//test.wv",#'        # Ascii Cmd
+scpi  = ':MMEM:DATA:UNPR "NVWFM://var//user//test.wv",#'        # Define file & number of bytes
 iqsize= str(len(IData)*4)                                       # Calculate bytes of IQ data
 scpi  = scpi + str(len(iqsize)) + iqsize                        # Calculate length of iqsize string
-### Binary
+
+### Binary: IQ data --> Binary format
 iqdata= np.vstack((IData,QData)).reshape((-1,),order='F')       # Combine I&Q Data
 bits  = np.array(iqdata*32767, dtype='>i2')                     # Convert to big-endian 2byte int
+
 ### ASCII + Binary
 cmd   = bytes(scpi, 'utf-8') + bits.tostring()                  # Add ASCII + Bin
 SMW.K2.write_raw(cmd)
-SMW.write('SOUR1:BB:ARB:WAV:CLOC "/var/user/test.wv",1.23456E6')  # Set Fs/Clk Rate
+SMW.write('SOUR1:BB:ARB:WAV:CLOC "/var/user/test.wv",1.234E6')  # Set Fs/Clk Rate
 SMW.write('BB:ARB:WAV:SEL "/var/user/test.wv"')                 # Select Arb File
 print(SMW.query('SYST:ERR?'))
 
