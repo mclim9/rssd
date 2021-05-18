@@ -8,9 +8,9 @@
 SMW_IP  = '192.168.58.114'
 FSW_IP  = '192.168.58.109'
 VSG_ON  = 1
-Freq    = 10.3e9
+Freq    = 24e9
 Pwr     = -5
-NumCC   = 14
+NumCC   = 8
 NR_Dir  = 'UL'
 CCSpace = 99.96e6
 modu    = 'QPSK'
@@ -57,7 +57,7 @@ for i in range(NumCC):
         SMW.Set_5GNR_FreqRange(2)
         SMW.Set_5GNR_CC_Offset(CCStart + (i * CCSpace))
         SMW.Set_5GNR_TransPrecoding('ON')
-        SMW.Set_5GNR_PhaseCompensate_Freq(Freq_CC)
+        # SMW.Set_5GNR_PhaseCompensate_Freq(Freq_CC)
         SMW.Set_5GNR_BWP_Ch_Modulation(modu)
     FSW.cc = i+1
     FSW.Set_5GNR_CC_Offset(i+1,i*CCSpace)
