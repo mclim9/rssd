@@ -236,6 +236,10 @@ class VSG(VSG):                             #pylint: disable=E0102
         rdStr = self.query(f':SOUR:BB:NR5G:NODE:RFPH:STAT?')
         return rdStr
 
+    def Get_5GNR_PhaseCompensate_Freq(self):
+        rdStr = self.query(f':SOUR1:BB:NR5G:NODE:CELL{self.cc}:PCFR?')
+        return rdStr
+
     def Get_5GNR_TM_Cat(self):
         rdStr = self.query(f'SOUR1:BB:NR5G:SETT:TMOD:DL:CAT?').split(',')
         return rdStr

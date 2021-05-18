@@ -222,6 +222,10 @@ class VSA(VSA):                                 #pylint: disable=E0102
         rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:RFUC:STAT?')
         return rdStr
 
+    def Get_5GNR_PhaseCompensate_Freq(self):
+        rdStr = self.query(f':CONF:NR5G:{self.sdir}:CC{self.cc}:RFUC:FZER:FREQ?')
+        return rdStr
+
     def Get_5GNR_SEM(self):
         rdStr = self.query(f':CALC1:LIM:FAIL?')
         return rdStr
