@@ -1,18 +1,15 @@
 """
-Purpose: Vector Signal Generator LTE Functions
-Options: K54  802.11 a/b/g/n
-         K86  802.11 ac
-         K141 802.11 ad
-         K142 802.11 ax
+Purpose: Vector Signal Generator 802.11 methods
 
-Standrd |Modu|Freqncy|Mode|PPDU|BW |MIMO|BitRate
---------|----|-------|----|----|---|----|-------
-802.11b  DSSS 2.4     Legy  CCK 20 SISO   11Mbps
-802.11a  OFDM     5.4 Legy         SISO   54Mbps
-802.11g  both 2.4 5.4 Legy   L     SISO   54Mbps
-802.11n  OFDM 2.4 5.4 GrnF  HT  40 MIMO  300Mbps
-802.11ac OFDM     5.4 MixM VHT 160 MIMO 1750Mbps
-802.11ax OFDM 2.4 5.4 MixM  HE 160 MIMO   11Gbps
+Standrd |Modu|Freqncy|Mode|PPDU|BW |MIMO|BitRate|Opt
+--------|----|-------|----|----|---|----|-------|----
+802.11b  DSSS 2.4     Legy  CCK 20 SISO   11Mbps K54
+802.11a  OFDM     5.4 Legy         SISO   54Mbps K54
+802.11g  both 2.4 5.4 Legy   L     SISO   54Mbps K54
+802.11n  OFDM 2.4 5.4 GrnF  HT  40 MIMO  300Mbps K54
+802.11ac OFDM     5.4 MixM VHT 160 MIMO 1750Mbps K86
+802.11ax OFDM 2.4 5.4 MixM  HE 160 MIMO   11Gbps K142
+802.11be OFDM 2.4 5.4 MixM EHT 320 MIMO     Gbps K147
 """
 from rssd.VSG.Common import VSG     #pylint: disable=E0611,E0401
 
@@ -22,7 +19,7 @@ class VSG(VSG):                     #pylint: disable=E0102
         super(VSG,self).__init__()    #Python2/3
         self.Model = "SMW"
         self.WLAN_Std  = 'N'
-        self.WLAN_ChBW = 20       #MHz
+        self.WLAN_ChBW = 20         #MHz
         self.WLAN_MCS  = 1
 
     #####################################################################

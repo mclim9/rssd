@@ -2,18 +2,17 @@
 Vector Signal Analyzer 802.11 WLAN functions
 #  | Standrd  | Modu | Freqncy | Mode | PPDU | BW  | MIMO | BitRate  | SCS,KHz | Sym,uSec |
 #  | -------- | ---- | ------- | ---- | ---- | --- | ---- | -------- | ------- | -------- |
-#  | 802.11b  | DSSS | 2.4     | Legy | CCK  | 20  | SISO | 11Mbps   | n/a     | n/q      |
+#  | 802.11b  | DSSS | 2.4     | Legy | CCK  | 20  | SISO | 11Mbps   | n/a     | n/q      | 
 #  | 802.11a  | OFDM | 5.4     | Legy |      | 20  | SISO | 54Mbps   | 312.5   | 3.2 μs   |
 #  | 802.11g  | both | 2.4     | Legy | L    | 20  | SISO | 54Mbps   | 312.5   | 3.2 μs   |
 #  | 802.11n  | OFDM | 2.4 5.4 | GrnF | HT   | 40  | MIMO | 300Mbps  | 312.5   | 3.2 μs   |
 #  | 802.11ac | OFDM | 5.4     | MixM | VHT  | 160 | MIMO | 1750Mbps | 312.5   | 3.2 μs   |
 #  | 802.11ax | OFDM | 2.4 5.4 | MixM | HE   | 160 | MIMO | 1201Mbps | 78.125  | 12.8 μs  |
-#  | 802.11be | OFDM | 2.4 5.4 | MixM | EHT  | 320 | MIMO | 11Gbps   | 78.125  | 12.8 μs  |
-######################################################################
+#  | 802.11be | OFDM | 2.4 5.4 | MixM | EHT  | 320 | MIMO | 11Gbps   | 78.125  | 12.8 μs  | 
 """
-from rssd.VSA.Common import VSA        #pylint: disable=E0611,E0401
+from rssd.VSA.Common import VSA        # pylint: disable=E0611,E0401
 
-class VSA(VSA):                        #pylint: disable=E0102
+class VSA(VSA):                        # pylint: disable=E0102
     """ Rohde & Schwarz Vector Signal Analyzer 802.11 Object """
     def __init__(self):
         super(VSA, self).__init__()
