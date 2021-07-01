@@ -1,11 +1,4 @@
-################################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Title  : Timing SCPI Commands Example
-### Author : mclim
-### Date   : 2018.05.24
-################################################################################
-### User Entry
-################################################################################
+"""IQ SCPI Timing  Commands Example"""
 FSW_IP  = '192.168.1.109'
 FsArry  = [400e6, 500e6, 600e6, 625e6, 650e6, 675e6, 700e6, 800e6, 900e6]   #Sampling Rate
 MeasTim = 123e-6

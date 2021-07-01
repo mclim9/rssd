@@ -551,18 +551,18 @@ class VSA(jaVisa):
 
     def Set_IQ_BW(self,fFreq):
         # IQ_BW = SamplingRate * 0.8
-        self.write('TRAC:IQ:BWID %f'%fFreq)        #Analysis BW
+        self.write('TRAC:IQ:BWID %f'%fFreq)         # Analysis BW
 
     def Set_IQ_RecLength(self,iLen):
-        self.query('TRAC:IQ:RLEN %d'%iLen)          #Record(Samples) Length
+        self.query('TRAC:IQ:RLEN %d'%iLen)          # Record(Samples) Length
 
     def Set_IQ_Samples(self,iNum):
         # Samples = MeasTime * SamplingRate
-        self.write('TRAC:IQ:RLEN %d'%iNum)         #Samples
+        self.write('TRAC:IQ:RLEN %d'%iNum)          # Samples
 
     def Set_IQ_SamplingRate(self,fFreq):
         # SamplingRate = IQ_BW / 0.8
-        self.write('TRAC:IQ:SRAT %f'%fFreq)        #Sampling Rate
+        self.write('TRAC:IQ:SRAT %f'%fFreq)         # Sampling Rate
 
     def Set_IQ_SpectrumWindow(self):
         # windList = self.query('LAY:CAT:WIND?').split(',')
@@ -697,7 +697,7 @@ class VSA(jaVisa):
         if fSwpTime == 0:
             self.write(':SENS:SWE:TIME:AUTO ON')
         else:
-            self.write('SENS:SWE:TIME %f'%fSwpTime)             #Sweep/Capture Time
+            self.write(f':SENS:SWE:TIME {fSwpTime}')             #Sweep/Capture Time
 
     def Set_SweepType(self,sType):
         #AUTO | SWE | FFT
