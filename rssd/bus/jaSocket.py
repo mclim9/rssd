@@ -49,6 +49,9 @@ class jaSocket(bus):
             logging.error(f'jaS_RdErr : {self.ResID}-->{SCPIstr}')
         return read
 
+    def timeout(self, seconds):
+        self.K2.settimeout(seconds)
+
     def read_raw(self):
         """Read binary values from instrument"""
         sOut = self.K2.recv(10000).strip()              # read socket

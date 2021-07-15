@@ -25,14 +25,6 @@ class instr(object):
                             filename=os.path.splitext(__file__)[0] + '.log', filemode='a', \
                             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-    def delay(self,sec):
-        '''delay in Sec'''
-        time.sleep(sec)
-
-    def SCPI_clear(self):
-        '''Clear Errors'''
-        self.bus.clear()
-
     def close(self):
         '''Close bus Session'''
         try:
@@ -41,7 +33,71 @@ class instr(object):
             return errList
         except:
             pass
-            
+
+    def delay(self,sec):
+        '''delay in Sec'''
+        time.sleep(sec)
+
+    def open(self, address, type = 'socket', param = 5025):         # pylint: disable=redefined-builtin
+        '''Open bus Sesion.  Return bus object'''
+        if type == 'socket':
+            self.bus = jaSocket().open(address, param)
+        elif type == 'visa-socket':
+            self.bus = jaVisa().open(f'TCPIP0::{address}::{param}::SOCKET')
+        elif type == 'vxi11':
+            self.bus = jaVisa().open(f'TCPIP0::{address}::instr0::INSTR')
+        elif type == 'hislip':
+            self.bus = jaVisa().open(f'TCPIP0::{address}::hislip0::INSTR')
+        elif type == 'test':
+            self.bus = jaTest().open('test')
+        self.SCPI_IDN()
+        self.SCPI_file_write(self.dataIDN)
+        self.SCPI_clrErr()
+        return self
+
+    def query(self,cmd):
+        read ="<notRead>"
+        try:
+            if self.dataIDN != "":
+                read = self.bus.query(cmd).strip()                   #Write if connected
+        except:
+            logging.error(f'SCPI_RdErr : {self.Model}-->{cmd}')
+        self.SCPI_file_write(f'{self.Model},{cmd},{read}')
+        return read
+
+    def queryFloat(self,cmd):
+        try:
+            strArry = self.query(cmd).split(',')
+            return [float(i) for i in strArry][0]
+        except:
+            return -9999.9999
+
+    def queryFloatArry(self,cmd):
+        try:
+            strArry = self.query(cmd).split(',')
+            return [float(i) for i in strArry]
+        except:
+            return [-9999.9999, -888.888, -777.777, -666.666, -555.555, -444.444]
+
+    def queryInt(self,cmd):
+        try:
+            strArry = self.query(cmd).split(',')
+            return int([float(i) for i in strArry][0])
+            # Float for scientific 'e' notation
+        except:
+            return -9999
+
+    def queryIntArry(self,cmd):
+        try:
+            strArry = self.query(cmd).split(',')
+            return [int(i) for i in strArry]
+        except:
+            return [-9999,-8888,-7777]
+
+    def SCPI_clear(self):
+        '''Clear Errors'''
+        self.bus.clear()
+
     def SCPI_clrErr(self):
         '''Read all SYST:ERR messages'''
         ErrList = []
@@ -106,23 +162,6 @@ class instr(object):
         self.SCPI_clrErr()
         return delta
 
-    def open(self, address, type = 'socket', param = 5025):         # pylint: disable=redefined-builtin
-        '''Open bus Sesion.  Return bus object'''
-        if type == 'socket':
-            self.bus = jaSocket().open(address, param)
-        elif type == 'visa-socket':
-            self.bus = jaVisa().open(f'TCPIP0::{address}::{param}::SOCKET')
-        elif type == 'vxi11':
-            self.bus = jaVisa().open(f'TCPIP0::{address}::instr0::INSTR')
-        elif type == 'hislip':
-            self.bus = jaVisa().open(f'TCPIP0::{address}::hislip0::INSTR')
-        elif type == 'test':
-            self.bus = jaTest().open('test')
-        self.SCPI_IDN()
-        self.SCPI_file_write(self.dataIDN)
-        self.SCPI_clrErr()
-        return self
-
     def SCPI_read_raw(self):
         '''read raw data from bus'''
         return self.bus.read_raw()
@@ -149,44 +188,8 @@ class instr(object):
         logging.error(f'SCPI_Wai   : {delta:0.2f}sec')
         return delta
 
-    def query(self,cmd):
-        read ="<notRead>"
-        try:
-            if self.dataIDN != "":
-                read = self.bus.query(cmd).strip()                   #Write if connected
-        except:
-            logging.error(f'SCPI_RdErr : {self.Model}-->{cmd}')
-        self.SCPI_file_write(f'{self.Model},{cmd},{read}')
-        return read
-
-    def queryFloat(self,cmd):
-        try:
-            strArry = self.query(cmd).split(',')
-            return [float(i) for i in strArry][0]
-        except:
-            return -9999.9999
-
-    def queryFloatArry(self,cmd):
-        try:
-            strArry = self.query(cmd).split(',')
-            return [float(i) for i in strArry]
-        except:
-            return [-9999.9999, -888.888, -777.777, -666.666, -555.555, -444.444]
-
-    def queryInt(self,cmd):
-        try:
-            strArry = self.query(cmd).split(',')
-            return int([float(i) for i in strArry][0])
-            # Float for scientific 'e' notation
-        except:
-            return -9999
-
-    def queryIntArry(self,cmd):
-        try:
-            strArry = self.query(cmd).split(',')
-            return [int(i) for i in strArry]
-        except:
-            return [-9999,-8888,-7777]
+    def timeout(self, seconds):
+        self.bus.timeout(seconds)
 
     def write(self,cmd):
         try:

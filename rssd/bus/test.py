@@ -21,6 +21,9 @@ class jaTest(bus):                          #pylint: disable=R0205
     def read_raw(self):
         return b'1234567890'
 
+    def timeout(self, seconds):
+        pass
+
     def write_raw(self, SCPIstr):
         pass
 

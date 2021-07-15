@@ -70,6 +70,9 @@ class jaVisa(bus):
             rmList =["No VISA"]
         return rmList
 
+    def timeout(self, seconds):
+        self.K2.timeout = seconds * 1000
+
     def write(self, SCPIstr):
         try:
             self.K2.write(SCPIstr)

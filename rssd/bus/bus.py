@@ -17,6 +17,9 @@ class bus(ABC):
     def read_raw(self): pass
 
     @abstractmethod
+    def timeout(self, seconds): pass
+
+    @abstractmethod
     def write(self, SCPIstr): pass
 
     @abstractmethod
