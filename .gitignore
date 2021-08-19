@@ -42,3 +42,4 @@ htmlcov
 test/.coverage
 /*.coverage
 rssd/examples/misc/*.txt
+/rssd/examples/AAA_Debug.py
