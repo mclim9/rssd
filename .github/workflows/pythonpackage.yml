@@ -52,21 +52,21 @@ jobs:
     - name: Unit Test
       run: |
         # pytest
-        coverage run -m unittest -v test.test_RSSD
-        coverage run -a -m unittest -v test.test_yaVISA
-        coverage run -a -m unittest discover -b -v -p test_HW_DSO*
-        coverage run -a -m unittest discover -b -v -p test_HW_NRQ*
-        coverage run -a -m unittest discover -b -v -p test_HW_NRP*
-        coverage run -a -m unittest discover -b -v -p test_HW_OSP*
-        coverage run -a -m unittest discover -b -v -p test_HW_OTA*
-        coverage run -a -m unittest discover -b -v -p test_HW_PNA*
-        coverage run -a -m unittest discover -b -v -p test_HW_RCT*
-        coverage run -a -m unittest discover -b -v -p test_HW_VNA*
-        coverage run -a -m unittest discover -b -v -p test_HW_VSA*
-        coverage run -a -m unittest discover -b -v -p test_HW_VSE*
-        coverage run -a -m unittest discover -b -v -p test_HW_VSG*
-        coverage run -a -m unittest discover -b -v -p test_HW_VST*.py
-        coverage run -a -m unittest discover -b -v -p test_SW*
+        coverage run -m unittest test.test_RSSD
+        coverage run -a -m unittest test.test_yaVISA
+        coverage run -a -m unittest discover -b -p test_HW_DSO*
+        coverage run -a -m unittest discover -b -p test_HW_NRQ*
+        coverage run -a -m unittest discover -b -p test_HW_NRP*
+        coverage run -a -m unittest discover -b -p test_HW_OSP*
+        coverage run -a -m unittest discover -b -p test_HW_OTA*
+        coverage run -a -m unittest discover -b -p test_HW_PNA*
+        coverage run -a -m unittest discover -b -p test_HW_RCT*
+        coverage run -a -m unittest discover -b -p test_HW_VNA*
+        coverage run -a -m unittest discover -b -p test_HW_VSA*
+        coverage run -a -m unittest discover -b -p test_HW_VSE*
+        coverage run -a -m unittest discover -b -p test_HW_VSG*
+        coverage run -a -m unittest discover -b -p test_HW_VST*.py
+        coverage run -a -m unittest discover -b -p test_SW*
 
     - name: Coveralls Python
       uses: AndreMiras/coveralls-python-action@develop
