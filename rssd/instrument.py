@@ -101,14 +101,15 @@ class instr(object):
     def SCPI_clrErr(self):
         '''Read all SYST:ERR messages'''
         ErrList = []
-        try:                                                        #Instr supports SYST:ERR?
+        try:                                                        # Instr supports SYST:ERR?
             while True:
                 RdStr = self.query("SYST:ERR?").strip()
                 ErrList.append(RdStr)
                 RdStrSplit = RdStr.split(',')
-                if RdStr == "<notRead>" : break                     #No readstring
-                if RdStrSplit[0] == "0" : break                     #Read 0 error:R&S
-                if RdStrSplit[0] == "+0": break                     #Read 0 error:Other
+                if RdStr == "<notRead>" : break                     # No readstring
+                if RdStrSplit[0] == "0" : break                     # Read 0 error:R&S
+                if RdStrSplit[0] == "+0": break                     # Read 0 error:Other
+                if RdStrSplit[1] == ' 0' and (RdStrSplit[3] == ' 0') : break  # ATS1800
                 self.dLastErr = RdStr
                 logging.error(f'SCPI_ClrErr: {self.Model}-->{RdStr}')
         except:  #Instrument does not support SYST:ERR?

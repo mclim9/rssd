@@ -2,7 +2,8 @@
 ### Purpose : NRP Power Sensor
 ###
 ### VISAFmt : RSNRP::0x0138::100961::INSTR
-###           <VS>::<Manu>::<Modl>::<SerN>::INSTR
+###           RSNRP::<Modl>::<SerN>::INSTR
+###           USB::0x0AAD::<Modl>::<SerN>::INSTR
 ###
 ### Product  |USB ID      Product  |USB ID
 ### ---------|------      ---------|------

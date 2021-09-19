@@ -95,6 +95,7 @@ class OTA(OTA):
 ###############################################################################
 if __name__ == "__main__":
     # http://169.254.2.10/Tc3PlcHmiWeb/Port_851/Visu/webvisu.htm
-    ATS1800 = OTA()
-    ATS1800.jav_Open('169.254.2.10',port=200)
-    print(ATS1800.Get_IDN())
+    ATS1800 = OTA().open('169.254.2.10', type = 'socket', param = 200)
+    ATS1800.Set_ElevateAngle(40)
+    print(ATS1800.Get_ElevateRunning())
+    print(ATS1800.Get_ElevateAngle())
