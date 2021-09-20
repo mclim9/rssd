@@ -29,3 +29,6 @@ class jaTest(bus):                          #pylint: disable=R0205
 
     def write(self, SCPIstr):
         pass
+
+    def SCPI_error(self):
+        return ['0', 'No Error']

@@ -1,6 +1,4 @@
 '''RSSD instrument object'''
-#pylint: disable=too-many-function-args
-#pylint: disable=method-hidden,E0202
 import os
 import time
 import logging
@@ -50,6 +48,7 @@ class instr(object):
             self.bus = jaVisa().open(f'TCPIP0::{address}::hislip0::INSTR')
         elif type == 'test':
             self.bus = jaTest().open('test')
+            self.SCPI_error      = jaTest.SCPI_error
         self.SCPI_IDN()
         self.SCPI_file_write(self.dataIDN)
         self.SCPI_clrErr()
@@ -59,7 +58,7 @@ class instr(object):
         read ="<notRead>"
         try:
             if self.dataIDN != "":
-                read = self.bus.query(cmd).strip()                   #Write if connected
+                read = self.bus.query(cmd).strip()                   # Write if connected
         except:
             logging.error(f'SCPI_RdErr : {self.Model}-->{cmd}')
         self.SCPI_file_write(f'{self.Model},{cmd},{read}')
@@ -103,14 +102,13 @@ class instr(object):
         ErrList = []
         try:                                                        # Instr supports SYST:ERR?
             while True:
-                RdStr = self.query("SYST:ERR?").strip()
-                ErrList.append(RdStr)
-                RdStrSplit = RdStr.split(',')
-                if RdStr == "<notRead>" : break                     # No readstring
-                if RdStrSplit[0] == "0" : break                     # Read 0 error:R&S
-                if RdStrSplit[0] == "+0": break                     # Read 0 error:Other
-                if RdStrSplit[1] == ' 0' and (RdStrSplit[3] == ' 0') : break  # ATS1800
+                RdStr = self.SCPI_error()
+                if RdStr[0] == "<notRead>" : break                  # No readstring
+                if RdStr[0] == "0" : break                          # Read 0 error:R&S
+                if RdStr[0] == "+0": break                          # Read 0 error:Other
+                if RdStr[1] == ' 0' and (RdStr[3] == ' 0') : break  # ATS1800
                 self.dLastErr = RdStr
+                ErrList.append(RdStr)
                 logging.error(f'SCPI_ClrErr: {self.Model}-->{RdStr}')
         except:  #Instrument does not support SYST:ERR?
             logging.error('SCPI_ClrErr: {self.Model}-->SYST:ERR not Supported')
@@ -127,9 +125,9 @@ class instr(object):
 
     def SCPI_IDN(self):
         '''query *IDN?  Assign data to properties'''
-        self.dataIDN = "Temp"                                       #Temp for self.query
+        self.dataIDN = "Temp"                                       # Temp for self.query
         self.dataIDN = self.query("*IDN?").strip()
-        if self.dataIDN != "<notRead>":                             #Data Returned?
+        if self.dataIDN != "<notRead>":                             # Data Returned?
             IDNStr = self.dataIDN.split(',')
             try:
                 self.Make       = IDNStr[0]
@@ -174,11 +172,11 @@ class instr(object):
     def SCPI_read_wait(self, InCMD):
         '''Brute Force Wait and check *OPC? '''
         start_time = time.time()
-        self.write(InCMD)                                           #Initiate busand
+        self.write(InCMD)                                           # Initiate busand
         read = "0"
-        while (int(read) & 1) != 1:                                 #Loop until done
+        while (int(read) & 1) != 1:                                 # Loop until done
             try:
-                read = self.queryInt("*OPC?")                       #See if we can get *OPC?
+                read = self.queryInt("*OPC?")                       # See if we can get *OPC?
             except:
                 pass
             time.sleep(2)
@@ -194,7 +192,7 @@ class instr(object):
 
     def write(self,cmd):
         try:
-            if self.dataIDN != "": self.bus.write(cmd)               #Write if connected
+            if self.dataIDN != "": self.bus.write(cmd)               # Write if connected
         except:
             logging.error(f'SCPI_WrtErr : {self.Model}-->{cmd}')
         self.SCPI_file_write(f'{self.Model},{cmd}')
@@ -215,6 +213,6 @@ class instr(object):
         return OutList
 
 if __name__ == "__main__":
-    RS = instr().open('192.168.58.109')                 #Default HiSlip
+    RS = instr().open('192.168.58.109')                                 # Default HiSlip
     RS.SCPI_read_OPC(':INIT:IMM')
     RS.close()

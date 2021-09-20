@@ -1,14 +1,4 @@
-###############################################################################
-### Purpose: rssd.self.OTA.common.py driver test
-###              _   ___        __  _____         _   
-###             | | | \ \      / / |_   _|__  ___| |_ 
-###             | |_| |\ \ /\ / /    | |/ _ \/ __| __|
-###             |  _  | \ V  V /     | |  __/\__ \ |_ 
-###             |_| |_|  \_/\_/      |_|\___||___/\__|
-###             Please connect instrument prior 2 test
-###############################################################################
-### User Entry
-###############################################################################
+"""rssd.self.OTA.common.py driver test"""
 host = '192.168.1.50'                           #Get local machine name
 
 ###############################################################################
@@ -19,11 +9,11 @@ from rssd.OTA.ATS1000 import OTA
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                            #run before each test
-        self.ATS1000 = OTA().jav_OpenTest(host)
+        self.ATS1000 = OTA().open(host, type='test')
 
     def tearDown(self):                         #Run after each test
-        self.assertEqual(self.ATS1000.jav_Error()[0],'0')
-        self.ATS1000.jav_Close()
+        self.assertEqual(self.ATS1000.SCPI_error(self)[0],'0')
+        self.ATS1000.close()
 
 ###############################################################################
 ### <Test>

@@ -30,7 +30,11 @@ class OTA(OTA):
     ### OTA Get Functions
     #####################################################################
     def Get_AzimuthAngle(self):
-        rdStr = self.query(f'CX').split(',')[2]
+        rdStr = self.query(f'CX').split(',')
+        if len(rdStr) > 1:
+            rdStr = rdStr[2]
+        else:
+            rdStr = rdStr[0]
         return rdStr
 
     def Get_AzimuthRunning(self):
@@ -104,7 +108,6 @@ class OTA(OTA):
 ###############################################################################
 if __name__ == "__main__":
     ATS1000 = OTA()
-    ATS1000.jav_Open('192.168.1.50',port=200)
-    # print(ATS1000.Get_ElevateAngle())
-    # print(ATS1000.Get_AzimuthAngle())
-    print(ATS1000.Get_IDN())
+    ATS1000.open('192.168.1.50', type = 'socket', param = 200)
+    print(ATS1000.Get_ElevateAngle())
+    print(ATS1000.Get_AzimuthAngle())
