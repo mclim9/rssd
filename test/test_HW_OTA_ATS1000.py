@@ -1,11 +1,8 @@
 """rssd.self.OTA.common.py driver test"""
-host = '192.168.1.50'                           #Get local machine name
-
-###############################################################################
-### Code Start
-###############################################################################
 import unittest
 from rssd.OTA.ATS1000 import OTA
+
+host = '192.168.1.50'                           #Get local machine name
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):                            #run before each test
@@ -15,9 +12,6 @@ class TestGeneral(unittest.TestCase):
         self.assertEqual(self.ATS1000.SCPI_error(self)[0],'0')
         self.ATS1000.close()
 
-###############################################################################
-### <Test>
-###############################################################################
     def test_OTA_Init(self):
         self.ATS1000.Init_Measurement()
 
@@ -51,9 +45,6 @@ class TestGeneral(unittest.TestCase):
         self.ATS1000.Get_SysStat()
         self.ATS1000.Get_CxAngle()
 
-###############################################################################
-### </Test>
-###############################################################################
 if __name__ == '__main__':
 #coverage run -a -m unittest -b -v test_HW_OTA_Common
     suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)

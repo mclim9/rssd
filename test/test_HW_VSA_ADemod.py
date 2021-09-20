@@ -1,5 +1,4 @@
-"""rssd.VSA.ADemod_K7 test
-"""
+"""rssd.VSA.ADemod_K7 test"""
 host = '192.168.1.109'                              #Get local machine name
 
 ###############################################################################
