@@ -48,7 +48,7 @@ class DSO(jaVisa):
         rdStr = self.query(f':TIM:SCAL?')
         return rdStr
 
-    def Get_Trace(self,ch,Wave):
+    def Get_Trace(self, ch, Wave):
         """ ASCII Trace """
         self.write(f'FORM ASCII')
         YVals = self.query(f':chAN{ch}:WAV{Wave}:DATA?')

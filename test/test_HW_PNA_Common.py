@@ -36,6 +36,7 @@ class TestGeneral(unittest.TestCase):
         self.FSWP.Get_SweepPoints()
         self.FSWP.Get_SweepTime()
         self.FSWP.Get_SweepType()
+        self.FSWP.Get_SweepParams()
 
     def test_FSWP_GetScreenshot(self):
         getVal = self.FSWP.Get_Screenshot()
@@ -58,6 +59,7 @@ class TestGeneral(unittest.TestCase):
     def test_FSWP_Marker(self):
         self.FSWP.Init_Spectral()
         self.FSWP.Set_Mkr_AllOff()
+        self.FSWP.Set_Mkr_Freq(10e6)
         self.FSWP.Set_Mkr_Peak()
         self.FSWP.Set_Mkr_On(2)
         self.FSWP.Set_Mkr_Next()
@@ -68,8 +70,10 @@ class TestGeneral(unittest.TestCase):
     def test_FSWP_PhaseNoise(self):
         self.FSWP.Init_PhaseNoise()
         self.FSWP.Set_SweepCont(0)          # Single Sweep
+        self.FSWP.Set_Preamp('OFF')
         self.FSWP.Set_PwrThreshold(-10)
         self.FSWP.Set_Xcorr(100)
+        self.FSWP.Set_XcorrOpt(0)
         self.FSWP.Set_XcorrOpt(1)
         getVal = self.FSWP.Get_FreqLock()
         getVal = self.FSWP.Get_Freq()
@@ -81,11 +85,14 @@ class TestGeneral(unittest.TestCase):
         self.FSWP.Init_Spectral()
         self.FSWP.Set_SweepCont(1)          # Contiuous Sweep
         self.FSWP.Set_Freq(1e6)
+        self.FSWP.Set_FreqStep(1e6)
         self.FSWP.Set_RefLevel(10)
         self.FSWP.Set_ResBW(1e6)
         self.FSWP.Set_ResBW(0)              # Auto
         self.FSWP.Set_VidBW(1e6)
+        self.FSWP.Set_VidBW(0)
         self.FSWP.Set_Span(100e6)
+        self.FSWP.Set_SweepPoints(1001)
         self.FSWP.Set_AttnMech(10)
         self.FSWP.Set_AttnAuto()
         self.FSWP.Set_Autolevel()

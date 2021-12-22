@@ -22,9 +22,10 @@ class TestGeneral(unittest.TestCase):
         if self.ATS1000.connected : self.assertEqual(setVal, getVal)
         setVal = 10
         self.ATS1000.Set_AzimuthAngle(setVal)
-        # getVal = self.ATS1000.Get_AzimuthAngle()
+        getVal = self.ATS1000.Get_AzimuthAngle()
         getVal = self.ATS1000.Get_AzimuthRunning()
         if self.ATS1000.connected : self.assertEqual(setVal, getVal)
+        self.ATS1000.Set_AzimuthTrigger(5)
 
     def test_OTA_Elevation(self):
         setVal = 10

@@ -34,7 +34,7 @@ class TestGeneral(unittest.TestCase):
         self.DSO.Get_SamplingRate()
         self.DSO.Get_TimeRes()
         self.DSO.Get_TimeScale()
-        #self.DSO.Get_Trace(Ch,Wave)
+        self.DSO.Get_Trace(1, 1)
 
     def test_RTx_Cursor_Get(self):
         self.DSO.Get_Cursor_X_Delta()
@@ -61,14 +61,26 @@ class TestGeneral(unittest.TestCase):
         self.DSO.Get_Meas_Res_RMS(1)
         self.DSO.Get_Meas_Res_Std_Dev(1)
         self.DSO.Get_Meas_Res_Wave_Count(1)
+    
+    def test_RTx_Meas_Set(self):
+        self.DSO.Set_Meas_Additional('HIGH', 'ON')
+        self.DSO.Set_Meas_All_Off()
+        self.DSO.Set_Meas_All_On()
+        self.DSO.Set_Meas_Clear_Statistics()
+        self.DSO.Set_Meas_Main('HIGH')
+        self.DSO.Set_Meas_Enable('ON')
+        self.DSO.Set_Meas_Source('C1W2')
+        self.DSO.Set_Meas_Statistics('ON')
 
     def test_RTx_Set(self):
         self.DSO.Init_Measurement()
         self.DSO.Set_Autoset()
         self.DSO.Set_ChCoupling('AC')
         self.DSO.Set_ChStatus('ON')
+        self.DSO.Set_ChState('ON')
         self.DSO.Set_DisplayUpdate('ON')
         self.DSO.Set_SweepCont('ON')
+        self.DSO.Set_SweepCont('OFF')
         self.DSO.Set_System_Preset()
 
     def test_RTx_Set_Time(self):

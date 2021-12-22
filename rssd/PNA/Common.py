@@ -102,11 +102,10 @@ class PNA(jaVisa):
 
     def Get_SweepParams(self):
         # ,SwpTime,SwpPts,SwpType,SwpOpt,
-        Opt = self.Get_SweepOpt()
         Pts = self.Get_SweepPoints()
         Tim = self.Get_SweepTime()
         Typ = self.Get_SweepType()
-        return f'{Tim},{Pts},{Typ},{Opt}'
+        return f'{Tim},{Pts},{Typ}'
 
     def Get_Trace_Data(self,trace=1):
         self.write('FORM ASCII ')
