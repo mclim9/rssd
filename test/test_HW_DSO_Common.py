@@ -36,12 +36,40 @@ class TestGeneral(unittest.TestCase):
         self.DSO.Get_TimeScale()
         #self.DSO.Get_Trace(Ch,Wave)
 
-    def test_RTx_Stuff(self):
+    def test_RTx_Cursor_Get(self):
+        self.DSO.Get_Cursor_X_Delta()
+        self.DSO.Get_Cursor_X_Delta_Inverse()
+        self.DSO.Get_Cursor_Y_Delta()
+        self.DSO.Get_Cursor_Y_Delta_Slope()
+
+    def test_RTx_Cursor_Set(self):
+        self.DSO.Set_Cursor_All_Off()
+        self.DSO.Set_Cursor_Function('HOR')
+        self.DSO.Set_Cursor_Max_Peak()
+        self.DSO.Set_Cursor_Source(1)
+        self.DSO.Set_Cursor_State('ON')
+        self.DSO.Set_Cursor_Style('LIN')
+        self.DSO.Set_Cursor_Tracking('ON')
+
+    def test_RTx_Meas_Res(self):
+        self.DSO.Get_Meas_Res_Actual(1)
+        self.DSO.Get_Meas_Res_Average(1)
+        self.DSO.Get_Meas_Res_Event_Count(1)
+        self.DSO.Get_Meas_Res_Negetive_Peak(1)
+        self.DSO.Get_Meas_Res_Positive_Peak(1)
+        self.DSO.Get_Meas_Res_Reliability(1)
+        self.DSO.Get_Meas_Res_RMS(1)
+        self.DSO.Get_Meas_Res_Std_Dev(1)
+        self.DSO.Get_Meas_Res_Wave_Count(1)
+
+    def test_RTx_Set(self):
         self.DSO.Init_Measurement()
+        self.DSO.Set_Autoset()
         self.DSO.Set_ChCoupling('AC')
         self.DSO.Set_ChStatus('ON')
         self.DSO.Set_DisplayUpdate('ON')
         self.DSO.Set_SweepCont('ON')
+        self.DSO.Set_System_Preset()
 
     def test_RTx_Set_Time(self):
         sec = 0.001

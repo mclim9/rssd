@@ -32,7 +32,7 @@ class OSP(jaVisa):
         CurrState = 1000                    # default test value
         for pos in range(0,7):
             state = self.queryInt(f'ROUT:CLOS? (@F01A{slot:02d}({pos:02d}{sw:02d}))')
-            if state == 1:
+            if state == 1:                  # pragma: no cover
                 CurrState = pos
                 print(f"A{slot:02d} SW{sw:02d} @Pos{pos:02d}")
         return CurrState

@@ -60,6 +60,7 @@ class TestGeneral(unittest.TestCase):
 
     def test_NRPM_Power(self):
         self.NRP8.Set_Freq(6e9)                              # Set Frequency
+        self.NRP8.Set_Aperture(1)                            # Aperature
         self.NRP8.Set_AverageMode(1)                         # Auto Averaging OFF
         self.NRP8.Set_Average(10)                            # Avg Count = 4
         self.NRP8.Set_PowerOffset(5)
