@@ -21,7 +21,7 @@ with open('README.md') as f:
 
 setup(
     name='rssd',
-    version='2021.02.22',
+    version='2021.12.22',
     description='Rohde & Schwarz SCPI Driver',
     long_description=long_description,
     long_description_content_type='text/markdown',

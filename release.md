@@ -1,5 +1,21 @@
 # Release History
 =====================================================================
+## RSSD 2021.12.22
+### Changes
+- MIT "As-IS" License
+- verified bus.test object in test_HW_OTA_ATSxxx
+- add timeout to bus classes
+- comment clean up
+- add phase compensation to VSA; VSG; VST
+
+### Examples
+- Reorganize Examples directory
+  - add VSE; VNA; RCT; NRP; DSO directories
+- renamed SMW_xxx to VSG_xxx
+- add VSA_BWMarker_PLOT.py
+- add VSA_ZeroSpan_Power.py
+- chg simple_Socket.
+
 ## RSSD 2020.02.11
 ### Changes
 - Add bus for future use
