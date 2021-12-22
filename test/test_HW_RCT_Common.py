@@ -51,11 +51,13 @@ class TestGeneral(unittest.TestCase):
     def test_RCT_Ex_GenListMode(self):
         self.CMP.Init_Gen()
         self.CMP.Set_Gen_Port('P1.IFOut')
+        self.CMP.Set_Gen_Port_State('OFF')
         self.CMP.Set_Gen_Port_State('ON')
         self.CMP.Set_Gen_Freq(6e9)
         self.CMP.Set_Gen_RFPwr(-50)
         self.CMP.Set_Gen_ListMode('ON')
         self.CMP.Set_Gen_RFState('ON')
+        self.CMP.Set_Gen_RFState('OFF')
         self.CMP.Set_Gen_ListMode('OFF')
 
     def test_RCT_Ex_MeasFFT(self):
@@ -72,11 +74,14 @@ class TestGeneral(unittest.TestCase):
         self.CMP.Init_Meas_Power()
         self.CMP.Set_Meas_Freq(6e9)
         self.CMP.Set_Meas_UserMargin(0)
-        self.CMP.Set_Meas_Expected_Nom_Power(0)
+        self.CMP.Set_Meas_Expected_Nom_Power(0) # Same as RefLevel
         self.CMP.Set_Meas_TriggerSource('IF Power')
         self.CMP.Set_Meas_TriggerThreshold(-10)
         self.CMP.Set_Meas_TriggerThreshold(-40)
         self.CMP.Set_Meas_Pwr_MLength(100e-6)
+        self.CMP.Set_Meas_SweepTime(0.010)
+        self.CMP.Set_Meas_SweepTime(0)      # Auto
+        self.CMP.Set_Meas_RefLevl(0)        # Same as Nom_Power
         self.CMP.Set_Meas_RFBW(100e6)
         self.CMP.Get_Meas_Power()
 
@@ -92,6 +97,9 @@ class TestGeneral(unittest.TestCase):
     def test_RCT_System(self):
         self.CMP.Get_Options()
         self.CMP.Init_Syst()
+        self.CMP.Set_Sys_DisplayUpdate('ON')
+        self.CMP.Set_Sys_RxPortLoss(1, 0)
+        self.CMP.Set_Sys_TxPortLoss(1, 0)
 
 ###############################################################################
 ### </Test>

@@ -35,6 +35,7 @@ class TestGeneral(unittest.TestCase):
     def test_VSE_Connect(self):
         if self.VSE.connected == 1: self.assertEqual(self.VSE.Make,"Rohde&Schwarz")
         self.assertEqual(self.VSE.Model,"VSE")
+        self.VSE.Set_Group('Group')
 
     def test_VSE_IQ_Settings(self): 
         self.VSE.Set_Freq(1e6)
@@ -56,6 +57,7 @@ class TestGeneral(unittest.TestCase):
         self.VSE.Set_SweepCont('OFF')
         self.VSE.Set_InitImm()
         self.VSE.Set_SweepCont('ON')
+        self.VSE.Set_SweepCont('Bad')
 
     # def test_VSE_Marker(self):
     #     self.VSE.Set_Mkr_Peak()

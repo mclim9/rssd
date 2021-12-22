@@ -29,8 +29,11 @@ class TestGeneral(unittest.TestCase):
         self.VSE.Set_SweepCont(0)                    #Continuous Sweep Off
         self.VSE.Set_IQ_SamplingRate(Fs)             #Sampling Rate
         self.VSE.Set_File_InputIQW(Fs,IQFile)        #VSE Input File
-        self.VSE.Set_K96_File_Config(OFDMCfg)        #K96 Demod File
         self.VSE.Set_K96_BurstSearch("OFF")          #Burst Search off
+        self.VSE.Set_K96_File_Config(OFDMCfg)        #K96 Demod File
+        self.VSE.Set_K96_FilterAdjustable('ON')
+        self.VSE.Set_K96_Frames(10)
+        self.VSE.Set_K96_FSWIPAdd('192.168.1.110')
         self.VSE.Set_K96_OFDMSymbols(14)
         self.VSE.K96_EVM_AutoCal()
         getVal = self.VSE.Get_EVM()
