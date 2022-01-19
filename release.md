@@ -1,14 +1,21 @@
 # Release History
 =====================================================================
-## RSSD 2021.12.22
-### Changes
+## 2022.01.18 RSSD
+- Chg Setup.py license.  SW explicityly as-is.
+
+## 2021.12.23 RSSD
+### 2021.12.23 Tests
+- Add DSP; NRP; PNA; OTA: RTC; VSE coverage
+
+## 2021.12.22 RSSD
+### 2021.12.22 Changes
 - MIT "As-IS" License
 - verified bus.test object in test_HW_OTA_ATSxxx
 - add timeout to bus classes
 - comment clean up
 - add phase compensation to VSA; VSG; VST
 
-### Examples
+### 2021.12.22 Examples
 - Reorganize Examples directory
   - add VSE; VNA; RCT; NRP; DSO directories
 - renamed SMW_xxx to VSG_xxx
@@ -17,19 +24,19 @@
 - chg simple_Socket.
 
 ## RSSD 2020.02.11
-### Changes
+### Changes 2020.02.11
 - Add bus for future use
 - flake8 linter
 - github actions testing.
 
-### Driver
+### Driver 2020.02.11
 - Removed future_fstring
   - No longer works w/ python 2.7.x
 - DSO Updates
   - Add Spectrum_K18
 - NPR updated w/ NRPZ
 
-### Test
+### Test 2020.02.11
 - jaVISA
   - add jav_Error jav_write_raw & jav_read_raw
 - VSG
@@ -39,7 +46,7 @@
   - NF add coverage
 
 ## RSSD 2020.07.0
-### Driver
+### Driver 2020.07.0
 - NRP chg  state 0,'0','Off' for all
 - NRQ chg  state 0,'0','Off' for all
 - VSA
@@ -52,12 +59,11 @@
   - NR5G_K601 chg from query('MMM').split() to queryFloatArr
     - allows testing
 
-### Examples
+### Examples 2020.07.0
 - Add SMW_5GNR_HARQ_Setup.py
 - Add ZVA_ATSx800_Cal
 - Add VSG_Power_Sensor_Sweep
 - Add AAA_SCPI_2_File.py
-- Add 
 
 ### Test-90%
 - NRP Add coverage
@@ -93,20 +99,20 @@
 - jaVISA
   - Add support for pyvisa py
 
-### Examples
+### Examples 2020.06.2
 - VSA_BWMarker updated w/ RSI.Timer.
 
-### Test
+### Test 2020.06.2
 - NPR & NRQ tests added
 - OTA tests added
 - OSP tests added
 - RCT.5GNR add Phase competnstaion and TransPrecoding tests.
 - VSA
   - Common add ACLR tests
-  - Add VSA.VSA_K70 tests 
+  - Add VSA.VSA_K70 tests
   - Add VSA.WLAN tests
   - Add VSA.Transient_K60 tests
-- VSG 
+- VSG
   - Chg javisa.jav_OpenTest()
 - VST tests added.
 - VNA tests added
@@ -140,7 +146,7 @@
     - add self.scs
     - chg Get_5GNR_Params_EVM
     - del Set_5GNR_Periodicity
-    - add Set_5GNR_BWP_Frame_Periodicity 
+    - add Set_5GNR_BWP_Frame_Periodicity
     - add Set_5GNR_BWP_Frame_SlotConfig
     - add Set_5GNR_BWP_SubSpace
     - add Set_5GNR_EVM_MeasOnExcept
@@ -194,7 +200,7 @@
     - add Get_System_Params
     - chg Set_SweepTime to chg to auto if 0
     - add Set_Trace_Mode
-- Examples chg FSW_ to VSA_
+- Examples chg FSW_ to VSA
 
 ## RSSD 2019.12.0
 - VSA
@@ -211,7 +217,7 @@
   - 5GNR fix typos
 - Examples
   - Add VSA_5GNR.py
-  - 
+
 ## RSSD 2019.11.0
 
 ## RSSD 2019.10.0 **Code Break**
@@ -240,7 +246,7 @@
   - VSA_Harmonics
 
 ## RSSD 2019.5.3
-  - Add Example links to readme.md
+- Add Example links to readme.md
 
 ## RSSD 2019.5.2
 - Add rssd cmd line script

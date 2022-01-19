@@ -21,14 +21,13 @@ with open('README.md') as f:
 
 setup(
     name='rssd',
-    version='2021.12.22',
+    version='2022.01.18',
     description='Rohde & Schwarz SCPI Driver',
     long_description=long_description,
     long_description_content_type='text/markdown',
     classifiers=[
         'Development Status :: 4 - Beta',      #3:Alpha 4:Beta 5:Production/Stable
-        'License :: Freely Distributable',
-        'License :: Other/Proprietary License',
+        'License :: OSI Approved :: MIT License',
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
         'Operating System :: Microsoft :: Windows',
@@ -43,7 +42,7 @@ setup(
     url='https://github.com/mclim9/rssd',
     author='Martin Lim',
     author_email='martin.lim@rsa.rohde-schwarz.com',
-    license='R&S Terms and Conditions for Royalty-Free Products',
+    license='',
     packages=find_packages(exclude=['test','proto']),
     #packages=['rssd'],
     install_requires=[

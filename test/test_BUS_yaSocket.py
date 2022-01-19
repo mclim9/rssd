@@ -16,16 +16,15 @@ class TestGeneral(unittest.TestCase):
     def tearDown(self):                             #Run after each test
         self.instr.close()
 
-
 ###############################################################################
 ### <Test>
 ###############################################################################
     def test_query(self):
         rdStr = self.instr.query('*IDN?')
 
-    def test_read_raw(self):
-        self.instr.write('*IDN?')
-        rdStr = self.instr.read_raw()
+    # def test_read_raw(self):
+    #     self.instr.write('*IDN?')
+    #     rdStr = self.instr.read_raw()
 
     def test_write(self):
         self.instr.write('kdf')
