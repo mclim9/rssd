@@ -74,7 +74,7 @@ class TestGeneral(unittest.TestCase):
         self.CMP.Init_Meas_Power()
         self.CMP.Set_Meas_Freq(6e9)
         self.CMP.Set_Meas_UserMargin(0)
-        self.CMP.Set_Meas_Expected_Nom_Power(0) # Same as RefLevel
+        self.CMP.Set_Meas_Expected_Nom_Power(0)  # Same as RefLevel
         self.CMP.Set_Meas_TriggerSource('IF Power')
         self.CMP.Set_Meas_TriggerThreshold(-10)
         self.CMP.Set_Meas_TriggerThreshold(-40)
