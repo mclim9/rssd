@@ -1,11 +1,11 @@
 """Vector Network Analyzer Common Functions"""
 import math
-from rssd.yaVISA import jaVisa            # pylint: disable=E0611,E0401
+from rssd.yaVISA import jaVisa              # pylint: disable=E0611,E0401
 
 class VNA(jaVisa):
     """ Rohde & Schwarz Vector Network Analyzer Object """
     def __init__(self):
-        super(VNA,self).__init__()          #Python2/3
+        super(VNA,self).__init__()          # Python2/3
         self.Model = "VNA"
         self.dChan = 1
 
@@ -25,7 +25,7 @@ class VNA(jaVisa):
         outArry = []
         if len(data) % 2 == 0:
             for i in range(len(data)//2):
-                phase = math.degrees(math.atan(data[2*i+1]/data[2*i])) 
+                phase = math.degrees(math.atan(data[2*i+1]/data[2*i]))
                 outArry.append(phase)
         else:
             print('Need even elements')
@@ -80,7 +80,7 @@ class VNA(jaVisa):
     #####################################################################
     def Save_Cal(self, sFName):
         """ Save calibration to cal manager """
-        if not sFName.lower().endswith(f'.cal'):
+        if not sFName.lower().endswith(f'.cal'): 
             sFName += ".cal"
         self.write(f':MMEM:STOR:CORR {self.dChan},"{sFName}"')
 
@@ -100,7 +100,7 @@ class VNA(jaVisa):
         # self.write(f'MMEM:STOR:TRAC:CHAN "{sTrace}","{sFName}.csv",UNF, COMP, POIN, COMM')
         self.write(f"MMEM:STOR:TRAC:CHAN ALL,'{sFName}.csv', UNF, LOGP, POIN, COMM")
 
-    def Save_Trace_SxP(self, sFName):                        #MMM
+    def Save_Trace_SxP(self, sFName):                                   # MMM
         """Save SxP data.  Ch must contain All (x^x) S-Parameter traces"""
         self.write(f"MMEM:STOR:TRAC:CHAN 1,'C:\\Rohde&Schwarz\\Nwa\\{sFName}.s2p'")
         #self.write(f':MMEM:STOR:TRAC:PORT %d,'%s.s2p',COMP,1,2"%(dChan,sFName))
@@ -108,18 +108,18 @@ class VNA(jaVisa):
     #####################################################################
     ### VNA SET Functions Alphabetical
     #####################################################################
-    # def Set_Cal_Group(self,sName,dChan=1):                        #MMM
+    # def Set_Cal_Group(self,sName,dChan=1):                            # MMM
     #     #sName should end in '.cal'
     #     if not sName.lower().endswith(f'.cal'):
     #         sName += ".cal"
-    #     self.write(f':MMEM:LOAD:CORR:RES %d,%s"%(dChan,sName))     #Resolve Cal Group
-    #     self.write(f':MMEM:LOAD:CORR %s"%(sName))                  #Load cal group.
+    #     self.write(f':MMEM:LOAD:CORR:RES %d,%s"%(dChan,sName))        # Resolve Cal Group
+    #     self.write(f':MMEM:LOAD:CORR %s"%(sName))                     # Load cal group.
 
     def Set_FreqStart(self,fFreq):
         self.write(f':SENS{self.dChan}:FREQ:STAR {fFreq}')
 
     def Set_FreqStop(self,fFreq):
-        self.write(f':SENS{self.dChan}:FREQ:STOP {fFreq}')            #RF Freq
+        self.write(f':SENS{self.dChan}:FREQ:STOP {fFreq}')              # RF Freq
 
     def Set_IFBW(self,fFreq):
         self.write(f'SENS{self.dChan}:BAND {fFreq}')
@@ -146,10 +146,10 @@ class VNA(jaVisa):
         self.write(f':SOUR{self.dChan}:POW:STOP {fPwr} dBm')
 
     def Set_Pwrcal_Init(self):
-        self.write(f':SOUR:POW:CORR:COLL:FLAT ON')      #Flatness Cal
-        self.write(f':SOUR:POW:CORR:COLL:RREC ON')      #Ref Rx Cal
-        self.write(f':SOUR:POW:CORR:COLL:VER ON')       #Verification Sweep
-        self.write(f':SOUR:POW:CORR:COLL:METH PMON')    #PMON | RFAF | RRON
+        self.write(f':SOUR:POW:CORR:COLL:FLAT ON')      # Flatness Cal
+        self.write(f':SOUR:POW:CORR:COLL:RREC ON')      # Ref Rx Cal
+        self.write(f':SOUR:POW:CORR:COLL:VER ON')       # Verification Sweep
+        self.write(f':SOUR:POW:CORR:COLL:METH PMON')    # PMON | RFAF | RRON
 
     def Set_Pwrcal_NumReading(self, iNum):
         self.write(f':SOUR{self.dChan}:POW:CORR:NRE {iNum}')
@@ -167,19 +167,19 @@ class VNA(jaVisa):
 
     def Set_SweepCont(self,sState):
         if sState in (1, 'ON'):
-            self.write(f'INIT:CONT ON')                              #Continuous Sweep
+            self.write(f'INIT:CONT ON')                                 # Continuous Sweep
         elif sState in (0, 'OFF'):
-            self.write(f'INIT:CONT OFF')                             #Single Sweep
+            self.write(f'INIT:CONT OFF')                                # Single Sweep
 
     def Set_SweepPoints(self,dPoints):
-        self.write(f':SENS{self.dChan}:SWE:POIN {dPoints}')              #RF Freq
+        self.write(f':SENS{self.dChan}:SWE:POIN {dPoints}')             # RF Freq
 
     def Set_SweepTime(self,fSwpTime):
         """Seconds. 0=Auto"""
         if fSwpTime == 0:
-            self.write(f':SENS{self.dChan}:SWE:TIME:AUTO ON')           #Auto
+            self.write(f':SENS{self.dChan}:SWE:TIME:AUTO ON')           # Auto
         else:
-            self.write(f':SENS{self.dChan}:SWE:TIME {fSwpTime}')         #Sweep/Capture Time
+            self.write(f':SENS{self.dChan}:SWE:TIME {fSwpTime}')        # Sweep/Capture Time
 
     def Set_Trace_Avg(self,sState):
         if sState in (1, 'ON'):
@@ -199,8 +199,8 @@ class VNA(jaVisa):
         # A1D2/A1D4/A2D1  ..... A<port>G<port>
         # B1D2/B1D4/B2D1  ..... B<port>G<port>
         # IP3UI/IP3UO      ..... IP<order:3|5|7|9><side:U|L><DUT:I|O>
-        self.write(f'CALC{self.dChan}:PAR:SDEF "{sMeas}","{sMeas}"')     #<TrcName>,<Measurement>
-        self.write(f'DISP:WIND1:TRAC:EFE "{sMeas}"')                #Displays Trace
+        self.write(f'CALC{self.dChan}:PAR:SDEF "{sMeas}","{sMeas}"')    # <TrcName>,<Measurement>
+        self.write(f'DISP:WIND1:TRAC:EFE "{sMeas}"')                    # Displays Trace
 
     def Set_Trace_MeasAdd_AWave(self,APort,GenPort):
         #Default: SAM; RMS; PEAK; AVG
@@ -209,7 +209,7 @@ class VNA(jaVisa):
     def Set_Trace_MeasAdd_BWave(self,BPort,GenPort):
         self.Set_Trace_MeasAdd(f'B{BPort}D{GenPort}RMS')
 
-    # def Set_Trace_MeasAdd_IMD3(self,dChan=1):                         #mmm
+    # def Set_Trace_MeasAdd_IMD3(self,dChan=1):                         # mmm
     #     self.write(f':SENS{dChan}:FREQ:IMOD:ORD3 ON"%(dChan))
     #     self.Set_Trace_MeasAdd(f'IP3UI')
     #     self.Set_Trace_MeasAdd(f'IP3LI')
