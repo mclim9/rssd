@@ -206,7 +206,7 @@ class IQ(object):
         xmlfile.close()
         return 1
 
-    def writeIqTar(self, FileName):             # Verified 2020.0115  #pylint: disable=R1710
+    def writeIqTar(self, FileName):                                                 # Verified 2020.0115  #pylint: disable=R1710
         """writes an iq.tar file. Complex self.iqData values are interpreted as Volts.
         self.iqData can be a list of complex or list of floats (iqiqiq format)."""
         path,filename = os.path.split(FileName)                                     #pylint: disable=W0612
@@ -223,7 +223,7 @@ class IQ(object):
         try:
             tar = tarfile.open(FileName, "w")
             tar.add(os.path.join(path, binaryfile), arcname=binaryfile)
-            #tar.add(os.path.join(path, xsltfilename), arcname=xsltfilename)         #xslt is optional
+            #tar.add(os.path.join(path, xsltfilename), arcname=xsltfilename)        #xslt is optional
             tar.add(os.path.join(path, xmlfilename), arcname=xmlfilename)
             tar.close()
             os.remove(os.path.join(path, binaryfile))
@@ -234,7 +234,7 @@ class IQ(object):
 
     def readIqTar(self,FileName):               # Verified 2020.0115
         """Reads an iq.tar file --> self.iqData"""
-        path,filename = os.path.split(FileName)                         #pylint: disable=W0612
+        path,filename = os.path.split(FileName)                                     #pylint: disable=W0612
         self.fSamplingRate = 0
 
         try:

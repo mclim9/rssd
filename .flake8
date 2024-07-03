@@ -29,9 +29,9 @@
 # E251  unexpected spaces around keyword / parameter equals
 # E266  too many leading '#' for block comment
 # E271  multiple spaces after keyword
-# E272  multiple spaces before keyword
+# E272  multiple spaces bfore keyword
 # E305  expected 2 blank lines after class or function definition, found 1
-# E0401 Import Error
+# E401 Import Error
 # E502  the backslash is redundant between brackets
 # E0611 no-name-in-module
 # E701  multiple statements on one line (colon)
@@ -66,7 +66,7 @@
 # F401  '' imported but unused
 # F841  local variable 'y' is assigned to but never used
 ignore=C103, C114, C115, C116, C301, C303, C321, C325, C326, C411, C413,
-        E102, E116, E127, E203, E221, E222, E225, E226, E241, E251, E266, E271, E272, E302, E305, E401, E502, E611, E701, E704, E731, E1101, 
+        E102, E116, E127, E203, E221, E222, E225, E226, E241, E251, E266, E271, E272, E302, E305, E401, E502, E611, E701, E704, E731,
         F541, 
         R801, R902, R0903,
         W621, W702, W1309, W612, W201, W235, W291,
