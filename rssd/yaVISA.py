@@ -3,7 +3,7 @@
 Descrip: Wrapper for common VISA commands
          properties for: Make; Model; Version; IDN; last error
           logSCPI --> file for"""
-# pylint: disable=E0611,E0401,E0202,'pointless-statement'
+# pylint: disable=E0611, E0401, E0202, 'pointless-statement'
 
 import time
 import pyvisa
@@ -26,7 +26,7 @@ class jaVisa(object):
         self.VISA       = ''    # '@py' for pyvisa-py
         self.K2         = 'NoVISA'
 
-    def delay(self,sec):
+    def delay(self, sec):
         """delay in Sec"""
         time.sleep(sec)
 
@@ -46,23 +46,23 @@ class jaVisa(object):
     def jav_ClrErr(self):
         """Read all SYST:ERR messages"""
         ErrList = []
-        try:      #Instrument supports SYST:ERR?
+        try:      # Instrument supports SYST:ERR?
             while True:
                 RdStr = self.query("SYST:ERR?").strip()
                 ErrList.append(RdStr)
-                RdStrSplit = RdStr.split(',')
-                if RdStr == "<notRead>" : break                     #No readstring
-                if RdStrSplit[0] == "0" : break                     #Read 0 error:R&S
-                if RdStrSplit[0] == "+0": break                     #Read 0 error:Other
+                RdStrSplit = RdStr.split(', ')
+                if RdStr == "<notRead>" : break                     # No readstring
+                if RdStrSplit[0] == "0" : break                     # Read 0 error:R&S
+                if RdStrSplit[0] == "+0": break                     # Read 0 error:Other
                 self.dLastErr = RdStr
-                if self.debug: print("jav_ClrErr: %s-->%s"%(self.Model,RdStr))
-        except:  #Instrument does not support SYST:ERR?
+                if self.debug: print("jav_ClrErr: %s-->%s"%(self.Model, RdStr))
+        except:  # Instrument does not support SYST:ERR?
             if self.debug: print("jav_ClrErr: %s-->SYST:ERR not Supported"%(self.Model))
         return ErrList
 
     def jav_Error(self):
         """Read SYST:ERR?"""
-        RdStr = self.query("SYST:ERR?").strip().split(',')
+        RdStr = self.query("SYST:ERR?").strip().split(', ')
         return RdStr
 
     def jav_fileout(self, fily, outstr):
@@ -74,10 +74,10 @@ class jaVisa(object):
 
     def jav_IDN(self):
         """query *IDN?  Assign data to properties"""
-        self.dataIDN = "Temp"                                       #Temp for self.query
+        self.dataIDN = "Temp"                                       # Temp for self.query
         self.dataIDN = self.query("*IDN?").strip()
-        if self.dataIDN != "<notRead>":                             #Data Returned?
-            IDNStr = self.dataIDN.split(',')
+        if self.dataIDN != "<notRead>":                             # Data Returned?
+            IDNStr = self.dataIDN.split(', ')
             try:
                 self.Make       = IDNStr[0]
                 self.Model      = IDNStr[1]
@@ -86,24 +86,24 @@ class jaVisa(object):
             except:
                 pass
         else:
-            self.dataIDN = ""                                       #Reset if not read
+            self.dataIDN = ""                                       # Reset if not read
         return self.dataIDN
 
     def jav_logscpi(self):
-        self.f = rssd.FileIO()                                      #pylint:disable=E1101
-        DataFile = self.f.init("yaVISA")                            #pylint:disable=W0612
+        self.f = rssd.FileIO()                                      # pylint:disable=E1101
+        DataFile = self.f.init("yaVISA")                            # pylint:disable=W0612
 
     def jav_OPC_Wait(self, InCMD):
         """ Wait based on *OPC """
         start_time = time.time()
-        self.write("*ESE 1")                                        #Event Status Enable
-        self.write("*SRE 32")                                       #ServiceReqEnable-Bit5:Std Event
-        self.write(InCMD + ";*OPC")                                 #Initiate Read.  *OPC will trigger ESR
-        #print ('    OPC Wait: ' +InCMD)
+        self.write("*ESE 1")                                        # Event Status Enable
+        self.write("*SRE 32")                                       # ServiceReqEnable-Bit5:Std Event
+        self.write(InCMD + ";*OPC")                                 # Initiate Read.  *OPC will trigger ESR
+        # print ('    OPC Wait: ' +InCMD)
         read = 0
-        while (read & 1) != 1:                                      #Loop until done
+        while (read & 1) != 1:                                      # Loop until done
             try:
-                read = self.queryInt("*ESR?")                       #Poll EventStatReg-Bit0:Op Complete  (STB?)
+                read = self.queryInt("*ESR?")                       # Poll EventStatReg-Bit0:Op Complete  (STB?)
             except:
                 if self.debug: print("jav_OPCWai:*ESR? Error")
             time.sleep(0.5)
@@ -121,13 +121,13 @@ class jaVisa(object):
         #  VISA: 'TCPIP0::'+IP_Address+'::inst0'
         #  VISA: 'TCPIP0::'+IP_Address+'::hislip0'
         #  VISA: 'TCPIP0::'+IP_Address+'::hislip0::INSTR'
-        self.jav_openvisa('TCPIP0::'+IPAddr+'::hislip0::INSTR',fily)
+        self.jav_openvisa(f'TCPIP0::{IPAddr}::hislip0::INSTR', fily)
         # except:
         #     print('VISA Openerror.  Using Raw Socket')
-        #     self.jav_openvisa('TCPIP::'+IPAddr+'::5025::SOCKET',fily)
+        #     self.jav_openvisa('TCPIP::'+IPAddr+'::5025::SOCKET', fily)
         return self
 
-    def jav_OpenTest(self, host):    #pylint: disable='unused-argument'
+    def jav_OpenTest(self, host):    # pylint: disable='unused-argument'
         self.debug = 0
         self.VISA  = '@py'
         # self.jav_Open(host)
@@ -157,13 +157,13 @@ class jaVisa(object):
         """
         TMR = timer()
         TMR.start()
-        rm = pyvisa.ResourceManager(self.VISA)                          #Create Resource Manager
+        rm = pyvisa.ResourceManager(self.VISA)                          # Create Resource Manager
         TMR.tick()
-        #rmList = rm.list_resources()                                   #List VISA Resources
+        # rmList = rm.list_resources()                                  # List VISA Resources
         try:
-            # self.K2 = rm.open_resource(sVISAStr, open_timeout=100)    #Create Visa Obj
-            self.K2 = rm.open_resource(sVISAStr)                        #Create Visa Obj
-            self.K2.timeout = 5000                                      #Timeout, millisec
+            # self.K2 = rm.open_resource(sVISAStr, open_timeout=100)    # Create Visa Obj
+            self.K2 = rm.open_resource(sVISAStr)                        # Create Visa Obj
+            self.K2.timeout = 5000                                      # Timeout, millisec
             # self.K2.write_termination = self.EOL
             # self.K2.read_termination  = self.EOL
             self.jav_IDN()
@@ -184,15 +184,15 @@ class jaVisa(object):
 
     def jav_reslist(self):
         try:
-            rm = pyvisa.ResourceManager()                           #Create Resource Manager
-            rmList = rm.list_resources()                            #List VISA Resources
+            rm = pyvisa.ResourceManager()                           # Create Resource Manager
+            rmList = rm.list_resources()                            # List VISA Resources
         except:
-            rmList =["No VISA"]
+            rmList = ["No VISA"]
         return rmList
 
-    def jav_scpilist(self,SCPIList):
+    def jav_scpilist(self, SCPIList):
         """Send SCPI list & Query if "?" """
-        ### Collect read results into a list for return.
+        # ## Collect read results into a list for return.
         OutList = []
         for cmd in SCPIList:
             if cmd.find('?') == -1:
@@ -205,11 +205,11 @@ class jaVisa(object):
     def jav_Wait(self, InCMD):
         """Brute Force Wait and check *OPC? """
         start_time = time.time()
-        self.write(InCMD)                                           #Initiate Command
+        self.write(InCMD)                                           # Initiate Command
         read = "0"
-        while (int(read) & 1) != 1:                                 #Loop until done
+        while (int(read) & 1) != 1:                                 # Loop until done
             try:
-                read = self.queryInt("*OPC?")                       #See if we can get *OPC?
+                read = self.queryInt("*OPC?")                       # See if we can get *OPC?
             except:
                 pass
             time.sleep(1)
@@ -220,53 +220,53 @@ class jaVisa(object):
         if self.debug: print('jav_Wai   : %0.2fsec'%(delta))
         return delta
 
-    def query(self,cmd):
-        read ="<notRead>"
+    def query(self, cmd):
+        read = "<notRead>"
         try:
             if self.dataIDN != "":
-                read = self.K2.query(cmd).strip()                   #Write if connected
+                read = self.K2.query(cmd).strip()                   # Write if connected
         except:
-            if self.debug: print("jav_RdErr : %s-->%s"%(self.Model,cmd))
-        self.jav_fileout(self.f, "%s,%s,%s"%(self.Model,cmd,read))
+            if self.debug: print("jav_RdErr : %s-->%s"%(self.Model, cmd))
+        self.jav_fileout(self.f, "%s, %s, %s"%(self.Model, cmd, read))
         return read
 
-    def queryFloat(self,cmd):
+    def queryFloat(self, cmd):
         try:
-            strArry = self.query(cmd).split(',')
+            strArry = self.query(cmd).split(', ')
             return [float(i) for i in strArry][0]
         except:
             return -9999.9999
 
-    def queryFloatArry(self,cmd):
+    def queryFloatArry(self, cmd):
         try:
-            strArry = self.query(cmd).split(',')
+            strArry = self.query(cmd).split(', ')
             return [float(i) for i in strArry]
         except:
             return [-9999.9999, -888.888, -777.777, -666.666, -555.555, -444.444]
 
-    def queryInt(self,cmd):
+    def queryInt(self, cmd):
         try:
-            strArry = self.query(cmd).split(',')
+            strArry = self.query(cmd).split(', ')
             return int([float(i) for i in strArry][0])
             # Float for scientific 'e' notation
         except:
             return -9999
 
-    def queryIntArry(self,cmd):
+    def queryIntArry(self, cmd):
         try:
-            strArry = self.query(cmd).split(',')
+            strArry = self.query(cmd).split(', ')
             return [int(i) for i in strArry]
         except:
-            return [-9999,-8888,-7777]
+            return [-9999, -8888, -7777]
 
-    def write(self,cmd):
+    def write(self, cmd):
         try:
-            if self.dataIDN != "": self.K2.write(cmd)               #Write if connected
+            if self.dataIDN != "": self.K2.write(cmd)               # Write if connected
         except:
-            if self.debug: print("jav_WrtErr: %s-->%s"%(self.Model,cmd))
-        self.jav_fileout(self.f, "%s,%s"%(self.Model,cmd))
+            if self.debug: print("jav_WrtErr: %s-->%s"%(self.Model, cmd))
+        self.jav_fileout(self.f, "%s, %s"%(self.Model, cmd))
 
-    def jav_write_raw(self,SCPI):
+    def jav_write_raw(self, SCPI):
         self.K2.write_raw(SCPI)
 
 if __name__ == "__main__":
@@ -274,10 +274,10 @@ if __name__ == "__main__":
     ipaddress   = '10.0.0.10'
     RS.debug    = 1
     # RS.jav_logscpi()
-    RS.jav_Open(ipaddress)                                          #Default HiSlip
-    # RS.jav_openvisa(f'TCPIP::{ipaddress}::hislip0::INSTR')        #hislip
-    # RS.jav_openvisa(f'TCPIP::{ipaddress}::instr0::INSTR')         #VXI11
-    # RS.jav_openvisa(f'TCPIP::{ipaddress}::5025::SOCKET')          #Socket
+    RS.jav_Open(ipaddress)                                          # Default HiSlip
+    # RS.jav_openvisa(f'TCPIP::{ipaddress}::hislip0::INSTR')        # hislip
+    # RS.jav_openvisa(f'TCPIP::{ipaddress}::instr0::INSTR')         # VXI11
+    # RS.jav_openvisa(f'TCPIP::{ipaddress}::5025::SOCKET')          # Socket
     rdStr = RS.query('*IDN?')
     print(rdStr)
     RS.jav_Close()

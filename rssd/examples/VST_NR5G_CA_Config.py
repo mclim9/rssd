@@ -1,9 +1,6 @@
 """5G NR FSW/SMW Carrier Aggregation Setup Example"""
-###############################################################################
-### User Entry
-###############################################################################
-#pylint: disable=E0401
-#pylint: disable=E0611
+# pylint: disable=E0401
+# pylint: disable=E0611
 # SMW_IP  = '172.24.225.230'
 SMW_IP  = '192.168.58.114'
 FSW_IP  = '192.168.58.109'
@@ -14,21 +11,17 @@ NumCC   = 4
 NR_Dir  = 'UL'
 CCSpace = 99.96e6
 modu    = 'QPSK'
-CCStart = (1 - NumCC) * (CCSpace/2)
+CCStart = (1 - NumCC) * (CCSpace / 2)
 
-###############################################################################
-### Code Overhead: Import and create objects
-###############################################################################
 import timeit
 from rssd.VSG.NR5G_K144     import VSG
 from rssd.VSA.NR5G_K144     import VSA
-# from rssd.FileIO          import FileIO
 
-if VSG_ON: SMW = VSG().jav_Open(SMW_IP)                 #Create SMW Object
-FSW = VSA().jav_Open(FSW_IP)                            #Create FSW Object
+if VSG_ON: SMW = VSG().jav_Open(SMW_IP)                 # Create SMW Object
+FSW = VSA().jav_Open(FSW_IP)                            # Create FSW Object
 
 ###############################################################################
-### Code Start
+# ## Code Start
 ###############################################################################
 if VSG_ON:
     SMW.Get_SysC_All()
@@ -59,8 +52,8 @@ for i in range(NumCC):
         SMW.Set_5GNR_TransPrecoding('ON')
         # SMW.Set_5GNR_PhaseCompensate_Freq(Freq_CC)
         SMW.Set_5GNR_BWP_Ch_Modulation(modu)
-    FSW.cc = i+1
-    FSW.Set_5GNR_CC_Offset(i+1,i*CCSpace)
+    FSW.cc = i + 1
+    FSW.Set_5GNR_CC_Offset(i + 1, i * CCSpace)
     FSW.Set_5GNR_TransPrecoding('ON')
     FSW.Set_5GNR_PhaseCompensate('OFF')
     FSW.Set_5GNR_PhaseCompensate_Freq(Freq_CC)
@@ -75,6 +68,6 @@ print(f'Total Time: {(tockA-tick):2,.6f} sec')
 FSW.Set_Autolevel()
 
 ###############################################################################
-### Close Nicely
+# ## Close Nicely
 ###############################################################################
 if VSG_ON: SMW.jav_Close()

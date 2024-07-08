@@ -32,11 +32,11 @@ class instr(object):
         except:
             pass
 
-    def delay(self,sec):
+    def delay(self, sec):
         '''delay in Sec'''
         time.sleep(sec)
 
-    def open(self, address, type = 'socket', param = 5025):         # pylint: disable=redefined-builtin
+    def open(self, address, type='socket', param=5025):         # pylint: disable=redefined-builtin
         '''Open bus Sesion.  Return bus object'''
         if type == 'socket':
             self.bus = jaSocket().open(address, param)
@@ -54,44 +54,44 @@ class instr(object):
         self.SCPI_clrErr()
         return self
 
-    def query(self,cmd):
-        read ="<notRead>"
+    def query(self, cmd):
+        read = "<notRead>"
         try:
             if self.dataIDN != "":
                 read = self.bus.query(cmd).strip()                   # Write if connected
         except:
             logging.error(f'SCPI_RdErr : {self.Model}-->{cmd}')
-        self.SCPI_file_write(f'{self.Model},{cmd},{read}')
+        self.SCPI_file_write(f'{self.Model}, {cmd}, {read}')
         return read
 
-    def queryFloat(self,cmd):
+    def queryFloat(self, cmd):
         try:
-            strArry = self.query(cmd).split(',')
+            strArry = self.query(cmd).split(', ')
             return [float(i) for i in strArry][0]
         except:
             return -9999.9999
 
-    def queryFloatArry(self,cmd):
+    def queryFloatArry(self, cmd):
         try:
-            strArry = self.query(cmd).split(',')
+            strArry = self.query(cmd).split(', ')
             return [float(i) for i in strArry]
         except:
             return [-9999.9999, -888.888, -777.777, -666.666, -555.555, -444.444]
 
-    def queryInt(self,cmd):
+    def queryInt(self, cmd):
         try:
-            strArry = self.query(cmd).split(',')
+            strArry = self.query(cmd).split(', ')
             return int([float(i) for i in strArry][0])
             # Float for scientific 'e' notation
         except:
             return -9999
 
-    def queryIntArry(self,cmd):
+    def queryIntArry(self, cmd):
         try:
-            strArry = self.query(cmd).split(',')
+            strArry = self.query(cmd).split(', ')
             return [int(i) for i in strArry]
         except:
-            return [-9999,-8888,-7777]
+            return [-9999, -8888, -7777]
 
     def SCPI_clear(self):
         '''Clear Errors'''
@@ -110,13 +110,13 @@ class instr(object):
                 self.dLastErr = RdStr
                 ErrList.append(RdStr)
                 logging.error(f'SCPI_ClrErr: {self.Model}-->{RdStr}')
-        except:  #Instrument does not support SYST:ERR?
+        except:  # Instrument does not support SYST:ERR?
             logging.error('SCPI_ClrErr: {self.Model}-->SYST:ERR not Supported')
         return ErrList
 
     def SCPI_error(self):
         '''Read SYST:ERR?'''
-        RdStr = self.query("SYST:ERR?").strip().split(',')
+        RdStr = self.query("SYST:ERR?").strip().split(', ')
         return RdStr
 
     def SCPI_file_write(self, outstr):
@@ -128,7 +128,7 @@ class instr(object):
         self.dataIDN = "Temp"                                       # Temp for self.query
         self.dataIDN = self.query("*IDN?").strip()
         if self.dataIDN != "<notRead>":                             # Data Returned?
-            IDNStr = self.dataIDN.split(',')
+            IDNStr = self.dataIDN.split(', ')
             try:
                 self.Make       = IDNStr[0]
                 self.Model      = IDNStr[1]
@@ -190,19 +190,19 @@ class instr(object):
     def timeout(self, seconds):
         self.bus.timeout(seconds)
 
-    def write(self,cmd):
+    def write(self, cmd):
         try:
             if self.dataIDN != "": self.bus.write(cmd)               # Write if connected
         except:
             logging.error(f'SCPI_WrtErr : {self.Model}-->{cmd}')
-        self.SCPI_file_write(f'{self.Model},{cmd}')
+        self.SCPI_file_write(f'{self.Model}, {cmd}')
 
-    def write_raw(self,SCPI):
+    def write_raw(self, SCPI):
         self.bus.write_raw(SCPI)
 
-    def write_scpilist(self,SCPIList):
+    def write_scpilist(self, SCPIList):
         '''Send SCPI list & Query if "?" '''
-        ### Collect read results into a list for return.
+        # ## Collect read results into a list for return.
         OutList = []
         for cmd in SCPIList:
             if cmd.find('?') == -1:

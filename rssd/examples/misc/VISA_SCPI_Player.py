@@ -1,12 +1,12 @@
 """Rohde & Schwarz Automation for demonstration use. """
-#pylint: disable=invalid-name, unused-import
+# pylint: disable=invalid-name, unused-import
 import os
 import logging
 import pyvisa
-host = '10.0.0.16'                                  #Instrument IP address
+host = '10.0.0.16'                                  # Instrument IP address
 
 ###############################################################################
-### Code Begin
+# ## Code Begin
 ###############################################################################
 def readSCPI():
     '''read SCPI array from file'''
@@ -36,11 +36,11 @@ def sendSCPI(SCPIarry):
             logging.error(outStr)
 
 ###############################################################################
-### Main Code
+# ## Main Code
 ###############################################################################
-rm = pyvisa.ResourceManager()                           #Create Resource Manager
-instr = rm.open_resource(f'TCPIP0::{host}::hislip0::INSTR')                      #Create Visa Obj
-instr.timeout = 5000                                    #Timeout, millisec
+rm = pyvisa.ResourceManager()                           # Create Resource Manager
+instr = rm.open_resource(f'TCPIP0::{host}::hislip0::INSTR')                      # Create Visa Obj
+instr.timeout = 5000                                    # Timeout, millisec
 # logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
 # file_handler = logging.FileHandler(os.path.splitext(__file__)[0] + '.log')

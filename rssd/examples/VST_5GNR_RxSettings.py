@@ -1,18 +1,11 @@
-###############################################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Capture EVM based on SMW *.nr5G & FSW *.allocation files
-#pylint: disable=E0611,E0401
-###############################################################################
+# pylint: disable=E0611,E0401
 SMW_IP      = '192.168.1.114'
 FSW_IP      = '192.168.1.109'
 UserDir     = '2020.07.30-Autolevel'
 freqArry    = [28e9]
-pwrArry     = range(-50,10,2)                               #Power Array
+pwrArry     = range(-50, 10, 2)                             # Power Array
 comment     = '-Autolevel'
 
-###############################################################################
-### Overhead
-###############################################################################
 from rssd.VSG.NR5G_K144     import VSG
 from rssd.VSA.NR5G_K144     import VSA
 from rssd.FileIO            import FileIO
@@ -20,26 +13,26 @@ from rssd.RSI.time          import timer
 
 OFile = FileIO().makeFile(__file__)
 TMR = timer()
-SMW = VSG().jav_Open(SMW_IP,OFile)                          #Create SMW Object
+SMW = VSG().jav_Open(SMW_IP, OFile)                         # Create SMW Object
 SMW.debug = 0
-FSW = VSA().jav_Open(FSW_IP,OFile)                          #Create FSW Object
+FSW = VSA().jav_Open(FSW_IP, OFile)                         # Create FSW Object
 FSW.debug = 0
 
 class dataClass():
     def __init__(self):
-#         self.Direction      = 'UL'
-#         self.CellID         = 1
-#         # self.FreqRng      = 'HIGH'
-#         self.ChBW           = 100
-#         self.TF             = 'ON'
-#         self.SubSp          = 120
-#         self.RB             = 60
-#         self.RBO            = 0
-#         self.Ch_RB          = 60
-#         self.Ch_RBO         = 0
-#         self.Mod            = 'QPSK'
+        # self.Direction      = 'UL'
+        # self.CellID         = 1
+        # # self.FreqRng      = 'HIGH'
+        # self.ChBW           = 100
+        # self.TF             = 'ON'
+        # self.SubSp          = 120
+        # self.RB             = 60
+        # self.RBO            = 0
+        # self.Ch_RB          = 60
+        # self.Ch_RBO         = 0
+        # self.Mod            = 'QPSK'
         self.Rx             = ''
-#         self.pwr            = -100
+        # self.pwr            = -100
 
 def NR5G_Rx_Init():
     """Start 5GNR Measurement Channel"""
@@ -71,7 +64,7 @@ def NR5G_Rx_Get_EVM():
     return EVM
 
 ###############################################################################
-### Code Start
+# ## Code Start
 ###############################################################################
 LoopParam   = 'State,Model,SMW_Fre,SMW_Pwr'
 # WaveParam   = 'ChBW,SubSp,RB,Mod,TF'
@@ -81,7 +74,7 @@ TimeParam   = 'AlTime,MeasTime,TotalTime,HoursLeft'
 Header      = f'{LoopParam},{AttnParam},{EVMParam},{TimeParam}'
 OFile.write(Header)
 
-### Instr Init
+# ## Instr Init
 NR5G        = dataClass()
 SMW.Set_OS_Dir(UserDir)
 SMW.Set_5GNR_BBState(1)
@@ -110,7 +103,7 @@ for saveState in saveArry:
             EVM = NR5G_Rx_Get_EVM()
             TMR.tick()
 
-            ### Log Data
+            # ## Log Data
             LoopParam   = f'{saveState},{NR5G.Rx},{freq},{pwr:3d}'
             AttnParam   = FSW.Get_Params_Amp()
             TimeParam   = TMR.Get_Params_Time()

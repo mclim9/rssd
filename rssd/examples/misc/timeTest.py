@@ -1,20 +1,20 @@
 ##########################################################
-### Rohde & Schwarz Automation for demonstration use.
-### Title  : Timing SCPI Commands Example
-### Author : mclim
+# ## Rohde & Schwarz Automation for demonstration use.
+# ## Title  : Timing SCPI Commands Example
+# ## Author : mclim
 ##########################################################
-### User Entry
+# ## User Entry
 ##########################################################
 numMeas = 10
 
 
 ##########################################################
-### Code Begin
+# ## Code Begin
 ##########################################################
-from datetime               import datetime    #pylint: disable=E0611,E0401
+from datetime               import datetime    # pylint: disable=E0611,E0401
 import time
 
-for i in range(numMeas):        #Loop: # of Measurements
+for i in range(numMeas):        # Loop: # of Measurements
     tick = datetime.now()
     time.sleep(1)
     d = datetime.now() - tick

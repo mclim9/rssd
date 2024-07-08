@@ -1,5 +1,5 @@
 """Rohde & Schwarz Automation for demonstration use. """
-#pylint: disable=invalid-name
+# pylint: disable=invalid-name
 
 import socket                                           # Import socket module
 # import xml.etree.ElementTree as ET
@@ -26,7 +26,7 @@ def getSysInfo():
     return xmlIn
 
 ###############################################################################
-### Main Code
+# ## Main Code
 ###############################################################################
 s = socket.socket()                                     # Create a socket object
 s.connect(('192.168.58.30', 5025))

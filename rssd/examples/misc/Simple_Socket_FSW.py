@@ -14,7 +14,7 @@ def sWrite(SCPI):
     s.sendall(f'{SCPI}\n'.encode())         # Write SCPI
 
 # ##############################################################################
-### Main Code
+# ## Main Code
 # ##############################################################################
 s = socket.socket()                         # Create a socket object
 s.connect(('192.168.58.109', 5025))

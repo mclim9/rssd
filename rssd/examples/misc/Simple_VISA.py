@@ -1,26 +1,26 @@
 '''Rohde & Schwarz Automation for demonstration use.'''
-#pylint: disable=invalid-name, unused-import, using-constant-test
+# pylint: disable=invalid-name, unused-import, using-constant-test
 import xml.etree.ElementTree as ET
-import pyvisa                               #Import VISA module
+import pyvisa                               # Import VISA module
 
 ###############################################################################
-### Code Begin
+# ## Code Begin
 ###############################################################################
 def vQuery(SCPI):
     '''VISA query'''
     VISA1.read_termination = '\n'           # 0x0A for socket
-    vOut = VISA1.query(SCPI)                #Query cmd
+    vOut = VISA1.query(SCPI)                # Query cmd
     return vOut.strip()
 
 def vWrite(SCPI):
     '''VISA write'''
-    VISA1.write(SCPI)                       #Write cmd
+    VISA1.write(SCPI)                       # Write cmd
 
 def getSysInfo():
     '''Get System Info'''
     xmlIn = vQuery("SYST:DFPR?")
 
-    xmlIn = xmlIn[xmlIn.find('>')+1:]       #Remove header
+    xmlIn = xmlIn[xmlIn.find('>') + 1:]       # Remove header
     root  = ET.fromstring(xmlIn)
     if 0:
         DData = root.find('DeviceData').items()
@@ -34,7 +34,7 @@ def getSysInfo():
     print(dType, devID)
 
 ###############################################################################
-### Main Code
+# ## Main Code
 ###############################################################################
 rm = pyvisa.ResourceManager()
 rmlist = rm.list_resources()

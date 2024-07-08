@@ -1,9 +1,9 @@
 """ Rohde & Schwarz Automation for demonstration use."""
-#pylint: disable=invalid-name
+# pylint: disable=invalid-name
 ##########################################################
-### User Entry
+# ## User Entry
 ##########################################################
-import socket                       #Import socket module
+import socket                           # Import socket module
 
 def sQuery(SCPI):
     """Socket Query"""
@@ -18,10 +18,10 @@ def sWrite(SCPI):
     s.sendall(f'{SCPI}\n'.encode())         # Write SCPI
 
 ##########################################################
-### Main Code
+# ## Main Code
 ##########################################################
-s = socket.socket()                 #Create a socket object
+s = socket.socket()                     # Create a socket object
 s.connect(('192.168.58.114', 5025))
-s.settimeout(1)                     #Timeout in seconds
+s.settimeout(1)                         # Timeout in seconds
 
 sQuery('*IDN?')

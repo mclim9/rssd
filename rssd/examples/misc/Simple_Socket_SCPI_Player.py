@@ -1,32 +1,31 @@
 """Rohde & Schwarz Automation for demonstration use. """
-#pylint: disable=invalid-name, unused-import
+# pylint: disable=invalid-name, unused-import
 import os
-import socket                                       #Import socket module
+import socket                                       # Import socket module
 import logging
-import xml.etree.ElementTree as ET
-host = '10.0.0.16'                                  #Instrument IP address
+host = '10.0.0.16'                                  # Instrument IP address
 
 ###############################################################################
-### Code Begin
+# ## Code Begin
 ###############################################################################
 def sQuery(SCPI):
     '''socket query'''
     out = SCPI + "\n"
-    s.sendall(out.encode())                             #Write 'cmd'
-    sOut = s.recv(2048).strip()                         #read socket
+    s.sendall(out.encode())                             # Write 'cmd'
+    sOut = s.recv(2048).strip()                         # read socket
     return sOut.decode()
 
 def sWrite(SCPI):
     '''socket write'''
     out = SCPI + "\n"
-    s.sendall(out.encode())                             #Write 'cmd'
+    s.sendall(out.encode())                             # Write 'cmd'
 
 def getSysInfo():
     '''get system options'''
     xmlIn = sQuery("SYST:DFPR?")
     strStart = xmlIn.find('deviceId="') + len('deviceID="')
     strStop  = xmlIn.find('type="') - 2
-    xmlIn = xmlIn[strStart:strStop]                     #Remove header
+    xmlIn = xmlIn[strStart:strStop]                     # Remove header
     print(xmlIn)
     return xmlIn
 
@@ -59,7 +58,7 @@ def sendSCPI(SCPIarry):
             logging.error(outStr)
 
 ###############################################################################
-### Main Code
+# ## Main Code
 ###############################################################################
 s = socket.socket()                                     # Create a socket object
 s.connect((host, 5025))

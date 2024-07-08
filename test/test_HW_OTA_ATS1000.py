@@ -47,6 +47,6 @@ class TestGeneral(unittest.TestCase):
         self.ATS1000.Get_CxAngle()
 
 if __name__ == '__main__':
-#coverage run -a -m unittest -b -v test_HW_OTA_Common
+# coverage run -a -m unittest -b -v test_HW_OTA_Common
     suite = unittest.TestLoader().loadTestsFromTestCase(TestGeneral)
     unittest.TextTestRunner(verbosity=4).run(suite)
